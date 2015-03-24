@@ -22,7 +22,7 @@ abstract class DatabaseManager {
 	public function delete($table, $where = null) {
 		$sql = 'DELETE FROM '.$table;
 		if(!empty($where)) {
-			$sql .= 'WHERE '.$where;
+			$sql .= ' WHERE '.$where;
 		}
 		return $this->query($sql);
 	}

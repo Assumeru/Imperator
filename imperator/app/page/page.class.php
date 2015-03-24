@@ -29,23 +29,7 @@ abstract class Page {
 		}
 		return self::$urls[$url];
 	}
-/*
-	public static function getInstance($page, array $arguments = null) {
-		if($page !== null) {
-			$file = Imperator::getSettings()->getBasePath().'/app/page/'.strtolower($page).'.class.php';
-			if(file_exists($file)) {
-				require_once $file;
-				$page = '\\imperator\\page\\'.$page;
-				if($arguments === null) {
-					return new $page();
-				} else {
-					return new $page($arguments);
-				}
-			}
-		}
-		return null;
-	}
-*/
+
 	/**
 	 * Checks if a user is allowed to view this page.
 	 * 

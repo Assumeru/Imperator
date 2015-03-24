@@ -18,8 +18,12 @@ class PreGame extends DefaultPage {
 	}
 
 	public function render(\imperator\User $user) {
-		if($this->startHasBeenSubmitted() && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers() && $this->game->getOwner()->equals($user)) {
-			$this->startGame($user);
+		if($this->game->getOwner()->equals($user)) {
+			if($this->startHasBeenSubmitted() && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
+				$this->startGame($user);
+			} else if($this->disbandHadBeenSubmitted()) {
+				$this->disbandGame($user);
+			}
 		} else if($this->leaveHasBeenSubmitted() && $this->game->containsPlayer($user)) {
 			$this->leaveGame($user);
 		} else if($this->joinHasBeenSubmitted() && !$this->game->containsPlayer($user)) {
@@ -34,12 +38,16 @@ class PreGame extends DefaultPage {
 		parent::render($user);
 	}
 
+	private function disbandGame(\imperator\User $user) {
+		//TODO disband
+	}
+
 	private function startGame(\imperator\User $user) {
 		Imperator::getDatabaseManager()->getTable('Games')->startGame($this->game);
 	}
 
 	private function leaveGame(\imperator\User $user) {
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->removePlayerFromGame($user, $this->game->getId());
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->removeUserFromGame($user, $this->game->getId());
 		$players = $this->game->getPlayers();
 		foreach($players as $key => $player) {
 			unset($players[$key]);
@@ -88,13 +96,23 @@ class PreGame extends DefaultPage {
 	}
 
 	private function getControls(\imperator\User $user) {
-		if($this->game->getOwner()->equals($user) && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
-			return $this->getStartGameForm($user);
+		if($this->game->getOwner()->equals($user)) {
+			$out = $this->getDisbandGameForm($user);
+			if($this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
+				$out .= $this->getStartGameForm($user);
+			}
+			return $out;
 		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && !$this->game->containsPlayer($user)) {
 			return $this->getJoinGameForm($user);
 		} else if($this->game->containsPlayer($user)) {
 			return $this->getLeaveForm($user);
 		}
+	}
+
+	private function getDisbandGameForm(\imperator\User $user) {
+		return Template::getInstance('game_pregame_disband')->replace(array(
+			'disband' => 'Disband game'
+		))->getData();
 	}
 
 	private function getLeaveForm(\imperator\User $user) {
