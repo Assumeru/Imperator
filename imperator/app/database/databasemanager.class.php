@@ -19,6 +19,14 @@ abstract class DatabaseManager {
 		return $value;
 	}
 
+	public function delete($table, $where = null) {
+		$sql = 'DELETE FROM '.$table;
+		if(!empty($where)) {
+			$sql .= 'WHERE '.$where;
+		}
+		return $this->query($sql);
+	}
+
 	public function insert($table, array $values) {
 		foreach($values as $key => $value) {
 			$values[$key] = $this->escape($value);
@@ -29,6 +37,11 @@ abstract class DatabaseManager {
 		return $this->query($sql);
 	}
 
+	/**
+	 * 
+	 * @param string $name
+	 * @return Table:
+	 */
 	public function getTable($name) {
 		if(!isset($this->tables[$name])) {
 			$class = '\\imperator\\database\\'.$name.'Table';

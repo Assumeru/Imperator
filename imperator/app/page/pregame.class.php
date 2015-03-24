@@ -18,8 +18,11 @@ class PreGame extends DefaultPage {
 	}
 
 	public function render(\imperator\User $user) {
-		//TODO start & leave
-		if($this->joinHasBeenSubmitted() && !$this->game->containsPlayer($user)) {
+		if($this->startHasBeenSubmitted() && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers() && $this->game->getOwner()->equals($user)) {
+			$this->startGame($user);
+		} else if($this->leaveHasBeenSubmitted() && $this->game->containsPlayer($user)) {
+			$this->leaveGame($user);
+		} else if($this->joinHasBeenSubmitted() && !$this->game->containsPlayer($user)) {
 			if($this->validateRequest()) {
 				$this->joinGame($user);
 			} else {
@@ -29,6 +32,27 @@ class PreGame extends DefaultPage {
 		$this->setTitle($this->game->getName());
 		$this->setBodyContents($this->getPregame($user));
 		parent::render($user);
+	}
+
+	private function startGame(\imperator\User $user) {
+		Imperator::getDatabaseManager()->getTable('Games')->startGame($this->game);
+	}
+
+	private function leaveGame(\imperator\User $user) {
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->removePlayerFromGame($user, $this->game->getId());
+		$players = $this->game->getPlayers();
+		foreach($players as $key => $player) {
+			unset($players[$key]);
+		}
+		$this->game->setPlayers($players);
+	}
+
+	private function startHasBeenSubmitted() {
+		return isset($_POST['startgame']);
+	}
+
+	private function leaveHasBeenSubmitted() {
+		return isset($_POST['leavegame']);
 	}
 
 	private function joinHasBeenSubmitted() {
@@ -69,8 +93,14 @@ class PreGame extends DefaultPage {
 		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && !$this->game->containsPlayer($user)) {
 			return $this->getJoinGameForm($user);
 		} else if($this->game->containsPlayer($user)) {
-			//TODO leave
+			return $this->getLeaveForm($user);
 		}
+	}
+
+	private function getLeaveForm(\imperator\User $user) {
+		return Template::getInstance('game_pregame_leave')->replace(array(
+			'leave' => $user->getLanguage()->translate('Leave game')
+		))->getData();
 	}
 
 	private function getStartGameForm(\imperator\User $user) {

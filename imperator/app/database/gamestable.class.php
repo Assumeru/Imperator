@@ -155,4 +155,8 @@ class GamesTable extends Table {
 		$query->free();
 		return $games;
 	}
+
+	public function startGame(\imperator\Game $game) {
+		
+	}
 }

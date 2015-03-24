@@ -25,6 +25,12 @@ class GamesJoinedTable extends Table {
 		$query->free();
 	}
 
+	public function removeUserFromGame(\imperator\User $user, $gid) {
+		$query = $this->getManager()->delete(static::NAME,
+			static::COLUMN_GID.' = '.((int)$gid).' AND '.static::COLUMN_UID.' = '.((int)$user->getId()));
+		$query->free();
+	}
+
 	/**
 	 * 
 	 * @param \imperator\Game $game

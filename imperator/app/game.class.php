@@ -177,4 +177,18 @@ class Game {
 		}
 		return $colors;
 	}
+
+	public function distributeTerritories() {
+		$territories = array_values($this->map->getTerritories());
+		shuffle($territories);
+		$numNations = count($territories) / $this->getNumberOfPlayers();
+		$n = 0;
+		foreach($this->users as $player) {
+			for($i=0; $i < $numNations; $i++, $n++) {
+				$territories[$n]->setOwner($player);
+				$territories[$n]->setUnits(3);
+			}
+		}
+		//TODO save
+	}
 }
