@@ -1,0 +1,78 @@
+html, body {
+	height: 100%;
+}
+
+body {
+	background-color: #66023C;
+	background: linear-gradient(#792253, #66023C) fixed;
+}
+
+h1 {
+	color: #66023c;
+}
+
+#main {
+	background-color: #fff;
+	min-height: 100%;
+	box-shadow: 0 0 10em rgba(0, 0, 0, 0.2);
+}
+
+#main > #content {
+	padding-top: 50px;
+}
+
+#content > section + section {
+	margin-top: 1.5em;
+	padding-top: 0.5em;
+	border-top: 1px solid #eee;
+}
+
+#new-game .input-group, #new-game select, #join-game .input-group {
+	margin-bottom: 1em;
+}
+
+#game-color .btn {
+	height: 2em;
+	width: 2em;
+	opacity: 0.5;
+}
+
+#game-color input {
+	padding: 0;
+	height: 0;
+	width: 0;
+	opacity: 0;
+	margin: 0 0 -1em;
+	display: block;
+}
+
+#game-color input:checked + label .btn, #game-color .radio-color:hover .btn {
+	opacity: 1;
+}
+
+#game-color input:focus + label .glyphicon {
+	outline: 1px dotted black;
+}
+
+#game-color .btn + .glyphicon {
+	overflow: hidden;
+	display: block;
+	cursor: pointer;
+	max-height: 0;
+	transition: max-height 0.75s;
+}
+
+#game-color input:checked + label > .glyphicon, #game-color .radio-color:hover .glyphicon {
+	max-height: 3em;
+}
+
+#game-color .radio-color {
+	display: inline-block;
+	padding-right: 1em;
+	text-align: center;
+	vertical-align: bottom;
+}
+
+#player-list .user {
+	color: inherit;
+}
