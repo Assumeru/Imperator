@@ -19,15 +19,15 @@ class PreGame extends DefaultPage {
 
 	public function render(\imperator\User $user) {
 		if($this->game->getOwner()->equals($user)) {
-			if($this->startHasBeenSubmitted() && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
-				$this->startGame($user);
-			} else if($this->disbandHadBeenSubmitted()) {
-				$this->disbandGame($user);
+			if(isset($_POST['startgame']) && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
+				$this->startGame();
+			} else if(isset($_POST['disband'])) {
+				$this->disbandGame();
 			}
-		} else if($this->leaveHasBeenSubmitted() && $this->game->containsPlayer($user)) {
+		} else if(isset($_POST['leavegame']) && $this->game->containsPlayer($user)) {
 			$this->leaveGame($user);
 		} else if($this->joinHasBeenSubmitted() && !$this->game->containsPlayer($user)) {
-			if($this->validateRequest()) {
+			if($this->validateJoinRequest()) {
 				$this->joinGame($user);
 			} else {
 				//TODO error
@@ -38,36 +38,25 @@ class PreGame extends DefaultPage {
 		parent::render($user);
 	}
 
-	private function disbandGame(\imperator\User $user) {
-		//TODO disband
+	private function disbandGame() {
+		$this->game->disband();
+		Imperator::redirect(Index::getURL());
 	}
 
-	private function startGame(\imperator\User $user) {
-		Imperator::getDatabaseManager()->getTable('Games')->startGame($this->game);
+	private function startGame() {
+		$this->game->start();
+		//TODO redirect
 	}
 
 	private function leaveGame(\imperator\User $user) {
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->removeUserFromGame($user, $this->game->getId());
-		$players = $this->game->getPlayers();
-		foreach($players as $key => $player) {
-			unset($players[$key]);
-		}
-		$this->game->setPlayers($players);
-	}
-
-	private function startHasBeenSubmitted() {
-		return isset($_POST['startgame']);
-	}
-
-	private function leaveHasBeenSubmitted() {
-		return isset($_POST['leavegame']);
+		$this->game->removeUser($user);
 	}
 
 	private function joinHasBeenSubmitted() {
 		return isset($_POST['color']) && (($this->game->hasPassword() && isset($_POST['password'])) || !$this->game->hasPassword());
 	}
 
-	private function validateRequest() {
+	private function validateJoinRequest() {
 		$this->joinColor = $_POST['color'];
 		$password = $this->game->hasPassword() ? $_POST['password'] : null;
 		$colors = $this->game->getRemainingColors();
@@ -75,11 +64,8 @@ class PreGame extends DefaultPage {
 	}
 
 	private function joinGame(\imperator\User $user) {
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->addUserToGame($user, $this->game->getId(), $this->joinColor);
-		$players = $this->game->getPlayers();
 		$user->setColor($this->joinColor);
-		$players[] = $user;
-		$this->game->setPlayers($players);
+		$this->game->addUser($user);
 	}
 
 	private function getPregame(\imperator\User $user) {
@@ -97,33 +83,35 @@ class PreGame extends DefaultPage {
 
 	private function getControls(\imperator\User $user) {
 		if($this->game->getOwner()->equals($user)) {
-			$out = $this->getDisbandGameForm($user);
-			if($this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
-				$out .= $this->getStartGameForm($user);
-			}
-			return $out;
+			return $this->getOwnerGameForm($user);
 		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && !$this->game->containsPlayer($user)) {
 			return $this->getJoinGameForm($user);
 		} else if($this->game->containsPlayer($user)) {
 			return $this->getLeaveForm($user);
 		}
+		return '';
 	}
 
-	private function getDisbandGameForm(\imperator\User $user) {
-		return Template::getInstance('game_pregame_disband')->replace(array(
-			'disband' => 'Disband game'
+	private function getOwnerGameForm(\imperator\User $user) {
+		$language = $user->getLanguage();
+		$disband = Template::getInstance('game_pregame_disband')->replace(array(
+			'disband' => $language->translate('Disband game')
+		))->getData();
+		$start = '';
+		if($this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
+			$start = Template::getInstance('game_pregame_start')->replace(array(
+				'start' => $user->getLanguage()->translate('Start game')
+			))->getData();
+		}
+		return Template::getInstance('game_pregame_owner')->replace(array(
+			'disband' => $disband,
+			'start' => $start
 		))->getData();
 	}
 
 	private function getLeaveForm(\imperator\User $user) {
 		return Template::getInstance('game_pregame_leave')->replace(array(
 			'leave' => $user->getLanguage()->translate('Leave game')
-		))->getData();
-	}
-
-	private function getStartGameForm(\imperator\User $user) {
-		return Template::getInstance('game_pregame_start')->replace(array(
-			'start' => $user->getLanguage()->translate('Start game')
 		))->getData();
 	}
 

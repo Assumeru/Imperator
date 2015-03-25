@@ -16,29 +16,32 @@ class GamesTable extends Table {
 	const COLUMN_PASSWORD	= 'password';
 
 	/**
+	 * Deletes a game from the database.
 	 * 
-	 * @param \imperator\User $user
-	 * @param string $name
-	 * @param int $mapId
-	 * @param string $color
-	 * @param string $password
-	 * @return int The id of the newly created game
+	 * @param \imperator\Game $game
 	 */
-	public function createNewGame(\imperator\User $user, $name, $mapId, $color, $password = null) {
+	public function deleteGame(\imperator\Game $game) {
+		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId());
+	}
+
+	/**
+	 * Inserts a game into the database.
+	 * 
+	 * @param \imperator\Game $game
+	 */
+	public function createNewGame(\imperator\Game $game) {
 		$array = array(
-			static::COLUMN_MAP => $mapId,
-			static::COLUMN_NAME => $name,
-			static::COLUMN_UID => (int)$user->getId(),
+			static::COLUMN_MAP => $game->getMap()->getId(),
+			static::COLUMN_NAME => $game->getName(),
+			static::COLUMN_UID => $game->getOwner()->getId(),
 			static::COLUMN_TIME => time()
 		);
-		if($password !== null) {
-			$array[static::COLUMN_PASSWORD] = \imperator\Game::hashPassword($password);
+		if($game->hasPassword()) {
+			$array[static::COLUMN_PASSWORD] = $game->getPassword();
 		}
 		$query = $this->getManager()->insert(static::NAME, $array);
-		$gid = $query->getInsertId();
-		$this->getManager()->getTable('GamesJoined')->addUserToGame($user, $gid, $color);
+		$game->setId($query->getInsertId());
 		$query->free();
-		return $gid;
 	}
 
 	/**

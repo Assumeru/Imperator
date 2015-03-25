@@ -16,18 +16,21 @@ class GamesJoinedTable extends Table {
 	const COLUMN_CARD_INFANTRY	= 'c_inf';
 	const COLUMN_CARD_JOKER		= 'c_jok';
 
-	public function addUserToGame(\imperator\User $user, $gid, $color = '000000') {
-		$query = $this->getManager()->insert(static::NAME, array(
-			static::COLUMN_GID => (int)$gid,
-			static::COLUMN_UID => (int)$user->getId(),
-			static::COLUMN_COLOR => $color
-		));
-		$query->free();
+	public function removeUsersFromGame(\imperator\Game $game) {
+		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 
-	public function removeUserFromGame(\imperator\User $user, $gid) {
+	public function addUserToGame(\imperator\User $user, \imperator\Game $game) {
+		$this->getManager()->insert(static::NAME, array(
+			static::COLUMN_GID => $game->getId(),
+			static::COLUMN_UID => (int)$user->getId(),
+			static::COLUMN_COLOR => $user->getColor()
+		))->free();
+	}
+
+	public function removeUserFromGame(\imperator\User $user, \imperator\Game $game) {
 		$query = $this->getManager()->delete(static::NAME,
-			static::COLUMN_GID.' = '.((int)$gid).' AND '.static::COLUMN_UID.' = '.((int)$user->getId()));
+			static::COLUMN_GID.' = '.$game->getId().' AND '.static::COLUMN_UID.' = '.$user->getId());
 		$query->free();
 	}
 

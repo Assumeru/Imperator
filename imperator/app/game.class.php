@@ -43,6 +43,10 @@ class Game {
 		return $this->state;
 	}
 
+	public function setId($id) {
+		$this->id = (int)$id;
+	}
+
 	/**
 	 * @return int
 	 */
@@ -114,6 +118,10 @@ class Game {
 		return false;
 	}
 
+	public function setPassword($password) {
+		$this->password = $this->hashPassword($password);
+	}
+
 	/**
 	 * @return bool
 	 */
@@ -121,12 +129,16 @@ class Game {
 		return $this->password !== null;
 	}
 
+	public function getPassword() {
+		return $this->password;
+	}
+
 	/**
 	 * 
 	 * @param string $password
 	 * @return string|null
 	 */
-	public static function hashPassword($password = null) {
+	private function hashPassword($password = null) {
 		if($password !== null) {
 			if(function_exists('password_hash')) {
 				return password_hash($password, PASSWORD_DEFAULT);
@@ -178,7 +190,63 @@ class Game {
 		return $colors;
 	}
 
-	public function distributeTerritories() {
+	/**
+	 * Creates a new game in the database.
+	 * 
+	 * @param User $user
+	 * @param int $mapId
+	 * @param string $name
+	 * @param string $password
+	 * @return \imperator\Game
+	 */
+	public static function create(User $user, $mapId, $name, $password = null) {
+		$game = new Game(-1, $user, $name, $mapId);
+		$game->setPassword($password);
+		Imperator::getDatabaseManager()->getTable('Games')->createNewGame($game);
+		$game->addUser($user);
+		return $game;
+	}
+
+	/**
+	 * Adds a user to a game in the database.
+	 * 
+	 * @param User $user
+	 */
+	public function addUser(User $user) {
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->addUserToGame($user, $this);
+		$this->users[] = $user;
+	}
+
+	/**
+	 * Removes a user from a game in the database.
+	 * 
+	 * @param User $user
+	 */
+	public function removeUser(User $user) {
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->removeUserFromGame($user, $this);
+		foreach($this->users as $key => $player) {
+			if($user->equals($player)) {
+				unset($this->users[$key]);
+				break;
+			}
+		}
+		$this->setPlayers(array_values($this->users));
+	}
+
+	/**
+	 * Disbands a game permanently.
+	 */
+	public function disband() {
+		$dbManager = Imperator::getDatabaseManager();
+		$dbManager->getTable('GamesJoined')->removeUsersFromGame($this);
+		$dbManager->getTable('Chat')->removeMessagesFromGame($this);
+	}
+
+	public function start() {
+		//TODO start
+	}
+
+	private function distributeTerritories() {
 		$territories = array_values($this->map->getTerritories());
 		shuffle($territories);
 		$numNations = count($territories) / $this->getNumberOfPlayers();

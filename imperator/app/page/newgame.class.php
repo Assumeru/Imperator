@@ -30,14 +30,9 @@ class NewGame extends DefaultPage {
 	}
 
 	private function createNewGame(\imperator\User $user) {
-		$gid = Imperator::getDatabaseManager()->getTable('Games')->createNewGame(
-			$user,
-			$this->validated['name'],
-			$this->validated['map'],
-			$this->validated['color'],
-			$this->validated['password']
-		);
-		Imperator::redirect(Game::getURL($gid, $this->validated['name']));
+		$user->setColor($this->validated['color']);
+		$game = \imperator\Game::create($user, $this->validated['map'], $this->validated['name'], $this->validated['password']);
+		Imperator::redirect(Game::getURL($game->getId(), $game->getName()));
 	}
 
 	private function validateRequest() {
