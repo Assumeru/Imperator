@@ -7,6 +7,7 @@ class Map {
 
 	private $path;
 	private $id;
+	private $game = null;
 	private $players = null;
 	private $name = null;
 	private $territories = null;
@@ -36,6 +37,24 @@ class Map {
 		return $this->name;
 	}
 
+	public function setGame(\imperator\Game $game) {
+		$this->game = $game;
+		foreach($this->territories as $territory) {
+			$territory->setGame($game);
+		}
+	}
+
+	public function getGame() {
+		return $this->game;
+	}
+
+	public function getMissions() {
+		if($this->missions === null) {
+			$this->initFromXML(true);
+		}
+		return $this->missions;
+	}
+
 	/**
 	 * @return int
 	 */
@@ -58,7 +77,7 @@ class Map {
 			list($this->missions, $this->missionDistribution) = $xml->getMissionsAndDistribution();
 		}
 		if($loadTerritories) {
-			list($this->territories, $this->regions) = $xml->getTerritoriesAndRegions();
+			list($this->territories, $this->regions) = $xml->getTerritoriesAndRegions($this->game);
 		}
 	}
 
@@ -121,5 +140,23 @@ class Map {
 			$maps[basename($file, '.xml')] = new Map($file);
 		}
 		self::$maps = $maps;
+	}
+
+	public function distributeTerritories(array $players) {
+		$territories = array_values($this->getTerritories());
+		shuffle($territories);
+		$numNations = count($territories) / count($players);
+		$n = 0;
+		foreach($players as $player) {
+			for($i=0; $i < $numNations; $i++, $n++) {
+				$territories[$n]->setOwner($player);
+				$territories[$n]->setUnits(3);
+			}
+		}
+		Imperator::getDatabaseManager()->getTable('Territories')->saveTerritories($territories);
+	}
+
+	public function distributeMissions(array $players) {
+		
 	}
 }

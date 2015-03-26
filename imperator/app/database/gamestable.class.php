@@ -21,7 +21,7 @@ class GamesTable extends Table {
 	 * @param \imperator\Game $game
 	 */
 	public function deleteGame(\imperator\Game $game) {
-		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId());
+		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 
 	/**
@@ -159,7 +159,9 @@ class GamesTable extends Table {
 		return $games;
 	}
 
-	public function startGame(\imperator\Game $game) {
-		
+	public function updateTurn(\imperator\Game $game) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_TURN => $game->getTurn()
+		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 }

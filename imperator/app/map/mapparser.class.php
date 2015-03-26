@@ -104,7 +104,7 @@ class MapParser {
 	/**
 	 * @return array A multidimensional array containing territories and regions
 	 */
-	public function getTerritoriesAndRegions() {
+	public function getTerritoriesAndRegions(\imperator\Game $game = null) {
 		$territoryElements = $this->getOneElement('territories')->getElementsByTagName('territory');
 		$territories = array();
 		$regions = $this->getRegions();
@@ -113,6 +113,7 @@ class MapParser {
 			$name = $this->getOneElement('name', $territory)->nodeValue;
 			$territories[$id] = new Territory($id, $name);
 			$this->addRegions($territory, $regions, $territories[$id]);
+			$territories[$id]->setGame($game);
 		}
 		foreach($territoryElements as $territory) {
 			$id = $territory->getAttribute('id');

@@ -32,6 +32,7 @@ class UsersTable extends Table {
 			$user->setLosses((int)$result[static::COLUMN_LOSSES]);
 			$users[] = $user;
 		}
+		$query->free();
 		return $users;
 	}
 }

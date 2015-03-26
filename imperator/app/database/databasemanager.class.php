@@ -37,6 +37,26 @@ abstract class DatabaseManager {
 		return $this->query($sql);
 	}
 
+	public function insertMultiple($table, array $values) {
+		foreach($values as $key => $row) {
+			foreach($row as $index => $column) {
+				$row[$index] = $this->escape($column);
+			}
+			$values[$key] = '(\''.implode('\', \'', $row).'\')';
+		}
+		$fields = '`'.implode('`, `', array_keys($values[0])).'`';
+		$sql = 'INSERT INTO '.$table.' ('.$fields.') VALUES'.$values;
+		return $this->query($sql);
+	}
+
+	public function update($table, array $values, $where) {
+		foreach($values as $key => $value) {
+			$values[$key] = '`'.$key.'` = '.$this->escape($value);
+		}
+		$sql = 'UPDATE '.$table.' SET '.implode(', ', $values).' WHERE '.$where;
+		return $this->query($sql);
+	}
+
 	/**
 	 * 
 	 * @param string $name

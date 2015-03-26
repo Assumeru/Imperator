@@ -52,6 +52,7 @@ class GamesJoinedTable extends Table {
 		$players = array();
 		$query = $this->getManager()->query($sql);
 		$userClass = Imperator::getSettings()->getUserClass();
+		$missions = $game->getMap()->getMissions();
 		while($result = $query->fetchResult()) {
 			$player = new $userClass(
 				$result[$u::COLUMN_UID],
@@ -59,7 +60,9 @@ class GamesJoinedTable extends Table {
 			);
 			$player->setColor($result[static::COLUMN_COLOR]);
 			$player->setState($result[static::COLUMN_STATE]);
-			$player->setMission($result[static::COLUMN_MISSION], $result[static::COLUMN_MISSION_UID]);
+			$mission = $missions[$result[static::COLUMN_MISSION]];
+			$mission->setUid($result[static::COLUMN_MISSION_UID]);
+			$player->setMission($mission);
 			$players[] = $player;
 		}
 		$query->free();

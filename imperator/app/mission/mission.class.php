@@ -27,4 +27,8 @@ class Mission {
 		}
 		return true;
 	}
+
+	public function setUid($uid) {
+		
+	}
 }

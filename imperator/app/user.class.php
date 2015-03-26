@@ -64,9 +64,8 @@ abstract class User {
 		return $this->state;
 	}
 
-	public function setMission($mid, $muid) {
-		//TODO this thing
-		$this->mission = array($mid, $muid);
+	public function setMission(\imperator\mission\Mission $mission) {
+		$this->mission = $mission;
 	}
 
 	public function getMission() {

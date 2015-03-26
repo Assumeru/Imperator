@@ -15,6 +15,18 @@ class Territory {
 		$this->name = $name;
 	}
 
+	public function getGame() {
+		return $this->game;
+	}
+
+	public function setGame(\imperator\Game $game) {
+		$this->game = $game;
+	}
+
+	public function getId() {
+		return $this->id;
+	}
+
 	public function getOwner() {
 		return $this->owner;
 	}
