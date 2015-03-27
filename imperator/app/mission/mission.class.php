@@ -8,7 +8,7 @@ class Mission {
 	private $conditions;
 
 	public function __construct($id, $name, $description, array $conditions) {
-		$this->name = $id;
+		$this->id = $id;
 		$this->name = $name;
 		$this->description = $description;
 		$this->conditions = $conditions;
@@ -35,7 +35,7 @@ class Mission {
 	}
 
 	public function getUid() {
-		return null;
+		return 0;
 	}
 
 	public function getId() {

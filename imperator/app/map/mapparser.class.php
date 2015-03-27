@@ -3,6 +3,7 @@ namespace imperator\map;
 
 class MapParser {
 	private $xml;
+	private $xpath;
 
 	/**
 	 * @param string $path The path to the map xml
@@ -10,6 +11,7 @@ class MapParser {
 	public function __construct($path) {
 		$this->xml = new \DOMDocument();
 		$this->xml->load($path);
+		$this->xpath = new \DOMXPath($this->xml);
 	}
 
 	private function getOneElement($name, \DOMElement $element = null) {
@@ -23,21 +25,21 @@ class MapParser {
 	 * @return string The name of the map
 	 */
 	public function getName() {
-		return $this->getOneElement('name')->nodeValue;
+		return $this->xpath->query('child::name')->item(0)->nodeValue;
 	}
 
 	/**
 	 * @return int The number of players
 	 */
 	public function getPlayers() {
-		return (int)($this->getOneElement('players')->nodeValue);
+		return $this->xpath->query('child::players')->item(0)->nodeValue;
 	}
 
 	/**
 	 * @return array A multidimensional array containing missions and mission distributions
 	 */
 	public function getMissionsAndDistribution() {
-		$missionElements = $this->getOneElement('missions')->getElementsByTagName('mission');
+		$missionElements = $this->xpath->query('child::missions/mission');
 		$missions = array();
 		$distribution = array();
 		foreach($missionElements as $mission) {
@@ -50,7 +52,7 @@ class MapParser {
 			$name = $this->getOneElement('name', $mission)->nodeValue;
 			$description = $this->getOneElement('description', $mission)->nodeValue;
 			$conditions = array();
-			foreach($this->getOneElement('conditions', $mission)->getElementsByTagName('condition') as $condition) {
+			foreach($this->xpath->query('child::conditions/condition', $mission) as $condition) {
 				$conditions[] = $this->getMissionCondition($condition);
 			}
 			$missions[$id] = new \imperator\mission\Mission($id, $name, $description, $conditions);
@@ -81,7 +83,7 @@ class MapParser {
 	}
 
 	private function getRegions() {
-		$regionElements = $this->getOneElement('regions')->getElementsByTagName('region');
+		$regionElements = $this->xpath->query('child::regions/region');
 		$regions = array();
 		foreach($regionElements as $region) {
 			$id = $region->getAttribute('id');
@@ -93,7 +95,7 @@ class MapParser {
 	}
 
 	private function addRegions(\DOMElement $element, array $regions, Territory $territory) {
-		$regionElements = $this->getOneElement('regions', $element)->getElementsByTagName('region');
+		$regionElements = $this->xpath->query('child::regions/region', $element);
 		foreach($regionElements as $region) {
 			$id = $region->nodeValue;
 			$regions[$id]->addTerritory($territory);
@@ -105,7 +107,7 @@ class MapParser {
 	 * @return array A multidimensional array containing territories and regions
 	 */
 	public function getTerritoriesAndRegions(\imperator\Game $game = null) {
-		$territoryElements = $this->getOneElement('territories')->getElementsByTagName('territory');
+		$territoryElements = $this->xpath->query('child::territories/territory');
 		$territories = array();
 		$regions = $this->getRegions();
 		foreach($territoryElements as $territory) {

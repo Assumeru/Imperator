@@ -313,7 +313,7 @@
 			<name>World Domination</name>
 			<description>To win this game you will have to conquer all 24 territories on the map.</description>
 			<conditions>
-				<condition class="TerritoriesConditon">
+				<condition class="TerritoriesCondition">
 					<argument type="int">24</argument>
 				</condition>
 			</conditions>

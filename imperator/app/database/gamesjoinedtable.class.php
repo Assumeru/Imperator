@@ -75,7 +75,7 @@ class GamesJoinedTable extends Table {
 			$this->getManager()->update(static::NAME, array(
 				static::COLUMN_MISSION => $mission->getId(),
 				static::COLUMN_MISSION_UID => $mission->getUid()
-			), static::COLUMN_UID.' = '.$player->getId());
+			), static::COLUMN_UID.' = '.$player->getId())->free();
 		}
 	}
 }

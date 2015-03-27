@@ -243,6 +243,7 @@ class Game {
 	}
 
 	public function start() {
+		$this->map->setGame($this);
 		$this->map->distributeTerritories($this->users);
 		$this->map->distributeMissions($this->users);
 		$this->turn = $this->getRandomUser()->getId();

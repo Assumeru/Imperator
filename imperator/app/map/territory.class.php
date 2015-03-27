@@ -35,7 +35,7 @@ class Territory {
 		return $this->units;
 	}
 
-	public function setOwner(\imperator\User $user) {
+	public function setOwner(\imperator\User $owner) {
 		$this->owner = $owner;
 	}
 

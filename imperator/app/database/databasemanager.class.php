@@ -38,14 +38,14 @@ abstract class DatabaseManager {
 	}
 
 	public function insertMultiple($table, array $values) {
+		$fields = '`'.implode('`, `', array_keys($values[0])).'`';
 		foreach($values as $key => $row) {
 			foreach($row as $index => $column) {
 				$row[$index] = $this->escape($column);
 			}
 			$values[$key] = '(\''.implode('\', \'', $row).'\')';
 		}
-		$fields = '`'.implode('`, `', array_keys($values[0])).'`';
-		$sql = 'INSERT INTO '.$table.' ('.$fields.') VALUES'.$values;
+		$sql = 'INSERT INTO '.$table.' ('.$fields.') VALUES '.implode(', ',$values);
 		return $this->query($sql);
 	}
 
