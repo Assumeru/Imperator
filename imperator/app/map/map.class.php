@@ -48,6 +48,16 @@ class Map {
 		return $this->game;
 	}
 
+	private function getMissionDistribution() {
+		if($this->missionDistribution === null) {
+			$this->initFromXML(true);
+		}
+		return $this->missionDistribution;
+	}
+
+	/**
+	 * @return \imperator\mission\Mission[]
+	 */
 	public function getMissions() {
 		if($this->missions === null) {
 			$this->initFromXML(true);
@@ -157,6 +167,22 @@ class Map {
 	}
 
 	public function distributeMissions(array $players) {
-		
+		$missions = $this->getMissions();
+		$missionDistribution = $this->getMissionDistribution();
+		shuffle($missionDistribution);
+		$numPlayers = count($players);
+		foreach($players as $player) {
+			$mission = $missions[array_pop($missionDistribution)];
+			if($mission->containsEliminate()) {
+				$index = mt_rand(0, $numPlayers-2);
+				$target = $players[$index];
+				if($player->equals($target)) {
+					$target = $players[$numPlayers-1];
+				}
+				$mission->setUid($target->getId());
+			}
+			$player->setMission($mission);
+		}
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveMissions($players);
 	}
 }

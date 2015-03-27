@@ -68,4 +68,14 @@ class GamesJoinedTable extends Table {
 		$query->free();
 		return $players;
 	}
+
+	public function saveMissions(array $players) {
+		foreach($players as $player) {
+			$mission = $player->getMission();
+			$this->getManager()->update(static::NAME, array(
+				static::COLUMN_MISSION => $mission->getId(),
+				static::COLUMN_MISSION_UID => $mission->getUid()
+			), static::COLUMN_UID.' = '.$player->getId());
+		}
+	}
 }

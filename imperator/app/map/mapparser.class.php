@@ -53,7 +53,7 @@ class MapParser {
 			foreach($this->getOneElement('conditions', $mission)->getElementsByTagName('condition') as $condition) {
 				$conditions[] = $this->getMissionCondition($condition);
 			}
-			$missions[$id] = new \imperator\mission\Mission($name, $description, $conditions);
+			$missions[$id] = new \imperator\mission\Mission($id, $name, $description, $conditions);
 		}
 		return array($missions, $distribution);
 	}

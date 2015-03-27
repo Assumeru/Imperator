@@ -2,11 +2,13 @@
 namespace imperator\mission;
 
 class Mission {
+	private $id;
 	private $name;
 	private $description;
 	private $conditions;
 
-	public function __construct($name, $description, array $conditions) {
+	public function __construct($id, $name, $description, array $conditions) {
+		$this->name = $id;
 		$this->name = $name;
 		$this->description = $description;
 		$this->conditions = $conditions;
@@ -20,7 +22,7 @@ class Mission {
 	 * @return bool True if all of this mission's conditions are met
 	 */
 	public function hasBeenCompleted(\imperator\Game $game, \imperator\User $user) {
-		foreach($conditions as $condition) {
+		foreach($this->conditions as $condition) {
 			if(!$condition->isFulfilled($game, $user)) {
 				return false;
 			}
@@ -30,5 +32,22 @@ class Mission {
 
 	public function setUid($uid) {
 		
+	}
+
+	public function getUid() {
+		return null;
+	}
+
+	public function getId() {
+		return $this->id;
+	}
+
+	public function containsEliminate() {
+		foreach($this->conditions as $condition) {
+			if($condition instanceof EliminateCondition) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
