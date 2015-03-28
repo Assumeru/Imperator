@@ -32,7 +32,7 @@ class NewGame extends DefaultPage {
 	private function createNewGame(\imperator\User $user) {
 		$user->setColor($this->validated['color']);
 		$game = \imperator\Game::create($user, $this->validated['map'], $this->validated['name'], $this->validated['password']);
-		Imperator::redirect(Game::getURL($game->getId(), $game->getName()));
+		Imperator::redirect(Game::getURL($game));
 	}
 
 	private function validateRequest() {

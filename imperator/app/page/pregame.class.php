@@ -45,7 +45,7 @@ class PreGame extends DefaultPage {
 
 	private function startGame() {
 		$this->game->start();
-		//TODO redirect
+		Imperator::redirect(Game::getURL($this->game));
 	}
 
 	private function leaveGame(\imperator\User $user) {

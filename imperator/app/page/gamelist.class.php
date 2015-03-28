@@ -36,7 +36,7 @@ class GameList extends DefaultPage {
 					'mapurl' => Map::getURL($map->getId(), $map->getName()),
 					'players' => $lang->translate('%1$d / %2$d', $game->getNumberOfPlayers(), $map->getPlayers()),
 					'host' => DefaultPage::getProfileLink($game->getOwner()),
-					'url' => Game::getURL($game->getId(), $game->getName())
+					'url' => Game::getURL($game)
 				))->getData();
 			}
 			$gameHTML = Template::getInstance('games_list')->replace(array(

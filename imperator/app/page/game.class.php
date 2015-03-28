@@ -26,16 +26,19 @@ class Game extends DefaultPage {
 			$page = new HTTP404();
 		} else if(!$this->game->hasStarted()) {
 			$page = new PreGame($this->game);
+		} /*else if($this->game->hasEnded()) {
+			$page = new PostGame($this->game);
+		} */else {
+			$page = new InGame($this->game);
 		}
 		$page->render($user);
 	}
 
-	public static function getURL($gameId = null, $name = '') {
-		if($gameId === null) {
+	public static function getURL(\imperator\Game $game = null) {
+		if($game === null) {
 			return parent::getURL();
-		} else {
-			return parent::getURL().'/'.$gameId.'/'.urlencode($name);
 		}
+		return parent::getURL().'/'.$game->getId().'/'.urlencode($game->getName());
 	}
 
 	public static function getColors(\imperator\User $user, array $colorList = null) {
