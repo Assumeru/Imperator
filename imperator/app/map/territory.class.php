@@ -15,11 +15,15 @@ class Territory {
 		$this->name = $name;
 	}
 
+	public function getName() {
+		return $this->name;
+	}
+
 	public function getGame() {
 		return $this->game;
 	}
 
-	public function setGame(\imperator\Game $game) {
+	public function setGame(\imperator\Game $game = null) {
 		$this->game = $game;
 	}
 
@@ -49,5 +53,12 @@ class Territory {
 
 	public function addBorder(Territory $territory) {
 		$this->borders[] = $territory;
+	}
+
+	/**
+	 * @return Region[]:
+	 */
+	public function getRegions() {
+		return $this->regions;
 	}
 }

@@ -41,6 +41,14 @@ class Game extends DefaultPage {
 		return parent::getURL().'/'.$game->getId().'/'.urlencode($game->getName());
 	}
 
+	public static function getTerritoryFlag(\imperator\map\Territory $territory) {
+		return 'TODO';
+	}
+
+	public static function getRegionFlag(\imperator\map\Region $region) {
+		return 'TODO';
+	}
+
 	public static function getColors(\imperator\User $user, array $colorList = null) {
 		$colors = '';
 		if($colorList === null) {
