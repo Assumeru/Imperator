@@ -42,11 +42,11 @@ class Game extends DefaultPage {
 	}
 
 	public static function getTerritoryFlag(\imperator\map\Territory $territory) {
-		return 'TODO';
+		return Imperator::getSettings()->getBaseURL().'/img/flags/'.str_replace('_', '/', $territory->getId()).'.png';
 	}
 
 	public static function getRegionFlag(\imperator\map\Region $region) {
-		return 'TODO';
+		return Imperator::getSettings()->getBaseURL().'/img/flags/'.str_replace('_', '/', $region->getId()).'.png';
 	}
 
 	public static function getColors(\imperator\User $user, array $colorList = null) {
