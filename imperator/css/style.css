@@ -76,3 +76,64 @@ h1 {
 #player-list .user {
 	color: inherit;
 }
+
+#map {
+	position: relative;
+	border: 1px solid #ddd;
+}
+
+#map.loading {
+	cursor: wait;
+}
+
+#map .map-container {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+#map .map-container svg g[id] {
+	cursor: pointer;
+}
+
+#map .territory-hover {
+	display: none;
+	position: absolute;
+	border: 1px solid #66023C;
+	background-color: #fff;
+	padding: 0 2em;
+	box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+	pointer-events: none;
+}
+
+#map .territory-hover h4 {
+	color: #66023C;
+}
+
+#map .territory-hover .flag {
+	position: absolute;
+	top: -1em;
+	left: -1.5em;
+	width: 3em;
+	height: 2em;
+	border: 1px solid #66023C;
+	background-position: center center;
+	background-size: cover;
+}
+
+#map .territory-hover .content ul {
+	list-style: none;
+	padding: 0;
+	line-height: 1;
+}
+
+#map .territory-hover .content li span {
+	display: inline-block;
+	height: 1em;
+	width: 1.5em;
+	background-position: center center;
+	background-size: cover;
+}
+
+#regions img {
+	height: 1em;
+}

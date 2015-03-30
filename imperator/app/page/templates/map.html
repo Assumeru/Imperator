@@ -1,10 +1,28 @@
 <section>
 	<h1>{$title}</h1>
 	<div class="row">
-		<div id="description" class="col-md-6">{$description}</div>
+		<div class="col-md-6">
+			<div id="description">
+				{$description}
+			</div>
+			<div id="regions">
+				<h2>{$regionsheader}</h2>
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>{$region}</th><th>{$units}</th><th>{$regionterritories}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{$regions}
+					</tbody>
+				</table>
+			</div>
+		</div>
 		<div id="map" class="col-md-6">
+			<noscript>{$noscript}</noscript>
 			<img src="{$mapurl}" alt="{$mapalt}" class="img-responsive" />
-			<div id="territories" class="hidden">{$territories}</div>
+			<div>{$territories}</div>
 		</div>
 	</div>
 </section>

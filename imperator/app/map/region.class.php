@@ -21,11 +21,21 @@ class Region {
 		return $this->name;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getUnitsPerTurn() {
 		return $this->units;
 	}
 
 	public function addTerritory(Territory $territory) {
 		$this->territories[] = $territory;
+	}
+
+	/**
+	 * @return Territory[]
+	 */
+	public function getTerritories() {
+		return $this->territories;
 	}
 }

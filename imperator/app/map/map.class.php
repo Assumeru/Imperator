@@ -102,6 +102,16 @@ class Map {
 	}
 
 	/**
+	 * @return Region[]
+	 */
+	public function getRegions() {
+		if($this->regions === null) {
+			$this->initFromXML(false, true);
+		}
+		return $this->regions;
+	}
+
+	/**
 	 * Returns all territories controlled by a user.
 	 * 
 	 * @param User $user The user whose territories you want

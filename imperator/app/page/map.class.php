@@ -27,6 +27,7 @@ class Map extends DefaultPage {
 		}
 		$this->setTitle($user->getLanguage()->translate($map->getName()));
 		$this->setBodyContents($this->getMapBody($user));
+		$this->setHead('<script src="'.Imperator::getSettings()->getBaseURL().'/js/map.js"></script>');
 		parent::render($user);
 	}
 
@@ -36,8 +37,27 @@ class Map extends DefaultPage {
 			'title' => $language->translate($this->map->getName()),
 			'mapalt' => $language->translate('Map of %1$s', $this->map->getName()),
 			'mapurl' => $this->getMapURL(),
-			'territories' => $this->getTerritoryList($user)
+			'territories' => $this->getTerritoryList($user),
+			'noscript' => $language->translate('Javascript needs to be enabled to interact with this map.'),
+			'regionsheader' => $language->translate('Regions'),
+			'regions' => $this->getRegionList($language),
+			'region' => $language->translate('Region'),
+			'units' => $language->translate('Units per turn'),
+			'regionterritories' => $language->translate('Number of territories')
 		))->getData();
+	}
+
+	private function getRegionList(\imperator\Language $language) {
+		$regions = '';
+		foreach($this->map->getRegions() as $region) {
+			$regions .= Template::getInstance('map_regions_region')->replace(array(
+				'url' => Game::getRegionFlag($region),
+				'name' => $language->translate($region->getName()),
+				'units' => $region->getUnitsPerTurn(),
+				'territories' => count($region->getTerritories())
+			))->getData();
+		}
+		return $regions;
 	}
 
 	private function getMapURL() {
@@ -53,13 +73,14 @@ class Map extends DefaultPage {
 				'url' => Game::getTerritoryFlag($territory),
 				'flag' => $flag,
 				'territory' => $language->translate($territory->getName()),
-				'regions' => $this->getRegionList($territory, $language, $flag)
+				'regions' => $this->getRegionsForTerritory($territory, $language, $flag),
+				'id' => $territory->getId()
 			))->getData();
 		}
 		return $territories;
 	}
 
-	private function getRegionList(\imperator\map\Territory $territory, \imperator\Language $language, $flag) {
+	private function getRegionsForTerritory(\imperator\map\Territory $territory, \imperator\Language $language, $flag) {
 		$regions = '';
 		foreach($territory->getRegions() as $region) {
 			$regions .= Template::getInstance('map_region')->replace(array(
