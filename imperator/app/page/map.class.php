@@ -43,7 +43,9 @@ class Map extends DefaultPage {
 			'regions' => $this->getRegionList($language),
 			'region' => $language->translate('Region'),
 			'units' => $language->translate('Units per turn'),
-			'regionterritories' => $language->translate('Number of territories')
+			'regionterritories' => $language->translate('Number of territories'),
+			'zoomin' => $language->translate('Zoom in'),
+			'zoomout' => $language->translate('Zoom out')
 		))->getData();
 	}
 

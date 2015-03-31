@@ -137,3 +137,31 @@ h1 {
 #regions img {
 	height: 1em;
 }
+
+#map .map-controls {
+	position: absolute;
+	top: 0;
+	right: 0;
+	opacity: 0.5;
+}
+
+#map .map-controls button {
+	display: block;
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: unset;
+	padding: 0;
+	line-height: 1;
+}
+
+#map .map-controls:hover {
+	opacity: 1;
+}
+
+#map .map-controls button.zoom-in {
+	cursor: zoom-in;
+}
+
+#map .map-controls button.zoom-out {
+	cursor: zoom-out;
+}
