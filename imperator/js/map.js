@@ -1,7 +1,44 @@
 $(function($) {
 	var $currentHover;
 
-	function setUpHover($container) {
+	function setUpZoom($container) {
+		var $controls = $('#map .map-controls');
+		$controls.find('.zoom-in').click(zoomIn);
+		$controls.find('.zoom-out').click(zoomOut);
+		$controls.show();
+		$container.on('wheel', zoomScroll);
+	}
+
+	function zoomScroll($e) {
+		if($e.originalEvent !== undefined) {
+			if($e.originalEvent.deltaY > 0) {
+				zoomOut($e);
+			} else {
+				zoomIn($e);
+			}
+		}
+	}
+
+	function zoomIn($e) {
+		$e.preventDefault();
+		zoomMap(10);
+	}
+
+	function zoomOut($e) {
+		$e.preventDefault();
+		zoomMap(-10);
+	}
+
+	function zoomMap($amount) {
+		var $svg = $('#map .map-container svg'),
+		$height = parseInt($svg.attr('height')),
+		$new = $height + $amount;
+		if($new > 10 && $new < 200) {
+			$svg.attr('height', $new+'%');
+		}
+	}
+
+	function setUpClick($container) {
 		var $territories = $container.find('g[id]');
 		$territories.click(function($e) {
 			var $popup = $('#map .territory-hover[data-territory="'+this.id+'"]');
@@ -32,13 +69,14 @@ $(function($) {
 			$map.removeClass('loading');
 		}).done(function($svg) {
 			var $container = $('<div class="map-container"></div>');
-			$('#map > img').remove();
-			$('#map').append($container);
+			$('#map .map-square > img').remove();
+			$('#map .map-square').append($container);
 			$container.append($svg.documentElement);
-			setUpHover($container);
+			setUpClick($container);
+			setUpZoom($container);
 			$map.removeClass('loading');
 		});
 	}
 
-	loadMap($('#map > img').attr('src'));
+	loadMap($('#map .map-square > img').attr('src'));
 });

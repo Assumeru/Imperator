@@ -19,14 +19,18 @@
 				</table>
 			</div>
 		</div>
-		<div id="map" class="col-md-6">
-			<div class="map-controls">
-				<button class="btn btn-default zoom-in" title="{$zoomin}">+</button>
-				<button class="btn btn-default zoom-out" title="{$zoomout}">-</button>
+		<div class="col-md-6">
+			<div id="map">
+				<div class="map-square">
+					<div class="map-controls">
+						<button class="btn btn-default zoom-in" title="{$zoomin}">+</button>
+						<button class="btn btn-default zoom-out" title="{$zoomout}">-</button>
+					</div>
+					<noscript>{$noscript}</noscript>
+					<img src="{$mapurl}" alt="{$mapalt}" class="img-responsive" />
+					<div>{$territories}</div>
+				</div>
 			</div>
-			<noscript>{$noscript}</noscript>
-			<img src="{$mapurl}" alt="{$mapalt}" class="img-responsive" />
-			<div>{$territories}</div>
 		</div>
 	</div>
 </section>
