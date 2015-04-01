@@ -77,6 +77,10 @@ h1 {
 	color: inherit;
 }
 
+#regions img {
+	height: 1em;
+}
+
 #map {
 	position: relative;
 	border: 1px solid #ddd;
@@ -147,10 +151,6 @@ h1 {
 	background-size: cover;
 }
 
-#regions img {
-	height: 1em;
-}
-
 #map .map-controls {
 	position: absolute;
 	top: 0;
@@ -158,6 +158,10 @@ h1 {
 	opacity: 0.5;
 	display: none;
 	z-index: 2;
+}
+
+#map .map-controls:hover {
+	opacity: 1;
 }
 
 #map .map-controls button {
@@ -169,14 +173,14 @@ h1 {
 	line-height: 1;
 }
 
-#map .map-controls:hover {
-	opacity: 1;
-}
-
 #map .map-controls button.zoom-in {
 	cursor: zoom-in;
 }
 
 #map .map-controls button.zoom-out {
 	cursor: zoom-out;
+}
+
+#map svg {
+	transition: height 1s;
 }
