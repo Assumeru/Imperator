@@ -183,4 +183,8 @@ h1 {
 
 #map svg {
 	transition: height 1s;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 }
