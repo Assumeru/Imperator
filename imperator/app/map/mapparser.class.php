@@ -132,8 +132,8 @@ class MapParser {
 		$descriptions = array();
 		foreach($descriptionElements as $description) {
 			$lang = $description->getAttribute('lang');
-			$descriptions[$lang] = $description->nodeValue;
+			$descriptions[strtolower($lang)] = $description->nodeValue;
 		}
-		return $description;
+		return $descriptions;
 	}
 }

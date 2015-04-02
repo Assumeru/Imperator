@@ -46,29 +46,41 @@ class Map {
 		if($this->description === null) {
 			$this->initFromXML(false, false, true);
 		}
+		$lang = strtolower($lang);
 		if(isset($this->description[$lang])) {
 			return $this->description[$lang];
 		} else {
-			$bestMatch = array(1, '');
-			foreach($this->description as $key => $description) {
-				for($n = 0; $n < strlen($key) && $n < strlen($lang); $n++) {
-					if($key[$n] == $lang[$n]) {
-						if($bestMatch[0] < $n) {
-							$bestMatch[0] = $n;
-							$bestMatch[1] = $description;
-						}
-					} else {
-						break;
-					}
-				}
-			}
-			if($bestMatch[1] !== '') {
+			$matchingDescription = $this->getMatchingDescription($lang);
+			if($matchingDescription !== null) {
 				//cache
-				$this->description[$lang] = $bestMatch[1];
-				return $bestMatch[1];
+				$this->description[$lang] = $matchingDescription;
+				return $matchingDescription;
 			}
 		}
 		return $this->description[0];
+	}
+
+	private function getMatchingDescription($lang) {
+		$maxMatches = 0;
+		$bestMatch = '';
+		$langBits = explode('-', $lang);
+		$langLength = count($langBits);
+		foreach($this->description as $key => $value) {
+			$key = strtolower($key);
+			$keyBits = explode('-', $key);
+			for($n = 0; $n < $langLength && $n < count($keyBits); $n++) {
+				if($langBits[$n] != $keyBits[$n]) {
+					break;
+				} else if($n > $maxMatches) {
+					$maxMatches = $n;
+					$bestMatch = $value;
+				}
+			}
+		}
+		if($maxMatches > 0) {
+			return $bestMatch;
+		}
+		return null;
 	}
 
 	public function setGame(\imperator\Game $game) {
