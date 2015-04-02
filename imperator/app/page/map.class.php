@@ -45,7 +45,8 @@ class Map extends DefaultPage {
 			'units' => $language->translate('Units per turn'),
 			'regionterritories' => $language->translate('Number of territories'),
 			'zoomin' => $language->translate('Zoom in'),
-			'zoomout' => $language->translate('Zoom out')
+			'zoomout' => $language->translate('Zoom out'),
+			'description' => $this->map->getDescription($language->getHtmlLang())
 		))->getData();
 	}
 

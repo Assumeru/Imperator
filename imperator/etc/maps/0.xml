@@ -2,6 +2,9 @@
 <map id="0">
 	<name>Benelux</name>
 	<players>2</players>
+	<description lang="en-US"><![CDATA[
+		TODO: Description of <strong>Be</strong>lgium <strong>Ne</strong>therlands <strong>Lux</strong>embourg.
+	]]></description>
 	<territories>
 		<territory id="eu_be_antwerp">
 			<name>Antwerp</name>

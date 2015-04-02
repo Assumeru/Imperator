@@ -30,9 +30,13 @@ class Game {
 	}
 
 	/**
+	 * @param bool $entities Convert characters to HTML entities
 	 * @return string
 	 */
-	public function getName() {
+	public function getName($entities = true) {
+		if($entities) {
+			return htmlentities($this->name);
+		}
 		return $this->name;
 	}
 

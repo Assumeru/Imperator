@@ -10,6 +10,7 @@ class Map {
 	private $game = null;
 	private $players = null;
 	private $name = null;
+	private $description = null;
 	private $territories = null;
 	private $regions = null;
 	private $missions = null;
@@ -37,6 +38,39 @@ class Map {
 		return $this->name;
 	}
 
+	/**
+	 * @param string $lang The language of the description (defaults to en-US)
+	 * @return string
+	 */
+	public function getDescription($lang = 'en-US') {
+		if($this->description === null) {
+			$this->initFromXML(false, false, true);
+		}
+		if(isset($this->description[$lang])) {
+			return $this->description[$lang];
+		} else {
+			$bestMatch = array(1, '');
+			foreach($this->description as $key => $description) {
+				for($n = 0; $n < strlen($key) && $n < strlen($lang); $n++) {
+					if($key[$n] == $lang[$n]) {
+						if($bestMatch[0] < $n) {
+							$bestMatch[0] = $n;
+							$bestMatch[1] = $description;
+						}
+					} else {
+						break;
+					}
+				}
+			}
+			if($bestMatch[1] !== '') {
+				//cache
+				$this->description[$lang] = $bestMatch[1];
+				return $bestMatch[1];
+			}
+		}
+		return $this->description[0];
+	}
+
 	public function setGame(\imperator\Game $game) {
 		$this->game = $game;
 		foreach($this->territories as $territory) {
@@ -44,6 +78,9 @@ class Map {
 		}
 	}
 
+	/**
+	 * @return \imperator\Game
+	 */
 	public function getGame() {
 		return $this->game;
 	}
@@ -75,7 +112,7 @@ class Map {
 		return $this->players;
 	}
 
-	private function initFromXML($loadMissions = false, $loadTerritories = false) {
+	private function initFromXML($loadMissions = false, $loadTerritories = false, $loadDescription = true) {
 		$xml = new MapParser($this->path);
 		if($this->name === null) {
 			$this->name = $xml->getName();
@@ -88,6 +125,9 @@ class Map {
 		}
 		if($loadTerritories) {
 			list($this->territories, $this->regions) = $xml->getTerritoriesAndRegions($this->game);
+		}
+		if($loadDescription) {
+			$this->description = $xml->getDescription();
 		}
 	}
 

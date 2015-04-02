@@ -126,4 +126,14 @@ class MapParser {
 		}
 		return array($territories, $regions);
 	}
+
+	public function getDescription() {
+		$descriptionElements = $this->xpath->query('child::description');
+		$descriptions = array();
+		foreach($descriptionElements as $description) {
+			$lang = $description->getAttribute('lang');
+			$descriptions[$lang] = $description->nodeValue;
+		}
+		return $description;
+	}
 }
