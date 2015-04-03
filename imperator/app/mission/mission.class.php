@@ -50,4 +50,8 @@ class Mission {
 		}
 		return false;
 	}
+
+	public function getDescription(\imperator\Language $language) {
+		return $this->description;
+	}
 }

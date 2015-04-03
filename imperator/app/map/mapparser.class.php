@@ -49,37 +49,58 @@ class MapParser {
 				$distribution[] = $id;
 				$availability--;
 			}
-			$name = $this->getOneElement('name', $mission)->nodeValue;
-			$description = $this->getOneElement('description', $mission)->nodeValue;
-			$conditions = array();
-			foreach($this->xpath->query('child::conditions/condition', $mission) as $condition) {
-				$conditions[] = $this->getMissionCondition($condition);
+			if($mission->hasAttribute('class')) {
+				$class = '\\imperator\\mission\\'.$mission->getAttribute('class');
+				$arguments = array($id);
+				foreach($this->xpath->query('child::argument', $mission) as $argument) {
+					$arguments[] = $this->parseArgument($argument);
+				}
+				$missions[$id] = $this->callWithArguments($class, $arguments);
+			} else {
+				$name = $this->getOneElement('name', $mission)->nodeValue;
+				$description = $this->getOneElement('description', $mission)->nodeValue;
+				$conditions = array();
+				foreach($this->xpath->query('child::conditions/condition', $mission) as $condition) {
+					$conditions[] = $this->getMissionCondition($condition);
+				}
+				$missions[$id] = new \imperator\mission\Mission($id, $name, $description, $conditions);
 			}
-			$missions[$id] = new \imperator\mission\Mission($id, $name, $description, $conditions);
 		}
 		return array($missions, $distribution);
+	}
+
+	private function callWithArguments($class, $arguments) {
+		$numArguments = count($arguments);
+		if($numArguments === 0) {
+			return new $class();
+		} else if($numArguments === 1) {
+			return new $class($arguments[0]);
+		} else if($numArguments === 2) {
+			return new $class($arguments[0], $arguments[1]);
+		}
+		return new $class($arguments);
+	}
+
+	private function parseArgument($argument) {
+		$value = $argument->nodeValue;
+		if($argument->hasAttribute('type')) {
+			$type = $argument->getAttribute('type');
+			if($type == 'int') {
+				return (int)$value;
+			} else if($type == 'float') {
+				return (float)$value;
+			}
+		}
+		return $value;
 	}
 
 	private function getMissionCondition(\DOMElement $condition) {
 		$class = '\\imperator\\mission\\'.$condition->getAttribute('class');
 		$arguments = array();
 		foreach($condition->getElementsByTagName('argument') as $argument) {
-			$value = $argument->nodeValue;
-			if($argument->hasAttribute('type')) {
-				$type = $argument->getAttribute('type');
-				if($type == 'int') {
-					$value = (int)$value;
-				} else if($type == 'float') {
-					$value = (float)$value;
-				}
-			}
-			$arguments[] = $value;
+			$arguments[] = $this->parseArgument($argument);
 		}
-		if(count($arguments) === 1) {
-			return new $class($arguments[0]);
-		} else {
-			return new $class($arguments);
-		}
+		return $this->callWithArguments($class, $arguments);
 	}
 
 	private function getRegions() {

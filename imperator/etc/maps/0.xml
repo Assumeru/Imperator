@@ -312,14 +312,8 @@
 		</region>
 	</regions>
 	<missions>
-		<mission missionId="0" availability="2">
-			<name>World Domination</name>
-			<description>To win this game you will have to conquer all 24 territories on the map.</description>
-			<conditions>
-				<condition class="TerritoriesCondition">
-					<argument type="int">24</argument>
-				</condition>
-			</conditions>
+		<mission missionId="0" availability="2" class="DominationMission">
+			<argument type="int">24</argument>
 		</mission>
 	</missions>
 </map>
