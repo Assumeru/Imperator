@@ -17,6 +17,10 @@ abstract class User {
 		return new User();
 	}
 
+	public static function getUserById($uid) {
+		return new User($uid);
+	}
+
 	public function __construct($id = 0, $name = 'Guest', $loggedIn = false, $lang = 'en', $locale = 'us') {
 		$this->id = $id;
 		$this->loggedIn = $loggedIn;

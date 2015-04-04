@@ -46,8 +46,21 @@ class Map extends DefaultPage {
 			'regionterritories' => $language->translate('Number of territories'),
 			'zoomin' => $language->translate('Zoom in'),
 			'zoomout' => $language->translate('Zoom out'),
-			'description' => $this->map->getDescription($language->getHtmlLang())
+			'description' => $this->map->getDescription($language->getHtmlLang()),
+			'missionsheader' => $language->translate('Missions'),
+			'missions' => $this->getMissions($language)
 		))->getData();
+	}
+
+	private function getMissions(\imperator\Language $language) {
+		$missions = '';
+		foreach($this->map->getMissions() as $mission) {
+			$missions .= Template::getInstance('map_mission')->replace(array(
+				'name' => $language->translate($mission->getName()),
+				'description' => $mission->getDescription($language)
+			))->getData();
+		}
+		return $missions;
 	}
 
 	private function getRegionList(\imperator\Language $language) {

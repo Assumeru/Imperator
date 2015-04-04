@@ -30,11 +30,24 @@ class Mission {
 		return true;
 	}
 
+	public function getName() {
+		return $this->name;
+	}
+
 	public function setUid($uid) {
-		
+		foreach($this->conditions as $condition) {
+			if($condition instanceof UidCondition) {
+				$condition->setUid($uid);
+			}
+		}
 	}
 
 	public function getUid() {
+		foreach($this->conditions as $condition) {
+			if($condition instanceof UidCondition) {
+				return $condition->getUid();
+			}
+		}
 		return 0;
 	}
 
@@ -52,6 +65,6 @@ class Mission {
 	}
 
 	public function getDescription(\imperator\Language $language) {
-		return $this->description;
+		return $language->translate($this->description);
 	}
 }

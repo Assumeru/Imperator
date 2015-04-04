@@ -105,6 +105,12 @@ h1 {
 	right: 0;
 	overflow: hidden;
 	z-index: 0;
+	text-align: center;
+}
+
+#map .map-container img {
+	max-height: 100%;
+	max-width: 100%;
 }
 
 #map .map-container svg g[id] {

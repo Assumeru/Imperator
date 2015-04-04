@@ -14,6 +14,10 @@ class MyBBUser extends \imperator\User {
 		return self::$current;
 	}
 
+	public static function getUserById($uid) {
+		return null;
+	}
+
 	public function getProfileLink() {
 		global $mybb;
 		if($id = $this->getId() !== 0) {

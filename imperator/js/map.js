@@ -144,7 +144,7 @@ $(function($) {
 			$map.removeClass('loading');
 		}).done(function($svg) {
 			var $container = $('<div class="map-container"></div>');
-			$('#map .map-square > img').remove();
+			$('#map .map-square .map-container').remove();
 			$('#map .map-square').append($container);
 			$container.append($svg.documentElement);
 			setUpClick($container);
@@ -154,5 +154,5 @@ $(function($) {
 		});
 	}
 
-	loadMap($('#map .map-square > img').attr('src'));
+	loadMap($('#map .map-square img').attr('src'));
 });

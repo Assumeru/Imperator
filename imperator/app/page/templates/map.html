@@ -18,16 +18,22 @@
 					</tbody>
 				</table>
 			</div>
+			<div id="missions">
+				<h2>{$missionsheader}</h2>
+				{$missions}
+			</div>
 		</div>
 		<div class="col-md-6">
+			<noscript><p>{$noscript}</p></noscript>
 			<div id="map">
 				<div class="map-square">
 					<div class="map-controls">
 						<button class="btn btn-default zoom-in" title="{$zoomin}">+</button>
 						<button class="btn btn-default zoom-out" title="{$zoomout}">-</button>
 					</div>
-					<noscript>{$noscript}</noscript>
-					<img src="{$mapurl}" alt="{$mapalt}" class="img-responsive" />
+					<div class="map-container">
+						<img src="{$mapurl}" alt="{$mapalt}" />
+					</div>
 					<div>{$territories}</div>
 				</div>
 			</div>
