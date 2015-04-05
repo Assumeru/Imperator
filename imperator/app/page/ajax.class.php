@@ -1,7 +1,7 @@
 <?php
 namespace imperator\page;
 
-class LongPolling extends Page {
+class Ajax extends Page {
 	const URL = 'ajax';
 
 	public function canBeUsedBy(\imperator\User $user) {
@@ -9,6 +9,6 @@ class LongPolling extends Page {
 	}
 
 	public function render(\imperator\User $user) {
-		echo 'You made a request';
+		\imperator\api\LongPolling::handleRequest(new \imperator\api\Request($_POST, $user));
 	}
 }
