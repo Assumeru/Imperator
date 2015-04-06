@@ -23,7 +23,7 @@ class GamesJoinedTable extends Table {
 	public function addUserToGame(\imperator\User $user, \imperator\Game $game) {
 		$this->getManager()->insert(static::NAME, array(
 			static::COLUMN_GID => $game->getId(),
-			static::COLUMN_UID => (int)$user->getId(),
+			static::COLUMN_UID => $user->getId(),
 			static::COLUMN_COLOR => $user->getColor()
 		))->free();
 	}
@@ -77,5 +77,11 @@ class GamesJoinedTable extends Table {
 				static::COLUMN_MISSION_UID => $mission->getUid()
 			), static::COLUMN_UID.' = '.$player->getId())->free();
 		}
+	}
+
+	public function gameContainsPlayer($gid, \imperator\User $user) {
+		return $this->getManager()->rowExists(static::NAME,
+			static::COLUMN_GID.' = '.$gid.' AND '.
+			static::COLUMN_UID.' = '.$user->getId());
 	}
 }

@@ -74,4 +74,21 @@ abstract class DatabaseManager {
 		}
 		return $this->tables[$name];
 	}
+
+	/**
+	 * Checks if a row exists in the given table matching the where clause.
+	 * 
+	 * @param string $table
+	 * @param string $where
+	 * @return bool True if a row exists
+	 */
+	public function rowExists($table, $where) {
+		$query = $this->query('SELECT 1 FROM '.$table.' WHERE '.$where);
+		if($query->fetchResult()) {
+			$query->free();
+			return true;
+		}
+		$query->free();
+		return false;
+	}
 }
