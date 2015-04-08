@@ -8,6 +8,8 @@ abstract class Api {
 			if($request->getMode() == Request::MODE_UPDATE) {
 				static::handleUpdate($request);
 			}
+		} else {
+			static::handleInvalidRequest($request);
 		}
 	}
 
@@ -42,6 +44,10 @@ abstract class Api {
 	}
 
 	protected static function reply($json, Request $request) {
+		
+	}
+
+	protected static function handleInvalidRequest(Request $request) {
 		
 	}
 

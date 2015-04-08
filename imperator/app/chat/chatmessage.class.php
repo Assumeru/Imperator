@@ -19,6 +19,10 @@ class ChatMessage {
 	}
 
 	public function getUser() {
-		return $user;
+		return $this->user;
+	}
+
+	public function getTime() {
+		return $this->time;
 	}
 }

@@ -79,4 +79,22 @@ class Settings {
 	public function getDatabaseManager() {
 		return null;
 	}
+
+	/**
+	 * Returns the time between each update check in seconds.
+	 * 
+	 * @return number
+	 */
+	public function getLongPollingTimeout() {
+		return 1;
+	}
+
+	/**
+	 * Returns the maximum number of tries before timing out. Set to 0 for infinite tries.
+	 * 
+	 * @return number
+	 */
+	public function getMaxLongPollingTries() {
+		return 30;
+	}
 }
