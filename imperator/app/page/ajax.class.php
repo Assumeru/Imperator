@@ -1,5 +1,6 @@
 <?php
 namespace imperator\page;
+use imperator\Imperator;
 
 class Ajax extends Page {
 	const URL = 'ajax';
@@ -9,6 +10,10 @@ class Ajax extends Page {
 	}
 
 	public function render(\imperator\User $user) {
-		\imperator\api\LongPolling::handleRequest(new \imperator\api\Request($_POST, $user));
+		echo Imperator::handleApiRequest(
+			\imperator\api\Api::LONGPOLLING,
+			new \imperator\api\Request($_POST),
+			$user
+		);
 	}
 }

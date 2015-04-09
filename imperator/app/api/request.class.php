@@ -5,12 +5,10 @@ class Request {
 	const MODE_UPDATE = 'update';
 	const MODE_GAME = 'game';
 	const MODE_CHAT = 'chat';
-	private $user;
 	private $data;
 	private $valid = false;
 
-	public function __construct(array $params, \imperator\User $user) {
-		$this->user = $user;
+	public function __construct(array $params) {
 		$this->data = $params;
 		$this->valid = $this->validateRequest();
 	}
@@ -63,10 +61,6 @@ class Request {
 
 	public function getType() {
 		return $this->data['type'];
-	}
-
-	public function getUser() {
-		return $this->user;
 	}
 
 	public function getGid() {

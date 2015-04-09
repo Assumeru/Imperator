@@ -3,26 +3,43 @@ namespace imperator\api;
 use imperator\Imperator;
 
 abstract class Api {
-	public static function handleRequest(Request $request) {
-		if($request->isValid()) {
-			if($request->getMode() == Request::MODE_UPDATE) {
-				static::handleUpdate($request);
+	const LONGPOLLING = '\\imperator\\api\\LongPolling';
+	const WEBSOCKET = '\\imperator\\api\\WebSocket';
+	private $user;
+	private $request;
+
+	public function __construct(Request $request, \imperator\User $user) {
+		$this->request = $request;
+		$this->user = $user;
+	}
+
+	protected function getUser() {
+		return $this->user;
+	}
+
+	protected function getRequest() {
+		return $this->request;
+	}
+
+	public function handleRequest() {
+		if($this->request->isValid()) {
+			if($this->request->getMode() == Request::MODE_UPDATE) {
+				return $this->handleUpdate();
 			}
-		} else {
-			static::handleInvalidRequest($request);
 		}
+		return $this->handleInvalidRequest();
 	}
 
-	protected static function handleUpdate(Request $request) {
-		if($request->getType() == 'chat' && static::canUseChat($request)) {
-			static::handleChatUpdate($request);
+	protected function handleUpdate() {
+		if($this->request->getType() == 'chat' && $this->canUseChat()) {
+			return $this->handleChatUpdate();
 		} else if($request->getType() == 'game') {
-			static::handleGameUpdate($request);
+			return $this->handleGameUpdate();
 		}
 	}
 
-	protected static function handleChatUpdate(Request $request) {
-		$messages = Imperator::getDatabaseManager()->getTable('Chat')->getMessagesAfter($request->getGid(), $request->getTime());
+	protected function handleChatUpdate() {
+		$messages = Imperator::getDatabaseManager()->getTable('Chat')->getMessagesAfter($this->request->getGid(), $this->request->getTime());
 		$json = array();
 		foreach($messages as $message) {
 			$user = $message->getUser();
@@ -40,25 +57,25 @@ abstract class Api {
 			}
 			$json[] = $jsonMessage;
 		}
-		static::reply(array('messages' => $json, 'update' => time()), $request);
+		return $this->reply(array('messages' => $json, 'update' => time()));
 	}
 
-	protected static function reply($json, Request $request) {
+	protected function reply($json) {
 		
 	}
 
-	protected static function handleInvalidRequest(Request $request) {
+	protected function handleInvalidRequest() {
 		
 	}
 
-	protected static function canUseChat(Request $request) {
-		if($request->getGid() === 0) {
+	protected function canUseChat() {
+		if($this->request->getGid() === 0) {
 			return true;
 		}
-		return static::isPlayerInGame($request);
+		return $this->isPlayerInGame();
 	}
 
-	protected static function isPlayerInGame(Request $request) {
-		return Imperator::getDatabaseManager()->getTable('GamesJoined')->gameContainsPlayer($request->getGid(), $request->getUser());
+	protected function isPlayerInGame() {
+		return Imperator::getDatabaseManager()->getTable('GamesJoined')->gameContainsPlayer($this->request->getGid(), $this->user);
 	}
 }

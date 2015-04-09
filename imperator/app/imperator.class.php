@@ -104,6 +104,11 @@ class Imperator {
 		}
 		return '\\imperator\\Settings';
 	}
+
+	public static function handleApiRequest($type, \imperator\api\Request $request, User $user) {
+		$api = new $type($request, $user);
+		return $api->handleRequest();
+	}
 }
 
 Imperator::init();
