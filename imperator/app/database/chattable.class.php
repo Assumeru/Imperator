@@ -19,6 +19,13 @@ class ChatTable extends Table {
 			static::COLUMN_TIME.' > '.$time);
 	}
 
+	/**
+	 * Returns all messages created after $time for $gid.
+	 * 
+	 * @param int $gid
+	 * @param int $time
+	 * @return \imperator\chat\ChatMessage[]
+	 */
 	public function getMessagesAfter($gid, $time) {
 		$u = $this->getManager()->getTable('OutsideUsers');
 		if($gid !== 0) {
@@ -44,18 +51,40 @@ class ChatTable extends Table {
 		$query = $this->getManager()->query($sql);
 		$messages = array();
 		$userClass = Imperator::getSettings()->getUserClass();
+		$users = array();
 		while($result = $query->fetchResult()) {
-			$user = new $userClass($result[static::COLUMN_UID], $result[$u::COLUMN_USERNAME]);
+			if(!isset($users[$result[static::COLUMN_UID]])) {
+				$users[$result[static::COLUMN_UID]] = new $userClass($result[static::COLUMN_UID], $result[$u::COLUMN_USERNAME]);
+			}
+			$user = $users[$result[static::COLUMN_UID]];
 			if($gid !== 0 && isset($result[$gj::COLUMN_COLOR])) {
 				$user->setColor($result[$gj::COLUMN_COLOR]);
 			}
 			$messages[] = new \imperator\chat\ChatMessage(
-					$result[static::COLUMN_GID],
-					$result[static::COLUMN_TIME],
-					$user,
-					$result[static::COLUMN_MESSAGE]);
+				$result[static::COLUMN_GID],
+				$result[static::COLUMN_TIME],
+				$user,
+				$result[static::COLUMN_MESSAGE]
+			);
 		}
 		$query->free();
 		return $messages;
+	}
+
+	public function insertMessage(\imperator\chat\ChatMessage $message) {
+		$this->getManager()->insert(static::NAME, array(
+			static::COLUMN_GID => $message->getGid(),
+			static::COLUMN_MESSAGE => $message->getMessage(),
+			static::COLUMN_TIME => $message->getTime(),
+			static::COLUMN_UID => $message->getUser()->getId()
+		))->free();
+	}
+
+	public function deleteMessage(\imperator\chat\ChatMessage $message) {
+		$this->getManager()->delete(static::NAME,
+			static::COLUMN_GID.' = '.$message->getGid().'
+			AND '.static::COLUMN_TIME.' = '.$message->getTime().'
+			AND '.static::COLUMN_UID.' = '.$message->getUser()->getId()
+		)->free();
 	}
 }

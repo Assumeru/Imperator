@@ -1,5 +1,6 @@
 <?php
 namespace imperator\chat;
+use imperator\Imperator;
 
 class ChatMessage {
 	private $gid;
@@ -14,6 +15,10 @@ class ChatMessage {
 		$this->message = $message;
 	}
 
+	public function getGid() {
+		return $this->gid;
+	}
+
 	public function getMessage() {
 		return $this->message;
 	}
@@ -24,5 +29,19 @@ class ChatMessage {
 
 	public function getTime() {
 		return $this->time;
+	}
+
+	/**
+	 * Inserts this message into the database.
+	 */
+	public function insert() {
+		Imperator::getDatabaseManager()->getTable('Chat')->insertMessage($this);
+	}
+
+	/**
+	 * Deletes this message from the database.
+	 */
+	public function delete() {
+		Imperator::getDatabaseManager()->getTable('Chat')->deleteMessage($this);
 	}
 }

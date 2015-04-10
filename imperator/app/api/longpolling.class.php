@@ -3,19 +3,21 @@ namespace imperator\api;
 use imperator\Imperator;
 
 class LongPolling extends Api {
-	protected function handleChatUpdate() {
+	protected function handleChatUpdateRequest() {
 		set_time_limit(0);
 		$table = Imperator::getDatabaseManager()->getTable('Chat');
 		$settings = Imperator::getSettings();
 		$max = $settings->getMaxLongPollingTries();
 		$sleep = $settings->getLongPollingTimeout();
-		for($n = 0; !$table->hasMessagesAfter($this->getRequest()->getGid(), $this->getRequest()->getTime()) && ($n < $max || $max === 0); $n++) {
+		$gid = $this->getRequest()->getGid();
+		$time = $this->getRequest()->getTime();
+		for($n = 0; !$table->hasMessagesAfter($gid, $time) && ($n < $max || $max === 0); $n++) {
 			sleep($sleep);
 		}
 		if($n >= $max && $max !== 0) {
 			$this->sendHeader('204 No content');
 		} else {
-			return parent::handleChatUpdate();
+			return parent::handleChatUpdateRequest();
 		}
 	}
 

@@ -24,21 +24,23 @@ abstract class Api {
 	public function handleRequest() {
 		if($this->request->isValid()) {
 			if($this->request->getMode() == Request::MODE_UPDATE) {
-				return $this->handleUpdate();
+				return $this->handleUpdateRequest();
+			} else if($this->request->getMode() == Request::MODE_CHAT) {
+				return $this->handleChatRequest();
 			}
 		}
 		return $this->handleInvalidRequest();
 	}
 
-	protected function handleUpdate() {
+	protected function handleUpdateRequest() {
 		if($this->request->getType() == 'chat' && $this->canUseChat()) {
-			return $this->handleChatUpdate();
+			return $this->handleChatUpdateRequest();
 		} else if($request->getType() == 'game') {
-			return $this->handleGameUpdate();
+			return $this->handleGameUpdateRequest();
 		}
 	}
 
-	protected function handleChatUpdate() {
+	protected function handleChatUpdateRequest() {
 		$messages = Imperator::getDatabaseManager()->getTable('Chat')->getMessagesAfter($this->request->getGid(), $this->request->getTime());
 		$json = array();
 		foreach($messages as $message) {
@@ -60,13 +62,28 @@ abstract class Api {
 		return $this->reply(array('messages' => $json, 'update' => time()));
 	}
 
-	protected function reply($json) {
-		
+	protected function handleChatRequest() {
+		if($this->request->getType() == 'add' && $this->canUseChat()) {
+			return $this->handleChatAddRequest();
+		} else if($this->request->getType() == 'delete' && $this->canDeleteFromChat()) {
+			return $this->handleChatDeleteRequest();
+		}
 	}
 
-	protected function handleInvalidRequest() {
-		
+	protected function handleChatAddRequest() {
+		$message = new \imperator\chat\ChatMessage($this->request->getGid(), time(), $this->user, $this->request->getMessage());
+		$message->insert();
 	}
+
+	protected function handleChatDeleteRequest() {
+		$userClass = Imperator::getSettings()->getUserClass();
+		$message = new \imperator\chat\ChatMessage($this->request->getGid(), $this->request->getTime(), new $userClass($this->request->getUid()), '');
+		$message->delete();
+	}
+
+	protected function reply($json) {}
+
+	protected function handleInvalidRequest() {}
 
 	protected function canUseChat() {
 		if($this->request->getGid() === 0) {
@@ -77,5 +94,9 @@ abstract class Api {
 
 	protected function isPlayerInGame() {
 		return Imperator::getDatabaseManager()->getTable('GamesJoined')->gameContainsPlayer($this->request->getGid(), $this->user);
+	}
+
+	protected function canDeleteFromChat() {
+		return false;
 	}
 }

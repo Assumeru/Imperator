@@ -67,11 +67,15 @@ class Request {
 		return (int)$this->data['gid'];
 	}
 
-	public function getData() {
-		return $this->data;
+	public function getUid() {
+		return (int)$this->data['uid'];
 	}
 
 	public function getTime() {
 		return (int)$this->data['time'];
+	}
+
+	public function getMessage() {
+		return $this->data['message'];
 	}
 }
