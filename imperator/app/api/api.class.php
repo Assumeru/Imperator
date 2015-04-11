@@ -96,7 +96,11 @@ abstract class Api {
 		return Imperator::getDatabaseManager()->getTable('GamesJoined')->gameContainsPlayer($this->request->getGid(), $this->user);
 	}
 
+	protected function isGameOwner() {
+		return Imperator::getDatabaseManager()->getTable('Games')->gameOwnerEquals($this->request->getGid(), $this->user);
+	}
+
 	protected function canDeleteFromChat() {
-		return false;
+		return $this->user->canDeleteChatMessages() || $this->isGameOwner();
 	}
 }

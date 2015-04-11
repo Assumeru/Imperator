@@ -6,6 +6,7 @@ class GameList extends DefaultPage {
 	const NAME = 'Games';
 
 	public function render(\imperator\User $user) {
+		$this->addJavascript('api.js.php');
 		$this->setTitle($user->getLanguage()->translate(static::NAME));
 		$this->setBodyContents($this->getGameList($user));
 		parent::render($user);

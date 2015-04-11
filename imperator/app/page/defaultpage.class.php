@@ -5,6 +5,7 @@ use imperator\Imperator;
 abstract class DefaultPage extends Page {
 	private $title = '';
 	private $head = '';
+	private $js = '';
 	private $content = '';
 
 	public function render(\imperator\User $user) {
@@ -38,6 +39,15 @@ abstract class DefaultPage extends Page {
 	}
 
 	/**
+	 * Adds a javascript file to the head.
+	 * 
+	 * @param string $file The name of the file to add
+	 */
+	protected function addJavascript($file) {
+		$this->js .= '<script src="'.Imperator::getSettings()->getBaseURL().'/js/'.$file.'"></script>';
+	}
+
+	/**
 	 * Adds content to the body of the page.
 	 * 
 	 * @param string $content The HTML to add
@@ -49,7 +59,7 @@ abstract class DefaultPage extends Page {
 	protected function getHead(\imperator\User $user) {
 		return Template::getInstance('head')->replace(array(
 			'title' => $user->getLanguage()->translate('Imperator | %1$s', $this->title),
-			'head' => $this->head,
+			'head' => $this->head."\n".$this->js,
 			'basepath' => Imperator::getSettings()->getBaseURL()
 		))->getData();
 	}

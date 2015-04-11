@@ -27,7 +27,7 @@ class Map extends DefaultPage {
 		}
 		$this->setTitle($user->getLanguage()->translate($map->getName()));
 		$this->setBodyContents($this->getMapBody($user));
-		$this->setHead('<script src="'.Imperator::getSettings()->getBaseURL().'/js/map.js"></script>');
+		$this->addJavascript('map.js');
 		parent::render($user);
 	}
 

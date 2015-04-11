@@ -99,4 +99,8 @@ abstract class User {
 	public function getLosses() {
 		return $this->losses;
 	}
+
+	public function canDeleteChatMessages() {
+		return false;
+	}
 }

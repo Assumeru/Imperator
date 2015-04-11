@@ -25,4 +25,9 @@ class MyBBUser extends \imperator\User {
 		}
 		return false;
 	}
+
+	public function canDeleteChatMessages() {
+		Imperator::getSettings()->includeMyBB();
+		return is_super_admin($this->getId());
+	}
 }

@@ -164,4 +164,11 @@ class GamesTable extends Table {
 			static::COLUMN_TURN => $game->getTurn()
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
+
+	public function gameOwnerEquals($gid, \imperator\User $user) {
+		return $this->getManager()->rowExists(static::NAME,
+			static::COLUMN_GID.' = '.$gid.'
+			AND '.static::COLUMN_UID.' = '.$user->getId()
+		);
+	}
 }
