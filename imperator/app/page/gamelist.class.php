@@ -6,7 +6,11 @@ class GameList extends DefaultPage {
 	const NAME = 'Games';
 
 	public function render(\imperator\User $user) {
-		$this->addJavascript('api.js.php');
+		$this->addJavascript('api.js');
+		$this->addJavascript('chat.js');
+		$this->setJavascriptSetting('API', array(
+			'longpollingURL' => Ajax::getURL()
+		));
 		$this->setTitle($user->getLanguage()->translate(static::NAME));
 		$this->setBodyContents($this->getGameList($user));
 		parent::render($user);
@@ -50,7 +54,8 @@ class GameList extends DefaultPage {
 		}
 		return Template::getInstance('games')->replace(array(
 			'title' => $lang->translate('Games'),
-			'games' => $gameHTML
+			'games' => $gameHTML,
+			'chat' => $this->getChatBox($user)
 		))->getData();
 	}
 }

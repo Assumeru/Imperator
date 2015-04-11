@@ -76,6 +76,6 @@ class Request {
 	}
 
 	public function getMessage() {
-		return $this->data['message'];
+		return trim($this->data['message']);
 	}
 }

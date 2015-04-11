@@ -194,3 +194,17 @@ h1 {
 	-moz-user-select: none;
 	user-select: none;
 }
+
+#chat {
+	margin-top: 1em;
+}
+
+#chat .row {
+	margin-right: 0;
+}
+
+#chat-window {
+	margin-bottom: 1em;
+	height: 10em;
+	overflow: auto;
+}

@@ -1,12 +1,13 @@
 <?php
 namespace imperator\page;
-
 use imperator\Imperator;
+
 abstract class DefaultPage extends Page {
 	private $title = '';
 	private $head = '';
 	private $js = '';
 	private $content = '';
+	private $jsSettings = array();
 
 	public function render(\imperator\User $user) {
 		$language = $user->getLanguage();
@@ -48,6 +49,22 @@ abstract class DefaultPage extends Page {
 	}
 
 	/**
+	 * Makes a variable available in javascript.
+	 * 
+	 * @param string $key The name of the variable
+	 * @param multitype $value The variable
+	 */
+	protected function setJavascriptSetting($key, $value) {
+		$this->jsSettings[$key] = $value;
+	}
+
+	protected function getJavascriptSettings() {
+		return '<script>var Imperator = '.json_encode(
+			array('settings' => $this->jsSettings)
+		).';</script>';
+	}
+
+	/**
 	 * Adds content to the body of the page.
 	 * 
 	 * @param string $content The HTML to add
@@ -59,7 +76,7 @@ abstract class DefaultPage extends Page {
 	protected function getHead(\imperator\User $user) {
 		return Template::getInstance('head')->replace(array(
 			'title' => $user->getLanguage()->translate('Imperator | %1$s', $this->title),
-			'head' => $this->head."\n".$this->js,
+			'head' => $this->getJavascriptSettings()."\n".$this->head."\n".$this->js,
 			'basepath' => Imperator::getSettings()->getBaseURL()
 		))->getData();
 	}
@@ -107,6 +124,15 @@ abstract class DefaultPage extends Page {
 		}
 		return Template::getInstance('profile_nolink')->replace(array(
 			'name' => htmlentities($user->getName())
+		))->getData();
+	}
+
+	protected function getChatBox(\imperator\User $user) {
+		$language = $user->getLanguage();
+		return Template::getInstance('chat')->replace(array(
+			'loading' => $language->translate('Loading messages...'),
+			'submit' => $language->translate('Chat'),
+			'placeholder' => $language->translate('Say something')
 		))->getData();
 	}
 }

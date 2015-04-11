@@ -1,13 +1,9 @@
-<?php
-	header('Content-Type: application/javascript');
-	require_once '../app/imperator.class.php';
-?>
-var API = (function($) {
+Imperator.API = (function($) {
 	var $open = false,
 	$onOpen = [],
 	$onMessage = [],
 	$mode,
-	$longPollingURL = '<?php echo \imperator\page\Ajax::getURL(); ?>';
+	$longPollingURL = Imperator.settings.API.longpollingURL;
 
 	function connect() {
 		if(supportsWebSocket()) {
