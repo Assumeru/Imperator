@@ -42,6 +42,11 @@ abstract class Api {
 
 	protected function handleChatUpdateRequest() {
 		$messages = Imperator::getDatabaseManager()->getTable('Chat')->getMessagesAfter($this->request->getGid(), $this->request->getTime());
+		return $this->replyWithMessages($messages);
+	}
+
+	protected function replyWithMessages(array $messages) {
+		$messages = Imperator::getDatabaseManager()->getTable('Chat')->getMessagesAfter($this->request->getGid(), $this->request->getTime());
 		$json = array();
 		foreach($messages as $message) {
 			$user = $message->getUser();

@@ -199,12 +199,21 @@ h1 {
 	margin-top: 1em;
 }
 
-#chat .row {
-	margin-right: 0;
+#chat .chat {
+	padding: 0.25em;
+}
+
+#chat label {
+	text-align: center;
+}
+
+#chat .chat:nth-child(even) {
+	background-color: #f9f9f9;
 }
 
 #chat-window {
 	margin-bottom: 1em;
 	height: 10em;
 	overflow: auto;
+	padding: 0;
 }

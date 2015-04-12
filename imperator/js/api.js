@@ -68,9 +68,7 @@ Imperator.API = (function($) {
 			url: $longPollingURL,
 			data: $json
 		}).done(function($msg) {
-			if($msg !== undefined && $msg !== '') {
-				onMessage($msg);
-			}
+			onMessage($msg);
 		}).error(function($msg) {
 			console.log($msg);
 		});

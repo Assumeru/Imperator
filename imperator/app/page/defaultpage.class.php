@@ -132,7 +132,8 @@ abstract class DefaultPage extends Page {
 		return Template::getInstance('chat')->replace(array(
 			'loading' => $language->translate('Loading messages...'),
 			'submit' => $language->translate('Chat'),
-			'placeholder' => $language->translate('Say something')
+			'placeholder' => $language->translate('Say something'),
+			'chatscrollingtitle' => $language->translate('Enable this to automatically scroll down to the latest message')
 		))->getData();
 	}
 }

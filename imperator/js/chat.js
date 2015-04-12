@@ -1,16 +1,45 @@
 Imperator.Chat = (function($) {
 	var $chatWindow,
-	$gid = 0,
-	$time = 0;
+	$gid = Imperator.settings.gid,
+	$time = 0,
+	$loading = true;
 
 	function create() {
+		var $chat = $('#chat');
 		$chatWindow = $('#chat-window');
 		Imperator.API.onMessage(parseChatMessage);
 		Imperator.API.onOpen(function() {
-			$('#chat').parent().removeClass('hidden');
-			$chatWindow.empty();
+			var $chatScrolling = $chat.find('input[name="chatscrolling"]');
+			$chat.submit(submitChat);
+			$chatScrolling[0].checked = Imperator.Store.getBoolean('chatscrolling', true);
+			$chatScrolling.change(chatScrolling);
 			sendUpdateRequest();
+			$chat.parent().removeClass('hidden');
 		});
+	}
+
+	function chatScrolling($e) {
+		$e.preventDefault();
+		Imperator.Store.setItem('chatscrolling', this.checked);
+	}
+
+	function submitChat($e) {
+		var $input = $('#chat input[name="message"]'),
+		$message = $input.val();
+		$e.preventDefault();
+		if($message !== undefined && $message !== '') {
+			$message += '';
+			$message = $message.trim();
+			if($message !== '') {
+				$input.val('');
+				Imperator.API.send({
+					mode: 'chat',
+					type: 'add',
+					gid: $gid,
+					message: $message
+				});
+			}
+		}
 	}
 
 	function sendUpdateRequest() {
@@ -23,28 +52,33 @@ Imperator.Chat = (function($) {
 	}
 
 	function parseChatMessage($msg) {
-		if($msg.update !== undefined && $msg.messages !== undefined) {
-			for(var $n = 0; $n < $msg.messages.length; $n++) {
-				addMessage($msg.messages[$n]);
+		if($loading) {
+			$chatWindow.empty();
+			$loading = false;
+		}
+		if($msg !== undefined && $msg !== '') {
+			if($msg.update !== undefined && $msg.messages !== undefined) {
+				for(var $n = 0; $n < $msg.messages.length; $n++) {
+					addMessage($msg.messages[$n]);
+				}
+				if($msg.messages.length > 0 && Imperator.Store.getBoolean('chatscrolling', true)) {
+					$chatWindow.scrollTop($chatWindow[0].scrollHeight);
+				}
+				$time = $msg.update;
+				sendUpdateRequest();
 			}
-			$time = $msg.update;
-			sendUpdateRequest();
 		}
 	}
 
 	function addMessage($msg) {
-		var $chat = $('<div class="chat"></div>'),
-		$row = $('<div class="row"></div>'),
-		$time = new Date($msg.time),
-		$user = $('<div class="col-xs-2"><a href="'+$msg.user.url+'" class="user">'+$msg.user.name+'</a> (<time title="'+$time.toLocaleString()+'" datetime="'+$msg.time+'">'+$time.toLocaleTimeString()+'</time>):</div>'),
-		$message = $('<div class="col-xs-10"></div>');
+		var $time = new Date($msg.time),
+		$chat = $('<div class="chat"><a href="'+$msg.user.url+'" class="user">'+$msg.user.name+'</a> (<time title="'+$time.toLocaleString()+'" datetime="'+$msg.time+'">'+$time.toLocaleTimeString()+'</time>): </div>'),
+		$message = $('<span class="message"></span>');
 		if($msg.user.color !== undefined) {
-			$user.find('a').style('color', '#'+$msg.user.color);
+			$chat.find('a.user').style('color', '#'+$msg.user.color);
 		}
-		$row.append($user);
-		$row.append($message);
-		$chat.append($row);
 		$message.text($msg.message);
+		$chat.append($message);
 		$chatWindow.append($chat);
 	}
 

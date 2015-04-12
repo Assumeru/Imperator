@@ -15,7 +15,7 @@ class LongPolling extends Api {
 			sleep($sleep);
 		}
 		if($n >= $max && $max !== 0) {
-			$this->sendHeader('204 No content');
+			return parent::replyWithMessages(array());
 		} else {
 			return parent::handleChatUpdateRequest();
 		}

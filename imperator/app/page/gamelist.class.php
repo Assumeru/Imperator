@@ -6,11 +6,13 @@ class GameList extends DefaultPage {
 	const NAME = 'Games';
 
 	public function render(\imperator\User $user) {
+		$this->addJavascript('store.js');
 		$this->addJavascript('api.js');
 		$this->addJavascript('chat.js');
 		$this->setJavascriptSetting('API', array(
 			'longpollingURL' => Ajax::getURL()
 		));
+		$this->setJavascriptSetting('gid', 0);
 		$this->setTitle($user->getLanguage()->translate(static::NAME));
 		$this->setBodyContents($this->getGameList($user));
 		parent::render($user);
