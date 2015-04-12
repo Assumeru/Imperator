@@ -127,6 +127,16 @@ abstract class DefaultPage extends Page {
 		))->getData();
 	}
 
+	protected function addChatJavascript($gid) {
+		$this->addJavascript('store.js');
+		$this->addJavascript('api.js');
+		$this->addJavascript('chat.js');
+		$this->setJavascriptSetting('API', array(
+			'longpollingURL' => Ajax::getURL()
+		));
+		$this->setJavascriptSetting('gid', $gid);
+	}
+
 	protected function getChatBox(\imperator\User $user) {
 		$language = $user->getLanguage();
 		return Template::getInstance('chat')->replace(array(

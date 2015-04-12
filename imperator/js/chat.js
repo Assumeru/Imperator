@@ -75,7 +75,7 @@ Imperator.Chat = (function($) {
 		$chat = $('<div class="chat"><a href="'+$msg.user.url+'" class="user">'+$msg.user.name+'</a> (<time title="'+$time.toLocaleString()+'" datetime="'+$msg.time+'">'+$time.toLocaleTimeString()+'</time>): </div>'),
 		$message = $('<span class="message"></span>');
 		if($msg.user.color !== undefined) {
-			$chat.find('a.user').style('color', '#'+$msg.user.color);
+			$chat.find('a.user').css('color', '#'+$msg.user.color);
 		}
 		$message.text($msg.message);
 		$chat.append($message);

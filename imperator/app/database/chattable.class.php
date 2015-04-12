@@ -43,7 +43,7 @@ class ChatTable extends Table {
 		if($gid !== 0) {
 			$sql .= '
 			LEFT JOIN '.$gj::NAME.' AS gj
-			ON(gj.'.$gj::COLUMN_UID.' = c.'.static::COLUMN_UID.')';
+			ON(gj.'.$gj::COLUMN_UID.' = c.'.static::COLUMN_UID.' AND gj.'.$gj::COLUMN_GID.' = c.'.static::COLUMN_GID.')';
 		}
 		$sql .= '
 			WHERE c.'.static::COLUMN_GID.' = '.$gid.'

@@ -77,8 +77,17 @@ class PreGame extends DefaultPage {
 			'playersheading' => $language->translate('Players'),
 			'map' => $this->game->getMap()->getName(),
 			'mapurl' => Map::getURL($this->game->getMap()->getId(), $this->game->getMap()->getName()),
-			'startjoingame' => $this->getControls($user)
+			'startjoingame' => $this->getControls($user),
+			'chat' => $this->getChat($user)
 		))->getData();
+	}
+
+	private function getChat(\imperator\User $user) {
+		if($this->game->containsPlayer($user)) {
+			$this->addChatJavascript($this->game->getId());
+			return $this->getChatBox($user);
+		}
+		return '';
 	}
 
 	private function getControls(\imperator\User $user) {
