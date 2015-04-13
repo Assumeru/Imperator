@@ -217,3 +217,11 @@ h1 {
 	overflow: auto;
 	padding: 0;
 }
+
+#gamelist .started td {
+	background-color: #d9edf7;
+}
+
+#gamelist .ended td {
+	background-color: #dff0d8;
+}

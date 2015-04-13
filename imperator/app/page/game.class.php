@@ -26,9 +26,9 @@ class Game extends DefaultPage {
 			$page = new HTTP404();
 		} else if(!$this->game->hasStarted()) {
 			$page = new PreGame($this->game);
-		} /*else if($this->game->hasEnded()) {
+		} else if($this->game->hasEnded()) {
 			$page = new PostGame($this->game);
-		} */else {
+		} else {
 			$page = new InGame($this->game);
 		}
 		$page->render($user);

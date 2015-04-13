@@ -33,6 +33,7 @@ class PreGame extends DefaultPage {
 				//TODO error
 			}
 		}
+		$this->addJavascript('pregame.js');
 		$this->setTitle($this->game->getName());
 		$this->setBodyContents($this->getPregame($user));
 		parent::render($user);

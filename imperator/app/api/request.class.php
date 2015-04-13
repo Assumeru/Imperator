@@ -28,7 +28,7 @@ class Request {
 	}
 
 	private function validateUpdate() {
-		return isset($this->data['type']) && ($this->data['type'] == 'chat' || $this->data['type'] == 'game')
+		return isset($this->data['type']) && ($this->data['type'] == 'chat' || $this->data['type'] == 'game' || $this->data['type'] == 'pregame')
 			&& isset($this->data['gid']) && is_numeric($this->data['gid'])
 			&& isset($this->data['time']) && is_numeric($this->data['time']);
 	}

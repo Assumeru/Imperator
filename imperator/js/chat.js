@@ -43,12 +43,14 @@ Imperator.Chat = (function($) {
 	}
 
 	function sendUpdateRequest() {
-		Imperator.API.send({
-			gid: $gid,
-			time: $time,
-			mode: 'update',
-			type: 'chat'
-		});
+		if($gid === 0) {
+			Imperator.API.send({
+				gid: $gid,
+				time: $time,
+				mode: 'update',
+				type: 'chat'
+			});
+		}
 	}
 
 	function parseChatMessage($msg) {

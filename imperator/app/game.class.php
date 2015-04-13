@@ -106,7 +106,14 @@ class Game {
 	 * @return bool
 	 */
 	public function hasStarted() {
-		return $this->turn !== 0;
+		return $this->turn !== 0 && !$this->hasEnded();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasEnded() {
+		return $this->state == self::STATE_FINISHED;
 	}
 
 	/**

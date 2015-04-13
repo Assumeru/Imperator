@@ -31,13 +31,20 @@ class GameList extends DefaultPage {
 		} else {
 			foreach($games as $game) {
 				$map = $game->getMap();
+				$startedEnded = '';
+				if($game->hasStarted()) {
+					$startedEnded = 'started';
+				} else if($game->hasEnded()) {
+					$startedEnded = 'ended';
+				}
 				$gameHTML .= Template::getInstance('games_game')->replace(array(
 					'game' => $game->getName(),
 					'map' => $lang->translate($map->getName()),
 					'mapurl' => Map::getURL($map->getId(), $map->getName()),
 					'players' => $lang->translate('%1$d / %2$d', $game->getNumberOfPlayers(), $map->getPlayers()),
 					'host' => DefaultPage::getProfileLink($game->getOwner()),
-					'url' => Game::getURL($game)
+					'url' => Game::getURL($game),
+					'startedended' => $startedEnded
 				))->getData();
 			}
 			$gameHTML = Template::getInstance('games_list')->replace(array(

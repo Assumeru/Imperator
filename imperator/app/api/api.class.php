@@ -37,7 +37,13 @@ abstract class Api {
 			return $this->handleChatUpdateRequest();
 		} else if($request->getType() == 'game') {
 			return $this->handleGameUpdateRequest();
+		} else if($request->getType() == 'pregame') {
+			return $this->handleGameUpdateRequest(true);
 		}
+	}
+
+	protected function handleGameUpdateRequest($pregame = false) {
+		
 	}
 
 	protected function handleChatUpdateRequest() {
