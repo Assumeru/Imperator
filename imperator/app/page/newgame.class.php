@@ -5,16 +5,16 @@ use imperator\Imperator;
 class NewGame extends DefaultPage {
 	const NAME = 'New Game';
 	const URL = 'new-game';
-	private $validated = array();
 
 	public function canBeUsedBy(\imperator\User $user) {
 		return $user->isLoggedIn();
 	}
 
 	public function render(\imperator\User $user) {
-		if($this->hasBeenSubmitted()) {
-			if($this->validateRequest()) {
-				$this->createNewGame($user);
+		$form = new form\NewGameForm();
+		if($form->hasBeenSubmitted()) {
+			if($form->validateRequest()) {
+				$this->createNewGame($form, $user);
 				return;
 			} else {
 				//TODO error
@@ -25,43 +25,10 @@ class NewGame extends DefaultPage {
 		parent::render($user);
 	}
 
-	private function hasBeenSubmitted() {
-		return isset($_POST['name']) && isset($_POST['map']) && isset($_POST['color']);
-	}
-
-	private function createNewGame(\imperator\User $user) {
-		$user->setColor($this->validated['color']);
-		$game = \imperator\Game::create($user, $this->validated['map'], $this->validated['name'], $this->validated['password']);
+	private function createNewGame(page\Form $form, \imperator\User $user) {
+		$user->setColor($form->getColor());
+		$game = \imperator\Game::create($user, $form->getMap(), $form->getName(), $form->getPassword());
 		Imperator::redirect(Game::getURL($game));
-	}
-
-	private function validateRequest() {
-		$this->validated['name'] = trim($_POST['name']);
-		$this->validated['map'] = $_POST['map'];
-		$this->validated['color'] = $_POST['color'];
-		$this->validated['password'] = isset($_POST['password']) ? trim($_POST['password']) : null;
-		if(empty($this->validated['password'])) {
-			$this->validated['password'] = null;
-		}
-		return $this->isValidName($this->validated['name'])
-			&& $this->isValidColor($this->validated['color'])
-			&& $this->isValidMap($this->validated['map']);
-	}
-
-	private function isValidName($name) {
-		return !empty($name) && strlen($name) <= Imperator::getSettings()->getMaxGameNameLength();
-	}
-
-	private function isValidMap($mapId) {
-		if(is_numeric($mapId)) {
-			return \imperator\map\Map::getInstance((int)$mapId) !== null;
-		}
-		return false;
-	}
-
-	private function isValidColor($color) {
-		$colors = array_keys(Imperator::getSettings()->getPlayerColors());
-		return in_array($color, $colors);
 	}
 
 	private function getNewGameForm(\imperator\User $user) {
