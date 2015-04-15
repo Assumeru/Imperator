@@ -7,12 +7,28 @@ class NewGameForm extends Form {
 	private $map;
 	private $password;
 	private $color;
+	private $nameError;
 
 	public function hasBeenSubmitted() {
 		return $this->hasPost('name') && $this->hasPost('map') && $this->hasPost('color');
 	}
 
 	public function validateRequest() {
+		$this->parseRequest();
+		$name = $this->isValidName();
+		if(!$name) {
+			if(!empty($this->name)) {
+				$this->nameError = 'Please enter a shorter name';
+			} else {
+				$this->nameError = 'Please enter a name';
+			}
+		}
+		return $name
+			&& $this->isValidColor()
+			&& $this->isValidMap();
+	}
+
+	private function parseRequest() {
 		$this->name = trim($this->getPost('name'));
 		$this->map = $this->getPost('map');
 		$this->color = $this->getPost('color');
@@ -20,9 +36,6 @@ class NewGameForm extends Form {
 		if(empty($this->password)) {
 			$this->password = null;
 		}
-		return $this->isValidName()
-			&& $this->isValidColor()
-			&& $this->isValidMap();
 	}
 	
 	private function isValidName() {
@@ -31,7 +44,8 @@ class NewGameForm extends Form {
 	
 	private function isValidMap() {
 		if(is_numeric($this->map)) {
-			return \imperator\map\Map::getInstance((int)$this->map) !== null;
+			$this->map = (int)$this->map;
+			return \imperator\map\Map::getInstance($this->map) !== null;
 		}
 		return false;
 	}
@@ -39,6 +53,10 @@ class NewGameForm extends Form {
 	private function isValidColor() {
 		$colors = array_keys(Imperator::getSettings()->getPlayerColors());
 		return in_array($this->color, $colors);
+	}
+
+	public function getName() {
+		return $this->name;
 	}
 
 	public function getColor() {
@@ -51,5 +69,9 @@ class NewGameForm extends Form {
 
 	public function getPassword() {
 		return $this->password;
+	}
+
+	public function getNameError() {
+		return $this->nameError;
 	}
 }

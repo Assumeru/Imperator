@@ -31,11 +31,14 @@ class GameList extends DefaultPage {
 		} else {
 			foreach($games as $game) {
 				$map = $game->getMap();
-				$startedEnded = '';
+				$startedEndedLocked = '';
 				if($game->hasStarted()) {
-					$startedEnded = 'started';
+					$startedEndedLocked = 'started';
 				} else if($game->hasEnded()) {
-					$startedEnded = 'ended';
+					$startedEndedLocked = 'ended';
+				}
+				if($game->hasPassword()) {
+					$startedEndedLocked .= ' password';
 				}
 				$gameHTML .= Template::getInstance('games_game')->replace(array(
 					'game' => $game->getName(),
@@ -44,7 +47,7 @@ class GameList extends DefaultPage {
 					'players' => $lang->translate('%1$d / %2$d', $game->getNumberOfPlayers(), $map->getPlayers()),
 					'host' => DefaultPage::getProfileLink($game->getOwner()),
 					'url' => Game::getURL($game),
-					'startedended' => $startedEnded
+					'startedendedlocked' => $startedEndedLocked
 				))->getData();
 			}
 			$gameHTML = Template::getInstance('games_list')->replace(array(

@@ -7,7 +7,6 @@ class PreGame extends DefaultPage {
 	 * @var \imperator\Game
 	 */
 	private $game = null;
-	private $joinColor;
 
 	public function __construct(\imperator\Game $game) {
 		$this->game = $game;
@@ -18,24 +17,22 @@ class PreGame extends DefaultPage {
 	}
 
 	public function render(\imperator\User $user) {
+		$joinForm = new form\JoinGameForm($this->game);
+		$controlForm = new form\PreGameControlForm();
 		if($this->game->getOwner()->equals($user)) {
-			if(isset($_POST['startgame']) && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
+			if($controlForm->startHasBeenSubmitted() && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
 				$this->startGame();
-			} else if(isset($_POST['disband'])) {
+			} else if($controlForm->disbandHasBeenSubmitted()) {
 				$this->disbandGame();
 			}
-		} else if(isset($_POST['leavegame']) && $this->game->containsPlayer($user)) {
+		} else if($controlForm->leaveHasBeenSubmitted() && $this->game->containsPlayer($user)) {
 			$this->leaveGame($user);
-		} else if($this->joinHasBeenSubmitted() && !$this->game->containsPlayer($user)) {
-			if($this->validateJoinRequest()) {
-				$this->joinGame($user);
-			} else {
-				//TODO error
-			}
+		} else if($joinForm->hasBeenSubmitted() && !$this->game->containsPlayer($user) && $joinForm->validateRequest()) {
+			$this->joinGame($user, $joinForm);
 		}
 		$this->addJavascript('pregame.js');
 		$this->setTitle($this->game->getName());
-		$this->setBodyContents($this->getPregame($user));
+		$this->setBodyContents($this->getPregame($user, $joinForm));
 		parent::render($user);
 	}
 
@@ -53,23 +50,12 @@ class PreGame extends DefaultPage {
 		$this->game->removeUser($user);
 	}
 
-	private function joinHasBeenSubmitted() {
-		return isset($_POST['color']) && (($this->game->hasPassword() && isset($_POST['password'])) || !$this->game->hasPassword());
-	}
-
-	private function validateJoinRequest() {
-		$this->joinColor = $_POST['color'];
-		$password = $this->game->hasPassword() ? $_POST['password'] : null;
-		$colors = $this->game->getRemainingColors();
-		return isset($colors[$this->joinColor]) && $this->game->isValidPassword($password);
-	}
-
-	private function joinGame(\imperator\User $user) {
-		$user->setColor($this->joinColor);
+	private function joinGame(\imperator\User $user, form\JoinGameForm $form) {
+		$user->setColor($form->getColor());
 		$this->game->addUser($user);
 	}
 
-	private function getPregame(\imperator\User $user) {
+	private function getPregame(\imperator\User $user, form\JoinGameForm $form) {
 		$language = $user->getLanguage();
 		return Template::getInstance('game_pregame')->replace(array(
 			'title' => $this->game->getName(),
@@ -78,7 +64,7 @@ class PreGame extends DefaultPage {
 			'playersheading' => $language->translate('Players'),
 			'map' => $this->game->getMap()->getName(),
 			'mapurl' => Map::getURL($this->game->getMap()->getId(), $this->game->getMap()->getName()),
-			'startjoingame' => $this->getControls($user),
+			'startjoingame' => $this->getControls($user, $form),
 			'chat' => $this->getChat($user)
 		))->getData();
 	}
@@ -91,11 +77,11 @@ class PreGame extends DefaultPage {
 		return '';
 	}
 
-	private function getControls(\imperator\User $user) {
+	private function getControls(\imperator\User $user, form\JoinGameForm $form) {
 		if($this->game->getOwner()->equals($user)) {
 			return $this->getOwnerGameForm($user);
 		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && !$this->game->containsPlayer($user)) {
-			return $this->getJoinGameForm($user);
+			return $this->getJoinGameForm($user, $form);
 		} else if($this->game->containsPlayer($user)) {
 			return $this->getLeaveForm($user);
 		}
@@ -125,13 +111,29 @@ class PreGame extends DefaultPage {
 		))->getData();
 	}
 
-	private function getJoinGameForm(\imperator\User $user) {
+	private function getJoinGameForm(\imperator\User $user, form\JoinGameForm $form) {
 		$language = $user->getLanguage();
+		$passwordError = $form->getPasswordError();
+		$hasPasswordError = '';
+		if(!empty($passwordError)) {
+			$hasPasswordError = ' has-error';
+			$passwordError = $language->translate($passwordError);
+		}
+		$colorError = $form->getColorError();
+		$hasColorError = '';
+		if(!empty($colorError)) {
+			$hasColorError = ' has-error';
+			$colorError = $language->translate($colorError);
+		}
 		return Template::getInstance('game_pregame_join')->replace(array(
 			'choosecolor' => $language->translate('Choose a color'),
 			'password' => $this->getJoinPassword($user),
 			'join' => $language->translate('Join game'),
-			'colors' => Game::getColors($user, $this->game->getRemainingColors())
+			'colors' => Game::getColors($user, $this->game->getRemainingColors()),
+			'hasPasswordError' => $hasPasswordError,
+			'hasColorError' => $hasColorError,
+			'colorError' => $colorError,
+			'passwordError' => $passwordError
 		))->getData();
 	}
 
