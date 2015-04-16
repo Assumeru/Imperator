@@ -21,6 +21,25 @@ class LongPolling extends Api {
 		}
 	}
 
+	protected function handleGameUpdateRequest($pregame = false) {
+		set_time_limit(0);
+		$chat = Imperator::getDatabaseManager()->getTable('Chat');
+		$games = Imperator::getDatabaseManager()->getTable('Games');
+		$settings = Imperator::getSettings();
+		$max = $settings->getMaxLongPollingTries();
+		$sleep = $settings->getLongPollingTimeout();
+		$gid = $this->getRequest()->getGid();
+		$time = $this->getRequest()->getTime();
+		for($n = 0; !$chat->hasMessagesAfter($gid, $time) && !$games->timeIsAfter($gid, $time) && ($n < $max || $max === 0); $n++) {
+			sleep($sleep);
+		}
+		if($n >= $max && $max !== 0) {
+			return parent::reply(array('update' => time()));
+		} else {
+			return parent::handleGameUpdateRequest($pregame);
+		}
+	}
+
 	protected function reply($json) {
 		$this->sendHeader('200 Success');
 		return json_encode($json);

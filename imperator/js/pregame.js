@@ -4,6 +4,7 @@
 
 	function init() {
 		Imperator.API.onMessage(parseGameUpdate);
+		Imperator.API.onOpen(sendUpdateRequest);
 	}
 
 	function sendUpdateRequest() {
@@ -33,6 +34,7 @@
 				window.alert($msg.gameState);
 				window.location.reload();
 			}
+			sendUpdateRequest();
 		}
 	}
 

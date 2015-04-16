@@ -30,9 +30,9 @@ class PreGame extends DefaultPage {
 		} else if($joinForm->hasBeenSubmitted() && !$this->game->containsPlayer($user) && $joinForm->validateRequest()) {
 			$this->joinGame($user, $joinForm);
 		}
-		$this->addJavascript('pregame.js');
 		$this->setTitle($this->game->getName());
 		$this->setBodyContents($this->getPregame($user, $joinForm));
+		$this->addJavascript('pregame.js');
 		parent::render($user);
 	}
 

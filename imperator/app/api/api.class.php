@@ -35,15 +35,32 @@ abstract class Api {
 	protected function handleUpdateRequest() {
 		if($this->request->getType() == 'chat' && $this->canUseChat()) {
 			return $this->handleChatUpdateRequest();
-		} else if($request->getType() == 'game') {
+		} else if($this->request->getType() == 'game') {
 			return $this->handleGameUpdateRequest();
-		} else if($request->getType() == 'pregame') {
+		} else if($this->request->getType() == 'pregame') {
 			return $this->handleGameUpdateRequest(true);
 		}
 	}
 
 	protected function handleGameUpdateRequest($pregame = false) {
-		
+		$db = Imperator::getDatabaseManager();
+		$game = $db->getTable('Games')->getGameById($this->request->getGid());
+		$messages = $db->getTable('Chat')->getMessagesAfter($this->request->getGid(), $this->request->getTime());
+		$output = array(
+			'messages' => $this->getJSONMessages($messages),
+			'update' => time()
+		);
+		if($pregame) {
+			$output['players'] = array();
+			foreach($game->getPlayers() as $player) {
+				$output['players'][] = \imperator\page\Template::getInstance('game_player')->replace(array(
+					'color' => $player->getColor(),
+					'owner' => $player->equals($game->getOwner()) ? $this->user->getLanguage()->translate('(Owner)') : '',
+					'user' => \imperator\page\DefaultPage::getProfileLink($player)
+				))->getData();
+			}
+		}
+		return $this->reply($output);
 	}
 
 	protected function handleChatUpdateRequest() {
@@ -51,8 +68,7 @@ abstract class Api {
 		return $this->replyWithMessages($messages);
 	}
 
-	protected function replyWithMessages(array $messages) {
-		$messages = Imperator::getDatabaseManager()->getTable('Chat')->getMessagesAfter($this->request->getGid(), $this->request->getTime());
+	protected function getJSONMessages(array $messages) {
 		$json = array();
 		foreach($messages as $message) {
 			$user = $message->getUser();
@@ -70,7 +86,11 @@ abstract class Api {
 			}
 			$json[] = $jsonMessage;
 		}
-		return $this->reply(array('messages' => $json, 'update' => time()));
+		return $json;
+	}
+
+	protected function replyWithMessages(array $messages) {
+		return $this->reply(array('messages' => $this->getJSONMessages($messages), 'update' => time()));
 	}
 
 	protected function handleChatRequest() {

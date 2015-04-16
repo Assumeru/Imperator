@@ -171,4 +171,11 @@ class GamesTable extends Table {
 			AND '.static::COLUMN_UID.' = '.$user->getId()
 		);
 	}
+
+	public function timeIsAfter($gid, $time) {
+		return $this->getManager()->rowExists(static::NAME,
+			static::COLUMN_GID.' = '.$gid.'
+			AND '.static::COLUMN_TIME.' > '.$time
+		);
+	}
 }
