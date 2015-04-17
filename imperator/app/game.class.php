@@ -17,8 +17,9 @@ class Game {
 	private $state;
 	private $turn;
 	private $password;
+	private $time;
 
-	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null) {
+	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0) {
 		$this->id = $id;
 		$this->owner = $owner;
 		$this->name = $name;
@@ -27,6 +28,7 @@ class Game {
 		$this->state = $state;
 		$this->turn = $turn;
 		$this->password = $password;
+		$this->time = $time;
 	}
 
 	/**
@@ -38,6 +40,13 @@ class Game {
 			return htmlentities($this->name);
 		}
 		return $this->name;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getTime() {
+		return $this->time;
 	}
 
 	/**
@@ -225,6 +234,7 @@ class Game {
 	 */
 	public function addUser(User $user) {
 		Imperator::getDatabaseManager()->getTable('GamesJoined')->addUserToGame($user, $this);
+		Imperator::getDatabaseManager()->getTable('Games')->updateTime($this);
 		$this->users[] = $user;
 	}
 
@@ -235,6 +245,7 @@ class Game {
 	 */
 	public function removeUser(User $user) {
 		Imperator::getDatabaseManager()->getTable('GamesJoined')->removeUserFromGame($user, $this);
+		Imperator::getDatabaseManager()->getTable('Games')->updateTime($this);
 		foreach($this->users as $key => $player) {
 			if($user->equals($player)) {
 				unset($this->users[$key]);

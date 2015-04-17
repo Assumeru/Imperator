@@ -88,7 +88,7 @@ class PreGame extends DefaultPage {
 		return '';
 	}
 
-	private function getOwnerGameForm(\imperator\User $user) {
+	public function getOwnerGameForm(\imperator\User $user) {
 		$language = $user->getLanguage();
 		$disband = Template::getInstance('game_pregame_disband')->replace(array(
 			'disband' => $language->translate('Disband game')

@@ -34,7 +34,7 @@ class LongPolling extends Api {
 			sleep($sleep);
 		}
 		if($n >= $max && $max !== 0) {
-			return parent::reply(array('update' => time()));
+			return $this->reply(array('update' => time()));
 		} else {
 			return parent::handleGameUpdateRequest($pregame);
 		}

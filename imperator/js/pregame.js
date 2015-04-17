@@ -20,6 +20,11 @@
 		var $n, $playerList = $('#player-list');
 		if($msg !== undefined && $msg !== '' && $msg.update !== undefined) {
 			$time = $msg.update;
+			if($msg.gameState !== undefined) {
+				window.alert($msg.gameState);
+				window.location.reload();
+				return;
+			}
 			if($msg.players !== undefined) {
 				$playerList.empty();
 				for($n = 0; $n < $msg.players.length; $n++) {
@@ -30,9 +35,9 @@
 				} else {
 					$('#join-game').show();
 				}
-			} else if($msg.gameState !== undefined) {
-				window.alert($msg.gameState);
-				window.location.reload();
+			}
+			if($msg.ownerControls !== undefined) {
+				$('#owner-controls').html($($msg.ownerControls).find('form'));
 			}
 			sendUpdateRequest();
 		}

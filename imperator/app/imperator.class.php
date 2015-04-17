@@ -86,7 +86,7 @@ class Imperator {
 			$class = self::$settings->getAutoLoaderClass();
 			$autoLoader = new $class(self::$settings->getBasePath());
 			$autoLoader->register();
-			self::$logger = new Logger();
+			self::$logger = new Logger(self::$settings->getBasePath().'/var/log/', Logger::LEVEL_DEBUG);
 			self::$initialised = true;
 		}
 	}

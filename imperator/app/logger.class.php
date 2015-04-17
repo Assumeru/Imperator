@@ -4,23 +4,48 @@ namespace imperator;
 class Logger {
 	const LEVEL_FATAL = 1;
 	const LEVEL_WARNING = 2;
+	const LEVEL_DEBUG = 3;
 	const LEVEL_INFO = 4;
 	const EOL = "\n";
 	private static $LEVELS = array(
+		self::LEVEL_FATAL	=> 'FATAL',
 		self::LEVEL_WARNING	=> 'WARNING',
-		self::LEVEL_INFO	=> 'INFO',
-		self::LEVEL_FATAL	=> 'FATAL'
+		self::LEVEL_DEBUG	=> 'DEBUG',
+		self::LEVEL_INFO	=> 'INFO'
 	);
+
+	private $path;
+	private $level;
+
+	public function __construct($path, $level) {
+		$this->path = $path;
+		$this->level = $level;
+	}
+
+	private function output($message, $level) {
+		if(!$this->path) {
+			echo $message;
+		} else {
+			if($level <= $this->level) {
+				if($level <= self::LEVEL_WARNING) {
+					$file = $this->path.'/error.log';
+				} else {
+					$file = $this->path.'/output.log';
+				}
+				file_put_contents($file, $message, FILE_APPEND | LOCK_EX);
+			}
+		}
+	}
 
 	public function log($level, $message) {
 		if($message instanceof \Exception) {
 			$message = $this->parseException($message);
 		}
-		echo $this->getHead($level).$message.self::EOL.self::EOL;
+		$this->output($this->getHead($level).$message.self::EOL.self::EOL, $level);
 	}
 
 	private function getHead($level) {
-		return $this->getTimestamp().' '.$this->LEVELS[$level].self::EOL;
+		return $this->getTimestamp().' '.self::$LEVELS[$level].self::EOL;
 	}
 
 	private function getTimestamp() {

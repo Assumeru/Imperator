@@ -119,7 +119,8 @@ class GamesTable extends Table {
 				(int)$result[static::COLUMN_STATE],
 				(int)$result[static::COLUMN_TURN],
 				1,
-				$result[static::COLUMN_PASSWORD]
+				$result[static::COLUMN_PASSWORD],
+				$result[static::COLUMN_TIME]
 			);
 			$players = $this->getManager()->getTable('GamesJoined')->getPlayersForGame($game);
 			$game->setPlayers($players);
@@ -159,9 +160,16 @@ class GamesTable extends Table {
 		return $games;
 	}
 
+	public function updateTime(\imperator\Game $game) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_TIME => time()
+		), static::COLUMN_GID.' = '.$game->getId())->free();
+	}
+
 	public function updateTurn(\imperator\Game $game) {
 		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_TURN => $game->getTurn()
+			static::COLUMN_TURN => $game->getTurn(),
+			static::COLUMN_TIME => time()
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 

@@ -50,7 +50,7 @@ abstract class Api {
 			'messages' => $this->getJSONMessages($messages),
 			'update' => time()
 		);
-		if($pregame) {
+		if($pregame && $game->getTime() > $this->request->getTime()) {
 			$output['players'] = array();
 			foreach($game->getPlayers() as $player) {
 				$output['players'][] = \imperator\page\Template::getInstance('game_player')->replace(array(
@@ -58,6 +58,11 @@ abstract class Api {
 					'owner' => $player->equals($game->getOwner()) ? $this->user->getLanguage()->translate('(Owner)') : '',
 					'user' => \imperator\page\DefaultPage::getProfileLink($player)
 				))->getData();
+			}
+			$output['maxPlayers'] = $game->getMap()->getPlayers();
+			if($this->user->equals($game->getOwner())) {
+				$page = new \imperator\page\PreGame($game);
+				$output['ownerControls'] = $page->getOwnerGameForm($this->user);
 			}
 		}
 		return $this->reply($output);
