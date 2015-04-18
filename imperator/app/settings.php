@@ -97,4 +97,12 @@ class Settings {
 	public function getMaxLongPollingTries() {
 		return 30;
 	}
+
+	public function getIllegalCharacters() {
+		return array(
+			chr(160),
+			chr(173),
+			chr(202)
+		);
+	}
 }

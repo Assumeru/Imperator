@@ -1,5 +1,6 @@
 <?php
 namespace imperator\api;
+use imperator\Imperator;
 
 class Request {
 	const MODE_UPDATE = 'update';
@@ -76,6 +77,6 @@ class Request {
 	}
 
 	public function getMessage() {
-		return trim($this->data['message']);
+		return trim(Imperator::stripIllegalCharacters($this->data['message']));
 	}
 }

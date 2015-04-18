@@ -109,6 +109,12 @@ class Imperator {
 		$api = new $type($request, $user);
 		return $api->handleRequest();
 	}
+
+	public static function stripIllegalCharacters($string) {
+		$string = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $string);
+		$string = str_replace(self::$settings->getIllegalCharacters(), '', $string);
+		return $string;
+	}
 }
 
 Imperator::init();

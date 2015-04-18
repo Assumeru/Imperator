@@ -29,7 +29,7 @@ class NewGameForm extends Form {
 	}
 
 	private function parseRequest() {
-		$this->name = trim($this->getPost('name'));
+		$this->name = trim(Imperator::stripIllegalCharacters($this->getPost('name')));
 		$this->map = $this->getPost('map');
 		$this->color = $this->getPost('color');
 		$this->password = $this->hasPost('password') ? $this->getPost('password') : null;
