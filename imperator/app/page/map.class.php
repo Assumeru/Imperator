@@ -27,6 +27,7 @@ class Map extends DefaultPage {
 		}
 		$this->setTitle($user->getLanguage()->translate($map->getName()));
 		$this->setBodyContents($this->getMapBody($user));
+		$this->addCSS('map.css');
 		$this->addJavascript('map.js');
 		parent::render($user);
 	}

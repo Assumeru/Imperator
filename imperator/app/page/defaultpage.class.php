@@ -6,8 +6,10 @@ abstract class DefaultPage extends Page {
 	private $title = '';
 	private $head = '';
 	private $js = '';
+	private $css = '';
 	private $content = '';
 	private $jsSettings = array();
+	private $mainClass = 'container';
 
 	public function render(\imperator\User $user) {
 		$language = $user->getLanguage();
@@ -17,8 +19,18 @@ abstract class DefaultPage extends Page {
 			'head' => $this->getHead($user),
 			'header' => $this->getHeader($user),
 			'body' => $this->getBody($user),
-			'footer' => $this->getFooter($user)
+			'footer' => $this->getFooter($user),
+			'container' => $this->mainClass
 		))->getData();
+	}
+
+	/**
+	 * Sets the class attribute of the main div.
+	 * 
+	 * @param string $mainClass The contents of the class attribute
+	 */
+	protected function setMainClass($mainClass) {
+		$this->mainClass = $mainClass;
 	}
 
 	/**
@@ -45,7 +57,16 @@ abstract class DefaultPage extends Page {
 	 * @param string $file The name of the file to add
 	 */
 	protected function addJavascript($file) {
-		$this->js .= '<script src="'.Imperator::getSettings()->getBaseURL().'/js/'.$file.'"></script>';
+		$this->js .= '<script src="'.Imperator::getSettings()->getBaseURL().'/js/'.$file.'"></script>'."\n";
+	}
+
+	/**
+	 * Adds a css file to the head.
+	 * 
+	 * @param string $file The name of the file to add
+	 */
+	protected function addCSS($file) {
+		$this->css .= '<link href="'.Imperator::getSettings()->getBaseURL().'/css/'.$file.'" type="text/css" rel="stylesheet" />'."\n";
 	}
 
 	/**
@@ -61,7 +82,7 @@ abstract class DefaultPage extends Page {
 	protected function getJavascriptSettings() {
 		return '<script>var Imperator = '.json_encode(
 			array('settings' => $this->jsSettings)
-		).';</script>';
+		).';</script>'."\n";
 	}
 
 	/**
@@ -76,7 +97,7 @@ abstract class DefaultPage extends Page {
 	protected function getHead(\imperator\User $user) {
 		return Template::getInstance('head')->replace(array(
 			'title' => $user->getLanguage()->translate('Imperator | %1$s', $this->title),
-			'head' => $this->getJavascriptSettings()."\n".$this->head."\n".$this->js,
+			'head' => $this->getJavascriptSettings().$this->head."\n".$this->css.$this->js,
 			'basepath' => Imperator::getSettings()->getBaseURL()
 		))->getData();
 	}

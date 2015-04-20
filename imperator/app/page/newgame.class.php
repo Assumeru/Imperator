@@ -18,6 +18,7 @@ class NewGame extends DefaultPage {
 		}
 		$this->setTitle($user->getLanguage()->translate(self::NAME));
 		$this->setBodyContents($this->getNewGameForm($user, $form));
+		$this->addCSS('newgame.css');
 		parent::render($user);
 	}
 
