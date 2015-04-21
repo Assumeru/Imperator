@@ -14,14 +14,15 @@ class InGame extends DefaultPage {
 
 	public function render(\imperator\User $user) {
 		$language = $user->getLanguage();
-		parent::setBodyContents(Template::getInstance('game')->replace(array(
+		$this->setBodyContents(Template::getInstance('game')->replace(array(
 			'zoomin' => $language->translate('Zoom in'),
 			'zoomout' => $language->translate('Zoom out'),
 			'mapalt' => $language->translate('Map of %1$s', $this->game->getMap()->getName()),
 			'mapurl' => $this->getMapURL()
 		))->getData());
-		parent::setTitle($this->game->getName());
-		parent::setMainClass('container-fluid');
+		$this->setTitle($this->game->getName());
+		$this->setMainClass('container-fluid');
+		$this->addCSS('game.css');
 		parent::render($user);
 	}
 
