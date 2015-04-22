@@ -33,14 +33,50 @@ h1 {
 
 #chat {
 	margin-top: 1em;
+	position: relative;
 }
 
 #chat .chat {
 	padding: 0.25em;
 }
 
-#chat label {
-	text-align: center;
+#chat .chat-scrolling {
+	position: absolute;
+	top: 0;
+	right: 0;
+	opacity: 0.5;
+}
+
+#chat .chat-scrolling:hover {
+	opacity: 1;
+}
+
+#chat .chat-scrolling input {
+	padding: 0;
+	height: 0;
+	width: 0;
+	opacity: 0;
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: -1;
+}
+
+#chat .chat-scrolling .glyphicon-play {
+	display: inline;
+}
+
+#chat .chat-scrolling .glyphicon-pause {
+	display: none;
+}
+
+#chat .chat-scrolling input:checked + span .glyphicon-play {
+	display: none;
+}
+
+#chat .chat-scrolling input:checked + span .glyphicon-pause {
+	display: inline;
 }
 
 #chat .chat:nth-child(even) {
@@ -62,7 +98,6 @@ h1 {
 #gamelist .ended td {
 	background-color: #dff0d8;
 }
-
 
 p.loading:before {
 	font-size: 5px;

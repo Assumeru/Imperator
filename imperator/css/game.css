@@ -1,4 +1,4 @@
-#main, #content, #content > .row, .swipe-page, #map, #map .map-square, #map .map-container {
+#main, #content, #content > .row, .swipe-page, #map, #map .map-square, #map .map-container, .tab-content {
 	height: 100%;
 }
 
@@ -10,10 +10,30 @@
 	background-color: #fff;
 }
 
+#content > .row {
+	margin: 0;
+}
+
+.swipe-page {
+	padding: 0;
+}
+
+.tab-pane {
+	padding: 1em;
+}
+
+#chat {
+	margin-top: 0;
+}
+
 #map {
 	border: 1px solid #ddd;
 	text-align: center;
 	position: relative;
+}
+
+#map .map-container {
+	overflow: hidden;
 }
 
 #map .map-container img {
