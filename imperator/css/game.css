@@ -1,4 +1,4 @@
-#main, #content, #content > .row, .swipe-page, #map, #map .map-square, #map .map-container, .tab-content {
+#main, #content, .swipe-panes > div, .swipe-pane, #map, #map .map-square, #map .map-container {
 	height: 100%;
 }
 
@@ -8,18 +8,65 @@
 
 #content {
 	background-color: #fff;
+	position: relative;
+}
+
+#content > nav {
+	white-space: nowrap;
+}
+
+#content > nav .nav-tabs.nav-justified > li {
+	display: table-cell;
+	width: 1%;
+}
+
+#content > nav .nav-tabs.nav-justified > li > a {
+	margin-bottom: 0;
+	border-bottom: 1px solid #ddd;
+	border-radius: 4px 4px 0 0;
+}
+
+#content > nav .nav-tabs.nav-justified > .active > a, #content > nav .nav-tabs.nav-justified > .active > a:hover, #content > nav .nav-tabs.nav-justified > .active > a:focus {
+	border-bottom-color: #fff;
+}
+
+@media (max-width: 768px) {
+	#content > nav {
+		overflow: hidden;
+	}
+
+	.swipe-panes > div {
+		width: 100%;
+	}
 }
 
 #content > .row {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 92px;
 	margin: 0;
 }
 
-.swipe-page {
+.swipe-panes {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.swipe-panes > div {
+	overflow: hidden;
+	white-space: nowrap;
+	display: inline-block;
+	vertical-align: top;
 	padding: 0;
 }
 
-.tab-pane {
+.swipe-pane {
+	width: 100%;
 	padding: 1em;
+	display: inline-block;
+	vertical-align: top;
 }
 
 #chat {
@@ -28,6 +75,7 @@
 
 #map {
 	border: 1px solid #ddd;
+	border-top: none;
 	text-align: center;
 	position: relative;
 }
@@ -69,4 +117,18 @@
 
 #map .map-controls button.zoom-out {
 	cursor: zoom-out;
+}
+
+#map .map-container svg > g {
+	stroke: #000;
+	fill: #000;
+	fill-rule: evenodd;
+	opacity: 0.6;
+	cursor: pointer;
+	stroke-width: 1;
+}
+
+#map .map-container svg > g:hover {
+	opacity: 1;
+	stroke-width: 2;
 }

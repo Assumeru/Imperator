@@ -1,9 +1,41 @@
-<div class="row">
-	<div class="col-xs-6 swipe-page">
-		{$interface}
+<nav>
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a href="#players">{$tabPlayers}</a></li>
+		<li><a href="#territories">{$tabTerritories}</a></li>
+		<li><a href="#regions">{$tabRegions}</a></li>
+		<li><a href="#cards">{$tabCards}</a></li>
+		<li><a href="#chatbox">{$tabChat}<span class="number"></span></a></li>
+		<li><a href="#log">{$tabLog}<span class="number"></span></a></li>
+		<li><a href="#settings">{$tabSettings}</a></li>
+		<li><a href="#map">{$tabMap}</a></li>
+	</ul>
+</nav>
+<div class="row swipe-panes">
+	<div class="col-sm-6">
+		<section id="players" class="swipe-pane active">
+			Players
+		</section>
+		<section id="territories" class="swipe-pane">
+			Territories
+		</section>
+		<section id="regions" class="swipe-pane">
+			Regions
+		</section>
+		<section id="cards" class="swipe-pane">
+			Cards
+		</section>
+		<section id="chatbox" class="swipe-pane">
+			{$chat}
+		</section>
+		<section id="log" class="swipe-pane">
+			Combat Log
+		</section>
+		<section id="settings" class="swipe-pane">
+			Settings
+		</section>
 	</div>
-	<div class="col-xs-6 swipe-page">
-		<div id="map">
+	<div class="col-sm-6">
+		<section id="map" class="swipe-pane active">
 			<div class="map-square">
 				<div class="map-controls">
 					<button class="btn btn-default zoom-in" title="{$zoomin}">+</button>
@@ -13,6 +45,6 @@
 					<img src="{$mapurl}" alt="{$mapalt}" />
 				</div>
 			</div>
-		</div>
+		</section>
 	</div>
 </div>

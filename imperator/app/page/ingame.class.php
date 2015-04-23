@@ -19,7 +19,15 @@ class InGame extends DefaultPage {
 			'zoomout' => $language->translate('Zoom out'),
 			'mapalt' => $language->translate('Map of %1$s', $this->game->getMap()->getName()),
 			'mapurl' => $this->getMapURL(),
-			'interface' => $this->getInterface($user)
+			'tabRegions' => $language->translate('Regions'),
+			'tabTerritories' => $language->translate('Territories'),
+			'tabChat' => $language->translate('Chat'),
+			'tabMap' => $language->translate('Map'),
+			'tabLog' => $language->translate('Combat Log'),
+			'tabPlayers' => $language->translate('Players'),
+			'tabCards' => $language->translate('Cards'),
+			'tabSettings' => $language->translate('Settings'),
+			'chat' => $this->getChatBox($user)
 		))->getData());
 		$this->addChatJavascript($this->game->getId());
 		$this->setTitle($this->game->getName());
@@ -35,19 +43,5 @@ class InGame extends DefaultPage {
 
 	protected function getFooter(\imperator\User $user) {
 		return '';
-	}
-
-	private function getInterface(\imperator\User $user) {
-		$language = $user->getLanguage();
-		return Template::getInstance('game_interface')->replace(array(
-			'tabRegions' => $language->translate('Regions'),
-			'tabTerritories' => $language->translate('Territories'),
-			'tabChat' => $language->translate('Chat'),
-			'tabLog' => $language->translate('Combat Log'),
-			'tabPlayers' => $language->translate('Players'),
-			'tabCards' => $language->translate('Cards'),
-			'tabSettings' => $language->translate('Settings'),
-			'chat' => $this->getChatBox($user)
-		))->getData();
 	}
 }
