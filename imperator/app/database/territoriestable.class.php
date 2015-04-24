@@ -28,4 +28,28 @@ class TerritoriesTable extends Table {
 		}
 		$this->getManager()->insertMultiple(static::NAME, $insert)->free();
 	}
+
+	public function loadMap(\imperator\Game $game) {
+		$players = array();
+		foreach($game->getPlayers() as $player) {
+			$players[$player->getId()] = $player;
+		}
+		$territories = $game->getMap()->getTerritories();
+		$query = $this->getManager()->query('SELECT
+			'.static::COLUMN_TERRITORY.',
+			'.static::COLUMN_UID.',
+			'.static::COLUMN_UNITS.'
+			FROM '.static::NAME.'
+			WHERE '.static::COLUMN_GID.' = '.$game->getId()
+		);
+		while($result = $query->fetchResult()) {
+			$id = $result[static::COLUMN_TERRITORY];
+			$uid = $result[static::COLUMN_UID];
+			$units = (int)$result[static::COLUMN_UNITS];
+			$territory = $territories[$id];
+			$territory->setUnits($units);
+			$territory->setOwner($players[$uid]);
+		}
+		$query->free();
+	}
 }

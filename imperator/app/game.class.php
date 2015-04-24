@@ -279,4 +279,11 @@ class Game {
 		$index = mt_rand(0, $this->getNumberOfPlayers()-1);
 		return $this->users[$index];
 	}
+
+	/**
+	 * Loads the map from the database.
+	 */
+	public function loadMap() {
+		Imperator::getDatabaseManager()->getTable('Territories')->loadMap($this);
+	}
 }

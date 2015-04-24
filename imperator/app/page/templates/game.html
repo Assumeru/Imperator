@@ -2,29 +2,45 @@
 	<ul class="nav nav-tabs nav-justified">
 		<li class="active"><a href="#players">{$tabPlayers}</a></li>
 		<li><a href="#territories">{$tabTerritories}</a></li>
-		<li><a href="#regions">{$tabRegions}</a></li>
-		<li><a href="#cards">{$tabCards}</a></li>
-		<li><a href="#chatbox">{$tabChat}<span class="number"></span></a></li>
+		<li><a href="#regions">{$regions}</a></li>
+		<li class="player-only"><a href="#cards">{$tabCards}</a></li>
+		<li class="player-only"><a href="#chatbox">{$tabChat}<span class="number"></span></a></li>
 		<li><a href="#log">{$tabLog}<span class="number"></span></a></li>
 		<li><a href="#settings">{$tabSettings}</a></li>
-		<li><a href="#map">{$tabMap}</a></li>
+		<li class="mobile-only"><a href="#map">{$tabMap}</a></li>
 	</ul>
 </nav>
 <div class="row swipe-panes">
 	<div class="col-sm-6">
+		<section id="territory" class="swipe-pane hidden">
+			Territory
+		</section>
 		<section id="players" class="swipe-pane active">
 			Players
 		</section>
 		<section id="territories" class="swipe-pane">
-			Territories
+			<table class="table">
+				<thead>
+					<tr>
+						<th>{$flag}</th>
+						<th>{$territory}</th>
+						<th>{$player}</th>
+						<th>{$units}</th>
+						<th>{$regions}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{$territoryList}
+				</tbody>
+			</table>
 		</section>
 		<section id="regions" class="swipe-pane">
 			Regions
 		</section>
-		<section id="cards" class="swipe-pane">
+		<section id="cards" class="swipe-pane player-only">
 			Cards
 		</section>
-		<section id="chatbox" class="swipe-pane">
+		<section id="chatbox" class="swipe-pane player-only">
 			{$chat}
 		</section>
 		<section id="log" class="swipe-pane">
