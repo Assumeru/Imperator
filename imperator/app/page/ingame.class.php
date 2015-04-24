@@ -34,7 +34,8 @@ class InGame extends DefaultPage {
 			'territory' => $language->translate('Territory'),
 			'player' => $language->translate('Player'),
 			'units' => $language->translate('Units'),
-			'territoryList' => $this->getTerritoryList($user)
+			'territoryList' => $this->getTerritoryList($user),
+			'regionList' => $this->getRegionList($user)
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {
@@ -84,5 +85,33 @@ class InGame extends DefaultPage {
 			))->getData();
 		}
 		return $regions;
+	}
+
+	private function getRegionList(\imperator\User $user) {
+		$regions = '';
+		$language = $user->getLanguage();
+		foreach($this->game->getMap()->getRegions() as $region) {
+			$regions .= Template::getInstance('game_regions_region')->replace(array(
+				'id' => $region->getId(),
+				'flagURL' => Game::getRegionFlag($region),
+				'region' => $language->translate($region->getName()),
+				'units' => $language->translate('%1$d units per turn', $region->getUnitsPerTurn()),
+				'territories' => $this->getTerritoriesForRegion($region, $user)
+			))->getData();
+		}
+		return $regions;
+	}
+
+	private function getTerritoriesForRegion(\imperator\map\Region $region, \imperator\User $user) {
+		$territories = '';
+		foreach($region->getTerritories() as $territory) {
+			$territories .= Template::getInstance('game_regions_territory')->replace(array(
+				'id' => $territory->getId(),
+				'territory' => $user->getLanguage()->translate($territory->getName()),
+				'color' => $territory->getOwner()->getColor(),
+				'flagURL' => Game::getTerritoryFlag($territory)
+			))->getData();
+		}
+		return $territories;
 	}
 }

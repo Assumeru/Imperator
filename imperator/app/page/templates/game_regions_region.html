@@ -1,0 +1,12 @@
+<h2 data-toggle="collapse" data-target="#region-{$id}" class="collapsed">
+	<img src="{$flagURL}" alt="" /> {$region} ({$units})
+	<button class="btn">
+		<span class="glyphicon glyphicon-chevron-up"></span>
+		<span class="glyphicon glyphicon-chevron-down"></span>
+	</button>
+</h2>
+<div id="region-{$id}" class="collapse">
+	<ul>
+		{$territories}
+	</ul>
+</div>

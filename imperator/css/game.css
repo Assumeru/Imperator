@@ -154,6 +154,14 @@
 	stroke-width: 2;
 }
 
-#territories img {
+#territories img, #regions img {
 	height: 1em;
+}
+
+#regions h2.collapsed > .btn .glyphicon-chevron-up {
+	display: none;
+}
+
+#regions h2:not(.collapsed) > .btn .glyphicon-chevron-down {
+	display: none;
 }
