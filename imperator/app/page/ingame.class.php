@@ -22,7 +22,7 @@ class InGame extends DefaultPage {
 			'mapalt' => $language->translate('Map of %1$s', $this->game->getMap()->getName()),
 			'mapurl' => $this->getMapURL(),
 			'regions' => $language->translate('Regions'),
-			'tabTerritories' => $language->translate('Territories'),
+			'territories' => $language->translate('Territories'),
 			'tabChat' => $language->translate('Chat'),
 			'tabMap' => $language->translate('Map'),
 			'tabLog' => $language->translate('Combat Log'),
@@ -35,7 +35,13 @@ class InGame extends DefaultPage {
 			'player' => $language->translate('Player'),
 			'units' => $language->translate('Units'),
 			'territoryList' => $this->getTerritoryList($user),
-			'regionList' => $this->getRegionList($user)
+			'regionList' => $this->getRegionList($user),
+			'unitsperturn' => $language->translate('Units per turn'),
+			'playerList' => $this->getPlayerList($user),
+			'autoroll' => $language->translate('Autoroll'),
+			'unitgraphicsdefault' => $language->translate('Default unit graphics'),
+			'unitgraphicsnumeric' => $language->translate('Numeric unit graphics'),
+			'unitgraphicsnone' => $language->translate('No unit graphics')
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {
@@ -113,5 +119,16 @@ class InGame extends DefaultPage {
 			))->getData();
 		}
 		return $territories;
+	}
+
+	private function getPlayerList(\imperator\User $user) {
+		$players = '';
+		foreach($this->game->getPlayers() as $player) {
+			$players .= Template::getInstance('game_players_player')->replace(array(
+				'player' => Game::getProfileLink($player),
+				'id' => $player->getId()
+			))->getData();
+		}
+		return $players;
 	}
 }
