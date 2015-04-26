@@ -50,19 +50,41 @@ abstract class Api {
 			'messages' => $this->getJSONMessages($messages),
 			'update' => time()
 		);
-		if($pregame && $game->getTime() > $this->request->getTime()) {
-			$output['players'] = array();
-			foreach($game->getPlayers() as $player) {
-				$output['players'][] = \imperator\page\Template::getInstance('game_player')->replace(array(
-					'color' => $player->getColor(),
-					'owner' => $player->equals($game->getOwner()) ? $this->user->getLanguage()->translate('(Owner)') : '',
-					'user' => \imperator\page\DefaultPage::getProfileLink($player)
-				))->getData();
-			}
-			$output['maxPlayers'] = $game->getMap()->getPlayers();
-			if($this->user->equals($game->getOwner())) {
-				$page = new \imperator\page\PreGame($game);
-				$output['ownerControls'] = $page->getOwnerGameForm($this->user);
+		if($game->getTime() > $this->request->getTime()) {
+			$game->loadMap();
+			if($pregame) {
+				$output['players'] = array();
+				foreach($game->getPlayers() as $player) {
+					$output['players'][] = \imperator\page\Template::getInstance('game_player')->replace(array(
+						'color' => $player->getColor(),
+						'owner' => $player->equals($game->getOwner()) ? $this->user->getLanguage()->translate('(Owner)') : '',
+						'user' => \imperator\page\DefaultPage::getProfileLink($player)
+					))->getData();
+				}
+				$output['maxPlayers'] = $game->getMap()->getPlayers();
+				if($this->user->equals($game->getOwner())) {
+					$page = new \imperator\page\PreGame($game);
+					$output['ownerControls'] = $page->getOwnerGameForm($this->user);
+				}
+			} else {
+				$output['territories'] = array();
+				foreach($game->getMap()->getTerritories() as $territory) {
+					$output['territories'][$territory->getId()] = array(
+						'id' => $territory->getId(),
+						'name' => $this->user->getLanguage()->translate($territory->getName()),
+						'units' => $territory->getUnits(),
+						'uid' => $territory->getOwner()->getId()
+					);
+				}
+				$output['players'] = array();
+				foreach($game->getPlayers() as $player) {
+					$output['players'][$player->getId()] = array(
+						'color' => $player->getColor(),
+						'link' => \imperator\page\DefaultPage::getProfileLink($player),
+						'id' => $player->getId(),
+						'name' => $player->getName()
+					);
+				}
 			}
 		}
 		return $this->reply($output);

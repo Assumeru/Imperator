@@ -41,7 +41,10 @@ class InGame extends DefaultPage {
 			'autoroll' => $language->translate('Autoroll'),
 			'unitgraphicsdefault' => $language->translate('Default unit graphics'),
 			'unitgraphicsnumeric' => $language->translate('Numeric unit graphics'),
-			'unitgraphicsnone' => $language->translate('No unit graphics')
+			'unitgraphicsnone' => $language->translate('No unit graphics'),
+			'unitgraphicsdefaultdesc' => $language->translate('Select this to use unit icons.'),
+			'unitgraphicsnumericdesc' => $language->translate('Select this to use unit numbers.'),
+			'unitgraphicsnonedesc' => $language->translate('Select this to disable units.')
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {

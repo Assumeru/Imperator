@@ -1,4 +1,4 @@
-Imperator.Chat = (function($) {
+(function($) {
 	var $chatWindow,
 	$gid = Imperator.settings.gid,
 	$time = 0,
