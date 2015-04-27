@@ -67,6 +67,20 @@ abstract class Api {
 					$output['ownerControls'] = $page->getOwnerGameForm($this->user);
 				}
 			} else {
+				if($this->request->getTime() === 0) {
+					$output['regions'] = array();
+					foreach($game->getMap()->getRegions() as $region) {
+						$json = array(
+							'id' => $region->getId(),
+							'territories' => array(),
+							'units' => $region->getUnitsPerTurn()
+						);
+						foreach($region->getTerritories() as $territory) {
+							$json['territories'][] = $territory->getId();
+						}
+						$output['regions'][$region->getId()] = $json;
+					}
+				}
 				$output['territories'] = array();
 				foreach($game->getMap()->getTerritories() as $territory) {
 					$output['territories'][$territory->getId()] = array(

@@ -83,6 +83,31 @@
 			$player = $('#players *[data-player="'+$id+'"]');
 			$player.find('*[data-value="territories"]').text($players[$id].territories);
 			$player.find('*[data-value="units"]').text($players[$id].units);
+			$player.find('*[data-value="unitsperturn"]').text(getUnitsPerTurnFor($id));
+		}
+		updateRegionDivision();
+	}
+
+	function updateRegionDivision() {
+		var $region, $players, $uid, $n, $territories, $div, $span;
+		for($region in $game.map.regions) {
+			$players = {};
+			for($uid in $game.players) {
+				$players[$uid] = 0;
+			}
+			$territories = $game.map.regions[$region].territories;
+			for($n = 0; $n < $territories.length; $n++) {
+				$players[$game.map.territories[$territories[$n]].uid]++;
+			}
+			$div = $('#regions .region-division[data-region="'+$region+'"]');
+			$div.empty();
+			for($uid in $players) {
+				$span = $('<div>');
+				$span.css('backgroundColor', '#'+$game.players[$uid].color);
+				$span.css('width', (100 * $players[$uid] / $territories.length) + '%');
+				$span.attr('title', $game.players[$uid].name);
+				$div.append($span);
+			}
 		}
 	}
 
@@ -109,6 +134,34 @@
 		} else {
 			$currentTab = ['territories'];
 		}
+	}
+
+	function getUnitsPerTurnFor($uid) {
+		var $id, $out,
+		$territories = 0;
+		for($id in $game.map.territories) {
+			if($game.map.territories[$id].uid === $uid) {
+				$territories++;
+			}
+		}
+		$out = Math.floor($territories / 3);
+		for($id in $game.map.regions) {
+			if(regionOwnedBy($id, $uid)) {
+				$out += $game.map.regions[$id].units;
+			}
+		}
+		return $out;
+	}
+
+	function regionOwnedBy($region, $uid) {
+		var $n,
+		$territories = $game.map.regions[$region].territories;
+		for($n = 0; $n < $territories.length; $n++) {
+			if($game.map.territories[$territories[$n]].uid !== $uid) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	$(init);
