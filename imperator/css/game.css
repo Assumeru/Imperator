@@ -87,8 +87,7 @@
 }
 
 #map {
-	border: 1px solid #ddd;
-	border-top: none;
+	border-left: 1px solid #ddd;
 	text-align: center;
 	position: relative;
 }

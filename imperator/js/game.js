@@ -1,5 +1,5 @@
 (function($) {
-	var $currentTab = ['players'],
+	var $currentTab = ['territories'],
 	$game = {
 		map: {
 			territories: {},
@@ -8,9 +8,14 @@
 		players: {},
 		id: Imperator.settings.gid
 	},
-	$time = 0;
+	$time = 0,
+	$resizeTimeout;
+	if(Number.parseInt === undefined) {
+		Number.parseInt = parseInt;
+	}
 
 	function init() {
+		var $window = $(window);
 		Imperator.API.onMessage(parseUpdateMessage);
 		Imperator.API.onOpen(function() {
 			Imperator.API.send({
@@ -21,10 +26,15 @@
 			});
 		});
 		parseHash();
-		updateTab();
-		$(window).on('hashchange', function() {
+		resetTabScroll();
+		$window.on('hashchange', function($e) {
+			var $previous = $currentTab[0];
 			parseHash();
-			updateTab();
+			updateTab($previous);
+		});
+		$window.resize(function() {
+			clearTimeout($resizeTimeout);
+			$resizeTimeout = setTimeout(resetTabScroll, 250);
 		});
 	}
 
@@ -111,23 +121,67 @@
 		}
 	}
 
-	function updateTab($e) {
-		if($e !== undefined) {
-			$e.preventDefault();
+	function updateTab($current) {
+		var $destination,
+		$target = $('#'+$currentTab[0]),
+		$parent = $target.parent(),
+		$panes = $('#content .swipe-panes');
+		$current = $('#'+$current),
+		$currentParent = $current.parent(),
+		$nav = $('#content nav'),
+		$tab = $nav.find('a[href="#tab-'+$currentTab[0]+'"]').parent();
+		$nav.find('li.active').removeClass('active');
+		$tab.addClass('active');
+		$nav.animate({
+			scrollLeft: $tab.offset().left
+		}, 500);
+		function getDestination() {
+			return $target.offset().left - getOffset($target, 'right') + $parent.scrollLeft();
 		}
-		$('#content nav li.active').removeClass('active');
-		$('#content nav a[href="#'+$currentTab[0]+'"]').parent().addClass('active');
+		if(!$currentParent.is($parent)) {
+			$destination = ($currentParent.index() < $parent.index() ? 1 : -1) * $parent.outerWidth();
+			$parent.scrollLeft(getDestination() - $destination);
+			$panes.animate({
+				scrollLeft: $destination
+			}, 1000, 'swing', function() {
+				$parent.scrollLeft(getDestination());
+			});
+		} else {
+			$parent.animate({
+				scrollLeft: getDestination()
+			}, 1000);
+		}
+	}
+
+	function resetTabScroll() {
+		updateTab($currentTab[0]);
+	}
+
+	function getOffset($element, $side) {
+		var $n, $add,
+		$css = ['padding-?', 'border-?-width', 'margin-?'],
+		$offset = 0;
+		for($n = 0; $n < $css.length; $n++) {
+			$add = Number.parseInt($element.css($css[$n].replace('?', $side)), 10);
+			if(!isNaN($add)) {
+				$offset += $add;
+			}
+		}
+		return $offset;
 	}
 
 	function parseHash() {
 		var $page = window.location.hash.replace('#', ''),
 		$userIsPlayer = !$('#main').hasClass('not-player');
 		if($page !== '') {
-			if($page == 'players' || $page == 'regions' || $page == 'territories' || ($userIsPlayer && ($page == 'cards' || $page == 'chatbox' || $page == 'settings' || $page == 'log'))) {
-				$currentTab = [$page];
-			} else if($page.indexOf('territory-') === 0) {
-				$page = $page.split('-');
-				if($NATIONS[$page[1]] !== undefined) {
+			$page = $page.split('-');
+			if($page.length === 2) {
+				if($page[1] == 'players' || $page[1] == 'regions' || $page[1] == 'territories' || $page[1] == 'map' || ($userIsPlayer && ($page[1] == 'cards' || $page[1] == 'chatbox' || $page[1] == 'settings' || $page[1] == 'log'))) {
+					$currentTab = [$page[1]];
+				}
+			} else if($page.length === 3 && $page[1] == 'territory') {
+				if($game.map.territory[$page[2]] !== undefined) {
+					$page.shift();
 					$currentTab = $page;
 				}
 			}
