@@ -61,4 +61,11 @@ class Territory {
 	public function getRegions() {
 		return $this->regions;
 	}
+
+	/**
+	 * @return Territory[]
+	 */
+	public function getBorders() {
+		return $this->borders;
+	}
 }

@@ -44,6 +44,9 @@ abstract class Api {
 
 	protected function handleGameUpdateRequest($pregame = false) {
 		$db = Imperator::getDatabaseManager();
+		/**
+		 * @var $game \imperator\Game
+		 */
 		$game = $db->getTable('Games')->getGameById($this->request->getGid());
 		$messages = $db->getTable('Chat')->getMessagesAfter($this->request->getGid(), $this->request->getTime());
 		$output = array(
@@ -83,12 +86,19 @@ abstract class Api {
 				}
 				$output['territories'] = array();
 				foreach($game->getMap()->getTerritories() as $territory) {
-					$output['territories'][$territory->getId()] = array(
+					$outTerritory = array(
 						'id' => $territory->getId(),
 						'name' => $this->user->getLanguage()->translate($territory->getName()),
 						'units' => $territory->getUnits(),
 						'uid' => $territory->getOwner()->getId()
 					);
+					if($this->request->getTime() === 0) {
+						$outTerritory['borders'] = array();
+						foreach($territory->getBorders() as $border) {
+							$outTerritory['borders'][] = $border->getId();
+						}
+					}
+					$output['territories'][$territory->getId()] = $outTerritory;
 				}
 				$output['players'] = array();
 				foreach($game->getPlayers() as $player) {

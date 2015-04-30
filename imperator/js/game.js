@@ -9,7 +9,8 @@
 		id: Imperator.settings.gid
 	},
 	$time = 0,
-	$resizeTimeout;
+	$resizeTimeout,
+	$emptyBorder;
 	if(Number.parseInt === undefined) {
 		Number.parseInt = parseInt;
 	}
@@ -25,6 +26,8 @@
 				time: $time
 			});
 		});
+		$emptyBorder = $('#territory [data-value="border"]');
+		$emptyBorder.remove();
 		parseHash();
 		resetTabScroll();
 		$window.on('hashchange', function($e) {
@@ -125,11 +128,11 @@
 		var $destination,
 		$target = $('#'+$currentTab[0]),
 		$parent = $target.parent(),
-		$panes = $('#content .swipe-panes');
+		$panes = $('#content .swipe-panes'),
 		$current = $('#'+$current),
 		$currentParent = $current.parent(),
 		$nav = $('#content nav'),
-		$tab = $nav.find('a[href="#tab-'+$currentTab[0]+'"]').parent();
+		$tab = $nav.find('a[href|="#tab-'+$currentTab[0]+'"]').parent();
 		$nav.find('li.active').removeClass('active');
 		$tab.addClass('active');
 		$nav.animate({
@@ -157,6 +160,35 @@
 		updateTab($currentTab[0]);
 	}
 
+	function fillTerritoryTab() {
+		var $n, $border, $bordering,
+		$tab = $('#territory'),
+		$territory = $game.map.territories[$currentTab[1]],
+		$player = $game.players[$territory.uid],
+		$a = $($player.link).css('color', '#'+$player.color),
+		$borders = $tab.find('[data-value="borders"]');
+		$tab.find('[data-value="name"]').text($territory.name);
+		$tab.find('[data-value="units"]').text($territory.units);
+		$tab.find('[data-value="owner"]').html($a);
+		$tab.find('[data-value="regions"]').html($('#territories [data-territory="'+$territory.id+'"] [data-value="regions"]').html());
+		$tab.find('[data-value="flag"]').attr('src', getFlagFor($territory.id));
+		$borders.empty();
+		for($n = 0; $n < $territory.borders.length; $n++) {
+			$bordering = $game.map.territories[$territory.borders[$n]];
+			$border = $emptyBorder.clone();
+			$border.find('[data-value="border-name"]')
+				.text($bordering.name)
+				.attr('href', '#tab-territory-'+$bordering.id)
+				.css('color', '#'+$game.players[$bordering.uid].color);
+			$border.find('[data-value="border-flag"]').attr('src', getFlagFor($bordering.id));
+			$borders.append($border);
+		}
+	}
+
+	function getFlagFor($territory) {
+		return $('#territories [data-territory="'+$territory+'"] [data-value="flag"]').attr('src');
+	}
+
 	function getOffset($element, $side) {
 		var $n, $add,
 		$css = ['padding-?', 'border-?-width', 'margin-?'],
@@ -172,7 +204,11 @@
 
 	function parseHash() {
 		var $page = window.location.hash.replace('#', ''),
-		$userIsPlayer = !$('#main').hasClass('not-player');
+		$userIsPlayer = !$('#main').hasClass('not-player'),
+		$a = $('#content nav a[href|="#tab-territory"]'),
+		$territoryTab = $a.parent();
+		$a.attr('href', '#tab-territory');
+		$territoryTab.hide();
 		if($page !== '') {
 			$page = $page.split('-');
 			if($page.length === 2) {
@@ -180,14 +216,19 @@
 					$currentTab = [$page[1]];
 				}
 			} else if($page.length === 3 && $page[1] == 'territory') {
-				if($game.map.territory[$page[2]] !== undefined) {
+				if($game.map.territories[$page[2]] !== undefined) {
 					$page.shift();
 					$currentTab = $page;
+					$a.text($game.map.territories[$page[1]].name);
+					$a.attr('href', '#tab-territory-'+$page[1]);
+					$territoryTab.show();
+					fillTerritoryTab();
 				}
 			}
 		} else {
 			$currentTab = ['territories'];
 		}
+		window.location.hash = 'tab-'+$currentTab.join('-');
 	}
 
 	function getUnitsPerTurnFor($uid) {

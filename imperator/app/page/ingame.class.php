@@ -44,7 +44,8 @@ class InGame extends DefaultPage {
 			'unitgraphicsnone' => $language->translate('No unit graphics'),
 			'unitgraphicsdefaultdesc' => $language->translate('Select this to use unit icons.'),
 			'unitgraphicsnumericdesc' => $language->translate('Select this to use unit numbers.'),
-			'unitgraphicsnonedesc' => $language->translate('Select this to disable units.')
+			'unitgraphicsnonedesc' => $language->translate('Select this to disable units.'),
+			'borders' => $language->translate('Borders')
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {
@@ -129,7 +130,8 @@ class InGame extends DefaultPage {
 		foreach($this->game->getPlayers() as $player) {
 			$players .= Template::getInstance('game_players_player')->replace(array(
 				'player' => Game::getProfileLink($player),
-				'id' => $player->getId()
+				'id' => $player->getId(),
+				'color' => $player->getColor()
 			))->getData();
 		}
 		return $players;

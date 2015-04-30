@@ -1,5 +1,6 @@
 <nav>
 	<ul class="nav nav-tabs nav-justified">
+		<li style="display: none;"><a href="#tab-territory"></a></li>
 		<li class="active"><a href="#tab-players">{$tabPlayers}</a></li>
 		<li><a href="#tab-territories">{$territories}</a></li>
 		<li><a href="#tab-regions">{$regions}</a></li>
@@ -12,8 +13,31 @@
 </nav>
 <div class="row swipe-panes">
 	<div class="col-sm-6">
-		<section id="territory" class="swipe-pane hidden">
-			Territory
+		<section id="territory" class="swipe-pane">
+			<h2><img data-value="flag" src="" alt="" /> <span data-value="name">Territory</span></h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>{$player}</th>
+						<th>{$units}</th>
+						<th>{$regions}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td data-value="owner"></td>
+						<td data-value="units"></td>
+						<td data-value="regions"></td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>{$borders}</h3>
+			<div data-value="borders">
+				<div class="row" data-value="border">
+					<div class="col-xs-1"><img data-value="border-flag" src="" alt="" /></div>
+					<div class="col-xs-11"><a href="" data-value="border-name"></a></div>
+				</div>
+			</div>
 		</section>
 		<section id="players" class="swipe-pane active">
 			<table class="table">

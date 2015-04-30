@@ -1,9 +1,9 @@
 <tr data-territory="{$id}">
 	<td>
-		<img src="{$flagURL}" alt="{$flag}" />
+		<img src="{$flagURL}" alt="{$flag}" data-value="flag" />
 	</td>
 	<td>
-		<a href="#territory-{$id}">{$territory}</a>
+		<a href="#tab-territory-{$id}">{$territory}</a>
 	</td>
 	<td>
 		<span style="color: #{$color}">{$player}</span>
@@ -11,7 +11,7 @@
 	<td>
 		{$units}
 	</td>
-	<td>
+	<td data-value="regions">
 		{$regions}
 	</td>
 </tr>
