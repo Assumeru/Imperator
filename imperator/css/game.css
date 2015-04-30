@@ -153,6 +153,14 @@
 	stroke-width: 2;
 }
 
+#map .map-container svg > g.active {
+	opacity: 1;
+}
+
+#map .map-container svg > g.border {
+	opacity: 0.2;
+}
+
 #territories img, #regions img, #territory img {
 	height: 1em;
 }

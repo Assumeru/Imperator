@@ -26,6 +26,11 @@
 				time: $time
 			});
 		});
+		Imperator.Map.onLoad(function() {
+			$('#map svg g[id]').click(function() {
+				window.location = '#tab-territory-'+this.id;
+			});
+		});
 		$emptyBorder = $('#territory [data-value="border"]');
 		$emptyBorder.remove();
 		parseHash();
@@ -172,9 +177,11 @@
 		$tab.find('[data-value="owner"]').html($a);
 		$tab.find('[data-value="regions"]').html($('#territories [data-territory="'+$territory.id+'"] [data-value="regions"]').html());
 		$tab.find('[data-value="flag"]').attr('src', getFlagFor($territory.id));
+		$('#'+$territory.id).attr('class', 'active');
 		$borders.empty();
 		for($n = 0; $n < $territory.borders.length; $n++) {
 			$bordering = $game.map.territories[$territory.borders[$n]];
+			$('#'+$bordering.id).attr('class', 'active border');
 			$border = $emptyBorder.clone();
 			$border.find('[data-value="border-name"]')
 				.text($bordering.name)
@@ -209,6 +216,7 @@
 		$territoryTab = $a.parent();
 		$a.attr('href', '#tab-territory');
 		$territoryTab.hide();
+		$('#content svg g[id]').attr('class', '');
 		if($page !== '') {
 			$page = $page.split('-');
 			if($page.length === 2) {

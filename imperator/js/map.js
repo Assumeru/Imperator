@@ -1,10 +1,12 @@
-$(function($) {
+Imperator.Map = (function($) {
 	var $currentHover,
 	MAX_ZOOM = [50, 250],
 	$dragPosition = {
 		x: 0,
 		y: 0
-	};
+	},
+	$loading = true,
+	$onLoad = [];
 
 	function hidePopUp() {
 		if($currentHover !== undefined) {
@@ -142,6 +144,7 @@ $(function($) {
 		}).fail(function() {
 			console.error('Failed to load map.');
 			$map.removeClass('loading');
+			onLoad();
 		}).done(function($svg) {
 			var $container = $('<div class="map-container"></div>');
 			$('#map .map-square .map-container').remove();
@@ -151,8 +154,30 @@ $(function($) {
 			setUpZoom($container);
 			setUpDrag($container);
 			$map.removeClass('loading');
+			onLoad();
 		});
 	}
 
-	loadMap($('#map .map-square img').attr('src'));
-});
+	function onLoad() {
+		$loading = false;
+		for(var $n = 0; $n < $onLoad.length; $n++) {
+			$onLoad[$n]();
+		}
+	}
+
+	function addOnLoad($function) {
+		if($loading) {
+			$onLoad.push($function);
+		} else {
+			$function();
+		}
+	}
+
+	$(function() {
+		loadMap($('#map .map-square img').attr('src'));
+	});
+
+	return {
+		onLoad: addOnLoad
+	};
+})(jQuery);
