@@ -1,7 +1,7 @@
 <?php
 namespace imperator\page;
-
 use imperator\Imperator;
+
 class Rankings extends DefaultPage {
 	const NAME = 'Rankings';
 	const URL = 'rankings';
@@ -13,6 +13,8 @@ class Rankings extends DefaultPage {
 	public function render(\imperator\User $user) {
 		$this->setTitle($user->getLanguage()->translate(self::NAME));
 		$this->setBodyContents($this->getRankings($user));
+		$this->addJavascript('jquery.tablesorter.min.js');
+		$this->addJavascript('tablesorter.js');
 		parent::render($user);
 	}
 

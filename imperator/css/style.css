@@ -27,6 +27,14 @@ h1 {
 	border-top: 1px solid #eee;
 }
 
+table.sortable .header:not(.headerSortDown) .glyphicon-chevron-down {
+	display: none;
+}
+
+table.sortable .header:not(.headerSortUp) .glyphicon-chevron-up {
+	display: none;
+}
+
 span .user {
 	color: inherit;
 }

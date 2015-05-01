@@ -151,13 +151,13 @@
 			$parent.scrollLeft(getDestination() - $destination);
 			$panes.animate({
 				scrollLeft: $destination
-			}, 1000, 'swing', function() {
+			}, 750, 'swing', function() {
 				$parent.scrollLeft(getDestination());
 			});
 		} else {
 			$parent.animate({
 				scrollLeft: getDestination()
-			}, 1000);
+			}, 750);
 		}
 	}
 
