@@ -45,7 +45,8 @@ class InGame extends DefaultPage {
 			'unitgraphicsdefaultdesc' => $language->translate('Select this to use unit icons.'),
 			'unitgraphicsnumericdesc' => $language->translate('Select this to use unit numbers.'),
 			'unitgraphicsnonedesc' => $language->translate('Select this to disable units.'),
-			'borders' => $language->translate('Borders')
+			'borders' => $language->translate('Borders'),
+			'unitgraphics' => Imperator::getSettings()->getBaseURL().'/img/game/units.svg'
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {

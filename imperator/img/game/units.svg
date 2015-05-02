@@ -1,0 +1,132 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<path id="pattern-img-triangle" d="M173.205 0Q173.205 200 0 300 173.205 200 346.41 300 173.205 200 173.205 0Z" />
+		<path id="pattern-img-square" d="M0 0Q150 150 300 0 150 150 300 300 150 150 0 300 150 150 0 0Z" />
+		<path id="pattern-img-pentagon" d="M157.719 0Q157.719 165.836 315.439 114.59 157.719 165.836 255.195 300 157.719 165.836 60.243 300 157.719 165.836 0 114.59 157.719 165.836 157.719 0Z" />
+		<path id="pattern-img-hexagon" d="M86.603 0Q173.205 150 259.808 0 173.205 150 346.41 150 173.205 150 259.808 300 173.205 150 86.603 300 173.205 150 0 150 173.205 150 86.603 0Z" />
+
+		<pattern id="pattern-units-1" width="1" height="1" viewBox="0 0 346.41 400">
+			<use xlink:href="#pattern-img-triangle" />
+		</pattern>
+		<pattern id="pattern-units-2" width="1" height="1" viewBox="0 0 692.82 400">
+			<use xlink:href="#pattern-img-triangle" />
+			<use xlink:href="#pattern-img-triangle" x="346.41" />
+		</pattern>
+		<pattern id="pattern-units-3" width="1" height="1" viewBox="0 0 692.82 800">
+			<use xlink:href="#pattern-img-triangle" x="173.205" />
+			<use xlink:href="#pattern-img-triangle" y="300" />
+			<use xlink:href="#pattern-img-triangle" x="346.41" y="300" />
+		</pattern>
+		<pattern id="pattern-units-4" width="1" height="1" viewBox="0 0 692.82 600">
+			<g transform="rotate(180 346.41 150)">
+				<use xlink:href="#pattern-img-triangle" />
+				<use xlink:href="#pattern-img-triangle" x="346.41" />
+			</g>
+			<use xlink:href="#pattern-img-triangle" y="300" />
+			<use xlink:href="#pattern-img-triangle" x="346.41" y="300" />
+		</pattern>
+		<pattern id="pattern-units-5" width="1" height="1" viewBox="0 0 300 300">
+			<use xlink:href="#pattern-img-square" />
+		</pattern>
+		<pattern id="pattern-units-6" width="1" height="1" viewBox="0 0 346.41 600">
+			<use xlink:href="#pattern-img-triangle" />
+			<use xlink:href="#pattern-img-square" x="23.205" y="300" />
+		</pattern>
+		<pattern id="pattern-units-7" width="1" height="1" viewBox="0 0 346.41 900">
+			<use xlink:href="#pattern-img-triangle" />
+			<use xlink:href="#pattern-img-square" x="23.205" y="300" />
+			<use xlink:href="#pattern-img-triangle" y="600" transform="rotate(180 173.205 750)" />
+		</pattern>
+		<pattern id="pattern-units-8" width="1" height="1" viewBox="0 0 946.41 992.82">
+			<use xlink:href="#pattern-img-triangle" x="300" />
+			<use xlink:href="#pattern-img-square" x="323.205" y="346.41" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(120 473.205 496.41)" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(240 473.205 496.41)" />
+		</pattern>
+		<pattern id="pattern-units-9" width="1" height="1" viewBox="0 0 946.41 992.82">
+			<use xlink:href="#pattern-img-triangle" x="300" />
+			<use xlink:href="#pattern-img-square" x="323.205" y="346.41" />
+			<use xlink:href="#pattern-img-triangle" y="300" transform="rotate(30 173.205 500)" />
+			<use xlink:href="#pattern-img-triangle" x="600" y="300" transform="rotate(210 773.205 500)" />
+			<use xlink:href="#pattern-img-triangle" x="300" y="692.82" transform="rotate(180 473.205 842.82)" />
+		</pattern>
+		<pattern id="pattern-units-10" width="1" height="1" viewBox="0 0 315.439 300">
+			<use xlink:href="#pattern-img-pentagon" />
+		</pattern>
+		<pattern id="pattern-units-11" width="1" height="1" viewBox="0 0 346.41 600">
+			<use xlink:href="#pattern-img-triangle" />
+			<use xlink:href="#pattern-img-pentagon" x="15.486" y="300" />
+		</pattern>
+		<pattern id="pattern-units-12" width="1" height="1" viewBox="0 0 346.41 900">
+			<use xlink:href="#pattern-img-triangle" />
+			<use xlink:href="#pattern-img-pentagon" x="15.486" y="300" />
+			<use xlink:href="#pattern-img-triangle" y="600" transform="rotate(180 173.205 750)" />
+		</pattern>
+		<pattern id="pattern-units-13" width="1" height="1" viewBox="0 0 946.41 992.82">
+			<use xlink:href="#pattern-img-triangle" x="300" />
+			<use xlink:href="#pattern-img-pentagon" x="315.486" y="346.41" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(120 473.205 496.41)" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(240 473.205 496.41)" />
+		</pattern>
+		<pattern id="pattern-units-14" width="1" height="1" viewBox="0 0 946.41 992.82">
+			<use xlink:href="#pattern-img-triangle" x="300" />
+			<use xlink:href="#pattern-img-pentagon" x="315.486" y="346.41" />
+			<use xlink:href="#pattern-img-triangle" y="300" transform="rotate(30 173.205 500)" />
+			<use xlink:href="#pattern-img-triangle" x="600" y="300" transform="rotate(210 773.205 500)" />
+			<use xlink:href="#pattern-img-triangle" x="300" y="692.82" transform="rotate(180 473.205 842.82)" />
+		</pattern>
+		<pattern id="pattern-units-15" width="1" height="1" viewBox="0 0 315.439 600">
+			<use xlink:href="#pattern-img-square" x="7.72" />
+			<use xlink:href="#pattern-img-pentagon" y="300" />
+		</pattern>
+		<pattern id="pattern-units-16" width="1" height="1" viewBox="0 0 346.41 900">
+			<use xlink:href="#pattern-img-square" x="23.205" />
+			<use xlink:href="#pattern-img-pentagon" x="15.486" y="300" />
+			<use xlink:href="#pattern-img-triangle" y="600" transform="rotate(180 173.205 750)" />
+		</pattern>
+		<pattern id="pattern-units-17" width="1" height="1" viewBox="0 0 946.41 992.82">
+			<use xlink:href="#pattern-img-square" x="323.205" />
+			<use xlink:href="#pattern-img-pentagon" x="315.486" y="346.41" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(120 473.205 496.41)" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(240 473.205 496.41)" />
+		</pattern>
+		<pattern id="pattern-units-18" width="1" height="1" viewBox="0 0 946.41 992.82">
+			<use xlink:href="#pattern-img-square" x="323.205" />
+			<use xlink:href="#pattern-img-pentagon" x="315.486" y="346.41" />
+			<use xlink:href="#pattern-img-triangle" y="300" transform="rotate(30 173.205 500)" />
+			<use xlink:href="#pattern-img-triangle" x="600" y="300" transform="rotate(210 773.205 500)" />
+			<use xlink:href="#pattern-img-triangle" x="300" y="692.82" transform="rotate(180 473.205 842.82)" />
+		</pattern>
+		<pattern id="pattern-units-19" width="1" height="1" viewBox="0 0 946.41 992.82">
+			<use xlink:href="#pattern-img-square" x="323.205" />
+			<use xlink:href="#pattern-img-pentagon" x="315.486" y="346.41" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(72 473.205 496.41)" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(144 473.205 496.41)" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(216 473.205 496.41)" />
+			<use xlink:href="#pattern-img-triangle" x="300" transform="rotate(288 473.205 496.41)" />
+		</pattern>
+		<pattern id="pattern-units-20" width="1" height="1" viewBox="0 0 315.439 600">
+			<use xlink:href="#pattern-img-pentagon" />
+			<use xlink:href="#pattern-img-pentagon" y="300" />
+		</pattern>
+		<pattern id="pattern-units-30" width="1" height="1" viewBox="0 0 630.878 600">
+			<use xlink:href="#pattern-img-pentagon" x="157.7195" />
+			<use xlink:href="#pattern-img-pentagon" y="300" />
+			<use xlink:href="#pattern-img-pentagon" x="315.439" y="300" />
+		</pattern>
+		<pattern id="pattern-units-40" width="1" height="1" viewBox="0 0 630.878 600">
+			<g transform="rotate(180 315.439 150)">
+				<use xlink:href="#pattern-img-pentagon" />
+				<use xlink:href="#pattern-img-pentagon" x="315.439" />
+			</g>
+			<use xlink:href="#pattern-img-pentagon" y="300" />
+			<use xlink:href="#pattern-img-pentagon" x="315.439" y="300" />
+		</pattern>
+		<pattern id="pattern-units-50" width="1" height="1" viewBox="0 0 346.41 300">
+			<use xlink:href="#pattern-img-hexagon" />
+		</pattern>
+	</defs>
+</svg>

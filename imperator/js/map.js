@@ -134,9 +134,65 @@ Imperator.Map = (function($) {
 		});
 	}
 
-	function loadMap($url) {
+	function addUnitBoxes() {
+		var $id, $bounds, $dims, $n,
+		$g = makeSVG('g', {'class': 'units'}),
+		$margin = 25,
+		$elements = $('#map svg g[id]');
+		for($n = 0; $n < $elements.length; $n++) {
+			$id = $elements[$n].id;
+			$bounds = document.getElementById($id).getBBox();
+			$dims = {
+				x: $bounds.x + $bounds.width / 2,
+				y: $bounds.y + $bounds.height / 2,
+				r: ($bounds.width + $bounds.height) / 200 * (100 - $margin * 2)
+			};
+			$g.appendChild(makeSVG('rect', {
+				x: $dims.x - $dims.r / 2,
+				y: $dims.y - $dims.r / 2,
+				height: $dims.r,
+				width: $dims.r,
+				id: 'unitBox-'+$id
+			}));
+		}
+		$('#map svg').append($g);
+	}
+
+	function getUnitPattern($number) {
+		var $text, $width,
+		$pattern = document.getElementById('pattern-units-numbers-'+$number);
+		if($pattern === null) {
+			$width = Math.floor(Math.log($number) / Math.LN10) * 8 + 8;
+			$pattern = makeSVG('pattern', {width: 1, height: 1, id: 'pattern-units-numbers-'+$number, viewBox: '0 0 '+$width+' 16'});
+			$text = makeSVG('text', {x: 0, y: 14});
+			$text.appendChild(document.createTextNode($number));
+			$pattern.appendChild($text);
+			$('#map svg defs').append($pattern);
+		}
+		return '#pattern-units-numbers-'+$number;
+	}
+
+	function loadUnitGraphics($unitGraphics) {
+		$.ajax({
+			type: 'GET',
+			url: $unitGraphics,
+			dataType: 'xml'
+		}).fail(function() {
+			console.error('Faled to load unit graphics.');
+		}).done(function($svg) {
+			addOnLoad(function() {
+				$('#map svg').append($svg.documentElement.getElementsByTagName('defs')[0]);
+				addUnitBoxes();
+			});
+		});
+	}
+
+	function loadMap($url, $unitGraphics) {
 		var $map = $('#map');
 		$map.addClass('loading');
+		if($unitGraphics !== undefined) {
+			loadUnitGraphics($unitGraphics);
+		}
 		$.ajax({
 			type: 'GET',
 			url: $url,
@@ -165,6 +221,28 @@ Imperator.Map = (function($) {
 		}
 	}
 
+	function updateUnitBox($type, $id, $units) {
+		var $box = $('#unitBox-'+$id);
+		if($type == 'numeric') {
+			$box.attr('fill', 'url('+getUnitPattern($units)+') none');
+			$box.show();
+		} else if($type == 'default') {
+			if($units >= 50) {
+				$units = 50;
+			} else if($units >= 40) {
+				$units = 40;
+			} else if($units >= 30) {
+				$units = 30;
+			} else if($units > 20) {
+				$units = 20;
+			}
+			$box.attr('fill', 'url(#pattern-units-'+$units+') none');
+			$box.show();
+		} else {
+			$box.hide();
+		}
+	}
+
 	function addOnLoad($function) {
 		if($loading) {
 			$onLoad.push($function);
@@ -173,11 +251,24 @@ Imperator.Map = (function($) {
 		}
 	}
 
+	function makeSVG($elem, $attr) {
+		var $k,
+		$out = document.createElementNS('http://www.w3.org/2000/svg', $elem);
+		if($attr !== undefined) {
+			for($k in $attr) {
+				$out.setAttribute($k, $attr[$k]);
+			}
+		}
+		return $out;
+	}
+
 	$(function() {
-		loadMap($('#map .map-square img').attr('src'));
+		var $img = $('#map .map-square img');
+		loadMap($img.attr('src'), $img.attr('data-unit-graphics'));
 	});
 
 	return {
-		onLoad: addOnLoad
+		onLoad: addOnLoad,
+		updateUnitBox: updateUnitBox
 	};
 })(jQuery);

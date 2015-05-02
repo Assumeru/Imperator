@@ -16,7 +16,8 @@
 	}
 
 	function init() {
-		var $window = $(window);
+		var $window = $(window),
+		$unitGraphics = Imperator.Store.getItem('unit-graphics', 'default');
 		Imperator.API.onMessage(parseUpdateMessage);
 		Imperator.API.onOpen(function() {
 			Imperator.API.send({
@@ -31,6 +32,8 @@
 				window.location = '#tab-territory-'+this.id;
 			});
 		});
+		$('#settings input[name="unitgraphics"][value="'+$unitGraphics+'"]').prop('checked', true);
+		$('#settings input[name="unitgraphics"]').change(setUnitGraphics)
 		$emptyBorder = $('#territory [data-value="border"]');
 		$emptyBorder.remove();
 		parseHash();
@@ -44,6 +47,12 @@
 			clearTimeout($resizeTimeout);
 			$resizeTimeout = setTimeout(resetTabScroll, 250);
 		});
+	}
+
+	function setUnitGraphics() {
+		var $this = $(this);
+		Imperator.Store.setItem('unit-graphics', $this.val());
+		updateUnitBoxes();
 	}
 
 	function parseUpdateMessage($msg) {
@@ -104,6 +113,15 @@
 			$player.find('*[data-value="unitsperturn"]').text(getUnitsPerTurnFor($id));
 		}
 		updateRegionDivision();
+		updateUnitBoxes();
+	}
+
+	function updateUnitBoxes() {
+		var $id, $units,
+		$unitGraphics = Imperator.Store.getItem('unit-graphics', 'default');
+		for($id in $game.map.territories) {
+			Imperator.Map.updateUnitBox($unitGraphics, $id, $game.map.territories[$id].units);
+		}
 	}
 
 	function updateRegionDivision() {

@@ -161,6 +161,12 @@
 	opacity: 0.2;
 }
 
+#map .map-container svg > g.units {
+	opacity: 1;
+	stroke: none;
+	pointer-events: none;
+}
+
 #territories img, #regions img, #territory img {
 	height: 1em;
 }
