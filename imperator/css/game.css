@@ -171,12 +171,16 @@
 	height: 1em;
 }
 
-#regions h2.collapsed > .btn .glyphicon-chevron-up {
+#regions .collapsed.btn > .glyphicon-chevron-up {
 	display: none;
 }
 
-#regions h2:not(.collapsed) > .btn .glyphicon-chevron-down {
+#regions .btn:not(.collapsed) > .glyphicon-chevron-down {
 	display: none;
+}
+
+#regions .btn[data-highlight="true"] {
+	background-color: #fff;
 }
 
 #regions .region-division {

@@ -33,7 +33,6 @@
 			});
 		});
 		$('#settings input[name="unitgraphics"][value="'+$unitGraphics+'"]').prop('checked', true);
-		$('#settings input[name="unitgraphics"]').change(setUnitGraphics)
 		$emptyBorder = $('#territory [data-value="border"]');
 		$emptyBorder.remove();
 		parseHash();
@@ -47,6 +46,26 @@
 			clearTimeout($resizeTimeout);
 			$resizeTimeout = setTimeout(resetTabScroll, 250);
 		});
+		$('#settings input[name="unitgraphics"]').change(setUnitGraphics)
+		$('#regions [data-button="highlight"]').click(highlightRegion);
+	}
+
+	function highlightRegion() {
+		var $n,
+		$this = $(this),
+		$id = $this.attr('data-region'),
+		$region = $game.map.regions[$id];
+		if($this.attr('data-highlight') === 'true') {
+			$('#map svg g[id]').attr('class', '');
+			$this.attr('data-highlight', 'false');
+		} else {
+			$('#map svg g[id]').attr('class', 'active border');
+			for($n = 0; $n < $region.territories.length; $n++) {
+				$('#'+$region.territories[$n]).attr('class', 'active');
+			}
+			$('#regions .btn[data-highlight="true"]').attr('data-highlight', 'false');
+			$this.attr('data-highlight', 'true');
+		}
 	}
 
 	function setUnitGraphics() {

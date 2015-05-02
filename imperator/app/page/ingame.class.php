@@ -101,13 +101,15 @@ class InGame extends DefaultPage {
 	private function getRegionList(\imperator\User $user) {
 		$regions = '';
 		$language = $user->getLanguage();
+		$highlight = $language->translate('Highlight');
 		foreach($this->game->getMap()->getRegions() as $region) {
 			$regions .= Template::getInstance('game_regions_region')->replace(array(
 				'id' => $region->getId(),
 				'flagURL' => Game::getRegionFlag($region),
 				'region' => $language->translate($region->getName()),
-				'units' => $language->translate('%1$d units per turn', $region->getUnitsPerTurn()),
-				'territories' => $this->getTerritoriesForRegion($region, $user)
+				'unitsTerritories' => $language->translate('%1$d territories, %2$d units per turn', count($region->getTerritories()), $region->getUnitsPerTurn()),
+				'territories' => $this->getTerritoriesForRegion($region, $user),
+				'highlight' => $highlight
 			))->getData();
 		}
 		return $regions;
