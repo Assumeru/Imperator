@@ -46,13 +46,23 @@ class InGame extends DefaultPage {
 			'unitgraphicsnumericdesc' => $language->translate('Select this to use unit numbers.'),
 			'unitgraphicsnonedesc' => $language->translate('Select this to disable units.'),
 			'borders' => $language->translate('Borders'),
-			'unitgraphics' => Imperator::getSettings()->getBaseURL().'/img/game/units.svg'
+			'unitgraphics' => Imperator::getSettings()->getBaseURL().'/img/game/units.svg',
+			'turn' => $language->translate('%1$s\'s turn', DefaultPage::getProfileLink($this->game->getCurrentPlayer())),
+			'stack' => $language->translate('Stack'),
+			'move' => $language->translate('Move'),
+			'forfeit' => $language->translate('Forfeit'),
+			'stackTitle' => $language->translate('Place new units instead of attacking'),
+			'moveTitle' => $language->translate('Stop attacking and start moving units'),
+			'forfeitTitle' => $language->translate('Surrender the game'),
+			'uptTitleTerritories' => $language->translate('Units gained from territories'),
+			'uptTitleRegions' => $language->translate('Units gained from regions')
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {
 			$this->addChatJavascript($this->game->getId());
 			$mainClass = '';
 		}
+		$this->setJavascriptSetting('uid', $user->getId());
 		$this->setTitle($this->game->getName());
 		$this->setMainClass('container-fluid'.$mainClass);
 		$this->addCSS('game.css');
@@ -79,7 +89,6 @@ class InGame extends DefaultPage {
 				'flag' => $language->translate('Flag of %1$s', $territory->getName()),
 				'territory' => $language->translate($territory->getName()),
 				'player' => $this->getProfileLink($territory->getOwner()),
-				'color' => $territory->getOwner()->getColor(),
 				'units' => $territory->getUnits(),
 				'regions' => $this->getRegionsForTerritory($territory, $user)
 			))->getData();
@@ -132,9 +141,8 @@ class InGame extends DefaultPage {
 		$players = '';
 		foreach($this->game->getPlayers() as $player) {
 			$players .= Template::getInstance('game_players_player')->replace(array(
-				'player' => Game::getProfileLink($player),
-				'id' => $player->getId(),
-				'color' => $player->getColor()
+				'player' => DefaultPage::getProfileLink($player),
+				'id' => $player->getId()
 			))->getData();
 		}
 		return $players;

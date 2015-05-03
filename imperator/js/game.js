@@ -112,7 +112,7 @@
 	}
 
 	function updateTerritories() {
-		var $id, $territory, $player, $players = [];
+		var $id, $territory, $player, $upt, $players = [];
 		for($id in $game.players) {
 			$players[$id] = {
 				territories: 0,
@@ -126,10 +126,19 @@
 			$('#'+$id).css('fill', '#'+$game.players[$territory.uid].color);
 		}
 		for($id in $players) {
+			$upt = {
+				territories: getUnitsPerTurnFromTerritoriesFor($id),
+				regions: getUnitsPerTurnFromRegionsFor($id),
+			};
 			$player = $('#players *[data-player="'+$id+'"]');
 			$player.find('*[data-value="territories"]').text($players[$id].territories);
 			$player.find('*[data-value="units"]').text($players[$id].units);
-			$player.find('*[data-value="unitsperturn"]').text(getUnitsPerTurnFor($id));
+			$player.find('*[data-value="unitsperturn"]').text($upt.territories + $upt.regions);
+			$player.find('*[data-value="unitsperturn-regions"]').text($upt.regions);
+			$player.find('*[data-value="unitsperturn-territories"]').text($upt.territories);
+			if(Imperator.settings.uid === $id) {
+				$('#controls-box [data-button="stack"] .number').text($upt.territories);
+			}
 		}
 		updateRegionDivision();
 		updateUnitBoxes();
@@ -277,14 +286,22 @@
 	}
 
 	function getUnitsPerTurnFor($uid) {
-		var $id, $out,
+		return getUnitsPerTurnFromTerritoriesFor($uid) + getUnitsPerTurnFromRegionsFor($uid);
+	}
+
+	function getUnitsPerTurnFromTerritoriesFor($uid) {
+		var $id,
 		$territories = 0;
 		for($id in $game.map.territories) {
 			if($game.map.territories[$id].uid === $uid) {
 				$territories++;
 			}
 		}
-		$out = Math.floor($territories / 3);
+		return Math.floor($territories / 3);
+	}
+
+	function getUnitsPerTurnFromRegionsFor($uid) {
+		var $id, $out = 0;
 		for($id in $game.map.regions) {
 			if(regionOwnedBy($id, $uid)) {
 				$out += $game.map.regions[$id].units;

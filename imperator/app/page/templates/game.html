@@ -120,3 +120,15 @@
 		</section>
 	</div>
 </div>
+<div id="turn-controls">
+	<button class="btn btn-default collapsed" data-toggle="collapse" data-target="#controls-box">
+		<span class="glyphicon glyphicon-chevron-up"></span>
+		<span class="glyphicon glyphicon-chevron-down"></span>
+	</button>
+	<div class="collapse container-fluid" id="controls-box">
+		{$turn}
+		<button class="btn btn-primary" data-button="stack" title="{$stackTitle}">{$stack} <span class="number">0</span></button>
+		<button class="btn btn-warning" data-button="move" title="{$moveTitle}">{$move}</button>
+		<button class="btn btn-danger" data-button="forfeit" title="{$forfeitTitle}">{$forfeit}</button>
+	</div>
+</div>

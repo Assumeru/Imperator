@@ -2,10 +2,10 @@
 namespace imperator;
 
 class Game {
-	const STATE_A = 0;
-	const STATE_B = 1;
-	const STATE_C = 2;
-	const STATE_D = 3;
+	const STATE_TURN_START = 0;
+	const STATE_FORTIFY = 1;
+	const STATE_COMBAT = 2;
+	const STATE_POST_COMBAT = 3;
 	const STATE_FINISHED = 4;
 
 	private $id;
@@ -72,6 +72,18 @@ class Game {
 	 */
 	public function getTurn() {
 		return $this->turn;
+	}
+
+	/**
+	 * @return User The player whose turn it is
+	 */
+	public function getCurrentPlayer() {
+		foreach($this->users as $player) {
+			if($player->getId() == $this->turn) {
+				return $player;
+			}
+		}
+		return null;
 	}
 
 	/**

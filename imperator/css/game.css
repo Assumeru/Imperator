@@ -171,11 +171,7 @@
 	height: 1em;
 }
 
-#regions .collapsed.btn > .glyphicon-chevron-up {
-	display: none;
-}
-
-#regions .btn:not(.collapsed) > .glyphicon-chevron-down {
+#regions .collapsed.btn > .glyphicon-chevron-up, #turn-controls .collapsed.btn > .glyphicon-chevron-down, #regions .btn:not(.collapsed) > .glyphicon-chevron-down, #turn-controls .btn:not(.collapsed) > .glyphicon-chevron-up {
 	display: none;
 }
 
@@ -193,4 +189,27 @@
 	display: inline-block;
 	height: 100%;
 	vertical-align: top;
+}
+
+#turn-controls {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+
+#turn-controls > button {
+	border-radius: unset;
+	opacity: 0.7;
+	border-bottom: none;
+}
+
+#turn-controls > button:hover {
+	opacity: 1;
+}
+
+#turn-controls .collapse {
+	background-color: #fff;
+	border-top: 1px solid #ccc;
+	width: 100%;
 }

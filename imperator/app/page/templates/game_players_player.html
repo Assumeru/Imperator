@@ -1,6 +1,11 @@
 <tr data-player="{$id}">
-	<td data-value="name"><span style="color: #{$color};">{$player}</span></td>
+	<td data-value="name">{$player}</td>
 	<td data-value="territories">-</td>
 	<td data-value="units">-</td>
-	<td data-value="unitsperturn">-</td>
+	<td>
+		<span data-value="unitsperturn"></span>
+		(<span data-value="unitsperturn-regions" title="{$uptTitleRegions}"></span>
+		+
+		<span data-value="unitsperturn-territories" title="{$uptTitleTerritories}"></span>)
+	</td>
 </tr>

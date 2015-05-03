@@ -150,7 +150,6 @@ class PreGame extends DefaultPage {
 		$players = '';
 		foreach($this->game->getPlayers() as $player) {
 			$players .= Template::getInstance('game_player')->replace(array(
-				'color' => $player->getColor(),
 				'owner' => $player->equals($this->game->getOwner()) ? $user->getLanguage()->translate('(Owner)') : '',
 				'user' => DefaultPage::getProfileLink($player)
 			))->getData();
