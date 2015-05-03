@@ -88,7 +88,7 @@ class InGame extends DefaultPage {
 				'flagURL' => Game::getTerritoryFlag($territory),
 				'flag' => $language->translate('Flag of %1$s', $territory->getName()),
 				'territory' => $language->translate($territory->getName()),
-				'player' => $this->getProfileLink($territory->getOwner()),
+				'player' => DefaultPage::getProfileLink($territory->getOwner()),
 				'units' => $territory->getUnits(),
 				'regions' => $this->getRegionsForTerritory($territory, $user)
 			))->getData();

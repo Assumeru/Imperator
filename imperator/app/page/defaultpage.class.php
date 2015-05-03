@@ -139,11 +139,11 @@ abstract class DefaultPage extends Page {
 	public static function getProfileLink(\imperator\User $user) {
 		if($url = $user->getProfileLink()) {
 			if($user->getColor()) {
-			return Template::getInstance('profile_link_color')->replace(array(
-				'url' => $url,
-				'name' => htmlentities($user->getName()),
-				'color' => $user->getColor()
-			))->getData();
+				return Template::getInstance('profile_link_color')->replace(array(
+					'url' => $url,
+					'name' => htmlentities($user->getName()),
+					'color' => $user->getColor()
+				))->getData();
 			}
 			return Template::getInstance('profile_link')->replace(array(
 				'url' => $url,
