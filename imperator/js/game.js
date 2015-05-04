@@ -6,11 +6,18 @@
 			regions: {}
 		},
 		players: {},
-		id: Imperator.settings.gid
+		id: Imperator.settings.gid,
+		turn: -1,
+		state: -1
 	},
 	$time = 0,
 	$resizeTimeout,
-	$emptyBorder;
+	$emptyBorder,
+	STATE_TURN_START = 0,
+	STATE_FORTIFY = 1,
+	STATE_COMBAT = 2,
+	STATE_POST_COMBAT = 3,
+	STATE_FINISHED = 4;
 	if(Number.parseInt === undefined) {
 		Number.parseInt = parseInt;
 	}
@@ -105,9 +112,48 @@
 					}
 				}
 			}
+			if($msg.turn !== undefined && $msg.turn !== $game.turn) {
+				$game.turn = $msg.turn;
+				updateTurn();
+			}
+			if($msg.state !== undefined && $msg.state !== $game.state) {
+				$game.state = $msg.state;
+				updateState();
+			}
 		}
 		if($territoriesUpdated) {
 			updateTerritories();
+		}
+	}
+
+	function updateTurn() {
+		var $btn,
+		$a = $('#controls-box .user'),
+		$player = $game.players[$game.turn];
+		$a.css('color', '#'+$player.color);
+		$a.text($player.name);
+		$a.attr('href', $player.link);
+		if($game.turn === Imperator.settings.uid) {
+			$('body').addClass('my-turn');
+			$btn = $('#turn-controls [data-toggle="collapse"]');
+			if($btn.hasClass('collapsed')) {
+				$btn.click();
+			}
+		} else {
+			$('body').removeClass('my-turn');
+		}
+	}
+
+	function updateState() {
+		var $box = $('#controls-box'),
+		$stack = $box.find('[data-button="stack"]'),
+		$move = $box.find('[data-button="move"]');
+		$stack.css('display', 'none');
+		$move.css('display', 'none');
+		if($game.state === STATE_TURN_START) {
+			$stack.css('display', '');
+		} else if($game.state === STATE_COMBAT) {
+			$move.css('display', '');
 		}
 	}
 
@@ -136,7 +182,7 @@
 			$player.find('*[data-value="unitsperturn"]').text($upt.territories + $upt.regions);
 			$player.find('*[data-value="unitsperturn-regions"]').text($upt.regions);
 			$player.find('*[data-value="unitsperturn-territories"]').text($upt.territories);
-			if(Imperator.settings.uid === $id) {
+			if(Imperator.settings.uid == $id) {
 				$('#controls-box [data-button="stack"] .number').text($upt.territories);
 			}
 		}

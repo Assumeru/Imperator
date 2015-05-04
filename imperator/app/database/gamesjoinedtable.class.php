@@ -55,7 +55,7 @@ class GamesJoinedTable extends Table {
 		$missions = $game->getMap()->getMissions();
 		while($result = $query->fetchResult()) {
 			$player = new $userClass(
-				$result[$u::COLUMN_UID],
+				(int)$result[$u::COLUMN_UID],
 				$result[$u::COLUMN_USERNAME]
 			);
 			$player->setColor($result[static::COLUMN_COLOR]);

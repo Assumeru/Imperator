@@ -171,7 +171,12 @@
 	height: 1em;
 }
 
-#regions .collapsed.btn > .glyphicon-chevron-up, #turn-controls .collapsed.btn > .glyphicon-chevron-down, #regions .btn:not(.collapsed) > .glyphicon-chevron-down, #turn-controls .btn:not(.collapsed) > .glyphicon-chevron-up {
+#regions .collapsed.btn > .glyphicon-chevron-up,
+#turn-controls .collapsed.btn > .glyphicon-chevron-down,
+#regions .btn:not(.collapsed) > .glyphicon-chevron-down,
+#turn-controls .btn:not(.collapsed) > .glyphicon-chevron-up,
+body:not(.my-turn) #controls-box [data-button="stack"],
+body:not(.my-turn) #controls-box [data-button="move"] {
 	display: none;
 }
 

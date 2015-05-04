@@ -109,6 +109,8 @@ abstract class Api {
 						'name' => $player->getName()
 					);
 				}
+				$output['state'] = $game->getState();
+				$output['turn'] = $game->getTurn();
 			}
 		}
 		return $this->reply($output);
