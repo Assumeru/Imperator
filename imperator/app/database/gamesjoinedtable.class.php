@@ -43,8 +43,8 @@ class GamesJoinedTable extends Table {
 		$gid = (int)$game->getId();
 		$u = $this->getManager()->getTable('OutsideUsers');
 		$sql = 'SELECT
-			u.'.$u::COLUMN_USERNAME.', u.'.$u::COLUMN_UID.', g.'.static::COLUMN_COLOR.',
-			g.'.static::COLUMN_STATE.', g.'.static::COLUMN_MISSION.', g.'.static::COLUMN_MISSION_UID.'
+			u.'.$u::COLUMN_USERNAME.', u.'.$u::COLUMN_UID.', g.'.static::COLUMN_COLOR.', g.'.static::COLUMN_STATE.',
+			g.'.static::COLUMN_MISSION.', g.'.static::COLUMN_MISSION_UID.', g.'.static::COLUMN_AUTOROLL.'
 			FROM '.$u::NAME.' AS u
 			JOIN '.static::NAME.' AS g ON(g.'.static::COLUMN_UID.' = u.'.$u::COLUMN_UID.')
 			WHERE g.'.static::COLUMN_GID.' = '.$gid.'
@@ -60,6 +60,7 @@ class GamesJoinedTable extends Table {
 			);
 			$player->setColor($result[static::COLUMN_COLOR]);
 			$player->setState($result[static::COLUMN_STATE]);
+			$player->setAutoRoll($result[static::COLUMN_AUTOROLL]);
 			$mission = $missions[$result[static::COLUMN_MISSION]];
 			$mission->setUid($result[static::COLUMN_MISSION_UID]);
 			$player->setMission($mission);
@@ -79,9 +80,23 @@ class GamesJoinedTable extends Table {
 		}
 	}
 
+	/**
+	 * @param int $gid
+	 * @param \imperator\User $user
+	 * @return bool
+	 */
 	public function gameContainsPlayer($gid, \imperator\User $user) {
 		return $this->getManager()->rowExists(static::NAME,
 			static::COLUMN_GID.' = '.$gid.' AND '.
 			static::COLUMN_UID.' = '.$user->getId());
+	}
+
+	public function forfeit(\imperator\Game $game, \imperator\User $user) {
+		$this->getManager()->update(static::NAME, array(
+				static::COLUMN_STATE => \imperator\User::STATE_GAME_OVER,
+				static::COLUMN_AUTOROLL => true
+			), static::COLUMN_GID.' = '.$game->getId().'
+			AND '.static::COLUMN_UID.' = '.$user->getId()
+		)->free();
 	}
 }

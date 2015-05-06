@@ -35,6 +35,11 @@ class Request {
 	}
 
 	private function validateGame() {
+		if(isset($this->data['gid']) && is_numeric($this->data['gid']) && isset($this->data['type'])) {
+			return $this->data['type'] == 'forfeit'
+				|| $this->data['type'] == 'fortify'
+				|| $this->data['type'] == 'start-move';
+		}
 		return false;
 	}
 

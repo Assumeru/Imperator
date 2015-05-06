@@ -27,6 +27,8 @@ abstract class Api {
 				return $this->handleUpdateRequest();
 			} else if($this->request->getMode() == Request::MODE_CHAT) {
 				return $this->handleChatRequest();
+			} else if($this->request->getMode() == Request::MODE_GAME) {
+				return $this->handleGameRequest();
 			}
 		}
 		return $this->handleInvalidRequest();
@@ -163,6 +165,28 @@ abstract class Api {
 		$userClass = Imperator::getSettings()->getUserClass();
 		$message = new \imperator\chat\ChatMessage($this->request->getGid(), $this->request->getTime(), new $userClass($this->request->getUid()), '');
 		$message->delete();
+	}
+
+	protected function handleGameRequest() {
+		$game = Imperator::getDatabaseManager()->getTable('Games')->getGameById($this->request->getGid());
+		if($game->containsPlayer($this->user)) {
+			if($this->request->getType() == 'forfeit') {
+				return $this->handleForfeitRequest($game);
+			} else if($this->request->getType() == 'fortify') {
+				//TODO
+			} else if($this->request->getType() == 'start-move') {
+				//TODO
+			}
+		}
+	}
+
+	protected function handleForfeitRequest(\imperator\Game $game) {
+		if($game->getState() == \imperator\Game::STATE_COMBAT && $game->playerHasToDefend($this->user)) {
+			return $this->reply(array(
+				'error' => $this->user->getLanguage()->translate('You cannot forfeit without finishing all battles.')
+			));
+		}
+		$game->forfeit($user);
 	}
 
 	protected function reply($json) {}

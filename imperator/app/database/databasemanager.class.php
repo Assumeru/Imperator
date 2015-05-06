@@ -19,6 +19,11 @@ abstract class DatabaseManager {
 		return $value;
 	}
 
+	/**
+	 * @param string $table
+	 * @param string $where
+	 * @return \imperator\database\Query
+	 */
 	public function delete($table, $where = null) {
 		$sql = 'DELETE FROM '.$table;
 		if(!empty($where)) {
@@ -27,6 +32,11 @@ abstract class DatabaseManager {
 		return $this->query($sql);
 	}
 
+	/**
+	 * @param string $table
+	 * @param array $values
+	 * @return \imperator\database\Query
+	 */
 	public function insert($table, array $values) {
 		foreach($values as $key => $value) {
 			$values[$key] = $this->escape($value);
@@ -37,6 +47,11 @@ abstract class DatabaseManager {
 		return $this->query($sql);
 	}
 
+	/**
+	 * @param string $table
+	 * @param array $values
+	 * @return \imperator\database\Query
+	 */
 	public function insertMultiple($table, array $values) {
 		$fields = '`'.implode('`, `', array_keys($values[0])).'`';
 		foreach($values as $key => $row) {
@@ -49,6 +64,12 @@ abstract class DatabaseManager {
 		return $this->query($sql);
 	}
 
+	/**
+	 * @param string $table
+	 * @param array $values
+	 * @param string $where
+	 * @return \imperator\database\Query
+	 */
 	public function update($table, array $values, $where) {
 		foreach($values as $key => $value) {
 			$values[$key] = '`'.$key.'` = '.$this->escape($value);
@@ -58,7 +79,6 @@ abstract class DatabaseManager {
 	}
 
 	/**
-	 * 
 	 * @param string $name
 	 * @return Table:
 	 */

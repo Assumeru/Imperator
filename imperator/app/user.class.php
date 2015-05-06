@@ -2,6 +2,11 @@
 namespace imperator;
 
 abstract class User {
+	const STATE_PLAYING = 0;
+	const STATE_GAME_OVER = 1;
+	const STATE_DESTROYED_RIVAL = 2;
+	const STATE_VICTORIOUS = 3;
+
 	private $id;
 	private $name;
 	private $language;
@@ -12,6 +17,7 @@ abstract class User {
 	private $score;
 	private $wins;
 	private $losses;
+	private $autoroll;
 
 	public static function getCurrentUser() {
 		return new User();
@@ -102,5 +108,13 @@ abstract class User {
 
 	public function canDeleteChatMessages() {
 		return false;
+	}
+
+	public function setAutoRoll($autoroll) {
+		$this->autoroll = $autoroll;
+	}
+
+	public function getAutoRoll() {
+		return $this->autoroll;
 	}
 }

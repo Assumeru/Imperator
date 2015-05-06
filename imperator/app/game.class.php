@@ -18,6 +18,7 @@ class Game {
 	private $turn;
 	private $password;
 	private $time;
+	private $attacks = array();
 
 	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0) {
 		$this->id = $id;
@@ -297,5 +298,48 @@ class Game {
 	 */
 	public function loadMap() {
 		Imperator::getDatabaseManager()->getTable('Territories')->loadMap($this);
+	}
+
+	/**
+	 * @param User $user
+	 * @return bool True if the player needs to defend against an attack
+	 */
+	public function playerHasToDefend(User $user) {
+		foreach($attacks as $attack) {
+			if($user->equals($attack->getDefender())) {
+				return true;
+			}
+		}
+		return Imperator::getDatabaseManager()->getTable('Attacks')->playerHasToDefend($this, $user);
+	}
+
+	public function forfeit(User $user) {
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->forfeit($this, $user);
+		//TODO combat log
+		$numPlayers = 0;
+		$lastPlayer = $user;
+		foreach($this->users as $player) {
+			if($player->equals($user)) {
+				$player->setState(User::STATE_GAME_OVER);
+				$player->setAutoRoll(true);
+				break;
+			} else if($player->getState() != User::STATE_GAME_OVER) {
+				$numPlayers++;
+				$lastPlayer = $player;
+			}
+		}
+		if($numPlayers < 2) {
+			$this->victory($lastPlayer);
+		} else if($this->turn == $user->getId()) {
+			$this->nextTurn();
+		}
+	}
+
+	public function victory(User $user) {
+		//TODO
+	}
+
+	public function nextTurn() {
+		//TODO
 	}
 }
