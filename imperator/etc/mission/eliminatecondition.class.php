@@ -9,7 +9,7 @@ class EliminateCondition implements WinCondition, UidCondition {
 	}
 
 	public function isFulfilled(\imperator\Game $game, \imperator\User $user) {
-		return false;
+		return $user->getState() == \imperator\User::STATE_DESTROYED_RIVAL;
 	}
 
 	public function getUid() {

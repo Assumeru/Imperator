@@ -322,7 +322,6 @@ class Game {
 			if($player->equals($user)) {
 				$player->setState(User::STATE_GAME_OVER);
 				$player->setAutoRoll(true);
-				break;
 			} else if($player->getState() != User::STATE_GAME_OVER) {
 				$numPlayers++;
 				$lastPlayer = $player;
@@ -340,6 +339,45 @@ class Game {
 	}
 
 	public function nextTurn() {
-		//TODO
+		$uids = array();
+		foreach($this->users as $player) {
+			if($player->getId() == $this->turn) {
+				$currentPlayer = $player;
+			} else if($player->getState() != User::STATE_GAME_OVER) {
+				$uids[] = $player->getId();
+			}
+		}
+		if($currentPlayer->getMission()->hasBeenCompleted($this, $currentPlayer)) {
+			$this->victory($currentPlayer);
+		} else {
+			$numPlayers = count($uids);
+			if($numPlayers < 1) {
+				//probably not possible
+				$this->victory($currentPlayer);
+				return;
+			} else if($numPlayers == 1) {
+				$this->turn = $uids[0];
+			} else {
+				sort($uids);
+				for($n = 0; $n < $numPlayers; $n++) {
+					if($uids[$n] > $this->turn) {
+						$this->turn = $uids[$n];
+						break;
+					}
+				}
+				if($this->turn == $currentPlayer->getId()) {
+					$this->turn = $uids[0];
+				}
+			}
+			//TODO combat log
+			//TODO cards
+			$this->state = Game::STATE_TURN_START;
+			$this->time = time();
+			//TODO units
+			$this->units = 0;
+			//TODO conquered flag
+			$this->conquered = false;
+			Imperator::getDatabaseManager()->getTable('Games')->nextTurn($this);
+		}
 	}
 }

@@ -186,4 +186,14 @@ class GamesTable extends Table {
 			AND '.static::COLUMN_TIME.' > '.$time
 		);
 	}
+
+	public function nextTurn(\imperator\Game $game) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_CONQUERED => $game->getConquered(),
+			static::COLUMN_STATE => $game->getState(),
+			static::COLUMN_TIME => $game->getTime(),
+			static::COLUMN_TURN => $game->getTurn(),
+			static::COLUMN_UNITS => $game->getUnits()
+		), static::COLUMN_GID.' = '.$game->getId())->free();
+	}
 }
