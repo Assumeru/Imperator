@@ -247,4 +247,17 @@ class Map {
 		}
 		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveMissions($players);
 	}
+
+	/**
+	 * @param \imperator\User $user
+	 * @return bool
+	 */
+	public function isOwnedBy(\imperator\User $user) {
+		foreach($this->getTerritories() as $territory) {
+			if(!$territory->getOwner()->equals($user)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

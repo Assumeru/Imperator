@@ -117,4 +117,12 @@ abstract class User {
 	public function getAutoRoll() {
 		return $this->autoroll;
 	}
+
+	/**
+	 * @param Game $game
+	 * @return \imperator\game\Cards
+	 */
+	public function getCards(Game $game) {
+		return Imperator::getDatabaseManager()->getTable('GamesJoined')->getCardsFor($game, $this);
+	}
 }

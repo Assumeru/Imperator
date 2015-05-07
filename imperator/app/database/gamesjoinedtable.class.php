@@ -99,4 +99,37 @@ class GamesJoinedTable extends Table {
 			AND '.static::COLUMN_UID.' = '.$user->getId()
 		)->free();
 	}
+
+	/**
+	 * @param \imperator\Game $game
+	 * @param \imperator\User $user
+	 * @return \imperator\game\Cards
+	 */
+	public function getCardsFor(\imperator\Game $game, \imperator\User $user) {
+		$query = $this->getManager()->query('SELECT '.
+			static::COLUMN_CARD_ARTILLERY.','.
+			static::COLUMN_CARD_CAVALRY.','.
+			static::COLUMN_CARD_INFANTRY.','.
+			static::COLUMN_CARD_JOKER.'
+			FROM '.static::NAME.'
+			WHERE '.static::COLUMN_GID.' = '.$game->getId().'
+			AND '.static::COLUMN_UID.' = '.$user->getId());
+		$result = $query->fetchResult();
+		$query->free();
+		return new \imperator\game\Cards(
+			$result[static::COLUMN_CARD_ARTILLERY],
+			$result[static::COLUMN_CARD_CAVALRY],
+			$result[static::COLUMN_CARD_INFANTRY],
+			$result[static::COLUMN_CARD_JOKER]
+		);
+	}
+
+	public function getNumberOfJokers(\imperator\Game $game) {
+		$query = $this->getManager()->query('SELECT SUM('.static::COLUMN_CARD_JOKER.') AS jokers
+			FROM '.static::NAME.'
+			WHERE '.static::COLUMN_GID.' = '.$game->getId());
+		$result = $query->fetchResult();
+		$query->free();
+		return (int)$result['jokers'];
+	}
 }

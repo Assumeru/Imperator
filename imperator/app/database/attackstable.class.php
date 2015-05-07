@@ -19,4 +19,12 @@ class AttacksTable extends Table {
 			static::COLUMN_GID.' = '.$game->getId().'
 			AND '.static::COLUMN_DEFENDING_UID.' = '.$user->getId());
 	}
+
+	/**
+	 * @param \imperator\Game $game
+	 * @return bool
+	 */
+	public function gameHasAttacks(\imperator\Game $game) {
+		return $this->getManager()->rowExists(static::NAME, static::COLUMN_GID.' = '.$game->getId());
+	}
 }

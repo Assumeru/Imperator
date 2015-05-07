@@ -176,8 +176,22 @@ abstract class Api {
 				//TODO
 			} else if($this->request->getType() == 'start-move') {
 				//TODO
+			} else if($this->request->getType() == 'end-turn') {
+				return $this->handleEndTurnRequest($game);
 			}
 		}
+	}
+
+	protected function handleEndTurnRequest(\imperator\Game $game) {
+		if($game->getState() == \imperator\Game::STATE_COMBAT && $game->hasOngoingBattles()) {
+			return $this->reply(array(
+				'error' => $this->user->getLanguage()->translate('You cannot end your turn without finishing all battles.')
+			));
+		}
+		if($game->hasConquered()) {
+			$game->giveCard($this->user, $this->request->getCard());
+		}
+		$game->nextTurn();
 	}
 
 	protected function handleForfeitRequest(\imperator\Game $game) {

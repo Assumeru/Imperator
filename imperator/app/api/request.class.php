@@ -38,7 +38,8 @@ class Request {
 		if(isset($this->data['gid']) && is_numeric($this->data['gid']) && isset($this->data['type'])) {
 			return $this->data['type'] == 'forfeit'
 				|| $this->data['type'] == 'fortify'
-				|| $this->data['type'] == 'start-move';
+				|| $this->data['type'] == 'start-move'
+				|| $this->data['type'] == 'end-turn';
 		}
 		return false;
 	}
@@ -83,5 +84,12 @@ class Request {
 
 	public function getMessage() {
 		return trim(Imperator::stripIllegalCharacters($this->data['message']));
+	}
+
+	public function getCard() {
+		if(isset($this->data['card']) && is_numeric($this->data['card']) && \imperator\game\Cards::isCard($this->data['card'])) {
+			return (int)$this->data['card'];
+		}
+		return \imperator\game\Cards::CARD_NONE;
 	}
 }

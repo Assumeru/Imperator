@@ -18,9 +18,11 @@ class Game {
 	private $turn;
 	private $password;
 	private $time;
+	private $conquered;
+	private $mapLoaded = false;
 	private $attacks = array();
 
-	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0) {
+	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0, $conquered = false) {
 		$this->id = $id;
 		$this->owner = $owner;
 		$this->name = $name;
@@ -30,6 +32,15 @@ class Game {
 		$this->turn = $turn;
 		$this->password = $password;
 		$this->time = $time;
+		$this->conquered = $conquered;
+	}
+
+	public function setConquered($conquered) {
+		$this->conquered = $conquered;
+	}
+
+	public function hasConquered() {
+		return $this->conquered;
 	}
 
 	/**
@@ -297,7 +308,10 @@ class Game {
 	 * Loads the map from the database.
 	 */
 	public function loadMap() {
-		Imperator::getDatabaseManager()->getTable('Territories')->loadMap($this);
+		if(!$this->mapLoaded) {
+			$this->mapLoaded = true;
+			Imperator::getDatabaseManager()->getTable('Territories')->loadMap($this);
+		}
 	}
 
 	/**
@@ -340,7 +354,9 @@ class Game {
 
 	public function nextTurn() {
 		$uids = array();
+		$players = array();
 		foreach($this->users as $player) {
+			$players[$player->getId()] = $player;
 			if($player->getId() == $this->turn) {
 				$currentPlayer = $player;
 			} else if($player->getState() != User::STATE_GAME_OVER) {
@@ -369,15 +385,56 @@ class Game {
 					$this->turn = $uids[0];
 				}
 			}
-			//TODO combat log
-			//TODO cards
 			$this->state = Game::STATE_TURN_START;
 			$this->time = time();
-			//TODO units
-			$this->units = 0;
-			//TODO conquered flag
+			$this->units = $this->getUnitsFromRegionsPerTurn($players[$this->turn]);
 			$this->conquered = false;
 			Imperator::getDatabaseManager()->getTable('Games')->nextTurn($this);
 		}
+	}
+
+	/**
+	 * @param User $user
+	 * @return int
+	 */
+	public function getUnitsFromRegionsPerTurn(User $user) {
+		$this->loadMap();
+		$units = 0;
+		foreach($this->map->getRegions() as $region) {
+			if($region->isOwnedBy($user)) {
+				$units += $region->getUnitsPerTurn();
+			}
+		}
+		return $units;
+	}
+
+	/**
+	 * @param bool
+	 */
+	public function hasOngoingBattles() {
+		if(!empty($this->attacks)) {
+			return true;
+		}
+		return Imperator::getDatabaseManager()->getTable('Attacks')->gameHasAttacks($this);
+	}
+
+	/**
+	 * @param User $user
+	 * @param int $card
+	 * @return int
+	 */
+	public function giveCard(User $user, $card) {
+		$cards = $user->getCards($this);
+		if($card != game\Cards::CARD_NONE || $cards->getNumberOfCards() < game\Cards::MAX_CARDS) {
+			$possibleCards = array(
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_ARTILLERY, game\Cards::CARD_ARTILLERY,
+				game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY,
+				game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY
+			);
+			if(Imperator::getDatabaseManager()->getTable('GamesJoined')->getNumberOfJokers() < game\Cards::MAX_JOKERS) {
+				//TODO cards
+			}
+		}
+		return game\Cards::CARD_NONE;
 	}
 }
