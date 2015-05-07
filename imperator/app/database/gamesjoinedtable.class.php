@@ -132,4 +132,14 @@ class GamesJoinedTable extends Table {
 		$query->free();
 		return (int)$result['jokers'];
 	}
+
+	public function saveCards(\imperator\Game $game, \imperator\User $user, \imperator\game\Cards $cards) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_CARD_ARTILLERY => $cards->getArtillery(),
+			static::COLUMN_CARD_CAVALRY => $cards->getCavalry(),
+			static::COLUMN_CARD_INFANTRY => $cards->getInfantry(),
+			static::COLUMN_CARD_JOKER => $cards->getJokers()
+		), static::COLUMN_GID.' = '.$game->getId().'
+			AND '.static::COLUMN_UID.' = '.$user->getId())->free();
+	}
 }

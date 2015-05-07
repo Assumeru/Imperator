@@ -425,15 +425,23 @@ class Game {
 	 */
 	public function giveCard(User $user, $card) {
 		$cards = $user->getCards($this);
-		if($card != game\Cards::CARD_NONE || $cards->getNumberOfCards() < game\Cards::MAX_CARDS) {
+		if(($card != game\Cards::CARD_NONE && $cards->getNumberOf($card) > 0) || $cards->getNumberOfCards() < game\Cards::MAX_CARDS) {
+			$gj = Imperator::getDatabaseManager()->getTable('GamesJoined');
 			$possibleCards = array(
 				game\Cards::CARD_ARTILLERY, game\Cards::CARD_ARTILLERY, game\Cards::CARD_ARTILLERY,
 				game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY,
 				game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY
 			);
-			if(Imperator::getDatabaseManager()->getTable('GamesJoined')->getNumberOfJokers() < game\Cards::MAX_JOKERS) {
-				//TODO cards
+			if($gj->getNumberOfJokers() < game\Cards::MAX_JOKERS) {
+				$possibleCards[] = game\Cards::CARD_JOKER;
 			}
+			$newCard = $possibleCards[mt_rand(0, count($possibleCards) - 1)];
+			if($cards->getNumberOfCards() >= game\Cards::MAX_CARDS) {
+				$cards->setNumberOf($card, $cards->getNumberOf($card) - 1);
+			}
+			$cards->setNumberOf($newCard, $cards->getNumberOf($newCard) + 1);
+			$gj->saveCards($this, $user, $cards);
+			return $newCard;
 		}
 		return game\Cards::CARD_NONE;
 	}

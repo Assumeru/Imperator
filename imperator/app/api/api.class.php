@@ -188,10 +188,15 @@ abstract class Api {
 				'error' => $this->user->getLanguage()->translate('You cannot end your turn without finishing all battles.')
 			));
 		}
+		$reply = array();
 		if($game->hasConquered()) {
-			$game->giveCard($this->user, $this->request->getCard());
+			$reply['card'] = $game->giveCard($this->user, $this->request->getCard());
 		}
 		$game->nextTurn();
+		$reply['turn'] = $game->getTurn();
+		$reply['time'] = $game->getTime();
+		$reply['state'] = $game->getState();
+		return $this->reply($reply);
 	}
 
 	protected function handleForfeitRequest(\imperator\Game $game) {
