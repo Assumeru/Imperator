@@ -7,6 +7,7 @@ class Game {
 	const STATE_COMBAT = 2;
 	const STATE_POST_COMBAT = 3;
 	const STATE_FINISHED = 4;
+	const MAX_MOVE_UNITS = 7;
 
 	private $id;
 	private $owner;
@@ -19,6 +20,7 @@ class Game {
 	private $password;
 	private $time;
 	private $conquered;
+	private $units;
 	private $mapLoaded = false;
 	private $attacks = array();
 
@@ -33,6 +35,14 @@ class Game {
 		$this->password = $password;
 		$this->time = $time;
 		$this->conquered = $conquered;
+	}
+
+	public function setUnits($units) {
+		$this->units = $units;
+	}
+
+	public function getUnits() {
+		return $this->units;
 	}
 
 	public function setConquered($conquered) {
@@ -444,5 +454,11 @@ class Game {
 			return $newCard;
 		}
 		return game\Cards::CARD_NONE;
+	}
+
+	public function startMove() {
+		$this->setUnits(static::MAX_MOVE_UNITS);
+		$this->setState(static::STATE_POST_COMBAT);
+		Imperator::getDatabaseManager()->getTable('Games')->startMove($this);
 	}
 }
