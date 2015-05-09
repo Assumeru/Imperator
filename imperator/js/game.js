@@ -343,7 +343,7 @@
 				$territories++;
 			}
 		}
-		return Math.floor($territories / 3);
+		return Math.max(Math.floor($territories / 3), 3);
 	}
 
 	function getUnitsPerTurnFromRegionsFor($uid) {

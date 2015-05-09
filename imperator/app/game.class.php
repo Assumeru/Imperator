@@ -419,6 +419,16 @@ class Game {
 	}
 
 	/**
+	 * @param User $user
+	 * @return int
+	 */
+	public function getUnitsFromTerritoriesPerTurn(User $user) {
+		$this->loadMap();
+		$units = count($this->map->getTerritoriesFor($user)) / 3;
+		return max(floor($units), 3);
+	}
+
+	/**
 	 * @param bool
 	 */
 	public function hasOngoingBattles() {
@@ -459,6 +469,12 @@ class Game {
 	public function startMove() {
 		$this->setUnits(static::MAX_MOVE_UNITS);
 		$this->setState(static::STATE_POST_COMBAT);
-		Imperator::getDatabaseManager()->getTable('Games')->startMove($this);
+		Imperator::getDatabaseManager()->getTable('Games')->updateUnitsAndState($this);
+	}
+
+	public function fortify(User $user) {
+		$this->units += $this->getUnitsFromTerritoriesPerTurn($user);
+		$this->state = static::STATE_FORTIFY;
+		Imperator::getDatabaseManager()->getTable('Games')->updateUnitsAndState($this);
 	}
 }

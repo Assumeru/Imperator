@@ -174,6 +174,11 @@ class GamesTable extends Table {
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 
+	/**
+	 * @param int $gid
+	 * @param \imperator\User $user
+	 * @return bool
+	 */
 	public function gameOwnerEquals($gid, \imperator\User $user) {
 		return $this->getManager()->rowExists(static::NAME,
 			static::COLUMN_GID.' = '.$gid.'
@@ -181,6 +186,11 @@ class GamesTable extends Table {
 		);
 	}
 
+	/**
+	 * @param int $gid
+	 * @param int $time
+	 * @return bool
+	 */
 	public function timeIsAfter($gid, $time) {
 		return $this->getManager()->rowExists(static::NAME,
 			static::COLUMN_GID.' = '.$gid.'
@@ -198,7 +208,7 @@ class GamesTable extends Table {
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 
-	public function startTurn(\imperator\Game $game) {
+	public function updateUnitsAndState(\imperator\Game $game) {
 		$this->getManager()->update(static::NAME, array(
 			static::COLUMN_STATE => $game->getState(),
 			static::COLUMN_UNITS => $game->getUnits(),

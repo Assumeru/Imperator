@@ -173,9 +173,9 @@ abstract class Api {
 			if($this->request->getType() == 'forfeit') {
 				return $this->handleForfeitRequest($game);
 			} else if($game->getTurn() == $this->user->getId()) {
-				if($this->request->getType() == 'fortify') {
-					//TODO
-				} else if($this->request->getType() == 'start-move') {
+				if($this->request->getType() == 'fortify' && $game->getState() == \imperator\Game::STATE_TURN_START) {
+					return $this->handleFortifyRequest($game);
+				} else if($this->request->getType() == 'start-move' && $game->getState() == \imperator\Game::STATE_COMBAT) {
 					return $this->handleStartMoveRequest($game);
 				} else if($this->request->getType() == 'end-turn') {
 					return $this->handleEndTurnRequest($game);
@@ -184,8 +184,16 @@ abstract class Api {
 		}
 	}
 
+	protected function handleFortifyRequest(\imperator\Game $game) {
+		$game->fortify($this->user);
+		return $this->reply(array(
+			'units' => $game->getUnits(),
+			'state' => $game->getState()
+		));
+	}
+
 	protected function handleStartMoveRequest(\imperator\Game $game) {
-		if($game->getState() == \imperator\Game::STATE_COMBAT && $game->hasOngoingBattles()) {
+		if($game->hasOngoingBattles()) {
 			return $this->reply(array(
 				'error' => $this->user->getLanguage()->translate('All battles need to finish before units can be moved.')
 			));

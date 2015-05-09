@@ -172,7 +172,7 @@ class Map {
 	public function getTerritoriesFor(\imperator\User $user) {
 		$territories = array();
 		foreach($this->getTerritories() as $territory) {
-			if($territory->getOwner() == $user) {
+			if($territory->getOwner()->equals($user)) {
 				$territories[] = $territory;
 			}
 		}
