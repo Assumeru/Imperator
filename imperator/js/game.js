@@ -8,7 +8,8 @@
 		players: {},
 		id: Imperator.settings.gid,
 		turn: -1,
-		state: -1
+		state: -1,
+		units: 0
 	},
 	$time = 0,
 	$resizeTimeout,
@@ -55,6 +56,18 @@
 		});
 		$('#settings input[name="unitgraphics"]').change(setUnitGraphics)
 		$('#regions [data-button="highlight"]').click(highlightRegion);
+		$('#controls-box [data-button="stack"]').click(sendFortify);
+	}
+
+	function sendFortify() {
+		if($game.state == STATE_TURN_START) {
+			Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+			Imperator.API.send({
+				gid: $game.id,
+				mode: 'game',
+				type: 'fortify'
+			});
+		}
 	}
 
 	function highlightRegion() {
@@ -117,6 +130,9 @@
 				updateTurn();
 			}
 			if($msg.state !== undefined && $msg.state !== $game.state) {
+				if($msg.state == STATE_FORTIFY && $msg.units !== undefined) {
+					
+				}
 				$game.state = $msg.state;
 				updateState();
 			}

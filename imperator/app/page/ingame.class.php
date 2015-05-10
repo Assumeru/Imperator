@@ -62,13 +62,28 @@ class InGame extends DefaultPage {
 			$this->addChatJavascript($this->game->getId());
 			$mainClass = '';
 		}
-		$this->setJavascriptSetting('uid', $user->getId());
+		$this->renderJavascript($user);
 		$this->setTitle($this->game->getName());
 		$this->setMainClass('container-fluid'.$mainClass);
 		$this->addCSS('game.css');
+		parent::render($user);
+	}
+
+	private function renderJavascript(\imperator\User $user) {
+		$language = $user->getLanguage();
+		$this->setJavascriptSetting('uid', $user->getId());
+		$this->setJavascriptSetting('templates', array(
+			'dialog' => Template::getInstance('dialog')->replace(array(
+				'close' => $language->translate('Close window')
+			))->getData()
+		));
+		$this->setJavascriptSetting('language', array(
+			'wait' => $language->translate('Please wait...'),
+			'contacting' => $language->translate('Contacting server.')
+		));
+		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');
 		$this->addJavascript('game.js');
-		parent::render($user);
 	}
 
 	private function getMapURL() {

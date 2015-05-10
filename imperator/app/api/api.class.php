@@ -113,6 +113,7 @@ abstract class Api {
 				}
 				$output['state'] = $game->getState();
 				$output['turn'] = $game->getTurn();
+				$output['units'] = $game->getUnits();
 			}
 		}
 		return $this->reply($output);
