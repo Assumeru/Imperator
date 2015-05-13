@@ -121,7 +121,8 @@ class GamesTable extends Table {
 				1,
 				$result[static::COLUMN_PASSWORD],
 				$result[static::COLUMN_TIME],
-				$result[static::COLUMN_CONQUERED]
+				$result[static::COLUMN_CONQUERED],
+				$result[static::COLUMN_UNITS]
 			);
 			$players = $this->getManager()->getTable('GamesJoined')->getPlayersForGame($game);
 			$game->setPlayers($players);

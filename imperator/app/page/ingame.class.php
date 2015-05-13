@@ -55,7 +55,9 @@ class InGame extends DefaultPage {
 			'moveTitle' => $language->translate('Stop attacking and start moving units'),
 			'forfeitTitle' => $language->translate('Surrender the game'),
 			'uptTitleTerritories' => $language->translate('Units gained from territories'),
-			'uptTitleRegions' => $language->translate('Units gained from regions')
+			'uptTitleRegions' => $language->translate('Units gained from regions'),
+			'unitsFortifyTitle' => $language->translate('Number of units left to place'),
+			'unitsMoveTitle' => $language->translate('Number of units left to move')
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {

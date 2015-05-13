@@ -24,7 +24,7 @@ class Game {
 	private $mapLoaded = false;
 	private $attacks = array();
 
-	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0, $conquered = false) {
+	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0, $conquered = false, $units = 0) {
 		$this->id = $id;
 		$this->owner = $owner;
 		$this->name = $name;
@@ -35,6 +35,7 @@ class Game {
 		$this->password = $password;
 		$this->time = $time;
 		$this->conquered = $conquered;
+		$this->units = $units;
 	}
 
 	public function setUnits($units) {

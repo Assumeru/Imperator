@@ -218,3 +218,12 @@ body:not(.my-turn) #controls-box [data-button="move"] {
 	border-top: 1px solid #ccc;
 	width: 100%;
 }
+
+#controls-box > button {
+	margin: 2px;
+}
+
+#controls-box > .btn[disabled] {
+	cursor: default;
+	pointer-events: auto;
+}

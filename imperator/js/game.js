@@ -14,6 +14,7 @@
 	$time = 0,
 	$resizeTimeout,
 	$emptyBorder,
+	$dialogs = {},
 	STATE_TURN_START = 0,
 	STATE_FORTIFY = 1,
 	STATE_COMBAT = 2,
@@ -61,7 +62,10 @@
 
 	function sendFortify() {
 		if($game.state == STATE_TURN_START) {
-			Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+			if($dialogs.fortify !== undefined) {
+				$dialogs.fortify.close();
+			}
+			$dialogs.fortify = Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
@@ -130,15 +134,33 @@
 				updateTurn();
 			}
 			if($msg.state !== undefined && $msg.state !== $game.state) {
-				if($msg.state == STATE_FORTIFY && $msg.units !== undefined) {
-					
+				if($msg.state == STATE_FORTIFY && $msg.units !== undefined && $dialogs.fortify !== undefined) {
+					$dialogs.fortify.close();
+					delete $dialogs.fortify;
 				}
 				$game.state = $msg.state;
 				updateState();
 			}
+			if($msg.units !== undefined) {
+				$game.units = $msg.units;
+				updateUnits();
+			}
 		}
 		if($territoriesUpdated) {
 			updateTerritories();
+		}
+	}
+
+	function updateUnits() {
+		var $box = $('#controls-box'),
+		$unitsF = $box.find('[data-value="units-left-fortify"] .number'),
+		$unitsM = $box.find('[data-value="units-left-move"] .number');
+		$unitsF.text(0);
+		$unitsM.text(0);
+		if($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY) {
+			$unitsF.text($game.units);
+		} else if($game.state === STATE_POST_COMBAT) {
+			$unitsM.text($game.units);
 		}
 	}
 
@@ -163,13 +185,22 @@
 	function updateState() {
 		var $box = $('#controls-box'),
 		$stack = $box.find('[data-button="stack"]'),
-		$move = $box.find('[data-button="move"]');
+		$move = $box.find('[data-button="move"]'),
+		$unitsF = $box.find('[data-value="units-left-fortify"]'),
+		$unitsM = $box.find('[data-value="units-left-move"]');
 		$stack.css('display', 'none');
 		$move.css('display', 'none');
+		$unitsF.css('display', 'none');
+		$unitsM.css('display', 'none');
+		if($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY) {
+			$unitsF.css('display', '');
+		}
 		if($game.state === STATE_TURN_START) {
 			$stack.css('display', '');
 		} else if($game.state === STATE_COMBAT) {
 			$move.css('display', '');
+		} else if($game.state === STATE_POST_COMBAT) {
+			$unitsM.css('display', '');
 		}
 	}
 
@@ -189,7 +220,7 @@
 		}
 		for($id in $players) {
 			$upt = {
-				territories: getUnitsPerTurnFromTerritoriesFor($id),
+				territories: getUnitsPerTurnFromTerritoriesFor($id, $players[$id].territories),
 				regions: getUnitsPerTurnFromRegionsFor($id),
 			};
 			$player = $('#players *[data-player="'+$id+'"]');
@@ -351,12 +382,16 @@
 		return getUnitsPerTurnFromTerritoriesFor($uid) + getUnitsPerTurnFromRegionsFor($uid);
 	}
 
-	function getUnitsPerTurnFromTerritoriesFor($uid) {
+	function getUnitsPerTurnFromTerritoriesFor($uid, $numberOfTerritories) {
 		var $id,
 		$territories = 0;
-		for($id in $game.map.territories) {
-			if($game.map.territories[$id].uid === $uid) {
-				$territories++;
+		if($numberOfTerritories !== undefined) {
+			$territories = $numberOfTerritories;
+		} else {
+			for($id in $game.map.territories) {
+				if($game.map.territories[$id].uid == $uid) {
+					$territories++;
+				}
 			}
 		}
 		return Math.max(Math.floor($territories / 3), 3);
