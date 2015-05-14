@@ -214,7 +214,7 @@ abstract class Api {
 		}
 		$reply = array();
 		if($game->hasConquered()) {
-			$reply['card'] = $game->giveCard($this->user, $this->request->getCard());
+			$reply['card'] = $game->giveCard($game->getPlayerByUser($this->user), $this->request->getCard());
 		}
 		$game->nextTurn();
 		$reply['turn'] = $game->getTurn();

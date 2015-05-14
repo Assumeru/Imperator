@@ -9,7 +9,13 @@
 		id: Imperator.settings.gid,
 		turn: -1,
 		state: -1,
-		units: 0
+		units: 0,
+		cards: {
+			0: 0,
+			1: 0,
+			2: 0,
+			3: 0
+		}
 	},
 	$time = 0,
 	$resizeTimeout,
@@ -19,7 +25,12 @@
 	STATE_FORTIFY = 1,
 	STATE_COMBAT = 2,
 	STATE_POST_COMBAT = 3,
-	STATE_FINISHED = 4;
+	STATE_FINISHED = 4,
+	CARD_NONE = -1,
+	CARD_ARTILLERY = 0,
+	CARD_CAVALRY = 1,
+	CARD_INFANTRY = 2,
+	CARD_JOKER = 3;
 	if(Number.parseInt === undefined) {
 		Number.parseInt = parseInt;
 	}
@@ -58,6 +69,21 @@
 		$('#settings input[name="unitgraphics"]').change(setUnitGraphics)
 		$('#regions [data-button="highlight"]').click(highlightRegion);
 		$('#controls-box [data-button="stack"]').click(sendFortify);
+		$('#controls-box [data-button="endturn"]').click(sendEndTurn);
+	}
+
+	function sendEndTurn() {
+		if($game.turn == Imperator.settings.uid) {
+			if($dialogs.endturn !== undefined) {
+				$dialogs.endturn.close();
+			}
+			$dialogs.endturn = Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+			Imperator.API.send({
+				gid: $game.id,
+				mode: 'game',
+				action: 'end-turn'
+			});
+		}
 	}
 
 	function sendFortify() {
@@ -129,6 +155,10 @@
 					}
 				}
 			}
+			if($msg.card !== undefined && $msg.card !== CARD_NONE) {
+				$game.cards[$msg.card]++;
+				updateCards($msg.card);
+			}
 			if($msg.turn !== undefined && $msg.turn !== $game.turn) {
 				$game.turn = $msg.turn;
 				updateTurn();
@@ -149,6 +179,10 @@
 		if($territoriesUpdated) {
 			updateTerritories();
 		}
+	}
+
+	function updateCards($newCard) {
+		Imperator.Dialog.showDialog(Imperator.settings.language.newcard, '<img src="'+Imperator.settings.cardUrl.replace('%1$s', $newCard)+'" class="card" alt="'+Imperator.settings.language.card[$newCard]+'" />', true);
 	}
 
 	function updateUnits() {
@@ -178,6 +212,10 @@
 				$btn.click();
 			}
 		} else {
+			if($dialog.endturn !== undefined) {
+				$dialog.endturn.close();
+				delete $dialog.endturn;
+			}
 			$('body').removeClass('my-turn');
 		}
 	}

@@ -44,7 +44,8 @@ class GamesJoinedTable extends Table {
 		$u = $this->getManager()->getTable('OutsideUsers');
 		$sql = 'SELECT
 			u.'.$u::COLUMN_USERNAME.', u.'.$u::COLUMN_UID.', g.'.static::COLUMN_COLOR.', g.'.static::COLUMN_STATE.',
-			g.'.static::COLUMN_MISSION.', g.'.static::COLUMN_MISSION_UID.', g.'.static::COLUMN_AUTOROLL.'
+			g.'.static::COLUMN_MISSION.', g.'.static::COLUMN_MISSION_UID.', g.'.static::COLUMN_AUTOROLL.',
+			g.'.static::COLUMN_CARD_ARTILLERY.', g.'.static::COLUMN_CARD_CAVALRY.', g.'.static::COLUMN_CARD_INFANTRY.', g.'.static::COLUMN_CARD_JOKER.'
 			FROM '.$u::NAME.' AS u
 			JOIN '.static::NAME.' AS g ON(g.'.static::COLUMN_UID.' = u.'.$u::COLUMN_UID.')
 			WHERE g.'.static::COLUMN_GID.' = '.$gid.'
@@ -61,6 +62,12 @@ class GamesJoinedTable extends Table {
 			$player->setColor($result[static::COLUMN_COLOR]);
 			$player->setState($result[static::COLUMN_STATE]);
 			$player->setAutoRoll($result[static::COLUMN_AUTOROLL]);
+			$player->setCards(new \imperator\game\Cards(
+				$result[static::COLUMN_CARD_ARTILLERY],
+				$result[static::COLUMN_CARD_CAVALRY],
+				$result[static::COLUMN_CARD_INFANTRY],
+				$result[static::COLUMN_CARD_JOKER]
+			));
 			$mission = $missions[$result[static::COLUMN_MISSION]];
 			$mission->setUid($result[static::COLUMN_MISSION_UID]);
 			$player->setMission($mission);

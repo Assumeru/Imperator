@@ -18,6 +18,7 @@ abstract class User {
 	private $wins;
 	private $losses;
 	private $autoroll;
+	private $cards;
 
 	public static function getCurrentUser() {
 		return new User();
@@ -118,11 +119,19 @@ abstract class User {
 		return $this->autoroll;
 	}
 
+	public function setCards(\imperator\game\Cards $cards) {
+		$this->cards = $cards;
+	}
+
 	/**
 	 * @param Game $game
 	 * @return \imperator\game\Cards
 	 */
-	public function getCards(Game $game) {
-		return Imperator::getDatabaseManager()->getTable('GamesJoined')->getCardsFor($game, $this);
+	public function getCards(Game $game = null) {
+		if($this->cards) {
+			return $this->cards;
+		} else if($game) {
+			return Imperator::getDatabaseManager()->getTable('GamesJoined')->getCardsFor($game, $this);
+		}
 	}
 }

@@ -176,7 +176,9 @@
 #regions .btn:not(.collapsed) > .glyphicon-chevron-down,
 #turn-controls .btn:not(.collapsed) > .glyphicon-chevron-up,
 body:not(.my-turn) #controls-box [data-button="stack"],
-body:not(.my-turn) #controls-box [data-button="move"] {
+body:not(.my-turn) #controls-box [data-button="move"],
+body:not(.my-turn) #controls-box [data-button="endturn"],
+body:not(.my-turn) #controls-box [data-value|="units-left"] {
 	display: none;
 }
 

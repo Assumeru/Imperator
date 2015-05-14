@@ -57,7 +57,10 @@ class InGame extends DefaultPage {
 			'uptTitleTerritories' => $language->translate('Units gained from territories'),
 			'uptTitleRegions' => $language->translate('Units gained from regions'),
 			'unitsFortifyTitle' => $language->translate('Number of units left to place'),
-			'unitsMoveTitle' => $language->translate('Number of units left to move')
+			'unitsMoveTitle' => $language->translate('Number of units left to move'),
+			'endturn' => $language->translate('End turn'),
+			'endturnTitle' => $language->translate('Cede control and end your turn'),
+			'cardList' => $inGame ? $this->getCardList($this->game->getPlayerByUser($user)) : ''
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {
@@ -79,13 +82,34 @@ class InGame extends DefaultPage {
 				'close' => $language->translate('Close window')
 			))->getData()
 		));
+		$this->setJavascriptSetting('cardURL', $this->getCardURL());
 		$this->setJavascriptSetting('language', array(
 			'wait' => $language->translate('Please wait...'),
-			'contacting' => $language->translate('Contacting server.')
+			'contacting' => $language->translate('Contacting server.'),
+			'newcard' => $language->translate('You have received a new card!'),
+			'card' => \imperator\game\Cards::getCardNames($language)
 		));
 		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');
 		$this->addJavascript('game.js');
+	}
+
+	private function getCardList(\imperator\User $user) {
+		$cards = $user->getCards($this->game);
+		$cardList = '';
+		$names = \imperator\game\Cards::getCardNames($language);
+		$url = $this->getCardURL();
+		foreach($cards->getCards() as $card) {
+			$cardList .= Template::getInstance('game_card')->replace(array(
+				'url' => sprintf($url, $card),
+				'name' => $names[$card]
+			))->getData();
+		}
+		return $cardList;
+	}
+
+	private function getCardURL() {
+		return Imperator::getSettings()->getBaseURL().'/img/cards/%1$s.png';
 	}
 
 	private function getMapURL() {

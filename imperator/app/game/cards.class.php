@@ -20,7 +20,11 @@ class Cards {
 		$this->cavalry = $cavalry;
 		$this->infantry = $infantry;
 		$this->jokers = $jokers;
-		$this->numCards = $artillery + $cavalry + $infantry + $jokers;
+		$this->calculateNumberOfCards();
+	}
+
+	private function calculateNumberOfCards() {
+		$this->numCards = $this->artillery + $this->cavalry + $this->infantry + $this->jokers;
 	}
 
 	public function getNumberOfCards() {
@@ -60,6 +64,7 @@ class Cards {
 		} else if($card == static::CARD_JOKER) {
 			$this->jokers = $value;
 		}
+		$this->calculateNumberOfCards();
 	}
 
 	public function getArtillery() {
@@ -80,18 +85,44 @@ class Cards {
 
 	public function setArtillery($artillery) {
 		$this->artillery = $artillery;
+		$this->calculateNumberOfCards();
 	}
 
 	public function setCavalry($cavalry) {
 		$this->cavalry = $cavalry;
+		$this->calculateNumberOfCards();
 	}
 
 	public function setInfantry($infantry) {
 		$this->infantry = $infantry;
+		$this->calculateNumberOfCards();
 	}
 
 	public function setJokers($jokers) {
 		$this->jokers = $jokers;
+		$this->calculateNumberOfCards();
+	}
+
+	/**
+	 * Returns an array of CARD_?s.
+	 * 
+	 * @return int[]
+	 */
+	public function getCards() {
+		$cards = array();
+		for($n = 0; $n < $this->artillery; $n++) {
+			$cards[] = static::CARD_ARTILLERY;
+		}
+		for($n = 0; $n < $this->cavalry; $n++) {
+			$cards[] = static::CARD_CAVALRY;
+		}
+		for($n = 0; $n < $this->infantry; $n++) {
+			$cards[] = static::CARD_INFANTRY;
+		}
+		for($n = 0; $n < $this->jokers; $n++) {
+			$cards[] = static::CARD_JOKER;
+		}
+		return $cards;
 	}
 
 	public static function isCard($card) {
@@ -100,5 +131,15 @@ class Cards {
 			|| $card == static::CARD_CAVALRY
 			|| $card == static::CARD_INFANTRY
 			|| $card == static::CARD_JOKER;
+	}
+
+	public static function getCardNames(\imperator\Language $language) {
+		return array(
+			static::CARD_ARTILLERY => $language->translate('Artillery'),
+			static::CARD_CAVALRY => $language->translate('Cavalry'),
+			static::CARD_INFANTRY => $language->translate('Infantry'),
+			static::CARD_JOKER => $language->translate('Joker'),
+			static::CARD_NONE => $language->translate('None')
+		);
 	}
 }

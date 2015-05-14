@@ -173,6 +173,19 @@ class Game {
 		return false;
 	}
 
+	/**
+	 * @param User $user
+	 * @return User
+	 */
+	public function getPlayerByUser(User $user) {
+		foreach($this->users as $player) {
+			if($player->equals($user)) {
+				return $player;
+			}
+		}
+		return null;
+	}
+
 	public function setPassword($password) {
 		$this->password = $this->hashPassword($password);
 	}

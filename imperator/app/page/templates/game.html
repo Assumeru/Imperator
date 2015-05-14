@@ -74,7 +74,7 @@
 			{$regionList}
 		</section>
 		<section id="cards" class="swipe-pane player-only">
-			Cards
+			{$cardList}
 		</section>
 		<section id="chatbox" class="swipe-pane player-only">
 			{$chat}
@@ -131,6 +131,7 @@
 		<button class="btn btn-default player-only" data-value="units-left-move" disabled title="{$unitsMoveTitle}"><span class="number">0</span></button>
 		<button class="btn btn-primary player-only" data-button="stack" title="{$stackTitle}">{$stack} <span class="number">0</span></button>
 		<button class="btn btn-warning player-only" data-button="move" title="{$moveTitle}">{$move}</button>
+		<button class="btn btn-warning player-only" data-button="endturn" title="{$endturnTitle}">{$endturn}</button>
 		<button class="btn btn-danger player-only" data-button="forfeit" title="{$forfeitTitle}">{$forfeit}</button>
 	</div>
 </div>
