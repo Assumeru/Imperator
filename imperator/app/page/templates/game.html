@@ -74,7 +74,15 @@
 			{$regionList}
 		</section>
 		<section id="cards" class="swipe-pane player-only">
-			{$cardList}
+			<div data-value="card-list" class="text-center">
+				{$cardList}
+			</div>
+			<div id="card-controls">
+				<button class="btn btn-success" data-button="cards" data-value="4">{$cardsButtonFour}</button>
+				<button class="btn btn-success" data-button="cards" data-value="6">{$cardsButtonSix}</button>
+				<button class="btn btn-success" data-button="cards" data-value="8">{$cardsButtonEight}</button>
+				<button class="btn btn-success" data-button="cards" data-value="10">{$cardsButtonTen}</button>
+			</div>
 		</section>
 		<section id="chatbox" class="swipe-pane player-only">
 			{$chat}
@@ -132,6 +140,6 @@
 		<button class="btn btn-primary player-only" data-button="stack" title="{$stackTitle}">{$stack} <span class="number">0</span></button>
 		<button class="btn btn-warning player-only" data-button="move" title="{$moveTitle}">{$move}</button>
 		<button class="btn btn-warning player-only" data-button="endturn" title="{$endturnTitle}">{$endturn}</button>
-		<button class="btn btn-danger player-only" data-button="forfeit" title="{$forfeitTitle}">{$forfeit}</button>
+		<button class="btn btn-danger player-only pull-right" data-button="forfeit" title="{$forfeitTitle}">{$forfeit}</button>
 	</div>
 </div>

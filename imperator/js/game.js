@@ -70,6 +70,24 @@
 		$('#regions [data-button="highlight"]').click(highlightRegion);
 		$('#controls-box [data-button="stack"]').click(sendFortify);
 		$('#controls-box [data-button="endturn"]').click(sendEndTurn);
+		$('#card-controls [data-button="cards"]').click(sendCards);
+	}
+
+	function sendCards() {
+		var $this = $(this),
+		$num = $this.attr('data-value');
+		if($game.turn == Imperator.settings.uid && ($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY)) {
+			if($dialogs.playcards !== undefined) {
+				$dialogs.playcards.close();
+			}
+			$dialogs.playcards = Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+			Imperator.API.send({
+				gid: $game.id,
+				mode: 'game',
+				action: 'play-cards',
+				units: $num
+			});
+		}
 	}
 
 	function sendEndTurn() {
@@ -155,6 +173,10 @@
 					}
 				}
 			}
+			if($msg.cards !== undefined) {
+				$game.cards = $msg.cards;
+				updateCards(CARD_NONE);
+			}
 			if($msg.card !== undefined && $msg.card !== CARD_NONE) {
 				$game.cards[$msg.card]++;
 				updateCards($msg.card);
@@ -182,7 +204,29 @@
 	}
 
 	function updateCards($newCard) {
-		Imperator.Dialog.showDialog(Imperator.settings.language.newcard, '<img src="'+Imperator.settings.cardUrl.replace('%1$s', $newCard)+'" class="card" alt="'+Imperator.settings.language.card[$newCard]+'" />', true);
+		var $n,
+		$cards = $('#cards [data-value="card-list"]'),
+		$artillery = Imperator.settings.templates.card.replace('%1$s', CARD_ARTILLERY).replace('%2$s', Imperator.settings.language.card[CARD_ARTILLERY]),
+		$infantry = Imperator.settings.templates.card.replace('%1$s', CARD_INFANTRY).replace('%2$s', Imperator.settings.language.card[CARD_INFANTRY]),
+		$cavalry = Imperator.settings.templates.card.replace('%1$s', CARD_CAVALRY).replace('%2$s', Imperator.settings.language.card[CARD_CAVALRY]),
+		$joker = Imperator.settings.templates.card.replace('%1$s', CARD_JOKER).replace('%2$s', Imperator.settings.language.card[CARD_JOKER]);
+		if($newCard !== CARD_NONE) {
+			Imperator.Dialog.showDialog(Imperator.settings.language.newcard, Imperator.settings.templates.card.replace('%1$s', $newCard).replace('%2$s', Imperator.settings.language.card[$newCard]), true, 'text-center');
+		}
+		$cards.empty();
+		for($n = 0; $n < $game.cards[CARD_ARTILLERY]; $n++) {
+			$cards.append($artillery);
+		}
+		for($n = 0; $n < $game.cards[CARD_INFANTRY]; $n++) {
+			$cards.append($infantry);
+		}
+		for($n = 0; $n < $game.cards[CARD_CAVALRY]; $n++) {
+			$cards.append($cavalry);
+		}
+		for($n = 0; $n < $game.cards[CARD_JOKER]; $n++) {
+			$cards.append($joker);
+		}
+		//TODO check combinations
 	}
 
 	function updateUnits() {

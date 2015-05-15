@@ -60,7 +60,11 @@ class InGame extends DefaultPage {
 			'unitsMoveTitle' => $language->translate('Number of units left to move'),
 			'endturn' => $language->translate('End turn'),
 			'endturnTitle' => $language->translate('Cede control and end your turn'),
-			'cardList' => $inGame ? $this->getCardList($this->game->getPlayerByUser($user)) : ''
+			'cardList' => $inGame ? $this->getCardList($this->game->getPlayerByUser($user)) : '',
+			'cardsButtonFour' => $language->translate('Place %1$d units', 4),
+			'cardsButtonSix' => $language->translate('Place %1$d units', 6),
+			'cardsButtonEight' => $language->translate('Place %1$d units', 8),
+			'cardsButtonTen' => $language->translate('Place %1$d units', 10)
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {
@@ -80,9 +84,12 @@ class InGame extends DefaultPage {
 		$this->setJavascriptSetting('templates', array(
 			'dialog' => Template::getInstance('dialog')->replace(array(
 				'close' => $language->translate('Close window')
+			))->getData(),
+			'card' => Template::getInstance('game_card')->replace(array(
+				'url' => $this->getCardURL(),
+				'name' => '%2$s'
 			))->getData()
 		));
-		$this->setJavascriptSetting('cardURL', $this->getCardURL());
 		$this->setJavascriptSetting('language', array(
 			'wait' => $language->translate('Please wait...'),
 			'contacting' => $language->translate('Contacting server.'),
@@ -97,7 +104,7 @@ class InGame extends DefaultPage {
 	private function getCardList(\imperator\User $user) {
 		$cards = $user->getCards($this->game);
 		$cardList = '';
-		$names = \imperator\game\Cards::getCardNames($language);
+		$names = \imperator\game\Cards::getCardNames($user->getLanguage());
 		$url = $this->getCardURL();
 		foreach($cards->getCards() as $card) {
 			$cardList .= Template::getInstance('game_card')->replace(array(

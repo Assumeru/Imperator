@@ -178,7 +178,8 @@
 body:not(.my-turn) #controls-box [data-button="stack"],
 body:not(.my-turn) #controls-box [data-button="move"],
 body:not(.my-turn) #controls-box [data-button="endturn"],
-body:not(.my-turn) #controls-box [data-value|="units-left"] {
+body:not(.my-turn) #controls-box [data-value|="units-left"],
+body:not(.my-turn) #card-controls {
 	display: none;
 }
 
@@ -228,4 +229,21 @@ body:not(.my-turn) #controls-box [data-value|="units-left"] {
 #controls-box > .btn[disabled] {
 	cursor: default;
 	pointer-events: auto;
+}
+
+.card {
+	border: 2px solid #66023c;
+	border-radius: 5%;
+	margin: 0 1% 5px;
+	width: 18%;
+	max-width: 130px;
+	min-width: 65px;
+}
+
+#card-controls {
+	margin: 1em 5px 0;
+}
+
+#card-controls .btn {
+	margin-bottom: 5px;
 }

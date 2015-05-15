@@ -113,11 +113,11 @@ class Cards {
 		for($n = 0; $n < $this->artillery; $n++) {
 			$cards[] = static::CARD_ARTILLERY;
 		}
-		for($n = 0; $n < $this->cavalry; $n++) {
-			$cards[] = static::CARD_CAVALRY;
-		}
 		for($n = 0; $n < $this->infantry; $n++) {
 			$cards[] = static::CARD_INFANTRY;
+		}
+		for($n = 0; $n < $this->cavalry; $n++) {
+			$cards[] = static::CARD_CAVALRY;
 		}
 		for($n = 0; $n < $this->jokers; $n++) {
 			$cards[] = static::CARD_JOKER;
@@ -141,5 +141,12 @@ class Cards {
 			static::CARD_JOKER => $language->translate('Joker'),
 			static::CARD_NONE => $language->translate('None')
 		);
+	}
+
+	public static function isValidUnitAmount($units) {
+		return $units == 4
+			|| $units == 6
+			|| $units == 8
+			|| $units == 10;
 	}
 }

@@ -114,6 +114,15 @@ abstract class Api {
 				$output['state'] = $game->getState();
 				$output['turn'] = $game->getTurn();
 				$output['units'] = $game->getUnits();
+				if($game->containsPlayer($this->user)) {
+					$cards = $game->getPlayerByUser($this->user)->getCards($game);
+					$output['cards'] = array(
+						\imperator\game\Cards::CARD_ARTILLERY => $cards->getArtillery(),
+						\imperator\game\Cards::CARD_CAVALRY => $cards->getCavalry(),
+						\imperator\game\Cards::CARD_INFANTRY => $cards->getInfantry(),
+						\imperator\game\Cards::CARD_JOKER => $cards->getJokers()
+					);
+				}
 			}
 		}
 		return $this->reply($output);

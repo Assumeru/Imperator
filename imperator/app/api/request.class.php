@@ -39,7 +39,9 @@ class Request {
 			return $this->data['type'] == 'forfeit'
 				|| $this->data['type'] == 'fortify'
 				|| $this->data['type'] == 'start-move'
-				|| $this->data['type'] == 'end-turn';
+				|| $this->data['type'] == 'end-turn'
+				|| ($this->data['type'] == 'play-cards' && isset($this->data['units'])
+				&& is_numeric($this->data['units']) && \imperator\game\Cards::isValidUnitAmount($this->data['units']));
 		}
 		return false;
 	}
