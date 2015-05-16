@@ -206,6 +206,13 @@
 	function updateCards($newCard) {
 		var $n,
 		$cards = $('#cards [data-value="card-list"]'),
+		$controls = $('#card-controls'),
+		$buttons = {
+			4: $controls.find('[data-button="cards"][data-value="4"]'),
+			6: $controls.find('[data-button="cards"][data-value="6"]'),
+			8: $controls.find('[data-button="cards"][data-value="8"]'),
+			10: $controls.find('[data-button="cards"][data-value="10"]')
+		},
 		$artillery = Imperator.settings.templates.card.replace('%1$s', CARD_ARTILLERY).replace('%2$s', Imperator.settings.language.card[CARD_ARTILLERY]),
 		$infantry = Imperator.settings.templates.card.replace('%1$s', CARD_INFANTRY).replace('%2$s', Imperator.settings.language.card[CARD_INFANTRY]),
 		$cavalry = Imperator.settings.templates.card.replace('%1$s', CARD_CAVALRY).replace('%2$s', Imperator.settings.language.card[CARD_CAVALRY]),
@@ -226,7 +233,29 @@
 		for($n = 0; $n < $game.cards[CARD_JOKER]; $n++) {
 			$cards.append($joker);
 		}
-		//TODO check combinations
+		for($n in $buttons) {
+			if(canPlayCardsFor($n)) {
+				$buttons[$n].show();
+			} else {
+				$buttons[$n].hide();
+			}
+		}
+	}
+
+	function canPlayCardsFor($units) {
+		if($units == 4) {
+			return $game.cards[CARD_ARTILLERY] + $game.cards[CARD_JOKER] >= 3;
+		} else if($units == 6) {
+			return $game.cards[CARD_INFANTRY] + $game.cards[CARD_JOKER] >= 3;
+		} else if($units == 8) {
+			return $game.cards[CARD_CAVALRY] + $game.cards[CARD_JOKER] >= 3;
+		}
+		return ($game.cards[CARD_ARTILLERY] + $game.cards[CARD_INFANTRY] + $game.cards[CARD_CAVALRY] >= 1 && $game.cards[CARD_JOKER] >= 2)
+			|| ($game.cards[CARD_ARTILLERY] >= 1 && $game.cards[CARD_INFANTRY] >= 1 && $game.cards[CARD_CAVALRY] >= 1)
+			|| ($game.cards[CARD_JOKER] >= 1
+				&& (($game.cards[CARD_ARTILLERY] >= 1 && $game.cards[CARD_INFANTRY] >= 1)
+				|| ($game.cards[CARD_ARTILLERY] >= 1 && $game.cards[CARD_CAVALRY] >= 1)
+				|| ($game.cards[CARD_INFANTRY] >= 1 && $game.cards[CARD_CAVALRY] >= 1)));
 	}
 
 	function updateUnits() {

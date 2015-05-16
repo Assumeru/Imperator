@@ -63,10 +63,10 @@ class GamesJoinedTable extends Table {
 			$player->setState($result[static::COLUMN_STATE]);
 			$player->setAutoRoll($result[static::COLUMN_AUTOROLL]);
 			$player->setCards(new \imperator\game\Cards(
-				$result[static::COLUMN_CARD_ARTILLERY],
-				$result[static::COLUMN_CARD_CAVALRY],
-				$result[static::COLUMN_CARD_INFANTRY],
-				$result[static::COLUMN_CARD_JOKER]
+				(int)$result[static::COLUMN_CARD_ARTILLERY],
+				(int)$result[static::COLUMN_CARD_CAVALRY],
+				(int)$result[static::COLUMN_CARD_INFANTRY],
+				(int)$result[static::COLUMN_CARD_JOKER]
 			));
 			$mission = $missions[$result[static::COLUMN_MISSION]];
 			$mission->setUid($result[static::COLUMN_MISSION_UID]);

@@ -125,6 +125,26 @@ class Cards {
 		return $cards;
 	}
 
+	/**
+	 * @param int $combination
+	 * @return boolean
+	 */
+	public function canPlayCombination($combination) {
+		if($combination == 4) {
+			return $this->artillery + $this->jokers >= 3;
+		} else if($combination == 6) {
+			return $this->infantry + $this->jokers >= 3;
+		} else if($combination == 8) {
+			return $this->cavalry + $this->jokers >= 3;
+		}
+		return ($this->artillery + $this->infantry + $this->cavalry >= 1 && $this->jokers >= 2)
+			|| ($this->artillery >= 1 && $this->infantry >= 1 && $this->cavalry >= 1)
+			|| ($this->jokers >= 1
+				&& (($this->artillery >= 1 && $this->infantry >= 1)
+				|| ($this->artillery >= 1 && $this->cavalry >= 1)
+				|| ($this->infantry >= 1 && $this->cavalry >= 1)));
+	}
+
 	public static function isCard($card) {
 		return $card == static::CARD_NONE
 			|| $card == static::CARD_ARTILLERY
