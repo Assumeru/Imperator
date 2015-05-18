@@ -70,7 +70,18 @@
 		$('#regions [data-button="highlight"]').click(highlightRegion);
 		$('#controls-box [data-button="stack"]').click(sendFortify);
 		$('#controls-box [data-button="endturn"]').click(sendEndTurn);
+		$('#controls-box [data-button="forfeit"]').click(sendForfeit);
 		$('#card-controls [data-button="cards"]').click(sendCards);
+	}
+
+	function sendForfeit() {
+		if(window.confirm(Imperator.settings.language.forfeit)) {
+			Imperator.API.send({
+				mode: 'game',
+				gid: $game.id,
+				type: 'forfeit'
+			});
+		}
 	}
 
 	function sendCards() {

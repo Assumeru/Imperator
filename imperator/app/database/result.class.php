@@ -8,10 +8,6 @@ class Result {
 		$this->data = $data;
 	}
 
-	public function hasData() {
-		return !empty($this->data);
-	}
-
 	/**
 	 * @param string $column
 	 * @return int

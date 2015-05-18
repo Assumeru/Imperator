@@ -104,7 +104,7 @@ abstract class DatabaseManager {
 	 */
 	public function rowExists($table, $where) {
 		$query = $this->query('SELECT 1 FROM '.$table.' WHERE '.$where);
-		if($query->fetchResult()->hasData()) {
+		if($query->fetchResult()) {
 			$query->free();
 			return true;
 		}

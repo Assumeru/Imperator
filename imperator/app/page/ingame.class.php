@@ -94,7 +94,8 @@ class InGame extends DefaultPage {
 			'wait' => $language->translate('Please wait...'),
 			'contacting' => $language->translate('Contacting server.'),
 			'newcard' => $language->translate('You have received a new card!'),
-			'card' => \imperator\game\Cards::getCardNames($language)
+			'card' => \imperator\game\Cards::getCardNames($language),
+			'forfeit' => $language->translate('Are you sure you want to forfeit?')
 		));
 		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');
