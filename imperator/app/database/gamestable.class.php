@@ -68,7 +68,7 @@ class GamesTable extends Table {
 			WHERE gj.'.$gj::COLUMN_GID.' IN(
 				SELECT '.$gj::COLUMN_GID.'
 				FROM '.$gj::NAME.'
-				WHERE '.$gj::COLUMN_UID.' = '.((int)$user->getId()).'
+				WHERE '.$gj::COLUMN_UID.' = '.$user->getId().'
 			)
 			GROUP BY gj.'.$gj::COLUMN_GID.'
 			ORDER BY '.static::COLUMN_MAP.', players ASC';
@@ -107,22 +107,22 @@ class GamesTable extends Table {
 	 */
 	public function getGameById($gameId) {
 		$game = null;
-		$gameId = (int)$gameId;
+		$gameId = $gameId;
 		$userClass = Imperator::getSettings()->getUserClass();
 		$query = $this->getManager()->query('SELECT * FROM '.static::NAME.' WHERE '.static::COLUMN_GID.' = '.$gameId);
 		if($result = $query->fetchResult()) {
 			$game = new \imperator\Game(
-				(int)$result[static::COLUMN_GID],
-				new $userClass($result[static::COLUMN_UID]),
-				$result[static::COLUMN_NAME],
-				(int)$result[static::COLUMN_MAP],
-				(int)$result[static::COLUMN_STATE],
-				(int)$result[static::COLUMN_TURN],
+				$result->getInt(static::COLUMN_GID),
+				new $userClass($result->getInt(static::COLUMN_UID)),
+				$result->get(static::COLUMN_NAME),
+				$result->getInt(static::COLUMN_MAP),
+				$result->getInt(static::COLUMN_STATE),
+				$result->getInt(static::COLUMN_TURN),
 				1,
-				$result[static::COLUMN_PASSWORD],
-				$result[static::COLUMN_TIME],
-				$result[static::COLUMN_CONQUERED],
-				$result[static::COLUMN_UNITS]
+				$result->get(static::COLUMN_PASSWORD),
+				$result->getInt(static::COLUMN_TIME),
+				$result->getBool(static::COLUMN_CONQUERED),
+				$result->getInt(static::COLUMN_UNITS)
 			);
 			$players = $this->getManager()->getTable('GamesJoined')->getPlayersForGame($game);
 			$game->setPlayers($players);
@@ -148,14 +148,14 @@ class GamesTable extends Table {
 		$userClass = Imperator::getSettings()->getUserClass();
 		while($result = $query->fetchResult()) {
 			$games[] = new \imperator\Game(
-				(int)$result[static::COLUMN_GID],
-				new $userClass($result[static::COLUMN_UID], $result[$u::COLUMN_USERNAME]),
-				$result[static::COLUMN_NAME],
-				(int)$result[static::COLUMN_MAP],
-				(int)$result[static::COLUMN_STATE],
-				(int)$result[static::COLUMN_TURN],
-				(int)$result['players'],
-				$result[static::COLUMN_PASSWORD]
+				$result->getInt(static::COLUMN_GID),
+				new $userClass($result->getInt(static::COLUMN_UID), $result->get($u::COLUMN_USERNAME)),
+				$result->get(static::COLUMN_NAME),
+				$result->getInt(static::COLUMN_MAP),
+				$result->getInt(static::COLUMN_STATE),
+				$result->getInt(static::COLUMN_TURN),
+				$result->getInt('players'),
+				$result->get(static::COLUMN_PASSWORD)
 			);
 		}
 		$query->free();

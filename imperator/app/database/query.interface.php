@@ -3,7 +3,7 @@ namespace imperator\database;
 
 interface Query {
 	/**
-	 * @return array An associative array representing a row.
+	 * @return Result A row.
 	 */
 	public function fetchResult();
 

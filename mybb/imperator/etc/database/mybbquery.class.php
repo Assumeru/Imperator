@@ -10,7 +10,7 @@ class MyBBQuery implements \imperator\database\Query {
 
 	public function fetchResult() {
 		global $db;
-		return $db->fetch_array($this->query);
+		return new imperator\database\Result($db->fetch_array($this->query));
 	}
 
 	public function free() {

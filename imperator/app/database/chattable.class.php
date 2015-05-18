@@ -53,18 +53,18 @@ class ChatTable extends Table {
 		$userClass = Imperator::getSettings()->getUserClass();
 		$users = array();
 		while($result = $query->fetchResult()) {
-			if(!isset($users[$result[static::COLUMN_UID]])) {
-				$users[$result[static::COLUMN_UID]] = new $userClass($result[static::COLUMN_UID], $result[$u::COLUMN_USERNAME]);
+			if(!isset($users[$result->getInt(static::COLUMN_UID)])) {
+				$users[$result->getInt(static::COLUMN_UID)] = new $userClass($result->getInt(static::COLUMN_UID), $result->get($u::COLUMN_USERNAME));
 			}
-			$user = $users[$result[static::COLUMN_UID]];
-			if($gid !== 0 && isset($result[$gj::COLUMN_COLOR])) {
-				$user->setColor($result[$gj::COLUMN_COLOR]);
+			$user = $users[$result->getInt(static::COLUMN_UID)];
+			if($gid !== 0 && isset($result->get($gj::COLUMN_COLOR))) {
+				$user->setColor($result->get($gj::COLUMN_COLOR));
 			}
 			$messages[] = new \imperator\chat\ChatMessage(
-				$result[static::COLUMN_GID],
-				$result[static::COLUMN_TIME],
+				$result->getInt(static::COLUMN_GID),
+				$result->getInt(static::COLUMN_TIME),
 				$user,
-				$result[static::COLUMN_MESSAGE]
+				$result->get(static::COLUMN_MESSAGE)
 			);
 		}
 		$query->free();

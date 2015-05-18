@@ -24,12 +24,12 @@ class UsersTable extends Table {
 		$userClass = Imperator::getSettings()->getUserClass();
 		while($result = $query->fetchResult()) {
 			$user = new $userClass(
-				(int)$result[static::COLUMN_UID],
-				$result[$u::COLUMN_USERNAME]
+				$result->getInt(static::COLUMN_UID),
+				$result->get($u::COLUMN_USERNAME)
 			);
-			$user->setScore((int)$result[static::COLUMN_SCORE]);
-			$user->setWins((int)$result[static::COLUMN_WINS]);
-			$user->setLosses((int)$result[static::COLUMN_LOSSES]);
+			$user->setScore($result->getInt(static::COLUMN_SCORE));
+			$user->setWins($result->getInt(static::COLUMN_WINS));
+			$user->setLosses($result->getInt(static::COLUMN_LOSSES));
 			$users[] = $user;
 		}
 		$query->free();

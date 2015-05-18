@@ -43,9 +43,9 @@ class TerritoriesTable extends Table {
 			WHERE '.static::COLUMN_GID.' = '.$game->getId()
 		);
 		while($result = $query->fetchResult()) {
-			$id = $result[static::COLUMN_TERRITORY];
-			$uid = $result[static::COLUMN_UID];
-			$units = (int)$result[static::COLUMN_UNITS];
+			$id = $result->get(static::COLUMN_TERRITORY);
+			$uid = $result->getInt(static::COLUMN_UID);
+			$units = $result->getInt(static::COLUMN_UNITS);
 			$territory = $territories[$id];
 			$territory->setUnits($units);
 			$territory->setOwner($players[$uid]);

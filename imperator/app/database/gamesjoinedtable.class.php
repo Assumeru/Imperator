@@ -40,7 +40,7 @@ class GamesJoinedTable extends Table {
 	 * @return \imperator\User[]
 	 */
 	public function getPlayersForGame(\imperator\Game $game) {
-		$gid = (int)$game->getId();
+		$gid = $game->getId();
 		$u = $this->getManager()->getTable('OutsideUsers');
 		$sql = 'SELECT
 			u.'.$u::COLUMN_USERNAME.', u.'.$u::COLUMN_UID.', g.'.static::COLUMN_COLOR.', g.'.static::COLUMN_STATE.',
@@ -56,20 +56,20 @@ class GamesJoinedTable extends Table {
 		$missions = $game->getMap()->getMissions();
 		while($result = $query->fetchResult()) {
 			$player = new $userClass(
-				(int)$result[$u::COLUMN_UID],
-				$result[$u::COLUMN_USERNAME]
+				$result->getInt($u::COLUMN_UID),
+				$result->get($u::COLUMN_USERNAME)
 			);
-			$player->setColor($result[static::COLUMN_COLOR]);
-			$player->setState($result[static::COLUMN_STATE]);
-			$player->setAutoRoll($result[static::COLUMN_AUTOROLL]);
+			$player->setColor($result->get(static::COLUMN_COLOR));
+			$player->setState($result->getInt(static::COLUMN_STATE));
+			$player->setAutoRoll($result->getBool(static::COLUMN_AUTOROLL));
 			$player->setCards(new \imperator\game\Cards(
-				(int)$result[static::COLUMN_CARD_ARTILLERY],
-				(int)$result[static::COLUMN_CARD_CAVALRY],
-				(int)$result[static::COLUMN_CARD_INFANTRY],
-				(int)$result[static::COLUMN_CARD_JOKER]
+				$result->getInt(static::COLUMN_CARD_ARTILLERY),
+				$result->getInt(static::COLUMN_CARD_CAVALRY),
+				$result->getInt(static::COLUMN_CARD_INFANTRY),
+				$result->getInt(static::COLUMN_CARD_JOKER)
 			));
-			$mission = $missions[$result[static::COLUMN_MISSION]];
-			$mission->setUid($result[static::COLUMN_MISSION_UID]);
+			$mission = $missions[$result->getInt(static::COLUMN_MISSION)];
+			$mission->setUid($result->getInt(static::COLUMN_MISSION_UID));
 			$player->setMission($mission);
 			$players[] = $player;
 		}
@@ -124,10 +124,10 @@ class GamesJoinedTable extends Table {
 		$result = $query->fetchResult();
 		$query->free();
 		return new \imperator\game\Cards(
-			$result[static::COLUMN_CARD_ARTILLERY],
-			$result[static::COLUMN_CARD_CAVALRY],
-			$result[static::COLUMN_CARD_INFANTRY],
-			$result[static::COLUMN_CARD_JOKER]
+			$result->getInt(static::COLUMN_CARD_ARTILLERY),
+			$result->getInt(static::COLUMN_CARD_CAVALRY),
+			$result->getInt(static::COLUMN_CARD_INFANTRY),
+			$result->getInt(static::COLUMN_CARD_JOKER)
 		);
 	}
 
@@ -137,7 +137,7 @@ class GamesJoinedTable extends Table {
 			WHERE '.static::COLUMN_GID.' = '.$game->getId());
 		$result = $query->fetchResult();
 		$query->free();
-		return (int)$result['jokers'];
+		return $result->getInt('jokers');
 	}
 
 	public function saveCards(\imperator\Game $game, \imperator\User $user, \imperator\game\Cards $cards) {
