@@ -95,7 +95,7 @@
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
-				action: 'play-cards',
+				type: 'play-cards',
 				units: $num
 			});
 		}
@@ -231,6 +231,11 @@
 		if($newCard !== CARD_NONE) {
 			Imperator.Dialog.showDialog(Imperator.settings.language.newcard, Imperator.settings.templates.card.replace('%1$s', $newCard).replace('%2$s', Imperator.settings.language.card[$newCard]), true, 'text-center');
 		}
+		if($dialogs.playcards !== undefined) {
+			$dialogs.playcards.close();
+			delete $dialogs.playcards;
+			
+		}
 		$cards.empty();
 		for($n = 0; $n < $game.cards[CARD_ARTILLERY]; $n++) {
 			$cards.append($artillery);
@@ -296,9 +301,9 @@
 				$btn.click();
 			}
 		} else {
-			if($dialog.endturn !== undefined) {
-				$dialog.endturn.close();
-				delete $dialog.endturn;
+			if($dialogs.endturn !== undefined) {
+				$dialogs.endturn.close();
+				delete $dialogs.endturn;
 			}
 			$('body').removeClass('my-turn');
 		}

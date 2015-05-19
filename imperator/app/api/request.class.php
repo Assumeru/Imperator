@@ -88,6 +88,10 @@ class Request {
 		return trim(Imperator::stripIllegalCharacters($this->data['message']));
 	}
 
+	public function getUnits() {
+		return (int)$this->data['units'];
+	}
+
 	public function getCard() {
 		if(isset($this->data['card']) && is_numeric($this->data['card']) && \imperator\game\Cards::isCard($this->data['card'])) {
 			return (int)$this->data['card'];

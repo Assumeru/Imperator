@@ -12,7 +12,7 @@ class MyBBQuery implements \imperator\database\Query {
 		global $db;
 		$result = $db->fetch_array($this->query);
 		if($result) {
-			return new imperator\database\Result($result);
+			return new \imperator\database\Result($result);
 		}
 		return null;
 	}

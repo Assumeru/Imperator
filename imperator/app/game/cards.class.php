@@ -145,6 +145,56 @@ class Cards {
 				|| ($this->infantry >= 1 && $this->cavalry >= 1)));
 	}
 
+	private function removeBestCombination($card) {
+		$num = $this->getNumberOf($card);
+		if($num >= 3) {
+			$this->setNumberOf($card, $num - 3);
+		} else if($num == 2) {
+			$this->setNumberOf($card, $num - 2);
+			$this->jokers -= 1;
+		} else {
+			$this->setNumberOf($card, $num - 1);
+			$this->jokers -= 2;
+		}
+	}
+
+	public function removeCombination($units) {
+		if($units == 4) {
+			$this->removeBestCombination(static::CARD_ARTILLERY);
+		} else if($units == 6) {
+			$this->removeBestCombination(static::CARD_INFANTRY);
+		} else if($units == 8) {
+			$this->removeBestCombination(static::CARD_CAVALRY);
+		} else {
+			if($this->artillery >= 1 && $this->cavalry >= 1 && $this->infantry >= 1) {
+				$this->artillery--;
+				$this->cavalry--;
+				$this->infantry--;
+			} else if($this->artillery >= 1 && $this->cavalry >= 1) {
+				$this->artillery--;
+				$this->cavalry--;
+				$this->jokers--;
+			} else if($this->cavalry >= 1 && $this->infantry >= 1) {
+				$this->cavalry--;
+				$this->infantry--;
+				$this->jokers--;
+			} else if($this->artillery >= 1 && $this->infantry >= 1) {
+				$this->artillery--;
+				$this->infantry--;
+				$this->jokers--;
+			} else if($this->artillery >= 1) {
+				$this->artillery--;
+				$this->jokers -= 2;
+			} else if($this->cavalry >= 1) {
+				$this->cavalry--;
+				$this->jokers -= 2;
+			} else {
+				$this->infantry--;
+				$this->jokers -= 2;
+			}
+		}
+	}
+
 	public static function isCard($card) {
 		return $card == static::CARD_NONE
 			|| $card == static::CARD_ARTILLERY

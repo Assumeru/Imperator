@@ -491,4 +491,13 @@ class Game {
 		$this->state = static::STATE_FORTIFY;
 		Imperator::getDatabaseManager()->getTable('Games')->updateUnitsAndState($this);
 	}
+
+	public function playCardCombination(User $user, $units) {
+		$cards = $user->getCards($this);
+		$cards->removeCombination($units);
+		$this->units += $units;
+		$db = Imperator::getDatabaseManager();
+		$db->getTable('GamesJoined')->saveCards($this, $user, $cards);
+		$db->getTable('Games')->updateUnits($this);
+	}
 }

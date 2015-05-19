@@ -21,6 +21,16 @@ abstract class Api {
 		return $this->request;
 	}
 
+	protected function sendError($message) {
+		return $this->reply(array(
+			'error' => array(
+				'message' => $message,
+				'mode' => $this->request->getMode(),
+				'type' => $this->request->getType()
+			)
+		));
+	}
+
 	public function handleRequest() {
 		if($this->request->isValid()) {
 			if($this->request->getMode() == Request::MODE_UPDATE) {
@@ -189,9 +199,30 @@ abstract class Api {
 					return $this->handleStartMoveRequest($game);
 				} else if($this->request->getType() == 'end-turn') {
 					return $this->handleEndTurnRequest($game);
+				} else if($this->request->getType() == 'play-cards' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_FORTIFY)) {
+					return $this->handleCardsRequest($game);
 				}
 			}
 		}
+	}
+
+	protected function handleCardsRequest(\imperator\Game $game) {
+		$user = $game->getPlayerByUser($this->user);
+		$cards = $user->getCards($game);
+		if($cards->canPlayCombination($this->request->getUnits())) {
+			$game->playCardCombination($user, $this->request->getUnits());
+			return $this->reply(array(
+				'units' => $game->getUnits(),
+				'cards' => array(
+					\imperator\game\Cards::CARD_ARTILLERY => $cards->getArtillery(),
+					\imperator\game\Cards::CARD_CAVALRY => $cards->getCavalry(),
+					\imperator\game\Cards::CARD_INFANTRY => $cards->getInfantry(),
+					\imperator\game\Cards::CARD_JOKER => $cards->getJokers()
+				),
+				'time' => $game->getTime()
+			));
+		}
+		return $this->sendError($user->getLanguage()->translate('You do not have the required cards to place %1$d units.', $this->request->getUnits()));
 	}
 
 	protected function handleFortifyRequest(\imperator\Game $game) {
@@ -204,9 +235,7 @@ abstract class Api {
 
 	protected function handleStartMoveRequest(\imperator\Game $game) {
 		if($game->hasOngoingBattles()) {
-			return $this->reply(array(
-				'error' => $this->user->getLanguage()->translate('All battles need to finish before units can be moved.')
-			));
+			return $this->sendError($this->user->getLanguage()->translate('All battles need to finish before units can be moved.'));
 		}
 		$game->startMove();
 		return $this->reply(array(
@@ -217,9 +246,7 @@ abstract class Api {
 
 	protected function handleEndTurnRequest(\imperator\Game $game) {
 		if($game->getState() == \imperator\Game::STATE_COMBAT && $game->hasOngoingBattles()) {
-			return $this->reply(array(
-				'error' => $this->user->getLanguage()->translate('You cannot end your turn without finishing all battles.')
-			));
+			return $this->sendError($this->user->getLanguage()->translate('You cannot end your turn without finishing all battles.'));
 		}
 		$reply = array();
 		if($game->hasConquered()) {
@@ -234,9 +261,7 @@ abstract class Api {
 
 	protected function handleForfeitRequest(\imperator\Game $game) {
 		if($game->getState() == \imperator\Game::STATE_COMBAT && $game->playerHasToDefend($this->user)) {
-			return $this->reply(array(
-				'error' => $this->user->getLanguage()->translate('You cannot forfeit without finishing all battles.')
-			));
+			return $this->sendError($this->user->getLanguage()->translate('You cannot forfeit without finishing all battles.'));
 		}
 		$game->forfeit($user);
 	}

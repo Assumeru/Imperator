@@ -216,4 +216,11 @@ class GamesTable extends Table {
 			static::COLUMN_TIME => $game->getTime()
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
+
+	public function updateUnits(\imperator\Game $game) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_UNITS => $game->getUnits(),
+			static::COLUMN_TIME => $game->getTime()
+		), static::COLUMN_GID.' = '.$game->getId())->free();
+	}
 }
