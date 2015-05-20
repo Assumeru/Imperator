@@ -241,7 +241,7 @@ body:not(.my-turn) #card-controls {
 }
 
 #card-controls {
-	margin: 1em 5px 0;
+	margin: 1em 5px;
 }
 
 #card-controls .btn {

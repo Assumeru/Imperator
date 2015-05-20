@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+window.addEventListener('load', function() {
+	var $sC = document.getElementsByTagName('circle'),
+	$circle = {x: $sC[0].getAttribute('cx')-0, y: $sC[0].getAttribute('cy')-0, r: {inner: $sC[0].getAttribute('r')-0, outer: $sC[1].getAttribute('r')-0}},
+	$paths = document.getElementsByClassName('slice'),
+	$numPaths = $paths.length;
+	for(var $n = 0; $n < $numPaths; $n++) {
+		var $flag = 0,
+		$d = [
+			'M', 
+			round($circle.x + $circle.r.inner * Math.cos(Math.PI * 2 / $numPaths * ($n+1))),
+			round($circle.x + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
+			'L', round($circle.x + $circle.r.outer * Math.cos(Math.PI * 2 / $numPaths * ($n+1))),
+			round($circle.x + $circle.r.outer * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
+			'A', $circle.r.outer, $circle.r.outer, 0, 0, $flag,
+			round($circle.x + $circle.r.outer * Math.cos(Math.PI * 2 / $numPaths * $n)),
+			round($circle.x + $circle.r.outer * Math.sin(Math.PI * 2 / $numPaths * $n)),
+			'L', round($circle.x + $circle.r.inner * Math.cos(Math.PI * 2 / $numPaths * $n)),
+			round($circle.x + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * $n)),
+			'A', $circle.r.inner, $circle.r.inner, 0, 0, (($flag+1)%2),
+			round($circle.x + $circle.r.inner * Math.cos(Math.PI * 2 / $numPaths * ($n+1))),
+			round($circle.x + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
+			'Z'].join(' ');
+		$paths[$n].setAttribute('d', $d);
+	}
+
+	function round($num) {
+		return Math.round($num*1000)/1000;
+	}
+});
+</script>
+<style type="text/css">
+.slice {
+	stroke: #ddd;
+	fill: #fff;
+	cursor: pointer;
+}
+.slice:hover {
+	fill: #f0f0f0;
+}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="150px" height="150px">
+	<defs>
+		<path id="pattern-img-triangle" d="M173.205 0Q173.205 200 0 300 173.205 200 346.41 300 173.205 200 173.205 0Z" />
+		<path id="pattern-img-arrow-green" fill="lime" d="M0 125 Q 0 25 75 25 V 0 L 125 50 75 100 V 75 Q 25 75 0 125Z" />
+		<path id="pattern-img-arrow-red" fill="red" d="M0 125 Q 0 25 75 25 V 0 L 125 50 75 100 V 75 Q 25 75 0 125Z" />
+		<pattern id="pattern-units-1" width="1" height="1" viewBox="0 0 346.41 400">
+			<use xlink:href="#pattern-img-triangle" />
+		</pattern>
+		<pattern id="pattern-arrow-green" width="1" height="1" viewBox="0 0 125 125">
+			<use xlink:href="#pattern-img-arrow-green" />
+		</pattern>
+		<pattern id="pattern-arrow-red" width="1" height="1" viewBox="0 0 125 125">
+			<use xlink:href="#pattern-img-arrow-red" />
+		</pattern>
+	</defs>
+	<circle cx="75" cy="75" r="20" fill="transparent" stroke="rgba(0,0,0,0.3)" stroke-width="5" />
+	<circle cx="75" cy="75" r="50" fill="transparent" stroke="rgba(0,0,0,0.3)" stroke-width="5" />
+	<g id="move-from">
+		<path class="slice" />
+		<rect fill="url(#pattern-units-1)" x="85" y="85" width="30" height="30" />
+		<rect fill="url(#pattern-arrow-green)" x="105" y="80" width="13" height="13" />
+	</g>
+	<g id="move-to">
+		<path class="slice" />
+		<rect fill="url(#pattern-units-1)" x="55" y="97" width="30" height="30" />
+		<rect fill="url(#pattern-arrow-green)" transform="rotate(90, 57.5, 102.5)" x="50" y="95" width="13" height="13" />
+	</g>
+	<g id="stack" title="stack">
+		<path class="slice" />
+		<rect fill="url(#pattern-units-1)" x="24" y="65" width="30" height="30" />
+		<path fill="lime" d="M47 60 h 3 v 5 h 5 v 3 h -5 v 5 h -3 v -5 h -5 v -3 h 5 Z" />
+	</g>
+	<g id="attack-to">
+		<path class="slice" />
+		<rect fill="url(#pattern-units-1)" x="53" y="32" width="30" height="30" />
+		<rect fill="url(#pattern-arrow-red)" transform="rotate(90, 57.5, 37.5)" x="50" y="30" width="13" height="13" />
+	</g>
+	<g id="attack-from">
+		<path class="slice" />
+		<rect fill="url(#pattern-units-1)" x="85" y="40" width="30" height="30" />
+		<rect fill="url(#pattern-arrow-red)" x="105" y="45" width="13" height="13" />
+	</g>
+</svg>
+</body>
+</html>
