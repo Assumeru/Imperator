@@ -6,25 +6,29 @@ window.addEventListener('load', function() {
 	var $sC = document.getElementsByTagName('circle'),
 	$circle = {x: $sC[0].getAttribute('cx')-0, y: $sC[0].getAttribute('cy')-0, r: {inner: $sC[0].getAttribute('r')-0, outer: $sC[1].getAttribute('r')-0}},
 	$paths = document.getElementsByClassName('slice'),
-	$numPaths = $paths.length;
+	$numPaths = $paths.length,
+	$units = document.getElementsByClassName('unit');
 	for(var $n = 0; $n < $numPaths; $n++) {
 		var $flag = 0,
 		$d = [
 			'M', 
 			round($circle.x + $circle.r.inner * Math.cos(Math.PI * 2 / $numPaths * ($n+1))),
-			round($circle.x + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
+			round($circle.y + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
 			'L', round($circle.x + $circle.r.outer * Math.cos(Math.PI * 2 / $numPaths * ($n+1))),
-			round($circle.x + $circle.r.outer * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
+			round($circle.y + $circle.r.outer * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
 			'A', $circle.r.outer, $circle.r.outer, 0, 0, $flag,
 			round($circle.x + $circle.r.outer * Math.cos(Math.PI * 2 / $numPaths * $n)),
-			round($circle.x + $circle.r.outer * Math.sin(Math.PI * 2 / $numPaths * $n)),
+			round($circle.y + $circle.r.outer * Math.sin(Math.PI * 2 / $numPaths * $n)),
 			'L', round($circle.x + $circle.r.inner * Math.cos(Math.PI * 2 / $numPaths * $n)),
-			round($circle.x + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * $n)),
+			round($circle.y + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * $n)),
 			'A', $circle.r.inner, $circle.r.inner, 0, 0, (($flag+1)%2),
 			round($circle.x + $circle.r.inner * Math.cos(Math.PI * 2 / $numPaths * ($n+1))),
-			round($circle.x + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
+			round($circle.y + $circle.r.inner * Math.sin(Math.PI * 2 / $numPaths * ($n+1))),
 			'Z'].join(' ');
 		$paths[$n].setAttribute('d', $d);
+
+		$units[$n].setAttribute('x', round($circle.x + ($circle.r.inner+$circle.r.outer) / 2 * Math.cos(Math.PI*2/5*($n+0.5))-$units[$n].getAttribute('width')/2));
+		$units[$n].setAttribute('y', round($circle.y + ($circle.r.inner+$circle.r.outer) / 2 * Math.sin(Math.PI*2/5*($n+0.5))-$units[$n].getAttribute('height')/2));
 	}
 
 	function round($num) {
@@ -40,6 +44,9 @@ window.addEventListener('load', function() {
 }
 .slice:hover {
 	fill: #f0f0f0;
+}
+.unit {
+	fill: url(#pattern-units-1);
 }
 </style>
 </head>
@@ -63,28 +70,28 @@ window.addEventListener('load', function() {
 	<circle cx="75" cy="75" r="50" fill="transparent" stroke="rgba(0,0,0,0.3)" stroke-width="5" />
 	<g id="move-from">
 		<path class="slice" />
-		<rect fill="url(#pattern-units-1)" x="85" y="85" width="30" height="30" />
-		<rect fill="url(#pattern-arrow-green)" x="105" y="80" width="13" height="13" />
+		<rect class="unit" width="30" height="30" />
+		<rect fill="url(#pattern-arrow-green)" x="108" y="82" width="13" height="13" />
 	</g>
 	<g id="move-to">
 		<path class="slice" />
-		<rect fill="url(#pattern-units-1)" x="55" y="97" width="30" height="30" />
-		<rect fill="url(#pattern-arrow-green)" transform="rotate(90, 57.5, 102.5)" x="50" y="95" width="13" height="13" />
+		<rect class="unit" width="30" height="30" />
+		<rect fill="url(#pattern-arrow-green)" transform="rotate(90, 57.5, 102.5)" x="50" y="97" width="13" height="13" />
 	</g>
 	<g id="stack" title="stack">
 		<path class="slice" />
-		<rect fill="url(#pattern-units-1)" x="24" y="65" width="30" height="30" />
+		<rect class="unit" width="30" height="30" />
 		<path fill="lime" d="M47 60 h 3 v 5 h 5 v 3 h -5 v 5 h -3 v -5 h -5 v -3 h 5 Z" />
 	</g>
 	<g id="attack-to">
 		<path class="slice" />
-		<rect fill="url(#pattern-units-1)" x="53" y="32" width="30" height="30" />
+		<rect class="unit" width="30" height="30" />
 		<rect fill="url(#pattern-arrow-red)" transform="rotate(90, 57.5, 37.5)" x="50" y="30" width="13" height="13" />
 	</g>
 	<g id="attack-from">
 		<path class="slice" />
-		<rect fill="url(#pattern-units-1)" x="85" y="40" width="30" height="30" />
-		<rect fill="url(#pattern-arrow-red)" x="105" y="45" width="13" height="13" />
+		<rect class="unit" width="30" height="30" />
+		<rect fill="url(#pattern-arrow-red)" x="105" y="44" width="13" height="13" />
 	</g>
 </svg>
 </body>

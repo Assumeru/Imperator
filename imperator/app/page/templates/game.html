@@ -143,3 +143,44 @@
 		<button class="btn btn-danger player-only pull-right" data-button="forfeit" title="{$forfeitTitle}">{$forfeit}</button>
 	</div>
 </div>
+<div id="radial-menu">
+	<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150">
+		<defs>
+			<path d="M 0 125 Q 0 25 75 25 V 0 L 125 50 75 100 V 75 Q 25 75 0 125 Z" fill="lime" id="pattern-img-arrow-green" />
+			<path d="M 0 125 Q 0 25 75 25 V 0 L 125 50 75 100 V 75 Q 25 75 0 125 Z" fill="red" id="pattern-img-arrow-red" />
+			<pattern viewBox="0 0 125 125" height="1" width="1" id="pattern-arrow-green">
+				<use xlink:href="#pattern-img-arrow-green" />
+			</pattern>
+			<pattern viewBox="0 0 125 125" height="1" width="1" id="pattern-arrow-red">
+				<use xlink:href="#pattern-img-arrow-red" />
+			</pattern>
+		</defs>
+		<circle class="outer" r="50" cy="75" cx="75" />
+		<circle class="inner" r="20" cy="75" cx="75" />
+		<g data-button="move-from" title="{$radialmovefrom}">
+			<path class="slice" d="M 81.18 94.021 L 90.451 122.553 A 50 50 0 0 0 125 75 L 95 75 A 20 20 0 0 1 81.18 94.021 Z" />
+			<rect height="30" width="30" fill="url(#pattern-units-1)" x="88.316" y="80.572" />
+			<rect height="13" width="13" y="82" x="108" fill="url(#pattern-arrow-green)" />
+		</g>
+		<g data-button="move-to" title="{$radialmoveto}">
+			<path class="slice" d="M 58.82 86.756 L 34.549 104.389 A 50 50 0 0 0 90.451 122.553 L 81.18 94.021 A 20 20 0 0 1 58.82 86.756 Z" />
+			<rect height="30" width="30" fill="url(#pattern-units-1)" x="49.184" y="93.287" />
+			<rect height="13" width="13" y="97" x="50" transform="rotate(90, 57.5, 102.5)" fill="url(#pattern-arrow-green)" />
+		</g>
+		<g data-button="stack" title="{$radialstack}">
+			<path class="slice" d="M 58.82 63.244 L 34.549 45.611 A 50 50 0 0 0 34.549 104.389 L 58.82 86.756 A 20 20 0 0 1 58.82 63.244 Z" />
+			<rect height="30" width="30" fill="url(#pattern-units-1)" x="25" y="60" />
+			<path d="M47 60 h 3 v 5 h 5 v 3 h -5 v 5 h -3 v -5 h -5 v -3 h 5 Z" fill="lime" />
+		</g>
+		<g data-button="attack-to" title="{$radialattackto}">
+			<path class="slice" d="M 81.18 55.979 L 90.451 27.447 A 50 50 0 0 0 34.549 45.611 L 58.82 63.244 A 20 20 0 0 1 81.18 55.979 Z" />
+			<rect height="30" width="30" fill="url(#pattern-units-1)" x="49.184" y="26.713" />
+			<rect height="13" width="13" y="30" x="50" transform="rotate(90, 57.5, 37.5)" fill="url(#pattern-arrow-red)" />
+		</g>
+		<g data-button="attack-from" title="{$radialattackfrom}">
+			<path class="slice" d="M 95 75 L 125 75 A 50 50 0 0 0 90.451 27.447 L 81.18 55.979 A 20 20 0 0 1 95 75 Z" />
+			<rect height="30" width="30" fill="url(#pattern-units-1)" x="88.316" y="39.428" />
+			<rect height="13" width="13" y="44" x="105" fill="url(#pattern-arrow-red)" />
+		</g>
+	</svg>
+</div>

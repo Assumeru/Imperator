@@ -64,7 +64,12 @@ class InGame extends DefaultPage {
 			'cardsButtonFour' => $language->translate('Place %1$d units', 4),
 			'cardsButtonSix' => $language->translate('Place %1$d units', 6),
 			'cardsButtonEight' => $language->translate('Place %1$d units', 8),
-			'cardsButtonTen' => $language->translate('Place %1$d units', 10)
+			'cardsButtonTen' => $language->translate('Place %1$d units', 10),
+			'radialstack' => $language->translate('Fortify this territory'),
+			'radialmoveto' => $language->translate('Move units to this territory'),
+			'radialmovefrom' => $language->translate('Move units from this territory'),
+			'radialattackto' => $language->translate('Attack this territory'),
+			'radialattackfrom' => $language->translate('Attack from this territory')
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {

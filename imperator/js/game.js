@@ -50,6 +50,11 @@
 		Imperator.Map.onLoad(function() {
 			$('#map svg g[id]').click(function() {
 				window.location = '#tab-territory-'+this.id;
+			}).on('contextmenu', function($e) {
+				if($game.turn == Imperator.settings.uid) {
+					$e.preventDefault();
+					showRadialMenu(this.id, $e.pageX, $e.pageY);
+				}
 			});
 		});
 		$('#settings input[name="unitgraphics"][value="'+$unitGraphics+'"]').prop('checked', true);
@@ -72,6 +77,75 @@
 		$('#controls-box [data-button="endturn"]').click(sendEndTurn);
 		$('#controls-box [data-button="forfeit"]').click(sendForfeit);
 		$('#card-controls [data-button="cards"]').click(sendCards);
+		$('#radial-menu').mouseleave(closeRadialMenu);
+		$('#radial-menu .inner').click(closeRadialMenu);
+	}
+
+	function territoryBordersForeignTerritories($territory) {
+		for(var $border in $territory.borders) {
+			if($game.map.territories[$border].uid != $territory.uid) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function territoryBordersFriendlyTerritories($territory) {
+		for(var $border in $territory.borders) {
+			if($game.map.territories[$border].uid == $territory.uid) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function territoryCanReceiveReinforcements($territory) {
+		return territoryCanBeAttackedBy($territory, $territory.uid);
+	}
+
+	function territoryCanBeAttackedBy($territory, $uid) {
+		for(var $border in $territory.borders) {
+			if($game.map.territories[$border].uid == $uid && $game.map.territories[$border].units > 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function showRadialMenu($id, $x, $y) {
+		var $menu = $('#radial-menu'),
+		$stack = $menu.find('[data-button="stack"]'),
+		$moveTo = $menu.find('[data-button="moveto"]'),
+		$moveFrom = $menu.find('[data-button="movefrom"]'),
+		$attackTo = $menu.find('[data-button="attackto"]'),
+		$attackFrom = $menu.find('[data-button="attackfrom"]'),
+		$territory = $game.map.territories[$id];
+		$menu.find('g').attr('class', 'disabled');
+		if(($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY) && $game.units > 0) {
+			$stack.attr('class', '');
+		} else if($game.state === STATE_COMBAT || $game.state === STATE_TURN_START) {
+			if($territory.uid == Imperator.settings.uid) {
+				if($territory.units > 1 && territoryBordersForeignTerritories($territory)) {
+					$attackFrom.attr('class', '');
+				}
+			} else if(territoryCanBeAttackedBy($territory, $uid)) {
+				$attackTo.attr('class', '');
+			}
+		} else if($game.state === STATE_POST_COMBAT && $territory.uid == Imperator.settings.uid && $game.units > 0) {
+			if($territory.units > 1 && territoryBordersFriendlyTerritories($territory)) {
+				$moveFrom.attr('class', '');
+			}
+			if(territoryCanReceiveReinforcements($territory)) {
+				$moveTo.attr('class', '');
+			}
+		}
+		$menu.css('left', $x - $menu.outerWidth() / 2);
+		$menu.css('top', $y - $menu.outerHeight() / 2);
+		$menu.show();
+	}
+
+	function closeRadialMenu() {
+		$('#radial-menu').hide();
 	}
 
 	function sendForfeit() {
