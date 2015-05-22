@@ -23,6 +23,13 @@ Imperator.Dialog = (function($) {
 		});
 	}
 
+	function showDialogForm($header, $message, $buttons, $canBeClosed, $class) {
+		var $dialog = showDialog($header, Imperator.settings.templates.dialogform, $canBeClosed, $class);
+		$dialog.message.find('[data-value="dialog-form-message"]').append($message);
+		$dialog.message.find('[data-value="dialog-form-controls"]').append($buttons);
+		return $dialog;
+	}
+
 	function showDialog($header, $message, $canBeClosed, $class) {
 		var $dialog = $(Imperator.settings.templates.dialog),
 		$closeButton = $dialog.find('[data-value="close-button"]');

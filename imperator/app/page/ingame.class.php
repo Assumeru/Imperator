@@ -93,7 +93,11 @@ class InGame extends DefaultPage {
 			'card' => Template::getInstance('game_card')->replace(array(
 				'url' => $this->getCardURL(),
 				'name' => '%2$s'
-			))->getData()
+			))->getData(),
+			'okbutton' => Template::getInstance('button_ok')->replace(array(
+				'value' => $language->translate('Ok')
+			))->getData(),
+			'dialogform' => Template::getInstance('dialog_form')->getData()
 		));
 		$this->setJavascriptSetting('language', array(
 			'wait' => $language->translate('Please wait...'),

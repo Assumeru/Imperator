@@ -37,7 +37,8 @@
 
 	function init() {
 		var $window = $(window),
-		$unitGraphics = Imperator.Store.getItem('unit-graphics', 'default');
+		$unitGraphics = Imperator.Store.getItem('unit-graphics', 'default'),
+		$radialMenu = $('#radial-menu');
 		Imperator.API.onMessage(parseUpdateMessage);
 		Imperator.API.onOpen(function() {
 			Imperator.API.send({
@@ -77,8 +78,20 @@
 		$('#controls-box [data-button="endturn"]').click(sendEndTurn);
 		$('#controls-box [data-button="forfeit"]').click(sendForfeit);
 		$('#card-controls [data-button="cards"]').click(sendCards);
-		$('#radial-menu').mouseleave(closeRadialMenu);
-		$('#radial-menu .inner').click(closeRadialMenu);
+		$radialMenu.mouseleave(closeRadialMenu);
+		$radialMenu.find('.inner').click(closeRadialMenu);
+		$radialMenu.find('[data-button="stack"]').click(function() {
+			showFortifyFor($radialMenu.attr('data-territory'));
+			closeRadialMenu();
+		});
+	}
+
+	function showFortifyFor($territory) {
+		if($dialogs.stackInput !== undefined) {
+			$dialogs.stackInput.close();
+		}
+		//TODO
+		Imperator.Dialog.showDialogForm('Stack', 'How many?', 'Buttons', true);
 	}
 
 	function territoryBordersForeignTerritories($territory) {
@@ -139,6 +152,7 @@
 				$moveTo.attr('class', '');
 			}
 		}
+		$menu.attr('data-territory', $id);
 		$menu.css('left', $x - $menu.outerWidth() / 2);
 		$menu.css('top', $y - $menu.outerHeight() / 2);
 		$menu.show();
@@ -289,7 +303,7 @@
 	}
 
 	function updateCards($newCard) {
-		var $n,
+		var $n, $ok, $dialog,
 		$cards = $('#cards [data-value="card-list"]'),
 		$controls = $('#card-controls'),
 		$buttons = {
@@ -303,7 +317,13 @@
 		$cavalry = Imperator.settings.templates.card.replace('%1$s', CARD_CAVALRY).replace('%2$s', Imperator.settings.language.card[CARD_CAVALRY]),
 		$joker = Imperator.settings.templates.card.replace('%1$s', CARD_JOKER).replace('%2$s', Imperator.settings.language.card[CARD_JOKER]);
 		if($newCard !== CARD_NONE) {
-			Imperator.Dialog.showDialog(Imperator.settings.language.newcard, Imperator.settings.templates.card.replace('%1$s', $newCard).replace('%2$s', Imperator.settings.language.card[$newCard]), true, 'text-center');
+			$ok = $(Imperator.settings.templates.okbutton);
+			$dialog = Imperator.Dialog.showDialogForm(Imperator.settings.language.newcard,
+				Imperator.settings.templates.card.replace('%1$s', $newCard).replace('%2$s', Imperator.settings.language.card[$newCard]),
+				$ok, true, 'text-center');
+			$ok.click(function() {
+				$dialog.close();
+			});
 		}
 		if($dialogs.playcards !== undefined) {
 			$dialogs.playcards.close();
@@ -424,12 +444,12 @@
 				territories: getUnitsPerTurnFromTerritoriesFor($id, $players[$id].territories),
 				regions: getUnitsPerTurnFromRegionsFor($id),
 			};
-			$player = $('#players *[data-player="'+$id+'"]');
-			$player.find('*[data-value="territories"]').text($players[$id].territories);
-			$player.find('*[data-value="units"]').text($players[$id].units);
-			$player.find('*[data-value="unitsperturn"]').text($upt.territories + $upt.regions);
-			$player.find('*[data-value="unitsperturn-regions"]').text($upt.regions);
-			$player.find('*[data-value="unitsperturn-territories"]').text($upt.territories);
+			$player = $('#players [data-player="'+$id+'"]');
+			$player.find('[data-value="territories"]').text($players[$id].territories);
+			$player.find('[data-value="units"]').text($players[$id].units);
+			$player.find('[data-value="unitsperturn"]').text($upt.territories + $upt.regions);
+			$player.find('[data-value="unitsperturn-regions"]').text($upt.regions);
+			$player.find('[data-value="unitsperturn-territories"]').text($upt.territories);
 			if(Imperator.settings.uid == $id) {
 				$('#controls-box [data-button="stack"] .number').text($upt.territories);
 			}
