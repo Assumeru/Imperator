@@ -38,4 +38,13 @@ class Region {
 	public function getTerritories() {
 		return $this->territories;
 	}
+
+	public function isOwnedBy(\imperator\User $user) {
+		foreach($this->territories as $territory) {
+			if(!$territory->getOwner()->equals($user)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

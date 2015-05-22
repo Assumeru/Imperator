@@ -61,6 +61,7 @@ Imperator.Dialog = (function($) {
 
 	return {
 		showDialog: showDialog,
+		showDialogForm: showDialogForm,
 		closeDialog: closeDialog
 	};
 })(jQuery);

@@ -167,6 +167,11 @@ span .user {
 	border-bottom: 1px solid #eee;
 }
 
+.input-group-addon svg.unit {
+	margin: -6px -6px -8px;
+	height: 24px;
+}
+
 p.loading:before {
 	font-size: 5px;
 	margin: 4em 4em 0;

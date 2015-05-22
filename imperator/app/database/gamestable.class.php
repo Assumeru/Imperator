@@ -201,7 +201,7 @@ class GamesTable extends Table {
 
 	public function nextTurn(\imperator\Game $game) {
 		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_CONQUERED => $game->hasConquered(),
+			static::COLUMN_CONQUERED => (int)$game->hasConquered(),
 			static::COLUMN_STATE => $game->getState(),
 			static::COLUMN_TIME => $game->getTime(),
 			static::COLUMN_TURN => $game->getTurn(),

@@ -248,6 +248,7 @@ abstract class Api {
 		if($game->getState() == \imperator\Game::STATE_COMBAT && $game->hasOngoingBattles()) {
 			return $this->sendError($this->user->getLanguage()->translate('You cannot end your turn without finishing all battles.'));
 		}
+		$game->loadMap();
 		$reply = array();
 		if($game->hasConquered()) {
 			$reply['card'] = $game->giveCard($game->getPlayerByUser($this->user), $this->request->getCard());

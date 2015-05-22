@@ -86,12 +86,30 @@
 		});
 	}
 
-	function showFortifyFor($territory) {
+	function showFortifyFor($id) {
+		var $dialog, $input,
+		$territory = $game.map.territories[$id],
+		$ok = $(Imperator.settings.templates.okbutton),
+		$cancel = $(Imperator.settings.templates.cancelbutton),
+		$max = $(Imperator.settings.templates.maxbutton);
 		if($dialogs.stackInput !== undefined) {
 			$dialogs.stackInput.close();
 		}
-		//TODO
-		Imperator.Dialog.showDialogForm('Stack', 'How many?', 'Buttons', true);
+		$dialog = Imperator.Dialog.showDialogForm(
+			Imperator.settings.language.fortify.replace('%1$s', $territory.name),
+			Imperator.settings.templates.dialogformfortify,
+			$('<div>').append($ok).append(' ').append($max).append(' ').append($cancel), true);
+		$input = $dialog.message.find('[name="stack"]');
+		$input.attr('max', $game.units);
+		$input.focus();
+		$cancel.click(function($e) {
+			$e.preventDefault();
+			$dialog.close();
+		});
+		$max.click(function($e) {
+			$e.preventDefault();
+			$input.val($game.units);
+		});
 	}
 
 	function territoryBordersForeignTerritories($territory) {
@@ -198,7 +216,7 @@
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
-				action: 'end-turn'
+				type: 'end-turn'
 			});
 		}
 	}
@@ -321,7 +339,8 @@
 			$dialog = Imperator.Dialog.showDialogForm(Imperator.settings.language.newcard,
 				Imperator.settings.templates.card.replace('%1$s', $newCard).replace('%2$s', Imperator.settings.language.card[$newCard]),
 				$ok, true, 'text-center');
-			$ok.click(function() {
+			$ok.click(function($e) {
+				$e.preventDefault();
 				$dialog.close();
 			});
 		}

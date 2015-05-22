@@ -97,14 +97,25 @@ class InGame extends DefaultPage {
 			'okbutton' => Template::getInstance('button_ok')->replace(array(
 				'value' => $language->translate('Ok')
 			))->getData(),
-			'dialogform' => Template::getInstance('dialog_form')->getData()
+			'cancelbutton' => Template::getInstance('button_cancel')->replace(array(
+				'value' => $language->translate('Cancel')
+			))->getData(),
+			'maxbutton' => Template::getInstance('button_max')->replace(array(
+				'value' => $language->translate('Maximum')
+			))->getData(),
+			'dialogform' => Template::getInstance('dialog_form')->getData(),
+			'dialogformfortify' => Template::getInstance('dialog_form_stack')->replace(array(
+				'number' => $language->translate('How many units would you like to place?'),
+				'stack' => $language->translate('Units to place')
+			))->getData()
 		));
 		$this->setJavascriptSetting('language', array(
 			'wait' => $language->translate('Please wait...'),
 			'contacting' => $language->translate('Contacting server.'),
 			'newcard' => $language->translate('You have received a new card!'),
 			'card' => \imperator\game\Cards::getCardNames($language),
-			'forfeit' => $language->translate('Are you sure you want to forfeit?')
+			'forfeit' => $language->translate('Are you sure you want to forfeit?'),
+			'fortify' => $language->translate('Fortify %1$s')
 		));
 		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');
