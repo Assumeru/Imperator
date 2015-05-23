@@ -40,6 +40,9 @@ Imperator.Dialog = (function($) {
 		if($message) {
 			$dialog.find('[data-value="message"]').html($message);
 		}
+		$dialog.hide();
+		$(document.body).append($dialog);
+		$dialog.fadeIn(500);
 		if(!$canBeClosed) {
 			$closeButton.hide();
 		} else {
@@ -53,9 +56,6 @@ Imperator.Dialog = (function($) {
 			});
 			$closeButton.focus();
 		}
-		$dialog.hide();
-		$(document.body).append($dialog);
-		$dialog.fadeIn(500);
 		return new Dialog($dialog);
 	}
 

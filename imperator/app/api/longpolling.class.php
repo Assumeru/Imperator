@@ -3,6 +3,8 @@ namespace imperator\api;
 use imperator\Imperator;
 
 class LongPolling extends Api {
+	private $hasHeaders = false;
+
 	protected function handleChatUpdateRequest() {
 		set_time_limit(0);
 		$table = Imperator::getDatabaseManager()->getTable('Chat');
@@ -45,13 +47,16 @@ class LongPolling extends Api {
 		return json_encode($json);
 	}
 
-	protected function handleInvalidRequest() {
-		$this->sendHeader('400 Bad request');
-		return '{"error":"Bad request"}';
+	protected function sendError($message) {
+		$this->sendHeader('400 '.$message);
+		return parent::sendError($message);
 	}
 
 	private function sendHeader($header) {
-		header('Content-Type: application/json');
-		header('HTTP/1.0 '.$header);
+		if(!$this->hasHeaders) {
+			header('Content-Type: application/json');
+			header('HTTP/1.0 '.$header);
+			$this->hasHeaders = true;
+		}
 	}
 }

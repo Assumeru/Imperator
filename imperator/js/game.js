@@ -102,6 +102,22 @@
 		$input = $dialog.message.find('[name="stack"]');
 		$input.attr('max', $game.units);
 		$input.focus();
+		$dialog.message.find('form').submit(function($e) {
+			var $num = Number.parseInt($input.val(), 10);
+			$e.preventDefault();
+			if(isNaN($num) || $num > $game.units || $num < 1 || !window.confirm(Imperator.settings.language.confirmfortify.replace('%1$d', $num).replace('%2$s', $territory.name))) {
+				$input.focus();
+			} else {
+				$dialog.close();
+				Imperator.API.send({
+					mode: 'game',
+					type: 'place-units',
+					gid: $game.id,
+					units: $num,
+					territory: $territory.id
+				});
+			}
+		});
 		$cancel.click(function($e) {
 			$e.preventDefault();
 			$dialog.close();
@@ -113,8 +129,8 @@
 	}
 
 	function territoryBordersForeignTerritories($territory) {
-		for(var $border in $territory.borders) {
-			if($game.map.territories[$border].uid != $territory.uid) {
+		for(var $n = 0; $n < $territory.borders.length; $n++) {
+			if($game.map.territories[$territory.borders[$n]].uid != $territory.uid) {
 				return true;
 			}
 		}
@@ -122,8 +138,8 @@
 	}
 
 	function territoryBordersFriendlyTerritories($territory) {
-		for(var $border in $territory.borders) {
-			if($game.map.territories[$border].uid == $territory.uid) {
+		for(var $n = 0; $n < $territory.borders.length; $n++) {
+			if($game.map.territories[$territory.borders[$n]].uid == $territory.uid) {
 				return true;
 			}
 		}
@@ -135,8 +151,8 @@
 	}
 
 	function territoryCanBeAttackedBy($territory, $uid) {
-		for(var $border in $territory.borders) {
-			if($game.map.territories[$border].uid == $uid && $game.map.territories[$border].units > 1) {
+		for(var $n = 0; $n < $territory.borders.length; $n++) {
+			if($game.map.territories[$territory.borders[$n]].uid != $territory.uid && $game.map.territories[$territory.borders[$n]].units > 1) {
 				return true;
 			}
 		}
@@ -146,20 +162,21 @@
 	function showRadialMenu($id, $x, $y) {
 		var $menu = $('#radial-menu'),
 		$stack = $menu.find('[data-button="stack"]'),
-		$moveTo = $menu.find('[data-button="moveto"]'),
-		$moveFrom = $menu.find('[data-button="movefrom"]'),
-		$attackTo = $menu.find('[data-button="attackto"]'),
-		$attackFrom = $menu.find('[data-button="attackfrom"]'),
+		$moveTo = $menu.find('[data-button="move-to"]'),
+		$moveFrom = $menu.find('[data-button="move-from"]'),
+		$attackTo = $menu.find('[data-button="attack-to"]'),
+		$attackFrom = $menu.find('[data-button="attack-from"]'),
 		$territory = $game.map.territories[$id];
 		$menu.find('g').attr('class', 'disabled');
 		if(($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY) && $game.units > 0) {
 			$stack.attr('class', '');
-		} else if($game.state === STATE_COMBAT || $game.state === STATE_TURN_START) {
+		}
+		if($game.state === STATE_COMBAT || $game.state === STATE_TURN_START) {
 			if($territory.uid == Imperator.settings.uid) {
 				if($territory.units > 1 && territoryBordersForeignTerritories($territory)) {
 					$attackFrom.attr('class', '');
 				}
-			} else if(territoryCanBeAttackedBy($territory, $uid)) {
+			} else if(territoryCanBeAttackedBy($territory, Imperator.settings.uid)) {
 				$attackTo.attr('class', '');
 			}
 		} else if($game.state === STATE_POST_COMBAT && $territory.uid == Imperator.settings.uid && $game.units > 0) {

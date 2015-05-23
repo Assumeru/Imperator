@@ -12,8 +12,13 @@ class TerritoriesTable extends Table {
 		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 
+	public function updateUnits(\imperator\map\Territory $territory) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_UNITS => $territory->getUnits()
+		), static::COLUMN_TERRITORY.' = \''.$this->getManager()->escape($territory->getId()).'\' AND '.static::COLUMN_GID.' = '.$territory->getGame()->getId())->free();
+	}
+
 	/**
-	 * 
 	 * @param \imperator\map\Territory[] $territories
 	 */
 	public function saveTerritories(array $territories) {

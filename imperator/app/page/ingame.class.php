@@ -115,7 +115,8 @@ class InGame extends DefaultPage {
 			'newcard' => $language->translate('You have received a new card!'),
 			'card' => \imperator\game\Cards::getCardNames($language),
 			'forfeit' => $language->translate('Are you sure you want to forfeit?'),
-			'fortify' => $language->translate('Fortify %1$s')
+			'fortify' => $language->translate('Fortify %1$s'),
+			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?')
 		));
 		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');

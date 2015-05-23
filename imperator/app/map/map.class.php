@@ -260,4 +260,17 @@ class Map {
 		}
 		return true;
 	}
+
+	/**
+	 * @return Territory
+	 */
+	public function getTerritoryById($id) {
+		if($this->territories === null) {
+			$this->initFromXML(false, true);
+		}
+		if(isset($this->territories[$id])) {
+			return $this->territories[$id];
+		}
+		return null;
+	}
 }

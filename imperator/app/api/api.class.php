@@ -52,6 +52,7 @@ abstract class Api {
 		} else if($this->request->getType() == 'pregame') {
 			return $this->handleGameUpdateRequest(true);
 		}
+		return $this->handleInvalidRequest();
 	}
 
 	protected function handleGameUpdateRequest($pregame = false) {
@@ -174,6 +175,7 @@ abstract class Api {
 		} else if($this->request->getType() == 'delete' && $this->canDeleteFromChat()) {
 			return $this->handleChatDeleteRequest();
 		}
+		return $this->handleInvalidRequest();
 	}
 
 	protected function handleChatAddRequest() {
@@ -201,9 +203,33 @@ abstract class Api {
 					return $this->handleEndTurnRequest($game);
 				} else if($this->request->getType() == 'play-cards' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_FORTIFY)) {
 					return $this->handleCardsRequest($game);
+				} else if($this->request->getType() == 'place-units' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_FORTIFY) && $game->getUnits() >= $this->request->getUnits()) {
+					return $this->handlePlaceUnitsRequest($game);
 				}
 			}
 		}
+		return $this->handleInvalidRequest();
+	}
+
+	protected function handlePlaceUnitsRequest(\imperator\Game $game) {
+		$territory = $game->getMap()->getTerritoryById($this->request->getTerritory());
+		if($territory) {
+			$game->loadMap();
+			if($territory->getOwner()->equals($this->user)) {
+				$game->placeUnits($territory, $this->request->getUnits());
+				return $this->reply(array(
+					'state' => $game->getState(),
+					'time' => $game->getTime(),
+					'units' => $game->getUnits(),
+					'territories' => array(
+						$territory->getId() => array(
+							'units' => $territory->getUnits()
+						)
+					)
+				));
+			}
+		}
+		return $this->handleInvalidRequest();
 	}
 
 	protected function handleCardsRequest(\imperator\Game $game) {
@@ -269,7 +295,9 @@ abstract class Api {
 
 	protected function reply($json) {}
 
-	protected function handleInvalidRequest() {}
+	protected function handleInvalidRequest() {
+		return $this->sendError('Bad request');
+	}
 
 	protected function canUseChat() {
 		if($this->request->getGid() === 0) {

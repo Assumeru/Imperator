@@ -159,6 +159,7 @@ span .user {
 .dialog-window {
 	padding: 10px;
 	overflow: auto;
+	max-height: 100%;
 }
 
 .dialog-window h1 {

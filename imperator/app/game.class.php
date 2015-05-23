@@ -500,4 +500,13 @@ class Game {
 		$db->getTable('GamesJoined')->saveCards($this, $user, $cards);
 		$db->getTable('Games')->updateUnits($this);
 	}
+
+	public function placeUnits(\imperator\map\Territory $territory, $amount) {
+		$this->map->setGame($this);
+		$territory->setUnits($territory->getUnits() + $amount);
+		$this->units -= $amount;
+		$db = Imperator::getDatabaseManager();
+		$db->getTable('Games')->updateUnits($this);
+		$db->getTable('Territories')->updateUnits($territory);
+	}
 }
