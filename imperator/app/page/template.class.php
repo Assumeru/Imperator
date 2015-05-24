@@ -16,7 +16,7 @@ class Template {
 	}
 
 	protected function __construct($template) {
-		$path = \imperator\Imperator::getSettings()->getBasePath().'/app/page/templates/'.$template.'.html';
+		$path = \imperator\Imperator::getSettings()->getBasePath().'/etc/templates/'.$template.'.html';
 		$data = null;
 		if(file_exists($path)) {
 			$data = file_get_contents($path);

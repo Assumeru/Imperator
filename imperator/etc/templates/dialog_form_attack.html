@@ -1,0 +1,24 @@
+<strong>{$from}</strong>
+<select class="form-control" name="from"></select>
+<strong>{$to}</strong>
+<select class="form-control" name="to"></select>
+<strong>{$attack}</strong>
+<div class="input-group">
+	<div class="input-group-addon">
+		<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="unit">
+			<rect height="30" width="30" fill="url(#pattern-units-1)" x="0" y="0" />
+		</svg>
+	</div>
+	<input class="form-control" type="number" name="attack" value="1" min="1" placeholder="{$attack}" required />
+</div>
+<div data-value="move">
+	<strong>{$move}</strong>
+	<div class="input-group">
+		<div class="input-group-addon">
+			<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" class="unit">
+				<rect height="30" width="30" fill="url(#pattern-units-1)" x="0" y="0" />
+			</svg>
+		</div>
+		<input class="form-control" type="number" name="move" value="1" min="1" placeholder="{$move}" required />
+	</div>
+</div>

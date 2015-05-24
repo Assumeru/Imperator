@@ -107,6 +107,12 @@ class InGame extends DefaultPage {
 			'dialogformfortify' => Template::getInstance('dialog_form_stack')->replace(array(
 				'number' => $language->translate('How many units would you like to place?'),
 				'stack' => $language->translate('Units to place')
+			))->getData(),
+			'dialogformattack' => Template::getInstance('dialog_form_attack')->replace(array(
+				'from' => $language->translate('Select a territory to attack from'),
+				'to' => $language->translate('Select a territory to attack'),
+				'attack' => $language->translate('Enter the number of units to attack with'),
+				'move' => $language->translate('Enter the number of units to move with')
 			))->getData()
 		));
 		$this->setJavascriptSetting('language', array(
@@ -116,7 +122,8 @@ class InGame extends DefaultPage {
 			'card' => \imperator\game\Cards::getCardNames($language),
 			'forfeit' => $language->translate('Are you sure you want to forfeit?'),
 			'fortify' => $language->translate('Fortify %1$s'),
-			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?')
+			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
+			'attack' => $language->translate('Attack')
 		));
 		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');
