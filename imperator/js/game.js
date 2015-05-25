@@ -95,7 +95,7 @@
 	}
 
 	function showAttackDialog($from, $to) {
-		var $selectF, $selectT, $territory, $n,
+		var $selectF, $selectT, $territory, $n, $inputA, $inputM, $move,
 		$ok = $(Imperator.settings.templates.okbutton),
 		$cancel = $(Imperator.settings.templates.cancelbutton);
 		if($dialogs.attackInput !== undefined) {
@@ -108,6 +108,9 @@
 			$('<div>').append($ok).append(' ').append($cancel), true);
 		$selectF = $dialogs.attackInput.message.find('[name="from"]');
 		$selectT = $dialogs.attackInput.message.find('[name="to"]');
+		$inputA = $dialogs.attackInput.message.find('[name="attack"]');
+		$inputM = $dialogs.attackInput.message.find('[name="move"]');
+		$move = $dialogs.attackInput.message.find('[data-value="move"]');
 		if($from !== undefined) {
 			$territory = $game.map.territories[$from];
 			$selectF.append('<option value="'+$from+'">'+$territory.name+'</option>');
@@ -125,10 +128,44 @@
 			}
 			$selectF.focus();
 		}
+		function change() {
+			var $mMax = $game.map.territories[$selectF.val()].units - 1,
+			$aMax = Math.min(3, $mMax),
+			$aVal = $inputA.val(),
+			$mVal = $inputM.val();
+			$inputA.attr('max', $aMax);
+			if($aVal !== '' && !isNaN($aVal) && $aVal > 0) {
+				$inputA.val(Math.min($aMax, $aVal));
+			}
+			$inputM.attr('max', $mMax);
+			if($mVal !== '' && !isNaN($mVal) && $mVal > 0) {
+				$inputM.val(Math.min($mMax, $mVal));
+			}
+			if($aMax < $game.map.territories[$selectT.val()].units) {
+				$move.hide();
+			} else {
+				$move.show();
+			}
+		}
+		$selectF.change(change);
+		$selectT.change(change);
+		change();
 		$cancel.click(function($e) {
 			$e.preventDefault();
 			$dialogs.attackInput.close();
 			delete $dialogs.attackInput;
+		});
+		$dialogs.attackInput.message.find('form').submit(function($e) {
+			$e.preventDefault();
+			Imperator.API.send({
+				gid: $game.id,
+				mode: 'game',
+				type: 'attack',
+				to: $selectT.val(),
+				from: $selectF.val(),
+				units: $inputA.val(),
+				move: $inputM.val()
+			});
 		});
 	}
 
