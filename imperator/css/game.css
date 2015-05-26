@@ -286,3 +286,7 @@ body:not(.my-turn) #card-controls {
 	fill: #f0f0f0;
 	pointer-events: none;
 }
+
+.dialog .clearfix .col-md-6 {
+	margin-top: 1em;
+}
