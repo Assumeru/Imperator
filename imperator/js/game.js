@@ -18,7 +18,7 @@
 			Imperator.API.send({
 				mode: 'update',
 				type: 'game',
-				gid: $game.id,
+				gid: Imperator.settings.gid,
 				time: $time
 			});
 		});
@@ -26,7 +26,7 @@
 			$('#map svg g[id]').click(function() {
 				window.location = '#tab-territory-'+this.id;
 			}).on('contextmenu', function($e) {
-				if($game.turn == Imperator.settings.uid) {
+				if($game.turn == $game.player) {
 					$e.preventDefault();
 					showRadialMenu(this.id, $e.pageX, $e.pageY);
 				}
@@ -109,7 +109,9 @@
 			$selectF.append('<option value="'+$from+'">'+$territory.name+'</option>');
 			$selectF.prop('disabled', true);
 			for($n = 0; $n < $territory.borders.length; $n++) {
-				$selectT.append('<option value="'+$territory.borders[$n]+'">'+$game.map.territories[$territory.borders[$n]].name+'</option>');
+				if($territory.borders[$n].owner != $game.player) {
+					$selectT.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+'</option>');
+				}
 			}
 			$selectT.focus();
 		} else {
@@ -117,7 +119,9 @@
 			$selectT.append('<option value="'+$to+'">'+$territory.name+'</option>');
 			$selectT.prop('disabled', true);
 			for($n = 0; $n < $territory.borders.length; $n++) {
-				$selectF.append('<option value="'+$territory.borders[$n]+'">'+$game.map.territories[$territory.borders[$n]].name+'</option>');
+				if($territory.borders[$n].owner == $game.player) {
+					$selectF.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+'</option>');
+				}
 			}
 			$selectF.focus();
 		}
@@ -196,22 +200,22 @@
 		$attackFrom = $menu.find('[data-button="attack-from"]'),
 		$territory = $game.map.territories[$id];
 		$menu.find('g').attr('class', 'disabled');
-		if(($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY) && $game.units > 0) {
+		if(($game.state === Imperator.Game.STATE_TURN_START || $game.state === Imperator.Game.STATE_FORTIFY) && $game.units > 0) {
 			$stack.attr('class', '');
 		}
-		if($game.state === STATE_COMBAT || $game.state === STATE_TURN_START) {
-			if($territory.uid == Imperator.settings.uid) {
-				if($territory.units > 1 && territoryBordersForeignTerritories($territory)) {
+		if($game.state === Imperator.Game.STATE_COMBAT || $game.state === Imperator.Game.STATE_TURN_START) {
+			if($territory.owner == $game.player) {
+				if($territory.units > 1 && $territory.bordersEnemyTerritory()) {
 					$attackFrom.attr('class', '');
 				}
-			} else if(territoryCanBeAttackedBy($territory, Imperator.settings.uid)) {
+			} else if($territory.canBeAttackedBy($game.player)) {
 				$attackTo.attr('class', '');
 			}
-		} else if($game.state === STATE_POST_COMBAT && $territory.uid == Imperator.settings.uid && $game.units > 0) {
-			if($territory.units > 1 && territoryBordersFriendlyTerritories($territory)) {
+		} else if($game.state === Imperator.Game.STATE_POST_COMBAT && $territory.owner == $game.player && $game.units > 0) {
+			if($territory.units > 1 && $territory.bordersFriendlyTerritory()) {
 				$moveFrom.attr('class', '');
 			}
-			if(territoryCanReceiveReinforcements($territory)) {
+			if($territory.canReceiveReinforcements()) {
 				$moveTo.attr('class', '');
 			}
 		}
@@ -238,7 +242,7 @@
 	function sendCards() {
 		var $this = $(this),
 		$num = $this.attr('data-value');
-		if($game.turn == Imperator.settings.uid && ($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY)) {
+		if($game.turn == $game.player && ($game.state === Imperator.Game.STATE_TURN_START || $game.state === Imperator.Game.STATE_FORTIFY)) {
 			if($dialogs.playcards !== undefined) {
 				$dialogs.playcards.close();
 			}
@@ -253,7 +257,7 @@
 	}
 
 	function sendEndTurn() {
-		if($game.turn == Imperator.settings.uid) {
+		if($game.turn == $game.player) {
 			if($dialogs.endturn !== undefined) {
 				$dialogs.endturn.close();
 			}
@@ -267,7 +271,7 @@
 	}
 
 	function sendFortify() {
-		if($game.state == STATE_TURN_START) {
+		if($game.state == Imperator.Game.STATE_TURN_START) {
 			if($dialogs.fortify !== undefined) {
 				$dialogs.fortify.close();
 			}
@@ -291,7 +295,7 @@
 		} else {
 			$('#map svg g[id]').attr('class', 'active border');
 			for($n = 0; $n < $region.territories.length; $n++) {
-				$('#'+$region.territories[$n]).attr('class', 'active');
+				$('#'+$region.territories[$n].id).attr('class', 'active');
 			}
 			$('#regions .btn[data-highlight="true"]').attr('data-highlight', 'false');
 			$this.attr('data-highlight', 'true');
@@ -306,21 +310,29 @@
 
 	function parseUpdateMessage($msg) {
 		var $id, $key,
-		$territoriesUpdated = false;
+		$update = {
+			territories: [false, updateTerritories],
+			turn: [false, updateTurn],
+			state: [false, updateState]
+		};
 		if($msg !== undefined && $msg !== '') {
 			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined && $msg.cards !== undefined && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined) {
 				$game = new Imperator.Game(Imperator.settings.gid, $msg.players, $msg.regions, $msg.territories, $msg.cards, $msg.units, $msg.state, $msg.turn);
+				$game.player = $game.players[Imperator.settings.uid];
+				$update.territories[0] = true;
+				$update.turn[0] = true;
+				$update.state[0] = true;
 			}
 			if($game !== undefined) {
 				if($msg.territories !== undefined) {
 					for($id in $msg.territories) {
-						if($msg.territories.units !== undefined) {
-							$game.map.territories[$id].units = $msg.territories.units;
-							$territoriesUpdated = true;
+						if($msg.territories[$id].units !== undefined) {
+							$game.map.territories[$id].units = $msg.territories[$id].units;
+							$update.territories[0] = true;
 						}
-						if($msg.territories.uid !== undefined) {
-							$game.map.territories[$id].owner = $game.players[$msg.territories.uid];
-							$territoriesUpdated = true;
+						if($msg.territories[$id].uid !== undefined) {
+							$game.map.territories[$id].owner = $game.players[$msg.territories[$id].uid];
+							$update.territories[0] = true;
 						}
 					}
 				}
@@ -334,9 +346,9 @@
 					$game.cards.setCard($msg.card, $game.cards.getCard($msg.card) + 1);
 					updateCards($msg.card);
 				}
-				if($msg.turn !== undefined && $msg.turn !== $game.turn) {
-					$game.turn = $msg.turn;
-					updateTurn();
+				if($msg.turn !== undefined && $msg.turn !== $game.turn.id) {
+					$game.turn = $game.players[$msg.turn];
+					$update.turn[0] = true;
 				}
 				if($msg.state !== undefined && $msg.state !== $game.state) {
 					if($msg.state == Imperator.Game.STATE_FORTIFY && $msg.units !== undefined && $dialogs.fortify !== undefined) {
@@ -344,7 +356,7 @@
 						delete $dialogs.fortify;
 					}
 					$game.state = $msg.state;
-					updateState();
+					$update.state[0] = true;
 				}
 				if($msg.units !== undefined) {
 					$game.units = $msg.units;
@@ -352,8 +364,10 @@
 				}
 			}
 		}
-		if($territoriesUpdated) {
-			updateTerritories();
+		for($key in $update) {
+			if($update[$key][0]) {
+				$update[$key][1]();
+			}
 		}
 	}
 
@@ -367,11 +381,11 @@
 			8: $controls.find('[data-button="cards"][data-value="8"]'),
 			10: $controls.find('[data-button="cards"][data-value="10"]')
 		},
-		$artillery = Imperator.settings.templates.card.replace('%1$s', CARD_ARTILLERY).replace('%2$s', Imperator.settings.language.card[CARD_ARTILLERY]),
-		$infantry = Imperator.settings.templates.card.replace('%1$s', CARD_INFANTRY).replace('%2$s', Imperator.settings.language.card[CARD_INFANTRY]),
-		$cavalry = Imperator.settings.templates.card.replace('%1$s', CARD_CAVALRY).replace('%2$s', Imperator.settings.language.card[CARD_CAVALRY]),
-		$joker = Imperator.settings.templates.card.replace('%1$s', CARD_JOKER).replace('%2$s', Imperator.settings.language.card[CARD_JOKER]);
-		if($newCard !== CARD_NONE) {
+		$artillery = Imperator.settings.templates.card.replace('%1$s', Imperator.Cards.CARD_ARTILLERY).replace('%2$s', Imperator.settings.language.card[Imperator.Cards.CARD_ARTILLERY]),
+		$infantry = Imperator.settings.templates.card.replace('%1$s', Imperator.Cards.CARD_INFANTRY).replace('%2$s', Imperator.settings.language.card[Imperator.Cards.CARD_INFANTRY]),
+		$cavalry = Imperator.settings.templates.card.replace('%1$s', Imperator.Cards.CARD_CAVALRY).replace('%2$s', Imperator.settings.language.card[Imperator.Cards.CARD_CAVALRY]),
+		$joker = Imperator.settings.templates.card.replace('%1$s', Imperator.Cards.CARD_JOKER).replace('%2$s', Imperator.settings.language.card[Imperator.Cards.CARD_JOKER]);
+		if($newCard !== Imperator.Cards.CARD_NONE) {
 			$ok = $(Imperator.settings.templates.okbutton);
 			$dialog = Imperator.Dialog.showDialogForm(Imperator.settings.language.newcard,
 				Imperator.settings.templates.card.replace('%1$s', $newCard).replace('%2$s', Imperator.settings.language.card[$newCard]),
@@ -387,41 +401,25 @@
 			
 		}
 		$cards.empty();
-		for($n = 0; $n < $game.cards[CARD_ARTILLERY]; $n++) {
+		for($n = 0; $n < $game.cards.artillery; $n++) {
 			$cards.append($artillery);
 		}
-		for($n = 0; $n < $game.cards[CARD_INFANTRY]; $n++) {
+		for($n = 0; $n < $game.cards.infantry; $n++) {
 			$cards.append($infantry);
 		}
-		for($n = 0; $n < $game.cards[CARD_CAVALRY]; $n++) {
+		for($n = 0; $n < $game.cards.cavalry; $n++) {
 			$cards.append($cavalry);
 		}
-		for($n = 0; $n < $game.cards[CARD_JOKER]; $n++) {
+		for($n = 0; $n < $game.cards.jokers; $n++) {
 			$cards.append($joker);
 		}
 		for($n in $buttons) {
-			if(canPlayCardsFor($n)) {
+			if($game.cards.canPlayCombination($n)) {
 				$buttons[$n].show();
 			} else {
 				$buttons[$n].hide();
 			}
 		}
-	}
-
-	function canPlayCardsFor($units) {
-		if($units == 4) {
-			return $game.cards[CARD_ARTILLERY] + $game.cards[CARD_JOKER] >= 3;
-		} else if($units == 6) {
-			return $game.cards[CARD_INFANTRY] + $game.cards[CARD_JOKER] >= 3;
-		} else if($units == 8) {
-			return $game.cards[CARD_CAVALRY] + $game.cards[CARD_JOKER] >= 3;
-		}
-		return ($game.cards[CARD_ARTILLERY] + $game.cards[CARD_INFANTRY] + $game.cards[CARD_CAVALRY] >= 1 && $game.cards[CARD_JOKER] >= 2)
-			|| ($game.cards[CARD_ARTILLERY] >= 1 && $game.cards[CARD_INFANTRY] >= 1 && $game.cards[CARD_CAVALRY] >= 1)
-			|| ($game.cards[CARD_JOKER] >= 1
-				&& (($game.cards[CARD_ARTILLERY] >= 1 && $game.cards[CARD_INFANTRY] >= 1)
-				|| ($game.cards[CARD_ARTILLERY] >= 1 && $game.cards[CARD_CAVALRY] >= 1)
-				|| ($game.cards[CARD_INFANTRY] >= 1 && $game.cards[CARD_CAVALRY] >= 1)));
 	}
 
 	function updateUnits() {
@@ -430,21 +428,20 @@
 		$unitsM = $box.find('[data-value="units-left-move"] .number');
 		$unitsF.text(0);
 		$unitsM.text(0);
-		if($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY) {
+		if($game.state === Imperator.Game.STATE_TURN_START || $game.state === Imperator.Game.STATE_FORTIFY) {
 			$unitsF.text($game.units);
-		} else if($game.state === STATE_POST_COMBAT) {
+		} else if($game.state === Imperator.Game.STATE_POST_COMBAT) {
 			$unitsM.text($game.units);
 		}
 	}
 
 	function updateTurn() {
 		var $btn,
-		$a = $('#controls-box .user'),
-		$player = $game.players[$game.turn];
-		$a.css('color', '#'+$player.color);
-		$a.text($player.name);
-		$a.attr('href', $player.link);
-		if($game.turn === Imperator.settings.uid) {
+		$a = $('#controls-box .user');
+		$a.css('color', '#'+$game.turn.color);
+		$a.text($game.turn.name);
+		$a.attr('href', $game.turn.link);
+		if($game.turn === $game.player) {
 			$('body').addClass('my-turn');
 			$btn = $('#turn-controls [data-toggle="collapse"]');
 			if($btn.hasClass('collapsed')) {
@@ -469,14 +466,14 @@
 		$move.css('display', 'none');
 		$unitsF.css('display', 'none');
 		$unitsM.css('display', 'none');
-		if($game.state === STATE_TURN_START || $game.state === STATE_FORTIFY) {
+		if($game.state === Imperator.Game.STATE_TURN_START || $game.state === Imperator.Game.STATE_FORTIFY) {
 			$unitsF.css('display', '');
 		}
-		if($game.state === STATE_TURN_START) {
+		if($game.state === Imperator.Game.STATE_TURN_START) {
 			$stack.css('display', '');
-		} else if($game.state === STATE_COMBAT) {
+		} else if($game.state === Imperator.Game.STATE_COMBAT) {
 			$move.css('display', '');
-		} else if($game.state === STATE_POST_COMBAT) {
+		} else if($game.state === Imperator.Game.STATE_POST_COMBAT) {
 			$unitsM.css('display', '');
 		}
 	}
@@ -491,14 +488,14 @@
 		}
 		for($id in $game.map.territories) {
 			$territory = $game.map.territories[$id];
-			$players[$territory.uid].territories++;
-			$players[$territory.uid].units += $territory.units;
-			$('#'+$id).css('fill', '#'+$game.players[$territory.uid].color);
+			$players[$territory.owner.id].territories++;
+			$players[$territory.owner.id].units += $territory.units;
+			$('#'+$id).css('fill', '#'+$game.players[$territory.owner.id].color);
 		}
 		for($id in $players) {
 			$upt = {
-				territories: getUnitsPerTurnFromTerritoriesFor($id, $players[$id].territories),
-				regions: getUnitsPerTurnFromRegionsFor($id),
+				territories: $game.players[$id].getUnitsPerTurnFromTerritories($players[$id].territories),
+				regions: $game.players[$id].getUnitsPerTurnFromRegions(),
 			};
 			$player = $('#players [data-player="'+$id+'"]');
 			$player.find('[data-value="territories"]').text($players[$id].territories);
@@ -506,7 +503,7 @@
 			$player.find('[data-value="unitsperturn"]').text($upt.territories + $upt.regions);
 			$player.find('[data-value="unitsperturn-regions"]').text($upt.regions);
 			$player.find('[data-value="unitsperturn-territories"]').text($upt.territories);
-			if(Imperator.settings.uid == $id) {
+			if($game.player.id == $id) {
 				$('#controls-box [data-button="stack"] .number').text($upt.territories);
 			}
 		}
@@ -531,7 +528,7 @@
 			}
 			$territories = $game.map.regions[$region].territories;
 			for($n = 0; $n < $territories.length; $n++) {
-				$players[$game.map.territories[$territories[$n]].uid]++;
+				$players[$territories[$n].owner.id]++;
 			}
 			$div = $('#regions .region-division[data-region="'+$region+'"]');
 			$div.empty();
@@ -585,8 +582,7 @@
 		var $n, $border, $bordering,
 		$tab = $('#territory'),
 		$territory = $game.map.territories[$currentTab[1]],
-		$player = $game.players[$territory.uid],
-		$a = $($player.link).css('color', '#'+$player.color),
+		$a = $($territory.owner.link).css('color', '#'+$territory.owner.color),
 		$borders = $tab.find('[data-value="borders"]');
 		$tab.find('[data-value="name"]').text($territory.name);
 		$tab.find('[data-value="units"]').text($territory.units);
@@ -596,13 +592,13 @@
 		$('#'+$territory.id).attr('class', 'active');
 		$borders.empty();
 		for($n = 0; $n < $territory.borders.length; $n++) {
-			$bordering = $game.map.territories[$territory.borders[$n]];
+			$bordering = $territory.borders[$n];
 			$('#'+$bordering.id).attr('class', 'active border');
 			$border = $emptyBorder.clone();
 			$border.find('[data-value="border-name"]')
 				.text($bordering.name)
 				.attr('href', '#tab-territory-'+$bordering.id)
-				.css('color', '#'+$game.players[$bordering.uid].color);
+				.css('color', '#'+$bordering.owner.color);
 			$border.find('[data-value="border-flag"]').attr('src', getFlagFor($bordering.id));
 			$borders.append($border);
 		}
@@ -640,7 +636,7 @@
 					$currentTab = [$page[1]];
 				}
 			} else if($page.length === 3 && $page[1] == 'territory') {
-				if($game.map.territories[$page[2]] !== undefined) {
+				if($game !== undefined && $game.map.territories[$page[2]] !== undefined) {
 					$page.shift();
 					$currentTab = $page;
 					$a.text($game.map.territories[$page[1]].name);

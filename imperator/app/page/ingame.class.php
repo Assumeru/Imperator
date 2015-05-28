@@ -125,6 +125,7 @@ class InGame extends DefaultPage {
 			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
 			'attack' => $language->translate('Attack')
 		));
+		$this->addJavascript('classes.js');
 		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');
 		$this->addJavascript('game.js');

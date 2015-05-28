@@ -1,9 +1,11 @@
 Imperator.Game = function($id, $players, $regions, $territories, $cards, $units, $state, $turn) {
+	var $this = this;
+
 	function getPlayersFromJSON($json) {
 		var $id,
 		$players = {};
 		for($id in $json) {
-			$players[$id] = new Imperator.Player(this, $json[$id].id, $json[$id].name, $json[$id].color, $json[$id].link);
+			$players[$id] = new Imperator.Player($this, $json[$id].id, $json[$id].name, $json[$id].color, $json[$id].link);
 		}
 		return $players;
 	}
@@ -12,7 +14,7 @@ Imperator.Game = function($id, $players, $regions, $territories, $cards, $units,
 		var $id, $n,
 		$territories = {};
 		for($id in $json) {
-			$territories[$id] = new Imperator.Territory($json[$id].id, $json[$id].name, this.players[$json[$id].uid], $json[$id].units);
+			$territories[$id] = new Imperator.Territory($json[$id].id, $json[$id].name, $this.players[$json[$id].uid], $json[$id].units);
 		}
 		for($id in $json) {
 			for($n = 0; $n < $json[$id].borders.length; $n++) {
@@ -28,8 +30,8 @@ Imperator.Game = function($id, $players, $regions, $territories, $cards, $units,
 		for($id in $json) {
 			$regions[$id] = new Imperator.Region($json[$id].id, $json[$id].units);
 			for($n = 0; $n < $json[$id].territories.length; $n++) {
-				$regions[$id].territories.push(this.map.territories[$json[$id].territories[$n]]);
-				this.map.territories[$json[$id].territories[$n]].regions.push($regions[$id]);
+				$regions[$id].territories.push($this.map.territories[$json[$id].territories[$n]]);
+				$this.map.territories[$json[$id].territories[$n]].regions.push($regions[$id]);
 			}
 		}
 		return $regions;
@@ -38,9 +40,9 @@ Imperator.Game = function($id, $players, $regions, $territories, $cards, $units,
 	this.id = $id;
 	this.players = getPlayersFromJSON($players);
 	this.map = {
-		territories: getTerritoriesFromJSON($territories),
-		regions: getRegionsFromJSON($regions)
+		territories: getTerritoriesFromJSON($territories)
 	};
+	this.map.regions = getRegionsFromJSON($regions);
 	this.cards = new Imperator.Cards($cards);
 	this.units = $units;
 	this.state = $state;
@@ -148,24 +150,39 @@ Imperator.Cards.CARD_CAVALRY = 1;
 Imperator.Cards.CARD_INFANTRY = 2;
 Imperator.Cards.CARD_JOKER = 3;
 Imperator.Cards.prototype.setCard = function($card, $amount) {
-	if($card === Imperator.Cards.CARD_ARTILLERY) {
+	if($card == Imperator.Cards.CARD_ARTILLERY) {
 		this.artillery = $amount;
-	} else if($card === Imperator.Cards.CARD_CAVALRY) {
+	} else if($card == Imperator.Cards.CARD_CAVALRY) {
 		this.cavalry = $amount;
-	} else if($card === Imperator.Cards.CARD_INFANTRY) {
+	} else if($card == Imperator.Cards.CARD_INFANTRY) {
 		this.infantry = $amount;
-	} else if($card === Imperator.Cards.CARD_JOKER) {
+	} else if($card == Imperator.Cards.CARD_JOKER) {
 		this.jokers = $amount;
 	}
 };
 Imperator.Cards.prototype.getCard = function($card) {
-	if($card === Imperator.Cards.CARD_ARTILLERY) {
+	if($card == Imperator.Cards.CARD_ARTILLERY) {
 		return this.artillery;
-	} else if($card === Imperator.Cards.CARD_CAVALRY) {
+	} else if($card == Imperator.Cards.CARD_CAVALRY) {
 		return this.cavalry;
-	} else if($card === Imperator.Cards.CARD_INFANTRY) {
+	} else if($card == Imperator.Cards.CARD_INFANTRY) {
 		return this.infantry;
-	} else if($card === Imperator.Cards.CARD_JOKER) {
+	} else if($card == Imperator.Cards.CARD_JOKER) {
 		return this.jokers;
 	}
+};
+Imperator.Cards.prototype.canPlayCombination = function($units) {
+	if($units == 4) {
+		return this.artillery + this.jokers >= 3;
+	} else if($units == 6) {
+		return this.infantry + this.jokers >= 3;
+	} else if($units == 8) {
+		return this.cavalry + this.jokers >= 3;
+	}
+	return (this.artillery + this.infantry + this.cavalry >= 1 && this.jokers >= 2)
+		|| (this.artillery >= 1 && this.infantry >= 1 && this.cavalry >= 1)
+		|| (this.jokers >= 1
+			&& ((this.artillery >= 1 && this.infantry >= 1)
+			|| (this.artillery >= 1 && this.cavalry >= 1)
+			|| (this.infantry >= 1 && this.cavalry >= 1)));
 };
