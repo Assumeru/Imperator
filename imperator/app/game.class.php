@@ -509,4 +509,9 @@ class Game {
 		$db->getTable('Games')->updateUnits($this);
 		$db->getTable('Territories')->updateUnits($territory);
 	}
+
+	public function territoriesAreInCombat(\imperator\map\Territory $attacker, \imperator\map\Territory $defender) {
+		$this->map->setGame($this);
+		return Imperator::getDatabaseManager()->getTable('Attacks')->territoriesAreInCombat($attacker, $defender);
+	}
 }

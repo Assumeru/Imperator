@@ -205,7 +205,24 @@ abstract class Api {
 					return $this->handleCardsRequest($game);
 				} else if($this->request->getType() == 'place-units' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_FORTIFY) && $game->getUnits() >= $this->request->getUnits()) {
 					return $this->handlePlaceUnitsRequest($game);
+				} else if($this->request->getType() == 'attack' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_COMBAT)) {
+					return $this->handleAttackRequest($game);
 				}
+			}
+		}
+		return $this->handleInvalidRequest();
+	}
+
+	protected function handleAttackRequest(\imperator\Game $game) {
+		$to = $game->getMap()->getTerritoryById($this->request->getTo());
+		$from = $game->getMap()->getTerritoryById($this->request->getFrom());
+		if($to && $from) {
+			$game->loadMap();
+			if($from->getOwner()->equals($this->user) && !$to->getOwner()->equals($this->user) && $this->request->getUnits() < $from->getUnits() && $this->request->getMove() < $from->getUnits() && $from->borders($to)) {
+				if($game->territoriesAreInCombat($to, $from)) {
+					return $this->sendError($this->user->getLanguage()->translate('One of these territories is already engaged in combat.'));
+				}
+				//TODO combat
 			}
 		}
 		return $this->handleInvalidRequest();
@@ -248,7 +265,7 @@ abstract class Api {
 				'time' => $game->getTime()
 			));
 		}
-		return $this->sendError($user->getLanguage()->translate('You do not have the required cards to place %1$d units.', $this->request->getUnits()));
+		return $this->sendError($this->user->getLanguage()->translate('You do not have the required cards to place %1$d units.', $this->request->getUnits()));
 	}
 
 	protected function handleFortifyRequest(\imperator\Game $game) {

@@ -43,7 +43,10 @@ class Request {
 				|| ($this->data['type'] == 'play-cards' && isset($this->data['units'])
 				&& is_numeric($this->data['units']) && \imperator\game\Cards::isValidUnitAmount($this->data['units']))
 				|| ($this->data['type'] == 'place-units' && isset($this->data['units'])
-				&& is_numeric($this->data['units']) && isset($this->data['territory']));
+				&& is_numeric($this->data['units']) && isset($this->data['territory']))
+				|| ($this->data['type'] == 'attack' && isset($this->data['to']) && isset($this->data['from'])
+				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0 && $this->data['units'] <= 3
+				&& isset($this->data['move']) && is_numeric($this->data['move']) && $this->data['move'] > 0);
 		}
 		return false;
 	}
@@ -103,5 +106,17 @@ class Request {
 
 	public function getTerritory() {
 		return $this->data['territory'];
+	}
+
+	public function getTo() {
+		return $this->data['to'];
+	}
+
+	public function getFrom() {
+		return $this->data['from'];
+	}
+
+	public function getMove() {
+		return (int)$this->data['move'];
 	}
 }

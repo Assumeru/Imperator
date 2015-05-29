@@ -68,4 +68,13 @@ class Territory {
 	public function getBorders() {
 		return $this->borders;
 	}
+
+	public function borders(Territory $territory) {
+		foreach($this->borders as $border) {
+			if($border == $territory) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
