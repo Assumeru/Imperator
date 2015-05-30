@@ -84,9 +84,11 @@ class Map {
 	}
 
 	public function setGame(\imperator\Game $game) {
-		$this->game = $game;
-		foreach($this->territories as $territory) {
-			$territory->setGame($game);
+		if($this->game != $game) {
+			$this->game = $game;
+			foreach($this->territories as $territory) {
+				$territory->setGame($game);
+			}
 		}
 	}
 

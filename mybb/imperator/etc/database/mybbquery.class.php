@@ -24,6 +24,6 @@ class MyBBQuery implements \imperator\database\Query {
 
 	public function getInsertId() {
 		global $db;
-		return $db->insert_id();
+		return (int)$db->insert_id();
 	}
 }

@@ -68,7 +68,7 @@ class GamesJoinedTable extends Table {
 				$result->getInt(static::COLUMN_CARD_INFANTRY),
 				$result->getInt(static::COLUMN_CARD_JOKER)
 			));
-			$mission = $missions[$result->getInt(static::COLUMN_MISSION)];
+			$mission = clone $missions[$result->getInt(static::COLUMN_MISSION)];
 			$mission->setUid($result->getInt(static::COLUMN_MISSION_UID));
 			$player->setMission($mission);
 			$players[] = $player;

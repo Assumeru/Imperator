@@ -222,7 +222,15 @@ abstract class Api {
 				if($game->territoriesAreInCombat($to, $from)) {
 					return $this->sendError($this->user->getLanguage()->translate('One of these territories is already engaged in combat.'));
 				}
-				//TODO combat
+				$attack = new \imperator\game\Attack($to, $from);
+				$attack->rollAttack($this->request->getUnits());
+				if($to->getUnits() === 1 || $to->getOwner()->getAutoRoll() || $attack->attackerCannotWin()) {
+					$attack->autoRollDefence();
+					$game->executeAttack($attack);
+				} else {
+					$attack->save();
+				}
+				//TODO output something
 			}
 		}
 		return $this->handleInvalidRequest();

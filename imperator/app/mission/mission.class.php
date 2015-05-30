@@ -67,4 +67,8 @@ class Mission {
 	public function getDescription(\imperator\Language $language) {
 		return $language->translate($this->description);
 	}
+
+	public function equals(Mission $that) {
+		return $this->id == $that->id;
+	}
 }

@@ -13,6 +13,9 @@ class Game {
 	private $owner;
 	private $name;
 	private $map;
+	/**
+	 * @var User[]
+	 */
 	private $users;
 	private $numPlayers;
 	private $state;
@@ -38,18 +41,30 @@ class Game {
 		$this->units = $units;
 	}
 
+	/**
+	 * @param int $units
+	 */
 	public function setUnits($units) {
 		$this->units = $units;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getUnits() {
 		return $this->units;
 	}
 
+	/**
+	 * @param bool $conquered
+	 */
 	public function setConquered($conquered) {
 		$this->conquered = $conquered;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function hasConquered() {
 		return $this->conquered;
 	}
@@ -79,8 +94,11 @@ class Game {
 		return $this->state;
 	}
 
+	/**
+	 * @param int $id
+	 */
 	public function setId($id) {
-		$this->id = (int)$id;
+		$this->id = $id;
 	}
 
 	/**
@@ -116,6 +134,9 @@ class Game {
 		return $this->users;
 	}
 
+	/**
+	 * @param User[] $players
+	 */
 	public function setPlayers(array $players) {
 		$this->users = $players;
 		$this->numPlayers = count($players);
@@ -142,6 +163,9 @@ class Game {
 		return $this->owner;
 	}
 
+	/**
+	 * @param User $owner
+	 */
 	public function setOwner(User $owner) {
 		$this->owner = $owner;
 	}
@@ -186,6 +210,9 @@ class Game {
 		return null;
 	}
 
+	/**
+	 * @param string $password
+	 */
 	public function setPassword($password) {
 		$this->password = $this->hashPassword($password);
 	}
@@ -197,12 +224,14 @@ class Game {
 		return $this->password !== null;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getPassword() {
 		return $this->password;
 	}
 
 	/**
-	 * 
 	 * @param string $password
 	 * @return string|null
 	 */
@@ -312,6 +341,9 @@ class Game {
 		$dbManager->getTable('Chat')->removeMessagesFromGame($this);
 	}
 
+	/**
+	 * Distributes territories and missions before starting the game.
+	 */
 	public function start() {
 		$this->map->setGame($this);
 		$this->map->distributeTerritories($this->users);
@@ -351,6 +383,13 @@ class Game {
 		return Imperator::getDatabaseManager()->getTable('Attacks')->playerHasToDefend($this, $user);
 	}
 
+	/**
+	 * Makes a player surrender.
+	 * Calls victory() if there are no other players left.
+	 * Calls nextTurn() if it was the forfeiting player's turn.
+	 * 
+	 * @param User $user
+	 */
 	public function forfeit(User $user) {
 		Imperator::getDatabaseManager()->getTable('GamesJoined')->forfeit($this, $user);
 		//TODO combat log
@@ -372,10 +411,16 @@ class Game {
 		}
 	}
 
+	/**
+	 * @param User $user
+	 */
 	public function victory(User $user) {
 		//TODO
 	}
 
+	/**
+	 * Starts the next turn after checking victory conditions.
+	 */
 	public function nextTurn() {
 		$uids = array();
 		$players = array();
@@ -480,18 +525,32 @@ class Game {
 		return game\Cards::CARD_NONE;
 	}
 
+	/**
+	 * Allows the current player to move units.
+	 */
 	public function startMove() {
 		$this->setUnits(static::MAX_MOVE_UNITS);
 		$this->setState(static::STATE_POST_COMBAT);
 		Imperator::getDatabaseManager()->getTable('Games')->updateUnitsAndState($this);
 	}
 
+	/**
+	 * Makes the player passively stack units.
+	 * 
+	 * @param User $user
+	 */
 	public function fortify(User $user) {
 		$this->units += $this->getUnitsFromTerritoriesPerTurn($user);
 		$this->state = static::STATE_FORTIFY;
 		Imperator::getDatabaseManager()->getTable('Games')->updateUnitsAndState($this);
 	}
 
+	/**
+	 * Makes the player trade cards for units.
+	 * 
+	 * @param User $user
+	 * @param int $units
+	 */
 	public function playCardCombination(User $user, $units) {
 		$cards = $user->getCards($this);
 		$cards->removeCombination($units);
@@ -501,6 +560,12 @@ class Game {
 		$db->getTable('Games')->updateUnits($this);
 	}
 
+	/**
+	 * Places a number of units in a territory.
+	 * 
+	 * @param \imperator\map\Territory $territory
+	 * @param int $amount
+	 */
 	public function placeUnits(\imperator\map\Territory $territory, $amount) {
 		$this->map->setGame($this);
 		$territory->setUnits($territory->getUnits() + $amount);
@@ -510,8 +575,56 @@ class Game {
 		$db->getTable('Territories')->updateUnits($territory);
 	}
 
+	/**
+	 * True if the attacking territory is attacking or the defending territory is defending.
+	 * 
+	 * @param \imperator\map\Territory $attacker
+	 * @param \imperator\map\Territory $defender
+	 * @return bool
+	 */
 	public function territoriesAreInCombat(\imperator\map\Territory $attacker, \imperator\map\Territory $defender) {
 		$this->map->setGame($this);
 		return Imperator::getDatabaseManager()->getTable('Attacks')->territoriesAreInCombat($attacker, $defender);
+	}
+
+	/**
+	 * Executes an attack.
+	 * 
+	 * @param \imperator\game\Attack $attack
+	 */
+	public function executeAttack(\imperator\game\Attack $attack) {
+		//TODO combat log
+		$defenderUnits = $attack->getDefender()->getUnits() - $attack->getDefenderLosses();
+		$attackerUnits = $attack->getAttacker()->getUnits() - $attack->getAttackerLosses();
+		if($defendUnits === 0) {
+			$this->conquered = true;
+			$move = $attack->getMove();
+			if($move >= $attackUnits) {
+				$move = $attackUnits - 1;
+			}
+			$defender = $attack->getDefender()->getOwner();
+			$attack->getAttacker()->setUnits($attackUnits - $move);
+			$attack->getDefender()->setUnits($move);
+			$attack->getDefender()->setOwner($attack->getAttacker()->getOwner());
+			if(count($this->map->getTerritoriesFor($defender)) === 0) {
+				foreach($this->map->getMissions() as $mission) {
+					if($mission->containsEliminate()) {
+						foreach($this->users as $player) {
+							if($mission->equals($player->getMission()) && $player->getMission()->getUid() == $defender->getId()) {
+								if($player->equals($attack->getAttacker()->getOwner())) {
+									$player->setState(User::STATE_DESTROYED_RIVAL);
+								} else {
+									//TODO assign fallback missions
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			$attack->getAttacker()->setUnits($attackerUnits);
+			$attack->getDefender()->setUnits($defenderUnits);
+		}
+		//TODO save all
 	}
 }

@@ -34,4 +34,16 @@ class AttacksTable extends Table {
 			AND ('.static::COLUMN_ATTACKING_TERRITORY.' = \''.$manager->escape($attacker->getId()).'\'
 			OR '.static::COLUMN_DEFENDING_TERRITORY.' = \''.$manager->escape($defender->getId()).'\')');
 	}
+
+	public function insertAttack(\imperator\game\Attack $attack) {
+		$this->getManager()->insert(static::NAME, array(
+			static::COLUMN_GID => $attack->getAttacker()->getGame()->getId(),
+			static::COLUMN_ATTACKING_TERRITORY => $attack->getAttacker()->getId(),
+			static::COLUMN_ATTACKING_UID => $attack->getAttacker()->getOwner()->getId(),
+			static::COLUMN_DEFENDING_TERRITORY => $attack->getDefender()->getId(),
+			static::COLUMN_DEFENDING_UID => $attack->getDefender()->getOwner()->getId(),
+			static::COLUMN_TRANSFERING_UNITS => $attack->getMove(),
+			static::COLUMN_DICE_ROLL => implode(' ', $attack->getAttackRoll())
+		))->free();
+	}
 }
