@@ -182,6 +182,21 @@ class Map {
 	}
 
 	/**
+	 * Checks if a player owns territories.
+	 * 
+	 * @param \imperator\User $user
+	 * @return boolean
+	 */
+	public function playerHasTerritories(\imperator\User $user) {
+		foreach($this->getTerritories() as $territory) {
+			if($territory->getOwner()->equals($user)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns all maps in an associative array.
 	 * 
 	 * @return Map[] All maps
@@ -247,7 +262,7 @@ class Map {
 			}
 			$player->setMission($mission);
 		}
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveMissions($players);
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveMissions($this->game, $players);
 	}
 
 	/**

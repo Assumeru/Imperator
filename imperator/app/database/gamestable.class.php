@@ -223,4 +223,18 @@ class GamesTable extends Table {
 			static::COLUMN_TIME => $game->getTime()
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
+
+	public function updateState(\imperator\Game $game) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_STATE => $game->getState(),
+			static::COLUMN_TIME => $game->getTime()
+		), static::COLUMN_GID.' = '.$game->getId())->free();
+	}
+
+	public function updateConquered(\imperator\Game $game) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_STATE => $game->getState(),
+			static::COLUMN_TIME => $game->getTime()
+		), static::COLUMN_GID.' = '.$game->getId())->free();
+	}
 }

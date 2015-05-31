@@ -100,12 +100,12 @@ abstract class Api {
 				$output['territories'] = array();
 				foreach($game->getMap()->getTerritories() as $territory) {
 					$outTerritory = array(
-						'id' => $territory->getId(),
-						'name' => $this->user->getLanguage()->translate($territory->getName()),
 						'units' => $territory->getUnits(),
 						'uid' => $territory->getOwner()->getId()
 					);
 					if($this->request->getTime() === 0) {
+						$outTerritory['id'] = $territory->getId();
+						$outTerritory['name'] = $this->user->getLanguage()->translate($territory->getName());
 						$outTerritory['borders'] = array();
 						foreach($territory->getBorders() as $border) {
 							$outTerritory['borders'][] = $border->getId();
@@ -125,6 +125,7 @@ abstract class Api {
 				$output['state'] = $game->getState();
 				$output['turn'] = $game->getTurn();
 				$output['units'] = $game->getUnits();
+				$output['attacks'] = $this->getAttacks($game);
 				if($game->containsPlayer($this->user)) {
 					$cards = $game->getPlayerByUser($this->user)->getCards($game);
 					$output['cards'] = array(
@@ -224,13 +225,31 @@ abstract class Api {
 				}
 				$attack = new \imperator\game\Attack($to, $from);
 				$attack->rollAttack($this->request->getUnits());
+				$game->setState(\imperator\Game::STATE_COMBAT);
+				$game->setTime(time());
+				Imperator::getDatabaseManager()->getTable('Games')->saveState($game);
 				if($to->getUnits() === 1 || $to->getOwner()->getAutoRoll() || $attack->attackerCannotWin()) {
 					$attack->autoRollDefence();
 					$game->executeAttack($attack);
-				} else {
-					$attack->save();
+					return $this->reply(array(
+						'territories' => array(
+							$to->getId() => array(
+								'uid' => $to->getOwner()->getId(),
+								'units' => $to->getUnits()
+							),
+							$from->getId() => array(
+								'uid' => $from->getOwner()->getId(),
+								'units' => $from->getUnits()
+							)
+						),
+						'state' => $game->getState(),
+						'time' => $game->getTime()
+					));
 				}
-				//TODO output something
+				$attack->save();
+				return $this->reply(array(
+					'attacks' => $this->getAttacks($game)
+				));
 			}
 		}
 		return $this->handleInvalidRequest();
@@ -341,5 +360,17 @@ abstract class Api {
 
 	protected function canDeleteFromChat() {
 		return $this->user->canDeleteChatMessages() || $this->isGameOwner();
+	}
+
+	protected function getAttacks(\imperator\Game $game) {
+		$out = array();
+		foreach($game->getAttacks() as $attack) {
+			$out[] = array(
+				'attacker' => $attack->getAttacker()->getId(),
+				'defender' => $attack->getDefender()->getId(),
+				'roll' => $attack->getAttackRoll()
+			);
+		}
+		return $out;
 	}
 }

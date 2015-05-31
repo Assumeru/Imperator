@@ -3,6 +3,8 @@ namespace imperator\game;
 use imperator\Imperator;
 
 class Attack {
+	const MAX_ATTACKERS = 3;
+
 	private $attacker;
 	private $defender;
 	private $attackRoll;
@@ -11,7 +13,7 @@ class Attack {
 	private $defendLosses;
 	private $move;
 
-	public function __construct(\imperator\map\Territory $attacker, $move, \imperator\map\Territory $defender, array $attackRoll = null, array $defendRoll = null) {
+	public function __construct(\imperator\map\Territory $attacker, \imperator\map\Territory $defender, $move, array $attackRoll = null, array $defendRoll = null) {
 		$this->attacker = $attacker;
 		$this->defender = $defender;
 		$this->move = $move;

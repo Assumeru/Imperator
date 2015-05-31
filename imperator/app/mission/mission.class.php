@@ -6,12 +6,21 @@ class Mission {
 	private $name;
 	private $description;
 	private $conditions;
+	private $fallback;
 
 	public function __construct($id, $name, $description, array $conditions) {
 		$this->id = $id;
 		$this->name = $name;
 		$this->description = $description;
 		$this->conditions = $conditions;
+	}
+
+	public function setFallback($fallback) {
+		$this->fallback = $fallback;
+	}
+
+	public function getFallback() {
+		return $this->fallback;
 	}
 
 	/**

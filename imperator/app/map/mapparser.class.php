@@ -65,6 +65,9 @@ class MapParser {
 				}
 				$missions[$id] = new \imperator\mission\Mission($id, $name, $description, $conditions);
 			}
+			if($mission->hasAttribute('fallback')) {
+				$missions[$id]->setFallback((int)$mission->getAttribute('fallback'));
+			}
 		}
 		return array($missions, $distribution);
 	}

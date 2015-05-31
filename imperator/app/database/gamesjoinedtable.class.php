@@ -77,13 +77,13 @@ class GamesJoinedTable extends Table {
 		return $players;
 	}
 
-	public function saveMissions(array $players) {
+	public function saveMissions(\imperator\Game $game, array $players) {
 		foreach($players as $player) {
 			$mission = $player->getMission();
 			$this->getManager()->update(static::NAME, array(
 				static::COLUMN_MISSION => $mission->getId(),
 				static::COLUMN_MISSION_UID => $mission->getUid()
-			), static::COLUMN_UID.' = '.$player->getId())->free();
+			), static::COLUMN_UID.' = '.$player->getId().' AND '.static::COLUMN_GID.' = '.$game->getId())->free();
 		}
 	}
 
@@ -148,5 +148,11 @@ class GamesJoinedTable extends Table {
 			static::COLUMN_CARD_JOKER => $cards->getJokers()
 		), static::COLUMN_GID.' = '.$game->getId().'
 			AND '.static::COLUMN_UID.' = '.$user->getId())->free();
+	}
+
+	public function saveState(\imperator\Game $game, \imperator\User $user) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_STATE => $user->getState()
+		), static::COLUMN_GID.' = '.$game->getId().' AND '.static::COLUMN_UID.' = '.$user->getId())->free();
 	}
 }

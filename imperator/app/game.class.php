@@ -25,7 +25,7 @@ class Game {
 	private $conquered;
 	private $units;
 	private $mapLoaded = false;
-	private $attacks = array();
+	private $attacks;
 
 	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0, $conquered = false, $units = 0) {
 		$this->id = $id;
@@ -81,10 +81,24 @@ class Game {
 	}
 
 	/**
+	 * @param int $time
+	 */
+	public function setTime($time) {
+		$this->time = $time;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getTime() {
 		return $this->time;
+	}
+
+	/**
+	 * @param int $state
+	 */
+	public function setState($state) {
+		$this->state = $state;
 	}
 
 	/**
@@ -285,6 +299,16 @@ class Game {
 			unset($colors[$player->getColor()]);
 		}
 		return $colors;
+	}
+
+	/**
+	 * @return \imperator\game\Attack[]
+	 */
+	public function getAttacks() {
+		if($this->attacks === null) {
+			$this->attacks = Imperator::getDatabaseManager()->getTable('Attacks')->getAttacksFor($this);
+		}
+		return $this->attacks;
 	}
 
 	/**
@@ -593,38 +617,57 @@ class Game {
 	 * @param \imperator\game\Attack $attack
 	 */
 	public function executeAttack(\imperator\game\Attack $attack) {
+		$db = Imperator::getDatabaseManager();
+		$territoriesTable = $db->getTable('Territories');
+		$gjTable = $db->getTable('GamesJoined');
+		$attackingTerritory = $attack->getAttacker();
+		$defendingTerritory = $attack->getDefender();
 		//TODO combat log
-		$defenderUnits = $attack->getDefender()->getUnits() - $attack->getDefenderLosses();
-		$attackerUnits = $attack->getAttacker()->getUnits() - $attack->getAttackerLosses();
+		$attackerUnits = $attackingTerritory->getUnits() - $attack->getAttackerLosses();
+		$defenderUnits = $defendingTerritory->getUnits() - $attack->getDefenderLosses();
 		if($defendUnits === 0) {
 			$this->conquered = true;
 			$move = $attack->getMove();
 			if($move >= $attackUnits) {
 				$move = $attackUnits - 1;
 			}
-			$defender = $attack->getDefender()->getOwner();
-			$attack->getAttacker()->setUnits($attackUnits - $move);
-			$attack->getDefender()->setUnits($move);
-			$attack->getDefender()->setOwner($attack->getAttacker()->getOwner());
-			if(count($this->map->getTerritoriesFor($defender)) === 0) {
-				foreach($this->map->getMissions() as $mission) {
+			$defender = $defendingTerritory->getOwner();
+			$attackingTerritory->setUnits($attackUnits - $move);
+			$defendingTerritory->setUnits($move);
+			$defendingTerritory->setOwner($attackingTerritory->getOwner());
+			$missions = $this->map->getMissions();
+			if($this->map->playerHasTerritories($defender)) {
+				$defender->setState(User::STATE_GAME_OVER);
+				$gjTable->saveState($defender);
+				$playersWithNewMissions = array();
+				foreach($missions as $mission) {
 					if($mission->containsEliminate()) {
 						foreach($this->users as $player) {
-							if($mission->equals($player->getMission()) && $player->getMission()->getUid() == $defender->getId()) {
-								if($player->equals($attack->getAttacker()->getOwner())) {
+							$playerMission = $player->getMission();
+							if($mission->equals($playerMission) && $playerMission->getUid() == $defender->getId()) {
+								if($player->equals($attackingTerritory->getOwner())) {
 									$player->setState(User::STATE_DESTROYED_RIVAL);
+									$gjTable->saveState($player);
 								} else {
-									//TODO assign fallback missions
+									$newMission = clone $missions[$mission->getFallback()];
+									$newMission->setUid($playerMission->getUid());
+									$player->setMission($newMission);
+									$playersWithNewMissions[] = $player;
 								}
 							}
 						}
 					}
 				}
+				$gj->saveMissions($this, $playersWithNewMissions);
 			}
+			$db->getTable('Games')->updateConquered($this);
+			$territoriesTable->updateUnitsAndOwner($attackingTerritory);
+			$territoriesTable->updateUnitsAndOwner($defendingTerritory);
 		} else {
-			$attack->getAttacker()->setUnits($attackerUnits);
-			$attack->getDefender()->setUnits($defenderUnits);
+			$attackingTerritory->setUnits($attackerUnits);
+			$defendingTerritory->setUnits($defenderUnits);
+			$territoriesTable->updateUnits($attackingTerritory);
+			$territoriesTable->updateUnits($defendingTerritory);
 		}
-		//TODO save all
 	}
 }

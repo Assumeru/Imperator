@@ -18,6 +18,13 @@ class TerritoriesTable extends Table {
 		), static::COLUMN_TERRITORY.' = \''.$this->getManager()->escape($territory->getId()).'\' AND '.static::COLUMN_GID.' = '.$territory->getGame()->getId())->free();
 	}
 
+	public function updateUnitsAndOwner(\imperator\map\Territory $territory) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_UNITS => $territory->getUnits(),
+			static::COLUMN_UID => $territory->getOwner()->getId()
+		), static::COLUMN_TERRITORY.' = \''.$this->getManager()->escape($territory->getId()).'\' AND '.static::COLUMN_GID.' = '.$territory->getGame()->getId())->free();
+	}
+
 	/**
 	 * @param \imperator\map\Territory[] $territories
 	 */
