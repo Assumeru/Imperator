@@ -625,20 +625,20 @@ class Game {
 		//TODO combat log
 		$attackerUnits = $attackingTerritory->getUnits() - $attack->getAttackerLosses();
 		$defenderUnits = $defendingTerritory->getUnits() - $attack->getDefenderLosses();
-		if($defendUnits === 0) {
+		if($defenderUnits === 0) {
 			$this->conquered = true;
 			$move = $attack->getMove();
-			if($move >= $attackUnits) {
-				$move = $attackUnits - 1;
+			if($move >= $attackerUnits) {
+				$move = $attackerUnits - 1;
 			}
 			$defender = $defendingTerritory->getOwner();
-			$attackingTerritory->setUnits($attackUnits - $move);
+			$attackingTerritory->setUnits($attackerUnits - $move);
 			$defendingTerritory->setUnits($move);
 			$defendingTerritory->setOwner($attackingTerritory->getOwner());
 			$missions = $this->map->getMissions();
 			if($this->map->playerHasTerritories($defender)) {
 				$defender->setState(User::STATE_GAME_OVER);
-				$gjTable->saveState($defender);
+				$gjTable->saveState($this, $defender);
 				$playersWithNewMissions = array();
 				foreach($missions as $mission) {
 					if($mission->containsEliminate()) {
@@ -647,7 +647,7 @@ class Game {
 							if($mission->equals($playerMission) && $playerMission->getUid() == $defender->getId()) {
 								if($player->equals($attackingTerritory->getOwner())) {
 									$player->setState(User::STATE_DESTROYED_RIVAL);
-									$gjTable->saveState($player);
+									$gjTable->saveState($this, $player);
 								} else {
 									$newMission = clone $missions[$mission->getFallback()];
 									$newMission->setUid($playerMission->getUid());
@@ -658,7 +658,7 @@ class Game {
 						}
 					}
 				}
-				$gj->saveMissions($this, $playersWithNewMissions);
+				$gjTable->saveMissions($this, $playersWithNewMissions);
 			}
 			$db->getTable('Games')->updateConquered($this);
 			$territoriesTable->updateUnitsAndOwner($attackingTerritory);

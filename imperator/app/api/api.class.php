@@ -223,11 +223,11 @@ abstract class Api {
 				if($game->territoriesAreInCombat($to, $from)) {
 					return $this->sendError($this->user->getLanguage()->translate('One of these territories is already engaged in combat.'));
 				}
-				$attack = new \imperator\game\Attack($to, $from);
+				$attack = new \imperator\game\Attack($from, $to, $this->request->getMove());
 				$attack->rollAttack($this->request->getUnits());
 				$game->setState(\imperator\Game::STATE_COMBAT);
 				$game->setTime(time());
-				Imperator::getDatabaseManager()->getTable('Games')->saveState($game);
+				Imperator::getDatabaseManager()->getTable('Games')->updateState($game);
 				if($to->getUnits() === 1 || $to->getOwner()->getAutoRoll() || $attack->attackerCannotWin()) {
 					$attack->autoRollDefence();
 					$game->executeAttack($attack);
@@ -243,12 +243,14 @@ abstract class Api {
 							)
 						),
 						'state' => $game->getState(),
-						'time' => $game->getTime()
+						'time' => $game->getTime(),
+						'attack' => $this->getAttackJSON($attack)
 					));
 				}
 				$attack->save();
 				return $this->reply(array(
-					'attacks' => $this->getAttacks($game)
+					'attacks' => $this->getAttacks($game),
+					'attack' => $this->getAttackJSON($attack)
 				));
 			}
 		}
@@ -365,11 +367,19 @@ abstract class Api {
 	protected function getAttacks(\imperator\Game $game) {
 		$out = array();
 		foreach($game->getAttacks() as $attack) {
-			$out[] = array(
-				'attacker' => $attack->getAttacker()->getId(),
-				'defender' => $attack->getDefender()->getId(),
-				'roll' => $attack->getAttackRoll()
-			);
+			$out[] = $this->getAttackJSON($attack);
+		}
+		return $out;
+	}
+
+	protected function getAttackJSON(\imperator\game\Attack $attack) {
+		$out = array(
+			'attacker' => $attack->getAttacker()->getId(),
+			'defender' => $attack->getDefender()->getId(),
+			'attackroll' => $attack->getAttackRoll()
+		);
+		if($attack->getDefenceRoll()) {
+			$out['defendroll'] = $attack->getDefenceRoll();
 		}
 		return $out;
 	}

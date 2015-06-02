@@ -119,7 +119,7 @@
 			$selectT.append('<option value="'+$to+'">'+$territory.name+'</option>');
 			$selectT.prop('disabled', true);
 			for($n = 0; $n < $territory.borders.length; $n++) {
-				if($territory.borders[$n].owner == $game.player) {
+				if($territory.borders[$n].owner == $game.player && $territory.borders[$n].units > 1) {
 					$selectF.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+'</option>');
 				}
 			}
