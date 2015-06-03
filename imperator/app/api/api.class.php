@@ -127,7 +127,9 @@ abstract class Api {
 				$output['units'] = $game->getUnits();
 				$output['attacks'] = $this->getAttacks($game);
 				if($game->containsPlayer($this->user)) {
-					$cards = $game->getPlayerByUser($this->user)->getCards($game);
+					$player = $game->getPlayerByUser($this->user);
+					$output['autoroll'] = $player->getAutoRoll();
+					$cards = $player->getCards($game);
 					$output['cards'] = array(
 						\imperator\game\Cards::CARD_ARTILLERY => $cards->getArtillery(),
 						\imperator\game\Cards::CARD_CAVALRY => $cards->getCavalry(),
@@ -208,10 +210,21 @@ abstract class Api {
 					return $this->handlePlaceUnitsRequest($game);
 				} else if($this->request->getType() == 'attack' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_COMBAT)) {
 					return $this->handleAttackRequest($game);
+				} else if($this->request->getType() == 'autoroll') {
+					return $this->handleAutoRollRequest($game);
 				}
 			}
 		}
 		return $this->handleInvalidRequest();
+	}
+
+	protected function handleAutoRollRequest(\imperator\Game $game) {
+		$player = $game->getPlayerByUser($this->user);
+		$player->setAutoRoll($this->request->getAutoRoll());
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveAutoRoll($game, $player);
+		$this->reply(array(
+			'autoroll' => $player->getAutoRoll()
+		));
 	}
 
 	protected function handleAttackRequest(\imperator\Game $game) {

@@ -155,4 +155,10 @@ class GamesJoinedTable extends Table {
 			static::COLUMN_STATE => $user->getState()
 		), static::COLUMN_GID.' = '.$game->getId().' AND '.static::COLUMN_UID.' = '.$user->getId())->free();
 	}
+
+	public function saveAutoRoll(\imperator\Game $game, \imperator\User $user) {
+		$this->getManager()->update(static::NAME, array(
+			static::COLUMN_AUTOROLL => $user->getAutoRoll()
+		), static::COLUMN_GID.' = '.$game->getId().' AND '.static::COLUMN_UID.' = '.$user->getId())->free();
+	}
 }

@@ -46,7 +46,8 @@ class Request {
 				&& is_numeric($this->data['units']) && isset($this->data['territory']))
 				|| ($this->data['type'] == 'attack' && isset($this->data['to']) && isset($this->data['from'])
 				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0 && $this->data['units'] <= \imperator\game\Attack::MAX_ATTACKERS
-				&& isset($this->data['move']) && is_numeric($this->data['move']) && $this->data['move'] > 0);
+				&& isset($this->data['move']) && is_numeric($this->data['move']) && $this->data['move'] > 0)
+				|| ($this->data['type'] == 'autoroll' && isset($this->data['autoroll']));
 		}
 		return false;
 	}
@@ -118,5 +119,12 @@ class Request {
 
 	public function getMove() {
 		return (int)$this->data['move'];
+	}
+
+	public function getAutoRoll() {
+		if($this->data['autoroll'] == 'false') {
+			return false;
+		}
+		return (bool)$this->data['autoroll'];
 	}
 }

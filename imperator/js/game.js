@@ -47,6 +47,7 @@
 			$resizeTimeout = setTimeout(resetTabScroll, 250);
 		});
 		$('#settings input[name="unitgraphics"]').change(setUnitGraphics)
+		$('#settings input[name="autoroll"]').change(setAutoRoll)
 		$('#regions [data-button="highlight"]').click(highlightRegion);
 		$('#controls-box [data-button="stack"]').click(sendFortify);
 		$('#controls-box [data-button="endturn"]').click(sendEndTurn);
@@ -65,6 +66,15 @@
 		$radialMenu.find('[data-button="attack-from"]').click(function() {
 			showAttackDialog($radialMenu.attr('data-territory'));
 			closeRadialMenu();
+		});
+	}
+
+	function setAutoRoll() {
+		Imperator.API.send({
+			mode: 'game',
+			gid: $game.id,
+			type: 'autoroll',
+			autoroll: this.checked
 		});
 	}
 
@@ -362,6 +372,9 @@
 					$game.units = $msg.units;
 					updateUnits();
 				}
+			}
+			if($msg.autoroll !== undefined) {
+				$('#settings input[name="autoroll"]').prop('checked', $msg.autoroll);
 			}
 		}
 		for($key in $update) {
