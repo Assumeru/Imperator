@@ -186,3 +186,9 @@ Imperator.Cards.prototype.canPlayCombination = function($units) {
 			|| (this.artillery >= 1 && this.cavalry >= 1)
 			|| (this.infantry >= 1 && this.cavalry >= 1)));
 };
+
+Imperator.Attack = function($attacker, $defender, $roll) {
+	this.attacker = $attacker;
+	this.defender = $defender;
+	this.roll = $roll;
+};

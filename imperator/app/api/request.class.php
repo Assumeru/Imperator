@@ -45,9 +45,13 @@ class Request {
 				|| ($this->data['type'] == 'place-units' && isset($this->data['units'])
 				&& is_numeric($this->data['units']) && isset($this->data['territory']))
 				|| ($this->data['type'] == 'attack' && isset($this->data['to']) && isset($this->data['from'])
-				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0 && $this->data['units'] <= \imperator\game\Attack::MAX_ATTACKERS
+				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0
+				&& $this->data['units'] <= \imperator\game\Attack::MAX_ATTACKERS
 				&& isset($this->data['move']) && is_numeric($this->data['move']) && $this->data['move'] > 0)
-				|| ($this->data['type'] == 'autoroll' && isset($this->data['autoroll']));
+				|| ($this->data['type'] == 'autoroll' && isset($this->data['autoroll']))
+				|| ($this->data['type'] == 'defend' && isset($this->data['to']) && isset($this->data['from'])
+				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0
+				&& $this->data['units'] <= \imperator\game\Attack::MAX_DEFENDERS);
 		}
 		return false;
 	}

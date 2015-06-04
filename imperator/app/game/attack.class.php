@@ -4,6 +4,7 @@ use imperator\Imperator;
 
 class Attack {
 	const MAX_ATTACKERS = 3;
+	const MAX_DEFENDERS = 2;
 
 	private $attacker;
 	private $defender;

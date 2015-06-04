@@ -212,7 +212,44 @@ abstract class Api {
 					return $this->handleAttackRequest($game);
 				} else if($this->request->getType() == 'autoroll') {
 					return $this->handleAutoRollRequest($game);
+				} else if($this->request->getType() == 'defend') {
+					return $this->handleDefendRequest($game);
 				}
+			}
+		}
+		return $this->handleInvalidRequest();
+	}
+
+	protected function handleDefendRequest(\imperator\Game $game) {
+		$to = $game->getMap()->getTerritoryById($this->request->getTo());
+		$from = $game->getMap()->getTerritoryById($this->request->getFrom());
+		if($to && $from) {
+			$game->loadMap();
+			$game->getMap()->setGame($game);
+			$db = Imperator::getDatabaseManager();
+			$attacks = $db->getTable('Attacks');
+			$attack = $attacks->getAttack($from, $to);
+			if($to->getOwner()->equals($this->user) && $attack) {
+				$attack->rollDefence($this->request->getUnits());
+				$game->executeAttack($attack);
+				$attacks->deleteAttack($attack);
+				$game->setTime(time());
+				$db->getTable('Games')->updateTime($game);
+				return $this->reply(array(
+					'territories' => array(
+						$to->getId() => array(
+							'uid' => $to->getOwner()->getId(),
+							'units' => $to->getUnits()
+						),
+						$from->getId() => array(
+							'uid' => $from->getOwner()->getId(),
+							'units' => $from->getUnits()
+						)
+					),
+					'state' => $game->getState(),
+					'time' => $game->getTime(),
+					'attack' => $this->getAttackJSON($attack)
+				));
 			}
 		}
 		return $this->handleInvalidRequest();

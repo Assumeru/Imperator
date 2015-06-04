@@ -30,6 +30,11 @@ class AttacksTable extends Table {
 		return $this->getManager()->rowExists(static::NAME, static::COLUMN_GID.' = '.$game->getId());
 	}
 
+	/**
+	 * @param \imperator\map\Territory $attacker
+	 * @param \imperator\map\Territory $defender
+	 * @return bool
+	 */
 	public function territoriesAreInCombat(\imperator\map\Territory $attacker, \imperator\map\Territory $defender) {
 		$manager = $this->getManager();
 		return $manager->rowExists(static::NAME, static::COLUMN_GID.' = '.$attacker->getGame()->getId().'
@@ -47,6 +52,10 @@ class AttacksTable extends Table {
 		))->free();
 	}
 
+	/**
+	 * @param \imperator\Game $game
+	 * @return \imperator\game\Attack[]
+	 */
 	public function getAttacksFor(\imperator\Game $game) {
 		$attacks = array();
 		$query = $this->getManager()->query('SELECT * FROM '.static::NAME.' WHERE '.static::COLUMN_GID.' = '.$game->getId());
@@ -60,5 +69,36 @@ class AttacksTable extends Table {
 		}
 		$query->free();
 		return $attacks;
+	}
+
+	/**
+	 * @param \imperator\map\Territory $attacker
+	 * @param \imperator\map\Territory $defender
+	 * @return \imperator\game\Attack
+	 */
+	public function getAttack(\imperator\map\Territory $attacker, \imperator\map\Territory $defender) {
+		$attack = null;
+		$manager = $this->getManager();
+		$query = $manager->query('SELECT '.static::COLUMN_DICE_ROLL.', '.static::COLUMN_TRANSFERING_UNITS.'
+			FROM '.static::NAME.'
+			WHERE '.static::COLUMN_GID.' = '.$attacker->getGame()->getId().'
+			AND '.static::COLUMN_ATTACKING_TERRITORY.' = \''.$manager->escape($attacker->getId()).'\'
+			AND '.static::COLUMN_DEFENDING_TERRITORY.' = \''.$manager->escape($defender->getId()).'\'');
+		if($result = $query->fetchResult()) {
+			$attack = new \imperator\game\Attack(
+				$attacker, $defender, 
+				$result->getInt(static::COLUMN_TRANSFERING_UNITS),
+				str_split($result->get(static::COLUMN_DICE_ROLL))
+			);
+		}
+		$query->free();
+		return $attack;
+	}
+
+	public function deleteAttack(\imperator\game\Attack $attack) {
+		$manager = $this->getManager();
+		$manager->delete(static::NAME, static::COLUMN_GID.' = '.$attack->getAttacker()->getGame()->getId().'
+			AND '.static::COLUMN_ATTACKING_TERRITORY.' = \''.$manager->escape($attack->getAttacker()->getId()).'\'
+			AND '.static::COLUMN_DEFENDING_TERRITORY.' = \''.$manager->escape($attack->getDefender()->getId()).'\'')->free();
 	}
 }

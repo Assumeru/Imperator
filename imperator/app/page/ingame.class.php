@@ -113,7 +113,12 @@ class InGame extends DefaultPage {
 				'to' => $language->translate('Select a territory to attack'),
 				'attack' => $language->translate('Enter the number of units to attack with'),
 				'move' => $language->translate('Enter the number of units to move with')
-			))->getData()
+			))->getData(),
+			'dialogformdefend' => Template::getInstance('dialog_form_defend')->replace(array(
+				'attackerRolled' => $language->translate('Attacker rolled:'),
+				'defendWith' => $language->translate('Defend with:')
+			))->getData(),
+			'die' => Template::getInstance('die')->getData()
 		));
 		$this->setJavascriptSetting('language', array(
 			'wait' => $language->translate('Please wait...'),
@@ -123,7 +128,9 @@ class InGame extends DefaultPage {
 			'forfeit' => $language->translate('Are you sure you want to forfeit?'),
 			'fortify' => $language->translate('Fortify %1$s'),
 			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
-			'attack' => $language->translate('Attack')
+			'attack' => $language->translate('Attack'),
+			'defend' => $language->translate('Defend %1$s'),
+			'vs' => $language->translate('%1$s vs. %2$s')
 		));
 		$this->addJavascript('classes.js');
 		$this->addJavascript('dialog.js');
