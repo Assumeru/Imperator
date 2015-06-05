@@ -129,7 +129,6 @@ class InGame extends DefaultPage {
 			'fortify' => $language->translate('Fortify %1$s'),
 			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
 			'attack' => $language->translate('Attack'),
-			'defend' => $language->translate('Defend %1$s'),
 			'vs' => $language->translate('%1$s vs. %2$s')
 		));
 		$this->addJavascript('classes.js');

@@ -197,6 +197,10 @@ abstract class Api {
 		if($game->containsPlayer($this->user)) {
 			if($this->request->getType() == 'forfeit') {
 				return $this->handleForfeitRequest($game);
+			} else if($this->request->getType() == 'autoroll') {
+				return $this->handleAutoRollRequest($game);
+			} else if($this->request->getType() == 'defend') {
+				return $this->handleDefendRequest($game);
 			} else if($game->getTurn() == $this->user->getId()) {
 				if($this->request->getType() == 'fortify' && $game->getState() == \imperator\Game::STATE_TURN_START) {
 					return $this->handleFortifyRequest($game);
@@ -210,10 +214,6 @@ abstract class Api {
 					return $this->handlePlaceUnitsRequest($game);
 				} else if($this->request->getType() == 'attack' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_COMBAT)) {
 					return $this->handleAttackRequest($game);
-				} else if($this->request->getType() == 'autoroll') {
-					return $this->handleAutoRollRequest($game);
-				} else if($this->request->getType() == 'defend') {
-					return $this->handleDefendRequest($game);
 				}
 			}
 		}
@@ -259,7 +259,7 @@ abstract class Api {
 		$player = $game->getPlayerByUser($this->user);
 		$player->setAutoRoll($this->request->getAutoRoll());
 		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveAutoRoll($game, $player);
-		$this->reply(array(
+		return $this->reply(array(
 			'autoroll' => $player->getAutoRoll()
 		));
 	}

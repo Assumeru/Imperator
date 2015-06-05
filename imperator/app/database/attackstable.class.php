@@ -48,7 +48,7 @@ class AttacksTable extends Table {
 			static::COLUMN_ATTACKING_TERRITORY => $attack->getAttacker()->getId(),
 			static::COLUMN_DEFENDING_TERRITORY => $attack->getDefender()->getId(),
 			static::COLUMN_TRANSFERING_UNITS => $attack->getMove(),
-			static::COLUMN_DICE_ROLL => implode(' ', $attack->getAttackRoll())
+			static::COLUMN_DICE_ROLL => implode('', $attack->getAttackRoll())
 		))->free();
 	}
 

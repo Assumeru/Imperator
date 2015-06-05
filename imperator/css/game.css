@@ -290,3 +290,49 @@ body:not(.my-turn) #card-controls {
 .dialog .clearfix .col-md-6 {
 	margin-top: 1em;
 }
+
+.die {
+	width: 50px;
+	height: 50px;
+	background-image: url('../img/game/dice.png');
+	display: inline-block;
+	border-radius: 5px;
+	margin: 2px;
+	vertical-align: middle;
+	box-sizing: unset;
+	color: transparent;
+}
+
+.die.attack {
+	background-color: #D00000;
+	border: 2px solid red;
+}
+
+.die.defend {
+	background-color: #0000D0;
+	border: 2px solid blue;
+}
+
+.die.d1 {
+	background-position: 0 0;
+}
+
+.die.d2 {
+	background-position: -100% 0;
+}
+
+.die.d3 {
+	background-position: -50% 0;
+}
+
+.die.d4 {
+	background-position: 0 100%;
+}
+
+.die.d5 {
+	background-position: -100% 100%;
+}
+
+.die.d6 {
+	background-position: -50% 100%;
+}

@@ -376,8 +376,8 @@
 					$game.attacks = [];
 					for($n = 0; $n < $msg.attacks.length; $n++) {
 						$game.attacks.push(new Imperator.Attack(
-							$game.territories[$msg.attacks[$n].attacker],
-							$game.territories[$msg.attacks[$n].defender],
+							$game.map.territories[$msg.attacks[$n].attacker],
+							$game.map.territories[$msg.attacks[$n].defender],
 							$msg.attacks[$n].attackroll
 						));
 					}
@@ -396,7 +396,7 @@
 	}
 
 	function getDice($type, $roll) {
-		var $out, $n;
+		var $out = '', $n;
 		for($n = 0; $n < $roll.length; $n++) {
 			$out += Imperator.settings.templates.die.replace('{$type}', $type).replace(/\{\$roll\}/g, $roll[$n]);
 		}
@@ -408,8 +408,8 @@
 		for($n = 0; $n < $game.attacks.length && $dialogs.defend === undefined; $n++) {
 			$attack = $game.attacks[$n];
 			if($attack.defender.owner == $game.player) {
-				$dialogs.defend = Imperator.Dialog.showDialogForm(Imperator.settings.language.defend.replace('%1$s', $attack.defender.name), Imperator.settings.templates.dialogformdefend, Imperator.settings.templates.okbutton, false);
-				$dialogs.defend.message.find('[data-value="vs"]').html(Imperator.settings.language.vs.replace('%1$s', '<span style="color: #'+$attack.attacker.owner.color+';">'+$attack.attacker.name+'</span>').replace('%2$s', '<span style="color: #'+$attack.defender.owner.color+';">'+$attack.defender.name+'</span>'));
+				$dialogs.defend = Imperator.Dialog.showDialogForm('', Imperator.settings.templates.dialogformdefend, Imperator.settings.templates.okbutton, false);
+				$dialogs.defend.header.html(Imperator.settings.language.vs.replace('%1$s', '<span style="color: #'+$attack.attacker.owner.color+';">'+$attack.attacker.name+'</span>').replace('%2$s', '<span style="color: #'+$attack.defender.owner.color+';">'+$attack.defender.name+'</span>'));
 				$dialogs.defend.message.find('[data-value="attack-roll"]').html(getDice('attack', $attack.roll));
 				$dialogs.defend.message.find('form').submit(function($e) {
 					$e.preventDefault();
