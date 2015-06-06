@@ -59,9 +59,14 @@ Imperator.Dialog = (function($) {
 		return new Dialog($dialog);
 	}
 
+	function showWaitDialog() {
+		return showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+	}
+
 	return {
 		showDialog: showDialog,
 		showDialogForm: showDialogForm,
-		closeDialog: closeDialog
+		closeDialog: closeDialog,
+		showWaitDialog: showWaitDialog
 	};
 })(jQuery);

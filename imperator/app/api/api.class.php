@@ -426,7 +426,8 @@ abstract class Api {
 		$out = array(
 			'attacker' => $attack->getAttacker()->getId(),
 			'defender' => $attack->getDefender()->getId(),
-			'attackroll' => $attack->getAttackRoll()
+			'attackroll' => $attack->getAttackRoll(),
+			'move' => $attack->getMove()
 		);
 		if($attack->getDefenceRoll()) {
 			$out['defendroll'] = $attack->getDefenceRoll();

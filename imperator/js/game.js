@@ -78,8 +78,8 @@
 		});
 	}
 
-	function showAttackDialog($from, $to) {
-		var $selectF, $selectT, $territory, $n, $inputA, $inputM, $move,
+	function showAttackDialog($from, $to, $prevUnits, $prevMove) {
+		var $selectF, $selectT, $territory, $n, $inputA, $inputM, $move, $dialog,
 		$ok = $(Imperator.settings.templates.okbutton),
 		$cancel = $(Imperator.settings.templates.cancelbutton);
 		function change() {
@@ -101,20 +101,27 @@
 				$move.show();
 			}
 		}
-		if($dialogs.attackInput !== undefined) {
-			$dialogs.attackInput.close();
-			delete $dialogs.attackInput;
-		}
-		$dialogs.attackInput = Imperator.Dialog.showDialogForm(
+		$dialog = Imperator.Dialog.showDialogForm(
 			Imperator.settings.language.attack,
 			Imperator.settings.templates.dialogformattack,
 			$('<div>').append($ok).append(' ').append($cancel), true);
-		$selectF = $dialogs.attackInput.message.find('[name="from"]');
-		$selectT = $dialogs.attackInput.message.find('[name="to"]');
-		$inputA = $dialogs.attackInput.message.find('[name="attack"]');
-		$inputM = $dialogs.attackInput.message.find('[name="move"]');
-		$move = $dialogs.attackInput.message.find('[data-value="move"]');
-		if($from !== undefined) {
+		$selectF = $dialog.message.find('[name="from"]');
+		$selectT = $dialog.message.find('[name="to"]');
+		$inputA = $dialog.message.find('[name="attack"]');
+		$inputM = $dialog.message.find('[name="move"]');
+		$move = $dialog.message.find('[data-value="move"]');
+		if($from !== undefined && $to !== undefined) {
+			$selectF.append('<option value="'+$from+'">'+$game.map.territories[$from].name+'</option>');
+			$selectF.prop('disabled', true);
+			$selectT.append('<option value="'+$to+'">'+$game.map.territories[$to].name+'</option>');
+			$selectT.prop('disabled', true);
+			if($prevMove !== undefined) {
+				$inputM.val($prevMove);
+			}
+			if($prevUnits !== undefined) {
+				$inputA.val($prevUnits);
+			}
+		} else if($from !== undefined) {
 			$territory = $game.map.territories[$from];
 			$selectF.append('<option value="'+$from+'">'+$territory.name+'</option>');
 			$selectF.prop('disabled', true);
@@ -140,10 +147,9 @@
 		change();
 		$cancel.click(function($e) {
 			$e.preventDefault();
-			$dialogs.attackInput.close();
-			delete $dialogs.attackInput;
+			$dialog.close();
 		});
-		$dialogs.attackInput.message.find('form').submit(function($e) {
+		$dialog.message.find('form').submit(function($e) {
 			$e.preventDefault();
 			Imperator.API.send({
 				gid: $game.id,
@@ -154,6 +160,11 @@
 				units: $inputA.val(),
 				move: $inputM.val()
 			});
+			$dialog.close();
+			if($dialogs.attack !== undefined) {
+				$dialogs.attack.close();
+			}
+			$dialogs.attack = Imperator.Dialog.showWaitDialog();
 		});
 	}
 
@@ -256,7 +267,7 @@
 			if($dialogs.playcards !== undefined) {
 				$dialogs.playcards.close();
 			}
-			$dialogs.playcards = Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+			$dialogs.playcards = Imperator.Dialog.showWaitDialog();
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
@@ -271,7 +282,7 @@
 			if($dialogs.endturn !== undefined) {
 				$dialogs.endturn.close();
 			}
-			$dialogs.endturn = Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+			$dialogs.endturn = Imperator.Dialog.showWaitDialog();
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
@@ -285,7 +296,7 @@
 			if($dialogs.fortify !== undefined) {
 				$dialogs.fortify.close();
 			}
-			$dialogs.fortify = Imperator.Dialog.showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
+			$dialogs.fortify = Imperator.Dialog.showWaitDialog();
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
@@ -383,6 +394,11 @@
 					}
 					updateAttacks();
 				}
+				if($msg.attack !== undefined && $dialogs.attack !== undefined) {
+					$dialogs.attack.close();
+					delete $dialogs.attack;
+					showAttackResultDialog($msg.attack);
+				}
 			}
 			if($msg.autoroll !== undefined) {
 				$('#settings input[name="autoroll"]').prop('checked', $msg.autoroll);
@@ -395,6 +411,41 @@
 		}
 	}
 
+	function showAttackResultDialog($attack) {
+		var $ok, $dialog, $again,
+		$attacker = $game.map.territories[$attack.attacker],
+		$defender = $game.map.territories[$attack.defender],
+		$message = $(Imperator.settings.templates.dialogattackresult);
+		$message.find('[data-value="attack-roll"]').html(getDice('attack', $attack.attackroll));
+		$ok = $(Imperator.settings.templates.okbutton);
+		if($attack.defendroll === undefined) {
+			$message.find('[data-value="defend"]').hide();
+			$dialog = Imperator.Dialog.showDialogForm(Imperator.settings.language.autorolldisabled.replace('%1$s', $defender.owner.name), $message, $ok, true);
+		} else {
+			$message.find('[data-value="defend-roll"]').html(getDice('defend', $attack.defendroll));
+			if($attacker.owner == $defender.owner) {
+				$dialog = Imperator.Dialog.showDialogForm(Imperator.settings.language.conquered.replace('%1$s', $defender.name), $message, $ok, true);
+			} else {
+				$again = $(Imperator.settings.templates.attackagainbutton).hide();
+				$dialog = Imperator.Dialog.showDialogForm('', $message, $('<div>').append($again).append(' ').append($ok), true);
+				$dialog.header.html(getVS($attacker, $defender));
+				if($attacker.canAttack($defender)) {
+					$again.show();
+					$again.focus();
+					$dialog.message.find('form').submit(function($e) {
+						$e.preventDefault();
+						showAttackDialog($attacker.id, $defender.id, $attack.attackroll.length, $attack.move);
+						$dialog.close();
+					});
+				}
+			}
+		}
+		$ok.click(function($e) {
+			$e.preventDefault();
+			$dialog.close();
+		});
+	}
+
 	function getDice($type, $roll) {
 		var $out = '', $n;
 		for($n = 0; $n < $roll.length; $n++) {
@@ -403,15 +454,19 @@
 		return $out;
 	}
 
+	function getVS($attacker, $defender) {
+		return Imperator.settings.language.vs.replace('%1$s', '<span style="color: #'+$attacker.owner.color+';">'+$attacker.name+'</span>').replace('%2$s', '<span style="color: #'+$defender.owner.color+';">'+$defender.name+'</span>');
+	}
+
 	function updateAttacks() {
 		var $n, $attack;
-		for($n = 0; $n < $game.attacks.length && $dialogs.defend === undefined; $n++) {
+		for($n = 0; $n < $game.attacks.length && $dialogs.attack === undefined; $n++) {
 			$attack = $game.attacks[$n];
 			if($attack.defender.owner == $game.player) {
-				$dialogs.defend = Imperator.Dialog.showDialogForm('', Imperator.settings.templates.dialogformdefend, Imperator.settings.templates.okbutton, false);
-				$dialogs.defend.header.html(Imperator.settings.language.vs.replace('%1$s', '<span style="color: #'+$attack.attacker.owner.color+';">'+$attack.attacker.name+'</span>').replace('%2$s', '<span style="color: #'+$attack.defender.owner.color+';">'+$attack.defender.name+'</span>'));
-				$dialogs.defend.message.find('[data-value="attack-roll"]').html(getDice('attack', $attack.roll));
-				$dialogs.defend.message.find('form').submit(function($e) {
+				$dialogs.attack = Imperator.Dialog.showDialogForm('', Imperator.settings.templates.dialogformdefend, Imperator.settings.templates.okbutton, false);
+				$dialogs.attack.header.html(getVS($attack.attacker, $attack.defender));
+				$dialogs.attack.message.find('[data-value="attack-roll"]').html(getDice('attack', $attack.roll));
+				$dialogs.attack.message.find('form').submit(function($e) {
 					$e.preventDefault();
 					Imperator.API.send({
 						mode: 'game',
@@ -419,8 +474,12 @@
 						type: 'defend',
 						to: $attack.defender.id,
 						from: $attack.attacker.id,
-						units: $dialogs.defend.message.find('[name="defend"]').val()
+						units: $dialogs.attack.message.find('[name="defend"]').val()
 					});
+					if($dialogs.attack !== undefined) {
+						$dialogs.attack.close();
+					}
+					$dialogs.attack = Imperator.Dialog.showWaitDialog();
 				});
 				break;
 			}

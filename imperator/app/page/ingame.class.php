@@ -103,6 +103,9 @@ class InGame extends DefaultPage {
 			'maxbutton' => Template::getInstance('button_max')->replace(array(
 				'value' => $language->translate('Maximum')
 			))->getData(),
+			'attackagainbutton' => Template::getInstance('button_attack_again')->replace(array(
+				'value' => $language->translate('Attack again')
+			))->getData(),
 			'dialogform' => Template::getInstance('dialog_form')->getData(),
 			'dialogformfortify' => Template::getInstance('dialog_form_stack')->replace(array(
 				'number' => $language->translate('How many units would you like to place?'),
@@ -118,7 +121,11 @@ class InGame extends DefaultPage {
 				'attackerRolled' => $language->translate('Attacker rolled:'),
 				'defendWith' => $language->translate('Defend with:')
 			))->getData(),
-			'die' => Template::getInstance('die')->getData()
+			'die' => Template::getInstance('die')->getData(),
+			'dialogattackresult' => Template::getInstance('dialog_attack_result')->replace(array(
+				'attackroll' => $language->translate('Attacker rolled:'),
+				'defendroll' => $language->translate('Defender rolled:')
+			))->getData()
 		));
 		$this->setJavascriptSetting('language', array(
 			'wait' => $language->translate('Please wait...'),
@@ -129,7 +136,9 @@ class InGame extends DefaultPage {
 			'fortify' => $language->translate('Fortify %1$s'),
 			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
 			'attack' => $language->translate('Attack'),
-			'vs' => $language->translate('%1$s vs. %2$s')
+			'vs' => $language->translate('%1$s vs. %2$s'),
+			'autorolldisabled' => $language->translate('%1$s has disabled Autoroll'),
+			'conquered' => $language->translate('%1$s has been conquered')
 		));
 		$this->addJavascript('classes.js');
 		$this->addJavascript('dialog.js');

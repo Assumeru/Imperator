@@ -123,6 +123,17 @@ Imperator.Territory.prototype.canBeAttackedBy = function($player) {
 Imperator.Territory.prototype.canReceiveReinforcements = function() {
 	return this.canBeAttackedBy(this.owner);
 };
+Imperator.Territory.prototype.canAttack = function($territory) {
+	return this.owner != $territory.owner && this.units > 1 && this.bordersTerritory($territory);
+};
+Imperator.Territory.prototype.bordersTerritory = function($territory) {
+	for(var $n = 0; $n < this.borders.length; $n++) {
+		if(this.borders[$n] == $territory) {
+			return true;
+		}
+	}
+	return false;
+};
 
 Imperator.Region = function($id, $units) {
 	this.id = $id;
