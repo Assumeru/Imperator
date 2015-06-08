@@ -121,6 +121,7 @@
 			if($prevUnits !== undefined) {
 				$inputA.val($prevUnits);
 			}
+			$ok.focus();
 		} else if($from !== undefined) {
 			$territory = $game.map.territories[$from];
 			$selectF.append('<option value="'+$from+'">'+$territory.name+'</option>');
@@ -130,6 +131,7 @@
 					$selectT.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+'</option>');
 				}
 			}
+			$inputM.val($territory.units - 1);
 			$selectT.focus();
 		} else {
 			$territory = $game.map.territories[$to];
@@ -429,7 +431,7 @@
 				$again = $(Imperator.settings.templates.attackagainbutton).hide();
 				$dialog = Imperator.Dialog.showDialogForm('', $message, $('<div>').append($again).append(' ').append($ok), true);
 				$dialog.header.html(getVS($attacker, $defender));
-				if($attacker.canAttack($defender)) {
+				if($attacker.canAttack($defender) && $attacker.owner == $game.player) {
 					$again.show();
 					$again.focus();
 					$dialog.message.find('form').submit(function($e) {
@@ -474,7 +476,7 @@
 						type: 'defend',
 						to: $attack.defender.id,
 						from: $attack.attacker.id,
-						units: $dialogs.attack.message.find('[name="defend"]').val()
+						units: $dialogs.attack.message.find('[name="defend"]:checked').val()
 					});
 					if($dialogs.attack !== undefined) {
 						$dialogs.attack.close();
