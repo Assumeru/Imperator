@@ -117,6 +117,11 @@ class InGame extends DefaultPage {
 				'attack' => $language->translate('Enter the number of units to attack with'),
 				'move' => $language->translate('Enter the number of units to move with')
 			))->getData(),
+			'dialogformmove' => Template::getInstance('dialog_form_move')->replace(array(
+				'from' => $language->translate('Select a territory to move from'),
+				'to' => $language->translate('Select a territory to move to'),
+				'move' => $language->translate('Enter the number of units to move')
+			))->getData(),
 			'dialogformdefend' => Template::getInstance('dialog_form_defend')->replace(array(
 				'attackerRolled' => $language->translate('Attacker rolled:'),
 				'defendWith' => $language->translate('Defend with:')
@@ -128,17 +133,19 @@ class InGame extends DefaultPage {
 			))->getData()
 		));
 		$this->setJavascriptSetting('language', array(
-			'wait' => $language->translate('Please wait...'),
-			'contacting' => $language->translate('Contacting server.'),
-			'newcard' => $language->translate('You have received a new card!'),
+			'attack' => $language->translate('Attack'),
+			'autorolldisabled' => $language->translate('%1$s has disabled Autoroll'),
 			'card' => \imperator\game\Cards::getCardNames($language),
+			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
+			'confirmmove' => $language->translate('Are you sure you want to stop attacking?'),
+			'conquered' => $language->translate('%1$s has been conquered'),
+			'contacting' => $language->translate('Contacting server.'),
 			'forfeit' => $language->translate('Are you sure you want to forfeit?'),
 			'fortify' => $language->translate('Fortify %1$s'),
-			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
-			'attack' => $language->translate('Attack'),
+			'move' => $language->translate('Move'),
+			'newcard' => $language->translate('You have received a new card!'),
 			'vs' => $language->translate('%1$s vs. %2$s'),
-			'autorolldisabled' => $language->translate('%1$s has disabled Autoroll'),
-			'conquered' => $language->translate('%1$s has been conquered')
+			'wait' => $language->translate('Please wait...')
 		));
 		$this->addJavascript('classes.js');
 		$this->addJavascript('dialog.js');

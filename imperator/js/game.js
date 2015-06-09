@@ -52,6 +52,7 @@
 		$('#controls-box [data-button="stack"]').click(sendFortify);
 		$('#controls-box [data-button="endturn"]').click(sendEndTurn);
 		$('#controls-box [data-button="forfeit"]').click(sendForfeit);
+		$('#controls-box [data-button="move"]').click(sendMove);
 		$('#card-controls [data-button="cards"]').click(sendCards);
 		$radialMenu.mouseleave(closeRadialMenu);
 		$radialMenu.find('.inner').click(closeRadialMenu);
@@ -67,6 +68,88 @@
 			showAttackDialog($radialMenu.attr('data-territory'));
 			closeRadialMenu();
 		});
+		$radialMenu.find('[data-button="move-to"]').click(function() {
+			showMoveDialog(undefined, $radialMenu.attr('data-territory'));
+			closeRadialMenu();
+		});
+		$radialMenu.find('[data-button="move-from"]').click(function() {
+			showMoveDialog($radialMenu.attr('data-territory'));
+			closeRadialMenu();
+		});
+	}
+
+	function showMoveDialog($from, $to) {
+		var $n, $territory,
+		$ok = $(Imperator.settings.templates.okbutton),
+		$cancel = $(Imperator.settings.templates.cancelbutton),
+		$dialog = Imperator.Dialog.showDialogForm(
+			Imperator.settings.language.move,
+			Imperator.settings.templates.dialogformmove,
+			$('<div>').append($ok).append(' ').append($cancel), true),
+		$inputM = $dialog.message.find('[name="move"]'),
+		$selectF = $dialog.message.find('[name="from"]'),
+		$selectT = $dialog.message.find('[name="to"]');
+		function change() {
+			var $mMax = $game.map.territories[$selectF.val()].units - 1,
+			$mVal = $inputM.val();
+			$inputM.attr('max', $mMax);
+			if($mVal !== '' && !isNaN($mVal) && $mVal > 0) {
+				$inputM.val(Math.min($mMax, $mVal));
+			}
+		}
+		if($from !== undefined) {
+			$territory = $game.map.territories[$from];
+			$selectF.append('<option value="'+$from+'">'+$territory.name+' ('+$territory.units+')</option>');
+			$selectF.prop('disabled', true);
+			for($n = 0; $n < $territory.borders.length; $n++) {
+				if($territory.borders[$n].owner == $territory.owner) {
+					$selectT.append('<option value="'+$territory.borders[$n].id+'">'+$territory.borders[$n].name+' ('+$territory.borders[$n].units+')</option>');
+				}
+			}
+			$selectT.focus();
+		} else {
+			$territory = $game.map.territories[$to];
+			$selectT.append('<option value="'+$to+'">'+$territory.name+' ('+$territory.units+')</option>');
+			$selectT.prop('disabled', true);
+			for($n = 0; $n < $territory.borders.length; $n++) {
+				if($territory.borders[$n].owner == $territory.owner && $territory.borders[$n].units > 1) {
+					$selectF.append('<option value="'+$territory.borders[$n].id+'">'+$territory.borders[$n].name+' ('+$territory.borders[$n].units+')</option>');
+				}
+			}
+			$selectF.focus();
+		}
+		$dialog.message.find('form').submit(function($e) {
+			$e.preventDefault();
+			$dialog.close();
+			Imperator.API.send({
+				gid: $game.id,
+				mode: 'game',
+				type: 'attack',
+				to: $selectT.val(),
+				from: $selectF.val(),
+				move: $inputM.val()
+			});
+		});
+		$selectF.change(change);
+		change();
+		$cancel.click(function($e) {
+			$e.preventDefault();
+			$dialog.close();
+		});
+	}
+
+	function sendMove() {
+		if($game.state == Imperator.Game.STATE_COMBAT && window.confirm(Imperator.settings.language.confirmmove)) {
+			if($dialogs.startmove !== undefined) {
+				$dialogs.startmove.close();
+			}
+			$dialogs.startmove = Imperator.Dialog.showWaitDialog();
+			Imperator.API.send({
+				mode: 'game',
+				type: 'start-move',
+				gid: $game.id
+			});
+		}
 	}
 
 	function setAutoRoll() {
@@ -79,9 +162,18 @@
 	}
 
 	function showAttackDialog($from, $to, $prevUnits, $prevMove) {
-		var $selectF, $selectT, $territory, $n, $inputA, $inputM, $move, $dialog,
+		var $territory, $n,
 		$ok = $(Imperator.settings.templates.okbutton),
-		$cancel = $(Imperator.settings.templates.cancelbutton);
+		$cancel = $(Imperator.settings.templates.cancelbutton),
+		$dialog = Imperator.Dialog.showDialogForm(
+			Imperator.settings.language.attack,
+			Imperator.settings.templates.dialogformattack,
+			$('<div>').append($ok).append(' ').append($cancel), true),
+		$selectF = $dialog.message.find('[name="from"]'),
+		$selectT = $dialog.message.find('[name="to"]'),
+		$inputA = $dialog.message.find('[name="attack"]'),
+		$inputM = $dialog.message.find('[name="move"]'),
+		$move = $dialog.message.find('[data-value="move"]');
 		function change() {
 			var $mMax = $game.map.territories[$selectF.val()].units - 1,
 			$aMax = Math.min(3, $mMax),
@@ -101,19 +193,10 @@
 				$move.show();
 			}
 		}
-		$dialog = Imperator.Dialog.showDialogForm(
-			Imperator.settings.language.attack,
-			Imperator.settings.templates.dialogformattack,
-			$('<div>').append($ok).append(' ').append($cancel), true);
-		$selectF = $dialog.message.find('[name="from"]');
-		$selectT = $dialog.message.find('[name="to"]');
-		$inputA = $dialog.message.find('[name="attack"]');
-		$inputM = $dialog.message.find('[name="move"]');
-		$move = $dialog.message.find('[data-value="move"]');
 		if($from !== undefined && $to !== undefined) {
-			$selectF.append('<option value="'+$from+'">'+$game.map.territories[$from].name+'</option>');
+			$selectF.append('<option value="'+$from+'">'+$game.map.territories[$from].name+' ('+$game.map.territories[$from].units+')</option>');
 			$selectF.prop('disabled', true);
-			$selectT.append('<option value="'+$to+'">'+$game.map.territories[$to].name+'</option>');
+			$selectT.append('<option value="'+$to+'">'+$game.map.territories[$to].name+' ('+$game.map.territories[$to].units+')</option>');
 			$selectT.prop('disabled', true);
 			if($prevMove !== undefined) {
 				$inputM.val($prevMove);
@@ -124,22 +207,22 @@
 			$ok.focus();
 		} else if($from !== undefined) {
 			$territory = $game.map.territories[$from];
-			$selectF.append('<option value="'+$from+'">'+$territory.name+'</option>');
+			$selectF.append('<option value="'+$from+'">'+$territory.name+' ('+$territory.units+')</option>');
 			$selectF.prop('disabled', true);
 			for($n = 0; $n < $territory.borders.length; $n++) {
 				if($territory.borders[$n].owner != $game.player) {
-					$selectT.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+'</option>');
+					$selectT.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+' ('+$territory.borders[$n].units+')</option>');
 				}
 			}
 			$inputM.val($territory.units - 1);
 			$selectT.focus();
 		} else {
 			$territory = $game.map.territories[$to];
-			$selectT.append('<option value="'+$to+'">'+$territory.name+'</option>');
+			$selectT.append('<option value="'+$to+'">'+$territory.name+' ('+$territory.units+')</option>');
 			$selectT.prop('disabled', true);
 			for($n = 0; $n < $territory.borders.length; $n++) {
 				if($territory.borders[$n].owner == $game.player && $territory.borders[$n].units > 1) {
-					$selectF.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+'</option>');
+					$selectF.append('<option value="'+$territory.borders[$n].id+'" style="color: #'+$territory.borders[$n].owner.color+';">'+$territory.borders[$n].name+' ('+$territory.borders[$n].units+')</option>');
 				}
 			}
 			$selectF.focus();
@@ -377,6 +460,9 @@
 					if($msg.state == Imperator.Game.STATE_FORTIFY && $msg.units !== undefined && $dialogs.fortify !== undefined) {
 						$dialogs.fortify.close();
 						delete $dialogs.fortify;
+					} else if($msg.state == Imperator.Game.STATE_POST_COMBAT && $dialogs.startmove !== undefined) {
+						$dialogs.startmove.close();
+						delete $dialogs.startmove;
 					}
 					$game.state = $msg.state;
 					$update.state[0] = true;
