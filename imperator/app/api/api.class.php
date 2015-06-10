@@ -214,7 +214,42 @@ abstract class Api {
 					return $this->handlePlaceUnitsRequest($game);
 				} else if($this->request->getType() == 'attack' && ($game->getState() == \imperator\Game::STATE_TURN_START || $game->getState() == \imperator\Game::STATE_COMBAT)) {
 					return $this->handleAttackRequest($game);
+				} else if($this->request->getType() == 'move' && $game->getState() == \imperator\Game::STATE_POST_COMBAT && $game->getUnits() >= $this->request->getMove()) {
+					return $this->handleMoveRequest($game);
 				}
+			}
+		}
+		return $this->handleInvalidRequest();
+	}
+
+	protected function handleMoveRequest(\imperator\Game $game) {
+		$to = $game->getMap()->getTerritoryById($this->request->getTo());
+		$from = $game->getMap()->getTerritoryById($this->request->getFrom());
+		if($to && $from) {
+			$game->loadMap();
+			$game->getMap()->setGame($game);
+			$move = $this->request->getMove();
+			if($from->getUnits() > $move && $from->borders($to) && $from->getOwner()->equals($to->getOwner()) && $from->getOwner()->equals($this->user)) {
+				$db = Imperator::getDatabaseManager();
+				$territories = $db->getTable('Territories');
+				$game->setUnits($game->getUnits() - $move);
+				$from->setUnits($from->getUnits() - $move);
+				$to->setUnits($to->getUnits() + $move);
+				$db->getTable('Games')->updateUnits($game);
+				$territories->updateUnits($to);
+				$territories->updateUnits($from);
+				return $this->reply(array(
+					'units' => $game->getUnits(),
+					'time' => $game->getTime(),
+					'territories' => array(
+						$to->getId() => array(
+							'units' => $to->getUnits()
+						),
+						$from->getId() => array(
+							'units' => $from->getUnits()
+						)
+					)
+				));
 			}
 		}
 		return $this->handleInvalidRequest();

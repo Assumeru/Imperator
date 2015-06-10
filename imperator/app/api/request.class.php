@@ -51,7 +51,9 @@ class Request {
 				|| ($this->data['type'] == 'autoroll' && isset($this->data['autoroll']))
 				|| ($this->data['type'] == 'defend' && isset($this->data['to']) && isset($this->data['from'])
 				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0
-				&& $this->data['units'] <= \imperator\game\Attack::MAX_DEFENDERS);
+				&& $this->data['units'] <= \imperator\game\Attack::MAX_DEFENDERS)
+				|| ($this->data['type'] == 'move' && isset($this->data['to']) && isset($this->data['from'])
+				&& isset($this->data['move']) && is_numeric($this->data['move']));
 		}
 		return false;
 	}
