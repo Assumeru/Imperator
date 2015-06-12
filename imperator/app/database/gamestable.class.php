@@ -234,7 +234,8 @@ class GamesTable extends Table {
 	public function updateConquered(\imperator\Game $game) {
 		$this->getManager()->update(static::NAME, array(
 			static::COLUMN_STATE => $game->getState(),
-			static::COLUMN_TIME => $game->getTime()
+			static::COLUMN_TIME => $game->getTime(),
+			static::COLUMN_CONQUERED => (int)$game->hasConquered()
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 }

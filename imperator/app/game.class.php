@@ -535,7 +535,7 @@ class Game {
 				game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY,
 				game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY
 			);
-			if($gj->getNumberOfJokers() < game\Cards::MAX_JOKERS) {
+			if($gj->getNumberOfJokers($this) < game\Cards::MAX_JOKERS) {
 				$possibleCards[] = game\Cards::CARD_JOKER;
 			}
 			$newCard = $possibleCards[mt_rand(0, count($possibleCards) - 1)];
@@ -636,7 +636,7 @@ class Game {
 			$defendingTerritory->setUnits($move);
 			$defendingTerritory->setOwner($attackingTerritory->getOwner());
 			$missions = $this->map->getMissions();
-			if($this->map->playerHasTerritories($defender)) {
+			if(!$this->map->playerHasTerritories($defender)) {
 				$defender->setState(User::STATE_GAME_OVER);
 				$gjTable->saveState($this, $defender);
 				$playersWithNewMissions = array();

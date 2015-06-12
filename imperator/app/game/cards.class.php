@@ -8,6 +8,7 @@ class Cards {
 	const CARD_INFANTRY = 2;
 	const CARD_JOKER = 3;
 	const MAX_CARDS = 5;
+	const MAX_JOKERS = 2;
 
 	private $artillery;
 	private $cavalry;
