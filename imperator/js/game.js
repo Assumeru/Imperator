@@ -124,7 +124,7 @@
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
-				type: 'attack',
+				type: 'move',
 				to: $selectT.val(),
 				from: $selectF.val(),
 				move: $inputM.val()
