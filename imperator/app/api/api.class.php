@@ -32,12 +32,12 @@ abstract class Api {
 	}
 
 	public function handleRequest() {
-		if($this->request->isValid()) {
-			if($this->request->getMode() == Request::MODE_UPDATE) {
+		if(!($this->request instanceof requests\InvalidRequest)) {
+			if($this->request instanceof requests\UpdateRequest) {
 				return $this->handleUpdateRequest();
-			} else if($this->request->getMode() == Request::MODE_CHAT) {
+			} else if($this->request instanceof requests\ChatRequest) {
 				return $this->handleChatRequest();
-			} else if($this->request->getMode() == Request::MODE_GAME) {
+			} else if($this->request instanceof requests\GameRequest) {
 				return $this->handleGameRequest();
 			}
 		}

@@ -12,7 +12,7 @@ class Ajax extends Page {
 	public function render(\imperator\User $user) {
 		echo Imperator::handleApiRequest(
 			\imperator\api\Api::LONGPOLLING,
-			new \imperator\api\Request($_POST),
+			\imperator\api\Request::buildRequest($_POST),
 			$user
 		);
 	}

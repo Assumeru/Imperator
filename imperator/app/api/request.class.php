@@ -3,134 +3,16 @@ namespace imperator\api;
 use imperator\Imperator;
 
 class Request {
-	const MODE_UPDATE = 'update';
-	const MODE_GAME = 'game';
-	const MODE_CHAT = 'chat';
-	private $data;
-	private $valid = false;
-
-	public function __construct(array $params) {
-		$this->data = $params;
-		$this->valid = $this->validateRequest();
-	}
-
-	private function validateRequest() {
-		if(isset($this->data['mode'])) {
-			$mode = $this->data['mode'];
-			if($mode == static::MODE_UPDATE) {
-				return $this->validateUpdate();
-			} else if($mode == static::MODE_GAME) {
-				return $this->validateGame();
-			} else if($mode == static::MODE_CHAT) {
-				return $this->validateChat();
+	public static function buildRequest(array $params) {
+		if(isset($params['mode'])) {
+			if($params['mode'] == 'update') {
+				return requests\UpdateRequest::buildRequest($params);
+			} else if($params['mode'] == 'game') {
+				return requests\GameRequest::buildRequest($params);
+			} else if($params['mode'] == 'chat') {
+				return requests\ChatRequest::buildRequest($params);
 			}
 		}
-		return false;
-	}
-
-	private function validateUpdate() {
-		return isset($this->data['type']) && ($this->data['type'] == 'chat' || $this->data['type'] == 'game' || $this->data['type'] == 'pregame')
-			&& isset($this->data['gid']) && is_numeric($this->data['gid'])
-			&& isset($this->data['time']) && is_numeric($this->data['time']);
-	}
-
-	private function validateGame() {
-		if(isset($this->data['gid']) && is_numeric($this->data['gid']) && isset($this->data['type'])) {
-			return $this->data['type'] == 'forfeit'
-				|| $this->data['type'] == 'fortify'
-				|| $this->data['type'] == 'start-move'
-				|| $this->data['type'] == 'end-turn'
-				|| ($this->data['type'] == 'play-cards' && isset($this->data['units'])
-				&& is_numeric($this->data['units']) && \imperator\game\Cards::isValidUnitAmount($this->data['units']))
-				|| ($this->data['type'] == 'place-units' && isset($this->data['units'])
-				&& is_numeric($this->data['units']) && isset($this->data['territory']))
-				|| ($this->data['type'] == 'attack' && isset($this->data['to']) && isset($this->data['from'])
-				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0
-				&& $this->data['units'] <= \imperator\game\Attack::MAX_ATTACKERS
-				&& isset($this->data['move']) && is_numeric($this->data['move']) && $this->data['move'] > 0)
-				|| ($this->data['type'] == 'autoroll' && isset($this->data['autoroll']))
-				|| ($this->data['type'] == 'defend' && isset($this->data['to']) && isset($this->data['from'])
-				&& isset($this->data['units']) && is_numeric($this->data['units']) && $this->data['units'] > 0
-				&& $this->data['units'] <= \imperator\game\Attack::MAX_DEFENDERS)
-				|| ($this->data['type'] == 'move' && isset($this->data['to']) && isset($this->data['from'])
-				&& isset($this->data['move']) && is_numeric($this->data['move']));
-		}
-		return false;
-	}
-
-	private function validateChat() {
-		if(isset($this->data['type'])) {
-			$out = isset($this->data['gid']) && is_numeric($this->data['gid']);
-			$type = $this->data['type'];
-			if($type == 'delete') {
-				return $out && isset($this->data['uid']) && is_numeric($this->data['uid'])
-					&& isset($this->data['time']) && is_numeric($this->data['time']);
-			} else if($type == 'add') {
-				return $out && isset($this->data['message']);
-			}
-		}
-		return false;
-	}
-
-	public function isValid() {
-		return $this->valid;
-	}
-
-	public function getMode() {
-		return $this->data['mode'];
-	}
-
-	public function getType() {
-		return $this->data['type'];
-	}
-
-	public function getGid() {
-		return (int)$this->data['gid'];
-	}
-
-	public function getUid() {
-		return (int)$this->data['uid'];
-	}
-
-	public function getTime() {
-		return (int)$this->data['time'];
-	}
-
-	public function getMessage() {
-		return trim(Imperator::stripIllegalCharacters($this->data['message']));
-	}
-
-	public function getUnits() {
-		return (int)$this->data['units'];
-	}
-
-	public function getCard() {
-		if(isset($this->data['card']) && is_numeric($this->data['card']) && \imperator\game\Cards::isCard($this->data['card'])) {
-			return (int)$this->data['card'];
-		}
-		return \imperator\game\Cards::CARD_NONE;
-	}
-
-	public function getTerritory() {
-		return $this->data['territory'];
-	}
-
-	public function getTo() {
-		return $this->data['to'];
-	}
-
-	public function getFrom() {
-		return $this->data['from'];
-	}
-
-	public function getMove() {
-		return (int)$this->data['move'];
-	}
-
-	public function getAutoRoll() {
-		if($this->data['autoroll'] == 'false') {
-			return false;
-		}
-		return (bool)$this->data['autoroll'];
+		return new requests\InvalidRequest($params);
 	}
 }
