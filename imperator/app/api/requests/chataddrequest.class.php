@@ -2,21 +2,27 @@
 namespace imperator\api\requests;
 use imperator\Imperator;
 
-class ChatDeleteRequest extends ChatRequest {
-	private $time;
-	private $uid;
+class ChatAddRequest extends ChatRequest {
+	private $message;
 
-	public function __construct($gid, $time, $uid) {
+	public function __construct($gid, $message) {
 		parent::__construct($gid);
-		$this->time = (int)$time;
-		$this->uid = (int)$uid;
+		$this->message = trim(Imperator::stripIllegalCharacters($message));
 	}
 
-	public function getTime() {
-		return $this->time;
+	public function getType() {
+		return 'add';
 	}
 
-	public function getUid() {
-		return $this->uid;
+	protected function getMessage() {
+		return $this->message;
+	}
+
+	public function handle(\imperator\User $user) {
+		if(!$this->canUseChat($user, $this->getGid())) {
+			throw new \imperator\exceptions\InvalidRequestException('User '.$user->getId().' cannot use chat '.$this->getGid());
+		}
+		$message = new \imperator\chat\ChatMessage($this->getGid(), time(), $user, $this->getMessage());
+		$message->insert();
 	}
 }

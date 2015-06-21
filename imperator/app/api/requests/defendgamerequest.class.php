@@ -14,15 +14,58 @@ class DefendGameRequest extends GameRequest {
 		$this->from = $from;
 	}
 
-	public function getUnits() {
+	public function getType() {
+		return 'defend';
+	}
+
+	protected function getUnits() {
 		return $this->units;
 	}
 
-	public function getTo() {
+	protected function getTo() {
 		return $this->to;
 	}
 
-	public function getFrom() {
+	protected function getFrom() {
 		return $this->from;
+	}
+
+	public function handle(\imperator\User $user) {
+		parent::handle($user);
+		$to = $this->getGame()->getMap()->getTerritoryById($this->getTo());
+		$from = $this->getGame()->getMap()->getTerritoryById($this->getFrom());
+		if(!$to || !$from) {
+			throw new \imperator\exceptions\InvalidRequestException('Territory "'.$this->getTo().'" or "'.$this->getFrom().'" not found in '.$this->getGame()->getId());
+		}
+		$this->getGame()->loadMap();
+		$this->getGame()->getMap()->setGame($this->getGame());
+		$db = Imperator::getDatabaseManager();
+		$attacks = $db->getTable('Attacks');
+		$attack = $attacks->getAttack($from, $to);
+		if(!$to->getOwner()->equals($user)) {
+			throw new \imperator\exceptions\InvalidRequestException('User '.$user->getId().' does not own '.$to->getId().' in '.$this->getGame()->getId());
+		} else if(!$attack) {
+			throw new \imperator\exceptions\InvalidRequestException('Attack not found for "'.$this->getTo().'" and "'.$this->getFrom().'" in '.$this->getGame()->getId());
+		}
+		$attack->rollDefence($this->getUnits());
+		$this->getGame()->executeAttack($attack);
+		$attacks->deleteAttack($attack);
+		$this->getGame()->setTime(time());
+		$db->getTable('Games')->updateTime($this->getGame());
+		return array(
+			'territories' => array(
+				$to->getId() => array(
+					'uid' => $to->getOwner()->getId(),
+					'units' => $to->getUnits()
+				),
+				$from->getId() => array(
+					'uid' => $from->getOwner()->getId(),
+					'units' => $from->getUnits()
+				)
+			),
+			'state' => $this->getGame()->getState(),
+			'time' => $this->getGame()->getTime(),
+			'attack' => $this->getAttackJSON($attack)
+		);
 	}
 }

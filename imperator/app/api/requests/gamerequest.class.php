@@ -2,8 +2,8 @@
 namespace imperator\api\requests;
 use imperator\Imperator;
 
-class GameRequest extends \imperator\api\Request {
-	private $gid;
+abstract class GameRequest extends \imperator\api\Request {
+	private $game;
 
 	public static function buildRequest(array $params) {
 		if(isset($params['gid']) && is_numeric($params['gid']) && isset($params['type'])) {
@@ -33,10 +33,31 @@ class GameRequest extends \imperator\api\Request {
 	}
 
 	public function __construct($gid) {
-		$this->gid = (int)$gid;
+		$this->game = Imperator::getDatabaseManager()->getTable('Games')->getGameById((int)$gid);
 	}
 
-	public function getGid() {
-		return $this->gid;
+	public function getMode() {
+		return 'game';
+	}
+
+	/**
+	 * @return \imperator\Game
+	 */
+	protected function getGame() {
+		return $this->game;
+	}
+
+	public function handle(\imperator\User $user) {
+		if(!$this->game) {
+			throw new \imperator\exceptions\InvalidRequestException('Game does not exist.');
+		} else if(!$this->game->containsPlayer($user)) {
+			throw new \imperator\exceptions\InvalidRequestException('User '.$user->getId().' not in game '.$this->game->getId());
+		}
+	}
+
+	protected function throwIfNotMyTurn(\imperator\User $user) {
+		if($this->game->getTurn() != $user->getId()) {
+			throw new \imperator\exceptions\InvalidRequestException('Turn is not '.$user->getId().' in '.$this->game->getId());
+		}
 	}
 }

@@ -14,7 +14,21 @@ class AutoRollRequest extends GameRequest {
 		}
 	}
 
-	public function getAutoRoll() {
+	public function getType() {
+		return 'autoroll';
+	}
+
+	protected function getAutoRoll() {
 		return $this->autoroll;
+	}
+
+	public function handle(\imperator\User $user) {
+		parent::handle($user);
+		$player = $this->getGame()->getPlayerByUser($user);
+		$player->setAutoRoll($this->getAutoRoll());
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveAutoRoll($this->getGame(), $player);
+		return array(
+			'autoroll' => $player->getAutoRoll()
+		);
 	}
 }

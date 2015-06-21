@@ -2,7 +2,7 @@
 namespace imperator\api\requests;
 use imperator\Imperator;
 
-class UpdateRequest extends \imperator\api\Request {
+abstract class UpdateRequest extends \imperator\api\Request {
 	private $gid;
 	private $time;
 
@@ -24,11 +24,36 @@ class UpdateRequest extends \imperator\api\Request {
 		$this->time = (int)$time;
 	}
 
-	public function getGid() {
+	public function getMode() {
+		return 'update';
+	}
+
+	protected function getGid() {
 		return $this->gid;
 	}
 
-	public function getTime() {
+	protected function getTime() {
 		return $this->time;
+	}
+
+	protected function getJSONMessages(array $messages) {
+		$json = array();
+		foreach($messages as $message) {
+			$user = $message->getUser();
+			$jsonMessage = array(
+				'message' => $message->getMessage(),
+				'user' => array(
+					'id' => $user->getId(),
+					'name' => $user->getName(),
+					'url' => $user->getProfileLink()
+				),
+				'time' => date(DATE_ATOM, $message->getTime())
+			);
+			if($user->getColor()) {
+				$jsonMessage['user']['color'] = $user->getColor();
+			}
+			$json[] = $jsonMessage;
+		}
+		return $json;
 	}
 }

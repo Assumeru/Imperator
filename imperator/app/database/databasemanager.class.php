@@ -80,7 +80,7 @@ abstract class DatabaseManager {
 
 	/**
 	 * @param string $name
-	 * @return Table:
+	 * @return Table
 	 */
 	public function getTable($name) {
 		if(!isset($this->tables[$name])) {
@@ -91,6 +91,9 @@ abstract class DatabaseManager {
 				Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, 'Class "'.$class.'" not found.');
 				$this->tables[$name] = null;
 			}
+		}
+		if($this->tables[$name] == null) {
+			throw new \imperator\exceptions\DatabaseException('Table \''.$name.'\' does not exist.');
 		}
 		return $this->tables[$name];
 	}

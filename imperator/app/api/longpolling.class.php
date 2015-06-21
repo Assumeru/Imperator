@@ -5,6 +5,15 @@ use imperator\Imperator;
 class LongPolling extends Api {
 	private $hasHeaders = false;
 
+	public function handleRequest() {
+		if($this->getRequest() instanceof requests\ChatUpdateRequest) {
+			return $this->handleChatUpdateRequest();
+		} else if($this->getRequest() instanceof requests\GameUpdateRequest) {
+			return $this->handleGameUpdateRequest();
+		}
+		return parent::handleRequest();
+	}
+
 	protected function handleChatUpdateRequest() {
 		set_time_limit(0);
 		$table = Imperator::getDatabaseManager()->getTable('Chat');
@@ -16,14 +25,10 @@ class LongPolling extends Api {
 		for($n = 0; !$table->hasMessagesAfter($gid, $time) && ($n < $max || $max === 0); $n++) {
 			sleep($sleep);
 		}
-		if($n >= $max && $max !== 0) {
-			return parent::replyWithMessages(array());
-		} else {
-			return parent::handleChatUpdateRequest();
-		}
+		return parent::handleRequest();
 	}
 
-	protected function handleGameUpdateRequest($pregame = false) {
+	protected function handleGameUpdateRequest() {
 		set_time_limit(0);
 		$chat = Imperator::getDatabaseManager()->getTable('Chat');
 		$games = Imperator::getDatabaseManager()->getTable('Games');
@@ -35,11 +40,7 @@ class LongPolling extends Api {
 		for($n = 0; !$chat->hasMessagesAfter($gid, $time) && !$games->timeIsAfter($gid, $time) && ($n < $max || $max === 0); $n++) {
 			sleep($sleep);
 		}
-		if($n >= $max && $max !== 0) {
-			return $this->reply(array('update' => time()));
-		} else {
-			return parent::handleGameUpdateRequest($pregame);
-		}
+		return parent::handleRequest();
 	}
 
 	protected function reply($json) {
