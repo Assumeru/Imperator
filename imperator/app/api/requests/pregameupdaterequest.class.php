@@ -17,7 +17,7 @@ class PreGameUpdateRequest extends UpdateRequest {
 			))->getData();
 		}
 		$output['maxPlayers'] = $game->getMap()->getPlayers();
-		if($this->user->equals($game->getOwner())) {
+		if($user->equals($game->getOwner())) {
 			$page = new \imperator\page\PreGame($game);
 			$output['ownerControls'] = $page->getOwnerGameForm($user);
 		}

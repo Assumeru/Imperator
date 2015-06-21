@@ -3,17 +3,23 @@ namespace imperator\api\requests;
 use imperator\Imperator;
 
 class MoveGameRequest extends GameRequest {
+	private $move;
 	private $to;
 	private $from;
 
-	public function __construct($gid, $to, $from) {
+	public function __construct($gid, $move, $to, $from) {
 		parent::__construct($gid);
+		$this->move = (int)$move;
 		$this->to = $to;
 		$this->from = $from;
 	}
 
 	public function getType() {
 		return 'move';
+	}
+
+	protected function getMove() {
+		return $this->move;
 	}
 
 	protected function getTo() {

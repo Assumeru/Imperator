@@ -27,24 +27,25 @@ class PlaceUnitsGameRequest extends GameRequest {
 	public function handle(\imperator\User $user) {
 		parent::handle($user);
 		$this->throwIfNotMyTurn($user);
-		if($this->getGame()->getState() != \imperator\Game::STATE_TURN_START && $this->getGame()->getState() != \imperator\Game::STATE_FORTIFY) {
+		$game = $this->getGame();
+		if($game->getState() != \imperator\Game::STATE_TURN_START && $game->getState() != \imperator\Game::STATE_FORTIFY) {
 			throw new \imperator\exceptions\InvalidRequestException('Cannot place units after attacking.');
-		} else if($this->getGame()->getUnits() >= $this->getUnits()) {
-			throw new \imperator\exceptions\InvalidRequestException('Cannot place more than '.$this->getGame()->getUnits().' units.');
+		} else if($game->getUnits() > $this->getUnits()) {
+			throw new \imperator\exceptions\InvalidRequestException('Cannot place more than '.$game->getUnits().' units.');
 		}
-		$territory = $this->getGame()->getMap()->getTerritoryById($this->getTerritory());
+		$territory = $game->getMap()->getTerritoryById($this->getTerritory());
 		if(!$territory) {
-			throw new \imperator\exceptions\InvalidRequestException('Could not find territory "'.$this->getTerritory().'" in '.$this->getGame()->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Could not find territory "'.$this->getTerritory().'" in '.$game->getId());
 		}
-		$this->getGame()->loadMap();
+		$game->loadMap();
 		if(!$territory->getOwner()->equals($user)) {
-			throw new \imperator\exceptions\InvalidRequestException('Territory "'.$this->getTerritory().'" not owned by '.$user->getId().' in '.$this->getGame()->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Territory "'.$this->getTerritory().'" not owned by '.$user->getId().' in '.$game->getId());
 		}
-		$this->getGame()->placeUnits($territory, $this->getUnits());
+		$game->placeUnits($territory, $this->getUnits());
 		return array(
-			'state' => $this->getGame()->getState(),
-			'time' => $this->getGame()->getTime(),
-			'units' => $this->getGame()->getUnits(),
+			'state' => $game->getState(),
+			'time' => $game->getTime(),
+			'units' => $game->getUnits(),
 			'territories' => array(
 				$territory->getId() => array(
 					'units' => $territory->getUnits()

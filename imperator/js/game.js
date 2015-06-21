@@ -90,7 +90,7 @@
 		$selectF = $dialog.message.find('[name="from"]'),
 		$selectT = $dialog.message.find('[name="to"]');
 		function change() {
-			var $mMax = $game.map.territories[$selectF.val()].units - 1,
+			var $mMax = Math.min($game.map.territories[$selectF.val()].units - 1, $game.units),
 			$mVal = $inputM.val();
 			$inputM.attr('max', $mMax);
 			if($mVal !== '' && !isNaN($mVal) && $mVal > 0) {

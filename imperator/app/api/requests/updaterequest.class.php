@@ -28,11 +28,11 @@ abstract class UpdateRequest extends \imperator\api\Request {
 		return 'update';
 	}
 
-	protected function getGid() {
+	public function getGid() {
 		return $this->gid;
 	}
 
-	protected function getTime() {
+	public function getTime() {
 		return $this->time;
 	}
 

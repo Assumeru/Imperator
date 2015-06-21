@@ -112,7 +112,7 @@ class MapParser {
 		foreach($regionElements as $region) {
 			$id = $region->getAttribute('id');
 			$name = $this->getOneElement('name', $region)->nodeValue;
-			$units = (int)$this->getOneElement('units', $region);
+			$units = (int)$this->getOneElement('units', $region)->nodeValue;
 			$regions[$id] = new Region($id, $name, $units);
 		}
 		return $regions;

@@ -22,4 +22,8 @@ class InvalidRequest extends \imperator\api\Request {
 	public function getType() {
 		return $this->type;
 	}
+
+	public function handle(\imperator\User $user) {
+		throw new \imperator\exceptions\InvalidRequestException('Bad request.');
+	}
 }

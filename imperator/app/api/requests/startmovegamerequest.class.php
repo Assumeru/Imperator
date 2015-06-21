@@ -17,9 +17,9 @@ class StartMoveGameRequest extends GameRequest {
 			throw new \imperator\exceptions\InvalidRequestException($user->getLanguage()->translate('All battles need to finish before units can be moved.'));
 		}
 		$this->getGame()->startMove();
-		return $this->reply(array(
+		return array(
 			'state' => $this->getGame()->getState(),
 			'units' => $this->getGame()->getUnits()
-		));
+		);
 	}
 }
