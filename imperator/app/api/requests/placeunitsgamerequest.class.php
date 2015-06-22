@@ -31,15 +31,15 @@ class PlaceUnitsGameRequest extends GameRequest {
 		if($game->getState() != \imperator\Game::STATE_TURN_START && $game->getState() != \imperator\Game::STATE_FORTIFY) {
 			throw new \imperator\exceptions\InvalidRequestException('Cannot place units after attacking.');
 		} else if($game->getUnits() > $this->getUnits()) {
-			throw new \imperator\exceptions\InvalidRequestException('Cannot place more than '.$game->getUnits().' units.');
+			throw new \imperator\exceptions\InvalidRequestException('Cannot place more than %1$d units.', $game->getUnits());
 		}
 		$territory = $game->getMap()->getTerritoryById($this->getTerritory());
 		if(!$territory) {
-			throw new \imperator\exceptions\InvalidRequestException('Could not find territory "'.$this->getTerritory().'" in '.$game->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Could not find territory "%1$s" in %2$d', $this->getTerritory(), $game->getId());
 		}
 		$game->loadMap();
 		if(!$territory->getOwner()->equals($user)) {
-			throw new \imperator\exceptions\InvalidRequestException('Territory "'.$this->getTerritory().'" not owned by '.$user->getId().' in '.$game->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Territory "%1$s" not owned by %2$d in %3$d', $this->getTerritory(), $user->getId(), $game->getId());
 		}
 		$game->placeUnits($territory, $this->getUnits());
 		return array(

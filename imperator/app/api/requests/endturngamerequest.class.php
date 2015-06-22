@@ -26,7 +26,7 @@ class EndTurnGameRequest extends GameRequest {
 		parent::handle($user);
 		$this->throwIfNotMyTurn($user);
 		if($this->getGame()->getState() == \imperator\Game::STATE_COMBAT && $this->getGame()->hasOngoingBattles()) {
-			throw new \imperator\exceptions\InvalidRequestException($user->getLanguage()->translate('You cannot end your turn without finishing all battles.'));
+			throw new \imperator\exceptions\InvalidRequestException('You cannot end your turn without finishing all battles.');
 		}
 		$this->getGame()->loadMap();
 		$reply = array();

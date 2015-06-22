@@ -51,13 +51,13 @@ abstract class GameRequest extends \imperator\api\Request {
 		if(!$this->game) {
 			throw new \imperator\exceptions\InvalidRequestException('Game does not exist.');
 		} else if(!$this->game->containsPlayer($user)) {
-			throw new \imperator\exceptions\InvalidRequestException('User '.$user->getId().' not in game '.$this->game->getId());
+			throw new \imperator\exceptions\InvalidRequestException('User %1$d not in game %2$d', $user->getId(), $this->game->getId());
 		}
 	}
 
 	protected function throwIfNotMyTurn(\imperator\User $user) {
 		if($this->game->getTurn() != $user->getId()) {
-			throw new \imperator\exceptions\InvalidRequestException('Turn is not '.$user->getId().' in '.$this->game->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Turn is not %1$d in %2$d', $user->getId(), $this->game->getId());
 		}
 	}
 }

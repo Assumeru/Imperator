@@ -21,10 +21,10 @@ abstract class Api {
 		return $this->request;
 	}
 
-	protected function sendError($message) {
+	protected function sendError(\imperator\exceptions\InvalidRequestException $e) {
 		return $this->reply(array(
 			'error' => array(
-				'message' => $message,
+				'message' => $e->getUserFriendlyMessage($this->user),
 				'mode' => $this->request->getMode(),
 				'type' => $this->request->getType()
 			)
@@ -39,7 +39,7 @@ abstract class Api {
 			}
 		} catch(\imperator\exceptions\InvalidRequestException $e) {
 			Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
-			return $this->sendError($e->getMessage());
+			return $this->sendError($e);
 		}
 	}
 

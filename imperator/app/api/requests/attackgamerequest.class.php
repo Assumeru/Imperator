@@ -46,13 +46,13 @@ class AttackGameRequest extends GameRequest {
 		$to = $game->getMap()->getTerritoryById($this->getTo());
 		$from = $game->getMap()->getTerritoryById($this->getFrom());
 		if(!$to || !$from) {
-			throw new \imperator\exceptions\InvalidRequestException('Territory "'.$this->getTo().'" or "'.$this->getFrom().'" not found in '.$game->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Territory "%1$s" or "%2$s" not found in %3$d', $this->getTo(), $this->getFrom(), $game->getId());
 		}
 		$game->loadMap();
 		if(!$from->getOwner()->equals($user) || $to->getOwner()->equals($user) || $this->getUnits() >= $from->getUnits() || $this->getMove() >= $from->getUnits() || !$from->borders($to)) {
 			throw new \imperator\exceptions\InvalidRequestException('Invalid attack');
 		} else if($game->territoriesAreInCombat($to, $from)) {
-			throw new \imperator\exceptions\InvalidRequestException($user->getLanguage()->translate('One of these territories is already engaged in combat.'));
+			throw new \imperator\exceptions\InvalidRequestException('One of these territories is already engaged in combat.');
 		}
 		$attack = new \imperator\game\Attack($from, $to, $this->getMove());
 		$attack->rollAttack($this->getUnits());

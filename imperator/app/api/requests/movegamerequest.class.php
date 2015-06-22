@@ -37,12 +37,12 @@ class MoveGameRequest extends GameRequest {
 		if($game->getState() != \imperator\Game::STATE_POST_COMBAT) {
 			throw new \imperator\exceptions\InvalidRequestException('Cannot move now.');
 		} else if($game->getUnits() < $this->getMove()) {
-			throw new \imperator\exceptions\InvalidRequestException('Cannot move more than '.$game->getUnits().' units.');
+			throw new \imperator\exceptions\InvalidRequestException('Cannot move more than %1$d units.', $game->getUnits());
 		}
 		$to = $game->getMap()->getTerritoryById($this->getTo());
 		$from = $game->getMap()->getTerritoryById($this->getFrom());
 		if(!$to || !$from) {
-			throw new \imperator\exceptions\InvalidRequestException('Territory "'.$this->getTo().'" or "'.$this->getFrom().'" not found in '.$game->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Territory "%1$s" or "%2$s" not found in %3$d', $this->getTo(), $this->getFrom(), $game->getId());
 		}
 		$game->loadMap();
 		$game->getMap()->setGame($game);

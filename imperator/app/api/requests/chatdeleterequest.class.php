@@ -27,7 +27,7 @@ class ChatDeleteRequest extends ChatRequest {
 
 	public function handle(\imperator\User $user) {
 		if(!$user->canDeleteChatMessages() && !$this->isGameOwner($user, $this->getGid())) {
-			throw new \imperator\exceptions\InvalidRequestException('User '.$user->getId().' cannot delete from chat '.$this->getGid());
+			throw new \imperator\exceptions\InvalidRequestException('User %1$d cannot delete from chat %2$d', $user->getId(), $this->getGid());
 		}
 		$userClass = Imperator::getSettings()->getUserClass();
 		$message = new \imperator\chat\ChatMessage($this->getGid(), $this->getTime(), new $userClass($this->getUid()), '');

@@ -2,23 +2,18 @@
 namespace imperator\map;
 
 class MapParser {
-	private $xml;
 	private $xpath;
 
 	/**
 	 * @param string $path The path to the map xml
 	 */
 	public function __construct($path) {
-		$this->xml = new \DOMDocument();
-		$this->xml->load($path);
-		$this->xpath = new \DOMXPath($this->xml);
-	}
-
-	private function getOneElement($name, \DOMElement $element = null) {
-		if($element === null) {
-			$element = $this->xml;
+		$xml = new \DOMDocument();
+		if($xml->load(realpath($path)) === false) {
+			throw new \imperator\exceptions\MapParserException('Failed to load "'.$path.'"');
 		}
-		return $element->getElementsByTagName($name)->item(0);
+		//$xml->schemaValidate($filename);
+		$this->xpath = new \DOMXPath($xml);
 	}
 
 	/**
@@ -57,8 +52,8 @@ class MapParser {
 				}
 				$missions[$id] = $this->callWithArguments($class, $arguments);
 			} else {
-				$name = $this->getOneElement('name', $mission)->nodeValue;
-				$description = $this->getOneElement('description', $mission)->nodeValue;
+				$name = $this->xpath->query('child::name', $mission)->item(0)->nodeValue;
+				$description = $this->xpath->query('child::description', $mission)->item(0)->nodeValue;
 				$conditions = array();
 				foreach($this->xpath->query('child::conditions/condition', $mission) as $condition) {
 					$conditions[] = $this->getMissionCondition($condition);
@@ -111,8 +106,8 @@ class MapParser {
 		$regions = array();
 		foreach($regionElements as $region) {
 			$id = $region->getAttribute('id');
-			$name = $this->getOneElement('name', $region)->nodeValue;
-			$units = (int)$this->getOneElement('units', $region)->nodeValue;
+			$name = $this->xpath->query('child::name', $region)->item(0)->nodeValue;
+			$units = (int)$this->xpath->query('child::units', $region)->item(0)->nodeValue;
 			$regions[$id] = new Region($id, $name, $units);
 		}
 		return $regions;
@@ -136,14 +131,14 @@ class MapParser {
 		$regions = $this->getRegions();
 		foreach($territoryElements as $territory) {
 			$id = $territory->getAttribute('id');
-			$name = $this->getOneElement('name', $territory)->nodeValue;
+			$name = $this->xpath->query('child::name', $territory)->item(0)->nodeValue;
 			$territories[$id] = new Territory($id, $name);
 			$this->addRegions($territory, $regions, $territories[$id]);
 			$territories[$id]->setGame($game);
 		}
 		foreach($territoryElements as $territory) {
 			$id = $territory->getAttribute('id');
-			$borderElements = $this->getOneElement('borders', $territory)->getElementsByTagName('border');
+			$borderElements = $this->xpath->query('child::borders', $territory)->item(0)->getElementsByTagName('border');
 			foreach($borderElements as $border) {
 				$territories[$id]->addBorder($territories[$border->nodeValue]);
 			}

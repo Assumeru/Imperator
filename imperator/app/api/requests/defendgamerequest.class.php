@@ -35,7 +35,7 @@ class DefendGameRequest extends GameRequest {
 		$to = $this->getGame()->getMap()->getTerritoryById($this->getTo());
 		$from = $this->getGame()->getMap()->getTerritoryById($this->getFrom());
 		if(!$to || !$from) {
-			throw new \imperator\exceptions\InvalidRequestException('Territory "'.$this->getTo().'" or "'.$this->getFrom().'" not found in '.$this->getGame()->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Territory "%1$s" or "%2$s" not found in %3$d', $this->getTo(), $this->getFrom(), $game->getId());
 		}
 		$this->getGame()->loadMap();
 		$this->getGame()->getMap()->setGame($this->getGame());
@@ -43,9 +43,9 @@ class DefendGameRequest extends GameRequest {
 		$attacks = $db->getTable('Attacks');
 		$attack = $attacks->getAttack($from, $to);
 		if(!$to->getOwner()->equals($user)) {
-			throw new \imperator\exceptions\InvalidRequestException('User '.$user->getId().' does not own '.$to->getId().' in '.$this->getGame()->getId());
+			throw new \imperator\exceptions\InvalidRequestException('User %1$d does not own "%2$s" in %3$d', $user->getId(), $to->getId(), $this->getGame()->getId());
 		} else if(!$attack) {
-			throw new \imperator\exceptions\InvalidRequestException('Attack not found for "'.$this->getTo().'" and "'.$this->getFrom().'" in '.$this->getGame()->getId());
+			throw new \imperator\exceptions\InvalidRequestException('Attack not found for "%1$s" and "%2$s" in %3$d', $this->getTo(), $this->getFrom(), $this->getGame()->getId());
 		}
 		$attack->rollDefence($this->getUnits());
 		$this->getGame()->executeAttack($attack);

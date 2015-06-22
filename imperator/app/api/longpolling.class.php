@@ -48,9 +48,9 @@ class LongPolling extends Api {
 		return json_encode($json);
 	}
 
-	protected function sendError($message) {
-		$this->sendHeader('400 '.$message);
-		return parent::sendError($message);
+	protected function sendError(\imperator\exceptions\InvalidRequestException $e) {
+		$this->sendHeader('400 '.$e->getMessage());
+		return parent::sendError($e);
 	}
 
 	private function sendHeader($header) {

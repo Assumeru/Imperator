@@ -9,7 +9,7 @@ class ChatUpdateRequest extends UpdateRequest {
 
 	public function handle(\imperator\User $user) {
 		if(!$this->canUseChat($user, $this->getGid())) {
-			throw new \imperator\exceptions\InvalidRequestException('User '.$user->getId().' cannot use chat '.$this->getGid());
+			throw new \imperator\exceptions\InvalidRequestException('User %1$d cannot use chat %2$d', $user->getId(), $this->getGid());
 		}
 		$messages = Imperator::getDatabaseManager()->getTable('Chat')->getMessagesAfter($this->getGid(), $this->getTime());
 		return array(

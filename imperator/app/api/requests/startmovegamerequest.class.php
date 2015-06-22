@@ -14,7 +14,7 @@ class StartMoveGameRequest extends GameRequest {
 			throw new \imperator\exceptions\InvalidRequestException('Cannot move before attacking.');
 		}
 		if($this->getGame()->hasOngoingBattles()) {
-			throw new \imperator\exceptions\InvalidRequestException($user->getLanguage()->translate('All battles need to finish before units can be moved.'));
+			throw new \imperator\exceptions\InvalidRequestException('All battles need to finish before units can be moved.');
 		}
 		$this->getGame()->startMove();
 		return array(

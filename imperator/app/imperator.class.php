@@ -62,11 +62,11 @@ class Imperator {
 		} catch(exceptions\ImperatorException $e) {
 			self::$logger->log(Logger::LEVEL_WARNING, $e);
 			$page = new \imperator\page\HTTP500();
-			$page->render($user, $e);
+			$page->render($user);
 		} catch(\Exception $e) {
 			self::$logger->log(Logger::LEVEL_FATAL, $e);
 			$page = new \imperator\page\HTTP500();
-			$page->render($user, $e);
+			$page->render($user);
 		}
 	}
 

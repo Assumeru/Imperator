@@ -27,7 +27,7 @@ class PlayCardsGameRequest extends GameRequest {
 		$player = $this->getGame()->getPlayerByUser($user);
 		$cards = $player->getCards($this->getGame());
 		if(!$cards->canPlayCombination($this->getUnits())) {
-			throw new \imperator\exceptions\InvalidRequestException($user->getLanguage()->translate('You do not have the required cards to place %1$d units.', $this->getUnits()));
+			throw new \imperator\exceptions\InvalidRequestException('You do not have the required cards to place %1$d units.', $this->getUnits());
 		}
 		$this->getGame()->playCardCombination($player, $this->getUnits());
 		return array(
