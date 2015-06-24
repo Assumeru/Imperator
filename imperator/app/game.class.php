@@ -439,7 +439,23 @@ class Game {
 	 * @param User $user
 	 */
 	public function victory(User $user) {
-		//TODO
+		$db = Imperator::getDatabaseManager();
+		$db->getTable('CombatLog')->deleteGame($this);
+		$db->getTable('Territories')->removeTerritoriesFromGame($this);
+		$users = $db->getTable('Users');
+		$user->setState(User::STATE_VICTORIOUS);
+		$db->getTable('GamesJoined')->saveState($this, $user);
+		$this->turn = 0;
+		$this->time = time();
+		$this->state = static::STATE_FINISHED;
+		$db->getTable('Games')->updateStateAndTurn($this);
+		foreach($this->getPlayers() as $player) {
+			if($player->equals($user)) {
+				$users->addWin($player, $this->getNumberOfPlayers());
+			} else {
+				$users->addLoss($player);
+			}
+		}
 	}
 
 	/**
@@ -478,7 +494,7 @@ class Game {
 					$this->turn = $uids[0];
 				}
 			}
-			$this->state = Game::STATE_TURN_START;
+			$this->state = static::STATE_TURN_START;
 			$this->time = time();
 			$this->units = $this->getUnitsFromRegionsPerTurn($players[$this->turn]);
 			$this->conquered = false;

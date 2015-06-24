@@ -35,4 +35,36 @@ class UsersTable extends Table {
 		$query->free();
 		return $users;
 	}
+
+	public function addLoss(\imperator\User $user) {
+		if($this->getManager()->rowExists(static::NAME, static::COLUMN_UID.' = '.$user->getId())) {
+			$this->getManager()->query(
+				'UPDATE '.static::NAME.'
+				SET '.static::COLUMN_LOSSES.' = '.static::COLUMN_LOSSES.' - 1,
+				'.static::COLUMN_SCORE.' = '.static::COLUMN_SCORE.' - 1
+				WHERE '.static::COLUMN_UID.' = '.$user->getId())->free();
+		} else {
+			$this->getManager()->insert(static::NAME, array(
+				static::COLUMN_UID => $user->getId(),
+				static::COLUMN_LOSSES => 1,
+				static::COLUMN_SCORE => -1
+			))->free();
+		}
+	}
+
+	public function addWin(\imperator\User $user, $score) {
+		if($this->getManager()->rowExists(static::NAME, static::COLUMN_UID.' = '.$user->getId())) {
+			$this->getManager()->query(
+				'UPDATE '.static::NAME.'
+				SET '.static::COLUMN_WINS.' = '.static::COLUMN_WINS.' + 1,
+				'.static::COLUMN_SCORE.' = '.static::COLUMN_SCORE.' + '.$score.'
+				WHERE '.static::COLUMN_UID.' = '.$user->getId())->free();
+		} else {
+			$this->getManager()->insert(static::NAME, array(
+				static::COLUMN_UID => $user->getId(),
+				static::COLUMN_WINS => 1,
+				static::COLUMN_SCORE => 1
+			))->free();
+		}
+	}
 }
