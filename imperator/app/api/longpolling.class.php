@@ -44,6 +44,7 @@ class LongPolling extends Api {
 	}
 
 	protected function reply($json) {
+		$json = parent::reply($json);
 		$this->sendHeader('200 Success');
 		return json_encode($json);
 	}

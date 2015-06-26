@@ -44,7 +44,7 @@ class PlaceUnitsGameRequest extends GameRequest {
 		$game->placeUnits($territory, $this->getUnits());
 		return array(
 			'state' => $game->getState(),
-			'time' => $game->getTime(),
+			'update' => $game->getTime(),
 			'units' => $game->getUnits(),
 			'territories' => array(
 				$territory->getId() => array(

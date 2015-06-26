@@ -64,7 +64,7 @@ class DefendGameRequest extends GameRequest {
 				)
 			),
 			'state' => $this->getGame()->getState(),
-			'time' => $this->getGame()->getTime(),
+			'update' => $this->getGame()->getTime(),
 			'attack' => $this->getAttackJSON($attack)
 		);
 	}

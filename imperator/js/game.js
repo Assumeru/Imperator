@@ -14,14 +14,7 @@
 		$unitGraphics = Imperator.Store.getItem('unit-graphics', 'default'),
 		$radialMenu = $('#radial-menu');
 		Imperator.API.onMessage(parseUpdateMessage);
-		Imperator.API.onOpen(function() {
-			Imperator.API.send({
-				mode: 'update',
-				type: 'game',
-				gid: Imperator.settings.gid,
-				time: $time
-			});
-		});
+		Imperator.API.onOpen(sendUpdateRequest);
 		Imperator.Map.onLoad(function() {
 			$('#map svg g[id]').click(function() {
 				window.location = '#tab-territory-'+this.id;
@@ -75,6 +68,15 @@
 		$radialMenu.find('[data-button="move-from"]').click(function() {
 			showMoveDialog($radialMenu.attr('data-territory'));
 			closeRadialMenu();
+		});
+	}
+
+	function sendUpdateRequest() {
+		Imperator.API.send({
+			mode: 'update',
+			type: 'game',
+			gid: Imperator.settings.gid,
+			time: $time
 		});
 	}
 
@@ -422,6 +424,9 @@
 			state: [false, updateState]
 		};
 		if($msg !== undefined && $msg !== '') {
+			if($msg.update !== undefined && $msg.update > $time) {
+				$time = $msg.update;
+			}
 			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined && $msg.cards !== undefined && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined) {
 				$game = new Imperator.Game(Imperator.settings.gid, $msg.players, $msg.regions, $msg.territories, $msg.cards, $msg.units, $msg.state, $msg.turn);
 				$game.player = $game.players[Imperator.settings.uid];
@@ -490,6 +495,9 @@
 			}
 			if($msg.autoroll !== undefined) {
 				$('#settings input[name="autoroll"]').prop('checked', $msg.autoroll);
+			}
+			if($msg.request !== undefined && $msg.request.mode == 'update' && $msg.request.type == 'game') {
+				sendUpdateRequest();
 			}
 		}
 		for($key in $update) {

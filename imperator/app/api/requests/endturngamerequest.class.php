@@ -35,7 +35,7 @@ class EndTurnGameRequest extends GameRequest {
 		}
 		$this->getGame()->nextTurn();
 		$reply['turn'] = $this->getGame()->getTurn();
-		$reply['time'] = $this->getGame()->getTime();
+		$reply['update'] = $this->getGame()->getTime();
 		$reply['state'] = $this->getGame()->getState();
 		return $reply;
 	}

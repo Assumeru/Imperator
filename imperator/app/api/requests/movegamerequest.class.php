@@ -60,7 +60,7 @@ class MoveGameRequest extends GameRequest {
 		$territories->updateUnits($from);
 		return array(
 			'units' => $game->getUnits(),
-			'time' => $game->getTime(),
+			'update' => $game->getTime(),
 			'territories' => array(
 				$to->getId() => array(
 					'units' => $to->getUnits()

@@ -38,7 +38,7 @@ class PlayCardsGameRequest extends GameRequest {
 				\imperator\game\Cards::CARD_INFANTRY => $cards->getInfantry(),
 				\imperator\game\Cards::CARD_JOKER => $cards->getJokers()
 			),
-			'time' => $this->getGame()->getTime()
+			'update' => $this->getGame()->getTime()
 		);
 	}
 }

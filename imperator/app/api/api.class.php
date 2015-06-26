@@ -23,11 +23,7 @@ abstract class Api {
 
 	protected function sendError(\imperator\exceptions\InvalidRequestException $e) {
 		return $this->reply(array(
-			'error' => array(
-				'message' => $e->getUserFriendlyMessage($this->user),
-				'mode' => $this->request->getMode(),
-				'type' => $this->request->getType()
-			)
+			'error' => $e->getUserFriendlyMessage($this->user)
 		));
 	}
 
@@ -43,5 +39,11 @@ abstract class Api {
 		}
 	}
 
-	protected function reply($json) {}
+	protected function reply(array $json) {
+		$json['request'] = array(
+			'mode' => $this->request->getMode(),
+			'type' => $this->request->getType()
+		);
+		return $json;
+	}
 }
