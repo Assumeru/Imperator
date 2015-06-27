@@ -16,9 +16,10 @@ class GameUpdateRequest extends UpdateRequest {
 		$messages = $db->getTable('Chat')->getMessagesAfter($this->getGid(), $this->getTime());
 		$output = array(
 			'messages' => $this->getJSONMessages($messages),
-			'update' => time()
+			'update' => time(),
+			'state' => $game->getState()
 		);
-		if($game->getTime() > $this->getTime()) {
+		if($game->getTime() > $this->getTime() && $game->getState() != \imperator\Game::STATE_FINISHED) {
 			$game->loadMap();
 			$output = $this->fillOutput($game, $user, $output);
 		}
@@ -65,7 +66,6 @@ class GameUpdateRequest extends UpdateRequest {
 				'name' => $player->getName()
 			);
 		}
-		$output['state'] = $game->getState();
 		$output['turn'] = $game->getTurn();
 		$output['units'] = $game->getUnits();
 		$output['attacks'] = $this->getAttacks($game);

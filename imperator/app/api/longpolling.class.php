@@ -6,12 +6,17 @@ class LongPolling extends Api {
 	private $hasHeaders = false;
 
 	public function handleRequest() {
+		$shutDownHandler = Imperator::getShutDownHandler();
+		$shutDownHandler->setMode(\imperator\ShutDownHandler::MODE_OUTPUT_JSON);
 		if($this->getRequest() instanceof requests\ChatUpdateRequest) {
-			return $this->handleChatUpdateRequest();
+			$output = $this->handleChatUpdateRequest();
 		} else if($this->getRequest() instanceof requests\GameUpdateRequest) {
-			return $this->handleGameUpdateRequest();
+			$output = $this->handleGameUpdateRequest();
+		} else {
+			$output = parent::handleRequest();
 		}
-		return parent::handleRequest();
+		$shutDownHandler->setMode(\imperator\ShutDownHandler::MODE_OUTPUT_NOTHING);
+		return $output;
 	}
 
 	protected function handleChatUpdateRequest() {

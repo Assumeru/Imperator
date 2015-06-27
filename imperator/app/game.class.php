@@ -188,7 +188,7 @@ class Game {
 	 * @return bool
 	 */
 	public function hasStarted() {
-		return $this->turn !== 0 && !$this->hasEnded();
+		return $this->turn !== 0;
 	}
 
 	/**
@@ -451,7 +451,7 @@ class Game {
 		$db->getTable('Games')->updateStateAndTurn($this);
 		foreach($this->getPlayers() as $player) {
 			if($player->equals($user)) {
-				$users->addWin($player, $this->getNumberOfPlayers());
+				$users->addWin($player, $this->getNumberOfPlayers() - 1);
 			} else {
 				$users->addLoss($player);
 			}

@@ -435,6 +435,20 @@
 				$update.state[0] = true;
 			}
 			if($game !== undefined) {
+				if($msg.state !== undefined && $msg.state !== $game.state) {
+					if($msg.state == Imperator.Game.STATE_FORTIFY && $msg.units !== undefined && $dialogs.fortify !== undefined) {
+						$dialogs.fortify.close();
+						delete $dialogs.fortify;
+					} else if($msg.state == Imperator.Game.STATE_POST_COMBAT && $dialogs.startmove !== undefined) {
+						$dialogs.startmove.close();
+						delete $dialogs.startmove;
+					} else if($msg.state == Imperator.Game.STATE_FINISHED) {
+						showGameOverDialog();
+						return;
+					}
+					$game.state = $msg.state;
+					$update.state[0] = true;
+				}
 				if($msg.territories !== undefined) {
 					for($id in $msg.territories) {
 						if($msg.territories[$id].units !== undefined) {
@@ -460,17 +474,6 @@
 				if($msg.turn !== undefined && $msg.turn !== $game.turn.id) {
 					$game.turn = $game.players[$msg.turn];
 					$update.turn[0] = true;
-				}
-				if($msg.state !== undefined && $msg.state !== $game.state) {
-					if($msg.state == Imperator.Game.STATE_FORTIFY && $msg.units !== undefined && $dialogs.fortify !== undefined) {
-						$dialogs.fortify.close();
-						delete $dialogs.fortify;
-					} else if($msg.state == Imperator.Game.STATE_POST_COMBAT && $dialogs.startmove !== undefined) {
-						$dialogs.startmove.close();
-						delete $dialogs.startmove;
-					}
-					$game.state = $msg.state;
-					$update.state[0] = true;
 				}
 				if($msg.units !== undefined) {
 					$game.units = $msg.units;
@@ -505,6 +508,14 @@
 				$update[$key][1]();
 			}
 		}
+	}
+
+	function showGameOverDialog() {
+		var $dialog = Imperator.Dialog.showDialogForm(Imperator.settings.language.gameover, Imperator.settings.language.endedmessage, $(Imperator.settings.templates.okbutton), false);
+		$dialog.message.find('form').submit(function($e) {
+			$e.preventDefault();
+			window.location.reload();
+		});
 	}
 
 	function showAttackResultDialog($attack) {

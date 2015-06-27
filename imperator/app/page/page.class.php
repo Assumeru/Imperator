@@ -46,6 +46,7 @@ abstract class Page {
 	 * @param User $user The user viewing the page
 	 */
 	public function render(\imperator\User $user) {
+		throw new \imperator\exceptions\ImperatorException('Cannot render abstract page.');
 	}
 
 	public static function getURL() {

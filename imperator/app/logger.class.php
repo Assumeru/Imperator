@@ -40,6 +40,8 @@ class Logger {
 	public function log($level, $message) {
 		if($message instanceof \Exception) {
 			$message = $this->parseException($message);
+		} else if(is_array($message)) {
+			$message = var_export($message, true);
 		}
 		$this->output($this->getHead($level).$message.self::EOL.self::EOL, $level);
 	}
@@ -55,6 +57,7 @@ class Logger {
 	private function parseException(\Exception $exception) {
 		$out = array();
 		$out[] = 'Exception: '.get_class($exception);
+		$out[] = $exception->getMessage();
 		$trace = $exception->getTrace();
 		$out[] = $this->getExceptionSourceLine($trace[0], $exception->getLine());
 		for($n=1; $n < count($trace); $n++) {

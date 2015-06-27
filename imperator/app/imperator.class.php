@@ -12,6 +12,7 @@ class Imperator {
 	 * @var \imperator\Settings
 	 */
 	private static $settings = null;
+	private static $shutDownHandler = null;
 	private static $initialised = false;
 
 	/**
@@ -19,6 +20,13 @@ class Imperator {
 	 */
 	public static function getLogger() {
 		return self::$logger;
+	}
+
+	/**
+	 * @return \imperator\ShutDownHandler
+	 */
+	public static function getShutDownHandler() {
+		return self::$shutDownHandler;
 	}
 
 	public static function redirect($url) {
@@ -40,15 +48,20 @@ class Imperator {
 		self::renderPage($page, $args);
 	}
 
+	public static function getCurrentUser() {
+		$userClass = self::$settings->getUserClass();
+		return $userClass::getCurrentUser();
+	}
+
 	/**
 	 * Outputs a page.
 	 * 
 	 * @param string $pageClass The class of the page to render
 	 */
 	public static function renderPage($pageClass, $args = null) {
+		self::$shutDownHandler->setMode(ShutDownHandler::MODE_OUTPUT_PAGE);
 		$pageClass = '\\imperator\\page\\'.$pageClass;
-		$userClass = self::$settings->getUserClass();
-		$user = $userClass::getCurrentUser();
+		$user = self::getCurrentUser();
 		if(!class_exists($pageClass)) {
 			$page = new \imperator\page\HTTP404();
 		} else {
@@ -61,13 +74,17 @@ class Imperator {
 			$page->render($user);
 		} catch(exceptions\ImperatorException $e) {
 			self::$logger->log(Logger::LEVEL_WARNING, $e);
-			$page = new \imperator\page\HTTP500();
-			$page->render($user);
+			self::renderErrorPage($user);
 		} catch(\Exception $e) {
 			self::$logger->log(Logger::LEVEL_FATAL, $e);
-			$page = new \imperator\page\HTTP500();
-			$page->render($user);
+			self::renderErrorPage($user);
 		}
+		self::$shutDownHandler->setMode(ShutDownHandler::MODE_OUTPUT_NOTHING);
+	}
+
+	public static function renderErrorPage(User $user) {
+		$page = new \imperator\page\HTTP500();
+		$page->render($user);
 	}
 
 	/**
@@ -92,6 +109,10 @@ class Imperator {
 			$autoLoader = new $class(self::$settings->getBasePath());
 			$autoLoader->register();
 			self::$logger = new Logger(self::$settings->getBasePath().'/var/log/', Logger::LEVEL_DEBUG);
+			self::$shutDownHandler = new ShutDownHandler();
+			self::$shutDownHandler->register();
+			error_reporting(0);
+			ini_set('display_errors', false);
 			self::$initialised = true;
 		}
 	}

@@ -24,12 +24,12 @@ class Game extends DefaultPage {
 	public function render(\imperator\User $user) {
 		if(!$this->game) {
 			$page = new HTTP404();
-		} else if(!$this->game->hasStarted()) {
-			$page = new PreGame($this->game);
 		} else if($this->game->hasEnded()) {
 			$page = new PostGame($this->game);
-		} else {
+		} else if($this->game->hasStarted()) {
 			$page = new InGame($this->game);
+		} else {
+			$page = new PreGame($this->game);
 		}
 		$page->render($user);
 	}

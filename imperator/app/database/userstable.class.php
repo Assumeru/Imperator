@@ -40,7 +40,7 @@ class UsersTable extends Table {
 		if($this->getManager()->rowExists(static::NAME, static::COLUMN_UID.' = '.$user->getId())) {
 			$this->getManager()->query(
 				'UPDATE '.static::NAME.'
-				SET '.static::COLUMN_LOSSES.' = '.static::COLUMN_LOSSES.' - 1,
+				SET '.static::COLUMN_LOSSES.' = '.static::COLUMN_LOSSES.' + 1,
 				'.static::COLUMN_SCORE.' = '.static::COLUMN_SCORE.' - 1
 				WHERE '.static::COLUMN_UID.' = '.$user->getId())->free();
 		} else {

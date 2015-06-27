@@ -2,7 +2,7 @@
 namespace imperator\api\requests;
 use imperator\Imperator;
 
-class PreGameUpdateRequest extends UpdateRequest {
+class PreGameUpdateRequest extends GameUpdateRequest {
 	public function getType() {
 		return 'pregame';
 	}
