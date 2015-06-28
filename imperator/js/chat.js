@@ -2,7 +2,8 @@
 	var $chatWindow,
 	$gid = Imperator.settings.gid,
 	$time = 0,
-	$loading = true;
+	$loading = true,
+	$postgame = Imperator.settings.postgame !== undefined ? Imperator.settings.postgame : false;
 
 	function create() {
 		var $chat = $('#chat');
@@ -43,7 +44,7 @@
 	}
 
 	function sendUpdateRequest() {
-		if($gid === 0) {
+		if($gid === 0 || $postgame) {
 			Imperator.API.send({
 				gid: $gid,
 				time: $time,

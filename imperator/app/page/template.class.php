@@ -33,6 +33,7 @@ class Template {
 	}
 
 	public function replace(array $replace) {
+		//extract($replace);
 		foreach($replace as $key => $value) {
 			$this->data = str_replace('{$'.$key.'}', $value, $this->data);
 		}
