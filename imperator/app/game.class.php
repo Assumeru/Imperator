@@ -364,9 +364,13 @@ class Game {
 	 * Disbands a game permanently.
 	 */
 	public function disband() {
-		$dbManager = Imperator::getDatabaseManager();
-		$dbManager->getTable('GamesJoined')->removeUsersFromGame($this);
-		$dbManager->getTable('Chat')->removeMessagesFromGame($this);
+		$db = Imperator::getDatabaseManager();
+		$db->getTable('GamesJoined')->removeUsersFromGame($this);
+		$db->getTable('Chat')->removeMessagesFromGame($this);
+		$db->getTable('Attacks')->removeAttacksFromGame($this);
+		$db->getTable('Territories')->removeTerritoriesFromGame($this);
+		$db->getTable('CombatLog')->deleteGame($this);
+		$db->getTable('Games')->deleteGame($this);
 	}
 
 	/**

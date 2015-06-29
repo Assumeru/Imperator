@@ -101,4 +101,8 @@ class AttacksTable extends Table {
 			AND '.static::COLUMN_ATTACKING_TERRITORY.' = \''.$manager->escape($attack->getAttacker()->getId()).'\'
 			AND '.static::COLUMN_DEFENDING_TERRITORY.' = \''.$manager->escape($attack->getDefender()->getId()).'\'')->free();
 	}
+
+	public function removeAttacksFromGame(\imperator\Game $game) {
+		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
+	}
 }

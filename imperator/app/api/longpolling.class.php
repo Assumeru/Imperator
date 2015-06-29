@@ -42,7 +42,7 @@ class LongPolling extends Api {
 		$sleep = $settings->getLongPollingTimeout();
 		$gid = $this->getRequest()->getGid();
 		$time = $this->getRequest()->getTime();
-		for($n = 0; !$chat->hasMessagesAfter($gid, $time) && !$games->timeIsAfter($gid, $time) && ($n < $max || $max === 0); $n++) {
+		for($n = 0; !$chat->hasMessagesAfter($gid, $time) && $games->gameExists($gid) && !$games->timeIsAfter($gid, $time) && ($n < $max || $max === 0); $n++) {
 			sleep($sleep);
 		}
 		return parent::handleRequest();

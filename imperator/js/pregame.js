@@ -22,7 +22,7 @@
 			$time = $msg.update;
 			if($msg.gameState !== undefined) {
 				window.alert($msg.gameState);
-				window.location.reload();
+				window.location = $msg.redirect;
 				return;
 			}
 			if($msg.players !== undefined) {

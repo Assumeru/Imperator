@@ -249,4 +249,8 @@ class GamesTable extends Table {
 			static::COLUMN_CONQUERED => (int)$game->hasConquered()
 		), static::COLUMN_GID.' = '.$game->getId())->free();
 	}
+
+	public function gameExists($gid) {
+		return $this->getManager()->rowExists(static::NAME, static::COLUMN_GID.' = '.$gid);
+	}
 }

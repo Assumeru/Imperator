@@ -13,12 +13,18 @@ class GameUpdateRequest extends UpdateRequest {
 		 * @var $game \imperator\Game
 		*/
 		$game = $db->getTable('Games')->getGameById($this->getGid());
+		if(!$game) {
+			return array(
+				'gameState' => $user->getLanguage()->translate('This game has been disbanded.'),
+				'update' => time(),
+				'redirect' => \imperator\page\GameList::getURL()
+			);
+		}
 		$messages = $db->getTable('Chat')->getMessagesAfter($this->getGid(), $this->getTime());
 		$output = array(
 			'messages' => $this->getJSONMessages($messages),
 			'update' => time(),
-			'state' => $game->getState(),
-			'turn' => $game->getTurn()
+			'state' => $game->getState()
 		);
 		if($game->getTime() > $this->getTime() && $game->getState() != \imperator\Game::STATE_FINISHED) {
 			$game->loadMap();
@@ -67,6 +73,7 @@ class GameUpdateRequest extends UpdateRequest {
 				'name' => $player->getName()
 			);
 		}
+		$output['turn'] = $game->getTurn();
 		$output['units'] = $game->getUnits();
 		$output['attacks'] = $this->getAttacks($game);
 		if($game->containsPlayer($user)) {

@@ -29,6 +29,7 @@ class PreGame extends DefaultPage {
 			$this->leaveGame($user);
 		} else if($joinForm->hasBeenSubmitted() && !$this->game->containsPlayer($user) && $joinForm->validateRequest()) {
 			$this->joinGame($user, $joinForm);
+			Imperator::redirect(Game::getURL($this->game));
 		}
 		$this->setTitle($this->game->getName());
 		$this->setBodyContents($this->getPregame($user, $joinForm));
