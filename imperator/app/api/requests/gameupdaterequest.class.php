@@ -17,7 +17,8 @@ class GameUpdateRequest extends UpdateRequest {
 		$output = array(
 			'messages' => $this->getJSONMessages($messages),
 			'update' => time(),
-			'state' => $game->getState()
+			'state' => $game->getState(),
+			'turn' => $game->getTurn()
 		);
 		if($game->getTime() > $this->getTime() && $game->getState() != \imperator\Game::STATE_FINISHED) {
 			$game->loadMap();
@@ -66,7 +67,6 @@ class GameUpdateRequest extends UpdateRequest {
 				'name' => $player->getName()
 			);
 		}
-		$output['turn'] = $game->getTurn();
 		$output['units'] = $game->getUnits();
 		$output['attacks'] = $this->getAttacks($game);
 		if($game->containsPlayer($user)) {

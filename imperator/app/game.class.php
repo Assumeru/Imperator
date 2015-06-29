@@ -425,9 +425,9 @@ class Game {
 		$lastPlayer = $user;
 		foreach($this->users as $player) {
 			if($player == $user) {
-				$player->setState(User::STATE_GAME_OVER);
+				$player->setState(game\Player::STATE_GAME_OVER);
 				$player->setAutoRoll(true);
-			} else if($player->getState() != User::STATE_GAME_OVER) {
+			} else if($player->getState() != game\Player::STATE_GAME_OVER) {
 				$numPlayers++;
 				$lastPlayer = $player;
 			}
@@ -447,7 +447,7 @@ class Game {
 		$db->getTable('CombatLog')->deleteGame($this);
 		$db->getTable('Territories')->removeTerritoriesFromGame($this);
 		$users = $db->getTable('Users');
-		$user->setState(User::STATE_VICTORIOUS);
+		$user->setState(game\Player::STATE_VICTORIOUS);
 		$db->getTable('GamesJoined')->saveState($user);
 		$this->turn = 0;
 		$this->time = time();
@@ -472,11 +472,11 @@ class Game {
 			$players[$player->getId()] = $player;
 			if($player->getId() == $this->turn) {
 				$currentPlayer = $player;
-			} else if($player->getState() != User::STATE_GAME_OVER) {
+			} else if($player->getState() != game\Player::STATE_GAME_OVER) {
 				$uids[] = $player->getId();
 			}
 		}
-		if($currentPlayer->getMission()->hasBeenCompleted($this, $currentPlayer)) {
+		if($currentPlayer->getMission()->hasBeenCompleted($currentPlayer)) {
 			$this->victory($currentPlayer);
 		} else {
 			$numPlayers = count($uids);
@@ -586,6 +586,7 @@ class Game {
 	 * @param int $amount
 	 */
 	public function placeUnits(\imperator\map\Territory $territory, $amount) {
+		$this->time = time();
 		$this->map->setGame($this);
 		$territory->setUnits($territory->getUnits() + $amount);
 		$this->units -= $amount;
@@ -621,6 +622,7 @@ class Game {
 		$attackerUnits = $attackingTerritory->getUnits() - $attack->getAttackerLosses();
 		$defenderUnits = $defendingTerritory->getUnits() - $attack->getDefenderLosses();
 		if($defenderUnits === 0) {
+			$this->time = time();
 			$this->conquered = true;
 			$move = $attack->getMove();
 			if($move >= $attackerUnits) {
@@ -632,7 +634,7 @@ class Game {
 			$defendingTerritory->setOwner($attackingTerritory->getOwner());
 			$missions = $this->map->getMissions();
 			if(!$this->map->playerHasTerritories($defender)) {
-				$defender->setState(User::STATE_GAME_OVER);
+				$defender->setState(game\Player::STATE_GAME_OVER);
 				$gjTable->saveState($defender);
 				$playersWithNewMissions = array();
 				foreach($missions as $mission) {
@@ -641,7 +643,7 @@ class Game {
 							$playerMission = $player->getMission();
 							if($mission->equals($playerMission) && $playerMission->getUid() == $defender->getId()) {
 								if($player == $attackingTerritory->getOwner()) {
-									$player->setState(User::STATE_DESTROYED_RIVAL);
+									$player->setState(game\Player::STATE_DESTROYED_RIVAL);
 									$gjTable->saveState($player);
 								} else {
 									$newMission = clone $missions[$mission->getFallback()];

@@ -31,7 +31,7 @@ class Mission {
 	 */
 	public function hasBeenCompleted(\imperator\game\Player $user) {
 		foreach($this->conditions as $condition) {
-			if(!$condition->isFulfilled($game, $user)) {
+			if(!$condition->isFulfilled($user)) {
 				return false;
 			}
 		}

@@ -49,7 +49,7 @@ class AttackGameRequest extends GameRequest {
 			throw new \imperator\exceptions\InvalidRequestException('Territory "%1$s" or "%2$s" not found in %3$d', $this->getTo(), $this->getFrom(), $game->getId());
 		}
 		$game->loadMap();
-		if(!$from->getOwner()->equals($user) || $to->getOwner()->equals($user) || $this->getUnits() >= $from->getUnits() || $this->getMove() >= $from->getUnits() || !$from->borders($to)) {
+		if(!$from->getOwner()->getUser()->equals($user) || $to->getOwner()->getUser()->equals($user) || $this->getUnits() >= $from->getUnits() || $this->getMove() >= $from->getUnits() || !$from->borders($to)) {
 			throw new \imperator\exceptions\InvalidRequestException('Invalid attack');
 		} else if($game->territoriesAreInCombat($to, $from)) {
 			throw new \imperator\exceptions\InvalidRequestException('One of these territories is already engaged in combat.');

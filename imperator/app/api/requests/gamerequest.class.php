@@ -22,7 +22,7 @@ abstract class GameRequest extends \imperator\api\Request {
 			} else if($params['type'] == 'attack' && isset($params['units']) && is_numeric($params['units']) && $params['units'] > 0 && $params['units'] <= \imperator\game\Attack::MAX_ATTACKERS && isset($params['to']) && isset($params['from']) && isset($params['move']) && is_numeric($params['move']) && $params['move'] > 0) {
 				return new AttackGameRequest($params['gid'], $params['units'], $params['to'], $params['from'], $params['move']);
 			} else if($params['type'] == 'autoroll' && isset($params['autoroll'])) {
-				return new AutoRollRequest($params['gid'], $params['autoroll']);
+				return new AutoRollGameRequest($params['gid'], $params['autoroll']);
 			} else if($params['type'] == 'defend' && isset($params['units']) && is_numeric($params['units']) && $params['units'] > 0 && $params['units'] <= \imperator\game\Attack::MAX_DEFENDERS && isset($params['to']) && isset($params['from'])) {
 				return new DefendGameRequest($params['gid'], $params['units'], $params['to'], $params['from']);
 			} else if($params['type'] == 'move' && isset($params['to']) && isset($params['from']) && isset($params['move']) && is_numeric($params['move']) && $params['move'] > 0) {

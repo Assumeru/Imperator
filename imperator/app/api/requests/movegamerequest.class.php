@@ -47,13 +47,14 @@ class MoveGameRequest extends GameRequest {
 		$game->loadMap();
 		$game->getMap()->setGame($game);
 		$move = $this->getMove();
-		if($from->getUnits() <= $move || !$from->borders($to) || !$from->getOwner()->equals($to->getOwner()) || !$from->getOwner()->equals($user)) {
+		if($from->getUnits() <= $move || !$from->borders($to) || $from->getOwner() != $to->getOwner() || !$from->getOwner()->getUser()->equals($user)) {
 			throw new \imperator\exceptions\InvalidRequestException('Invalid move');
 		}
 		$db = Imperator::getDatabaseManager();
 		$territories = $db->getTable('Territories');
 		$game->setUnits($game->getUnits() - $move);
 		$from->setUnits($from->getUnits() - $move);
+		$game->setTime(time());
 		$to->setUnits($to->getUnits() + $move);
 		$db->getTable('Games')->updateUnits($game);
 		$territories->updateUnits($to);

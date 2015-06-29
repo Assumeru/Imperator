@@ -38,7 +38,7 @@ class PlaceUnitsGameRequest extends GameRequest {
 			throw new \imperator\exceptions\InvalidRequestException('Could not find territory "%1$s" in %2$d', $this->getTerritory(), $game->getId());
 		}
 		$game->loadMap();
-		if(!$territory->getOwner()->equals($user)) {
+		if(!$territory->getOwner()->getUser()->equals($user)) {
 			throw new \imperator\exceptions\InvalidRequestException('Territory "%1$s" not owned by %2$d in %3$d', $this->getTerritory(), $user->getId(), $game->getId());
 		}
 		$game->placeUnits($territory, $this->getUnits());

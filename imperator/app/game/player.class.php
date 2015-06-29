@@ -99,7 +99,7 @@ class Player implements \imperator\Member {
 	public function getUnitsFromRegionsPerTurn() {
 		$this->game->loadMap();
 		$units = 0;
-		foreach($this->game->map->getRegions() as $region) {
+		foreach($this->game->getMap()->getRegions() as $region) {
 			if($region->isOwnedBy($this)) {
 				$units += $region->getUnitsPerTurn();
 			}
@@ -111,7 +111,7 @@ class Player implements \imperator\Member {
 	 * @return int
 	 */
 	public function getUnitsFromTerritoriesPerTurn() {
-		$this->loadMap();
+		$this->game->loadMap();
 		$units = count($this->getTerritories()) / 3;
 		return max(floor($units), 3);
 	}

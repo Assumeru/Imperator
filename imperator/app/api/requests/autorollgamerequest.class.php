@@ -2,7 +2,7 @@
 namespace imperator\api\requests;
 use imperator\Imperator;
 
-class AutoRollRequest extends GameRequest {
+class AutoRollGameRequest extends GameRequest {
 	private $autoroll;
 
 	public function __construct($gid, $autoroll) {
@@ -26,7 +26,7 @@ class AutoRollRequest extends GameRequest {
 		parent::handle($user);
 		$player = $this->getGame()->getPlayerByUser($user);
 		$player->setAutoRoll($this->getAutoRoll());
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveAutoRoll($this->getGame(), $player);
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveAutoRoll($player);
 		return array(
 			'autoroll' => $player->getAutoRoll()
 		);

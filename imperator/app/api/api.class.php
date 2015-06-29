@@ -36,6 +36,16 @@ abstract class Api {
 		} catch(\imperator\exceptions\InvalidRequestException $e) {
 			Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
 			return $this->sendError($e);
+		} catch(\imperator\exceptions\ImperatorException $e) {
+			Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
+			return $this->reply(array(
+				'error' => 'Fatal error'
+			));
+		} catch(\Exception $e) {
+			Imperator::getLogger()->log(\imperator\Logger::LEVEL_FATAL, $e);
+			return $this->reply(array(
+				'error' => 'Fatal error'
+			));
 		}
 	}
 

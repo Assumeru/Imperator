@@ -168,13 +168,13 @@ class Map {
 	/**
 	 * Returns all territories controlled by a user.
 	 * 
-	 * @param User $user The user whose territories you want
+	 * @param \imperator\game\Player $user The user whose territories you want
 	 * @return Territory[] An array of territories
 	 */
-	public function getTerritoriesFor(\imperator\User $user) {
+	public function getTerritoriesFor(\imperator\game\Player $user) {
 		$territories = array();
 		foreach($this->getTerritories() as $territory) {
-			if($territory->getOwner()->equals($user)) {
+			if($territory->getOwner() == $user) {
 				$territories[] = $territory;
 			}
 		}
@@ -184,12 +184,12 @@ class Map {
 	/**
 	 * Checks if a player owns territories.
 	 * 
-	 * @param \imperator\User $user
+	 * @param \imperator\game\Player $user
 	 * @return boolean
 	 */
-	public function playerHasTerritories(\imperator\User $user) {
+	public function playerHasTerritories(\imperator\game\Player $user) {
 		foreach($this->getTerritories() as $territory) {
-			if($territory->getOwner()->equals($user)) {
+			if($territory->getOwner() == $user) {
 				return true;
 			}
 		}
@@ -255,27 +255,14 @@ class Map {
 			if($mission->containsEliminate()) {
 				$index = mt_rand(0, $numPlayers-2);
 				$target = $players[$index];
-				if($player->equals($target)) {
+				if($player == $target) {
 					$target = $players[$numPlayers-1];
 				}
 				$mission->setUid($target->getId());
 			}
 			$player->setMission($mission);
 		}
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveMissions($this->game, $players);
-	}
-
-	/**
-	 * @param \imperator\User $user
-	 * @return bool
-	 */
-	public function isOwnedBy(\imperator\User $user) {
-		foreach($this->getTerritories() as $territory) {
-			if(!$territory->getOwner()->equals($user)) {
-				return false;
-			}
-		}
-		return true;
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveMissions($players);
 	}
 
 	/**

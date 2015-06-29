@@ -39,9 +39,9 @@ class Region {
 		return $this->territories;
 	}
 
-	public function isOwnedBy(\imperator\User $user) {
+	public function isOwnedBy(\imperator\game\Player $user) {
 		foreach($this->territories as $territory) {
-			if(!$territory->getOwner()->equals($user)) {
+			if($territory->getOwner() != $user) {
 				return false;
 			}
 		}

@@ -35,10 +35,10 @@ class PostGame extends DefaultPage {
 		$players = '';
 		foreach($this->game->getPlayers() as $player) {
 			$players .= Template::getInstance('game_postgame_player')->replace(array(
-				'owner' => $player->equals($this->game->getOwner()) ? $language->translate('(Owner)') : '',
+				'owner' => $player == $this->game->getOwner() ? $language->translate('(Owner)') : '',
 				'user' => DefaultPage::getProfileLink($player),
 				'mission' => $player->getMission()->getName(),
-				'winner' => $player->getState() == \imperator\User::STATE_VICTORIOUS ? $language->translate('(Winner)') : '',
+				'winner' => $player->getState() == \imperator\game\Player::STATE_VICTORIOUS ? $language->translate('(Winner)') : '',
 				'missionDesc' => $player->getMission()->getDescription($language)
 			))->getData();
 		}
