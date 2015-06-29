@@ -54,11 +54,12 @@ class Game extends DefaultPage {
 		if($colorList === null) {
 			$colorList = Imperator::getSettings()->getPlayerColors();
 		}
+		$language = $user->getLanguage();
 		$first = true;
 		foreach($colorList as $value => $color) {
 			$colors .= Template::getInstance('newgame_color')->replace(array(
 				'value' => $value,
-				'name' => $color,
+				'name' => $language->translate($color),
 				'checked' => $first ? 'checked' : ''
 			))->getData();
 			$first = false;

@@ -136,15 +136,16 @@ abstract class DefaultPage extends Page {
 		return $nav;
 	}
 
-	public static function getProfileLink(\imperator\User $user) {
-		if($url = $user->getProfileLink()) {
-			if($user->getColor()) {
-				return Template::getInstance('profile_link_color')->replace(array(
-					'url' => $url,
-					'name' => htmlentities($user->getName()),
-					'color' => $user->getColor()
-				))->getData();
-			}
+	public static function getProfileLink(\imperator\Member $user) {
+		if($user instanceof \imperator\game\Player) {
+			$url = $user->getUser()->getProfileLink();
+			return Template::getInstance('profile_link_color')->replace(array(
+				'url' => $url,
+				'name' => htmlentities($user->getName()),
+				'color' => $user->getColor()
+			))->getData();
+		}
+		if($user instanceof \imperator\User && $url = $user->getProfileLink()) {
 			return Template::getInstance('profile_link')->replace(array(
 				'url' => $url,
 				'name' => htmlentities($user->getName())

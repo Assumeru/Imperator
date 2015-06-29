@@ -19,7 +19,7 @@ class PreGame extends DefaultPage {
 	public function render(\imperator\User $user) {
 		$joinForm = new form\JoinGameForm($this->game);
 		$controlForm = new form\PreGameControlForm();
-		if($this->game->getOwner()->equals($user)) {
+		if($this->game->getOwner()->getUser()->equals($user)) {
 			if($controlForm->startHasBeenSubmitted() && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
 				$this->startGame();
 			} else if($controlForm->disbandHasBeenSubmitted()) {
@@ -32,7 +32,6 @@ class PreGame extends DefaultPage {
 		}
 		$this->setTitle($this->game->getName());
 		$this->setBodyContents($this->getPregame($user, $joinForm));
-		$this->addJavascript('pregame.js');
 		parent::render($user);
 	}
 
@@ -47,12 +46,13 @@ class PreGame extends DefaultPage {
 	}
 
 	private function leaveGame(\imperator\User $user) {
-		$this->game->removeUser($user);
+		$this->game->removeUser($this->game->getPlayerByUser($user));
 	}
 
 	private function joinGame(\imperator\User $user, form\JoinGameForm $form) {
-		$user->setColor($form->getColor());
-		$this->game->addUser($user);
+		$player = new \imperator\game\Player($user, $this->game);
+		$player->setColor($form->getColor());
+		$this->game->addUser($player);
 	}
 
 	private function getPregame(\imperator\User $user, form\JoinGameForm $form) {
@@ -78,11 +78,14 @@ class PreGame extends DefaultPage {
 	}
 
 	private function getControls(\imperator\User $user, form\JoinGameForm $form) {
-		if($this->game->getOwner()->equals($user)) {
+		$player = $this->game->getPlayerByUser($user);
+		if($this->game->getOwner() == $player) {
+			$this->addJavascript('pregame.js');
 			return $this->getOwnerGameForm($user);
-		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && !$this->game->containsPlayer($user)) {
+		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && $player === null) {
 			return $this->getJoinGameForm($user, $form);
-		} else if($this->game->containsPlayer($user)) {
+		} else if($player !== null) {
+			$this->addJavascript('pregame.js');
 			return $this->getLeaveForm($user);
 		}
 		return '';
@@ -112,6 +115,7 @@ class PreGame extends DefaultPage {
 	}
 
 	private function getJoinGameForm(\imperator\User $user, form\JoinGameForm $form) {
+		$this->addCSS('newgame.css');
 		$language = $user->getLanguage();
 		$passwordError = $form->getPasswordError();
 		$hasPasswordError = '';
@@ -150,7 +154,7 @@ class PreGame extends DefaultPage {
 		$players = '';
 		foreach($this->game->getPlayers() as $player) {
 			$players .= Template::getInstance('game_player')->replace(array(
-				'owner' => $player->equals($this->game->getOwner()) ? $user->getLanguage()->translate('(Owner)') : '',
+				'owner' => $player == $this->game->getOwner() ? $user->getLanguage()->translate('(Owner)') : '',
 				'user' => DefaultPage::getProfileLink($player)
 			))->getData();
 		}

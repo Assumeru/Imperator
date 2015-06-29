@@ -20,7 +20,7 @@ class MyBBUser extends \imperator\User {
 
 	public function getProfileLink() {
 		global $mybb;
-		if($id = $this->getId() !== 0) {
+		if(($id = $this->getId()) !== 0) {
 			return $mybb->settings['bburl'].'/'.get_profile_link($id);
 		}
 		return false;

@@ -8,7 +8,7 @@ class ChatMessage {
 	private $user;
 	private $message;
 
-	public function __construct($gid, $time, \imperator\User $user, $message) {
+	public function __construct($gid, $time, \imperator\Member $user, $message) {
 		$this->gid = $gid;
 		$this->time = $time;
 		$this->user = $user;

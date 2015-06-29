@@ -26,11 +26,10 @@ class Mission {
 	/**
 	 * Checks if a user has completed this mission.
 	 * 
-	 * @param Game $game The game to check in
-	 * @param User $user The user to check for
+	 * @param \imperator\game\Player $user The user to check for
 	 * @return bool True if all of this mission's conditions are met
 	 */
-	public function hasBeenCompleted(\imperator\Game $game, \imperator\User $user) {
+	public function hasBeenCompleted(\imperator\game\Player $user) {
 		foreach($this->conditions as $condition) {
 			if(!$condition->isFulfilled($game, $user)) {
 				return false;

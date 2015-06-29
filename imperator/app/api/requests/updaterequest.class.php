@@ -36,6 +36,11 @@ abstract class UpdateRequest extends \imperator\api\Request {
 		return $this->time;
 	}
 
+	/**
+	 * @param \imperator\chat\ChatMessage[] $messages
+	 * 
+	 * @return array
+	 */
 	protected function getJSONMessages(array $messages) {
 		$json = array();
 		foreach($messages as $message) {
@@ -44,13 +49,15 @@ abstract class UpdateRequest extends \imperator\api\Request {
 				'message' => $message->getMessage(),
 				'user' => array(
 					'id' => $user->getId(),
-					'name' => $user->getName(),
-					'url' => $user->getProfileLink()
+					'name' => $user->getName()
 				),
 				'time' => date(DATE_ATOM, $message->getTime())
 			);
-			if($user->getColor()) {
+			if($user instanceof \imperator\game\Player) {
 				$jsonMessage['user']['color'] = $user->getColor();
+				$jsonMessage['user']['url'] = $user->getUser()->getProfileLink();
+			} else if($user instanceof \imperator\User) {
+				$jsonMessage['user']['url'] = $user->getProfileLink();
 			}
 			$json[] = $jsonMessage;
 		}

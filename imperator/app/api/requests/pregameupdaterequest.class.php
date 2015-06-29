@@ -12,12 +12,12 @@ class PreGameUpdateRequest extends GameUpdateRequest {
 		foreach($game->getPlayers() as $player) {
 			$output['players'][] = \imperator\page\Template::getInstance('game_player')->replace(array(
 				'color' => $player->getColor(),
-				'owner' => $player->equals($game->getOwner()) ? $user->getLanguage()->translate('(Owner)') : '',
+				'owner' => $player == $game->getOwner() ? $user->getLanguage()->translate('(Owner)') : '',
 				'user' => \imperator\page\DefaultPage::getProfileLink($player)
 			))->getData();
 		}
 		$output['maxPlayers'] = $game->getMap()->getPlayers();
-		if($user->equals($game->getOwner())) {
+		if($user->equals($game->getOwner()->getUser())) {
 			$page = new \imperator\page\PreGame($game);
 			$output['ownerControls'] = $page->getOwnerGameForm($user);
 		}

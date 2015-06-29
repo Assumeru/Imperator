@@ -1,24 +1,14 @@
 <?php
 namespace imperator;
 
-abstract class User {
-	const STATE_PLAYING = 0;
-	const STATE_GAME_OVER = 1;
-	const STATE_DESTROYED_RIVAL = 2;
-	const STATE_VICTORIOUS = 3;
-
+abstract class User implements Member {
 	private $id;
 	private $name;
 	private $language;
 	private $loggedIn;
-	private $color;
-	private $mission;
-	private $state;
 	private $score;
 	private $wins;
 	private $losses;
-	private $autoroll;
-	private $cards;
 
 	public static function getCurrentUser() {
 		return new User();
@@ -59,30 +49,6 @@ abstract class User {
 		return false;
 	}
 
-	public function setColor($color) {
-		$this->color = $color;
-	}
-
-	public function getColor() {
-		return $this->color;
-	}
-
-	public function setState($state) {
-		$this->state = $state;
-	}
-
-	public function getState() {
-		return $this->state;
-	}
-
-	public function setMission(\imperator\mission\Mission $mission) {
-		$this->mission = $mission;
-	}
-
-	public function getMission() {
-		return $this->mission;
-	}
-
 	public function setScore($score) {
 		$this->score = $score;
 	}
@@ -109,29 +75,5 @@ abstract class User {
 
 	public function canDeleteChatMessages() {
 		return false;
-	}
-
-	public function setAutoRoll($autoroll) {
-		$this->autoroll = $autoroll;
-	}
-
-	public function getAutoRoll() {
-		return $this->autoroll;
-	}
-
-	public function setCards(\imperator\game\Cards $cards) {
-		$this->cards = $cards;
-	}
-
-	/**
-	 * @param Game $game
-	 * @return \imperator\game\Cards
-	 */
-	public function getCards(Game $game = null) {
-		if($this->cards) {
-			return $this->cards;
-		} else if($game) {
-			return Imperator::getDatabaseManager()->getTable('GamesJoined')->getCardsFor($game, $this);
-		}
 	}
 }

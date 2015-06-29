@@ -22,9 +22,10 @@ class NewGame extends DefaultPage {
 		parent::render($user);
 	}
 
-	private function createNewGame(page\Form $form, \imperator\User $user) {
-		$user->setColor($form->getColor());
-		$game = \imperator\Game::create($user, $form->getMap(), $form->getName(), $form->getPassword());
+	private function createNewGame(form\Form $form, \imperator\User $user) {
+		$player = new \imperator\game\Player($user);
+		$player->setColor($form->getColor());
+		$game = \imperator\Game::create($player, $form->getMap(), $form->getName(), $form->getPassword());
 		Imperator::redirect(Game::getURL($game));
 	}
 

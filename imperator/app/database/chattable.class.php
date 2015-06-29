@@ -57,7 +57,8 @@ class ChatTable extends Table {
 				$users[$result->getInt(static::COLUMN_UID)] = new $userClass($result->getInt(static::COLUMN_UID), $result->get($u::COLUMN_USERNAME));
 			}
 			$user = $users[$result->getInt(static::COLUMN_UID)];
-			if($gid !== 0 && $result->get($gj::COLUMN_COLOR) != null) {
+			if($gid !== 0 && $result->get($gj::COLUMN_COLOR) !== null) {
+				$user = new \imperator\game\Player($user);
 				$user->setColor($result->get($gj::COLUMN_COLOR));
 			}
 			$messages[] = new \imperator\chat\ChatMessage(

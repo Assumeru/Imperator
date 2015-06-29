@@ -113,7 +113,7 @@ class GamesTable extends Table {
 		if($result = $query->fetchResult()) {
 			$game = new \imperator\Game(
 				$result->getInt(static::COLUMN_GID),
-				new $userClass($result->getInt(static::COLUMN_UID)),
+				new \imperator\game\Player(new $userClass($result->getInt(static::COLUMN_UID))),
 				$result->get(static::COLUMN_NAME),
 				$result->getInt(static::COLUMN_MAP),
 				$result->getInt(static::COLUMN_STATE),
@@ -127,7 +127,7 @@ class GamesTable extends Table {
 			$players = $this->getManager()->getTable('GamesJoined')->getPlayersForGame($game);
 			$game->setPlayers($players);
 			foreach($players as $player) {
-				if($player->equals($game->getOwner())) {
+				if($player->getUser()->equals($game->getOwner()->getUser())) {
 					$game->setOwner($player);
 					break;
 				}
@@ -147,9 +147,10 @@ class GamesTable extends Table {
 		$games = array();
 		$userClass = Imperator::getSettings()->getUserClass();
 		while($result = $query->fetchResult()) {
-			$games[] = new \imperator\Game(
+			$player = new \imperator\game\Player(new $userClass($result->getInt(static::COLUMN_UID), $result->get($u::COLUMN_USERNAME)));
+			$game = new \imperator\Game(
 				$result->getInt(static::COLUMN_GID),
-				new $userClass($result->getInt(static::COLUMN_UID), $result->get($u::COLUMN_USERNAME)),
+				$player,
 				$result->get(static::COLUMN_NAME),
 				$result->getInt(static::COLUMN_MAP),
 				$result->getInt(static::COLUMN_STATE),
@@ -157,6 +158,8 @@ class GamesTable extends Table {
 				$result->getInt('players'),
 				$result->get(static::COLUMN_PASSWORD)
 			);
+			$player->setGame($game);
+			$games[] = $game;
 		}
 		$query->free();
 		return $games;

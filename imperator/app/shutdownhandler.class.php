@@ -23,7 +23,19 @@ class ShutDownHandler {
 		}
 	}
 
+	public function error($errno, $errstr, $errfile, $errline) {
+		if($errno == E_RECOVERABLE_ERROR) {
+			throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+		}
+		return false;
+	}
+
 	public function register() {
 		register_shutdown_function(array($this, 'shutdown'));
+		$this->resetErrorHandler();
+	}
+
+	public function resetErrorHandler() {
+		set_error_handler(array($this, 'error'));
 	}
 }

@@ -14,7 +14,7 @@ class Game {
 	private $name;
 	private $map;
 	/**
-	 * @var User[]
+	 * @var game\Player[]
 	 */
 	private $users;
 	private $numPlayers;
@@ -25,9 +25,12 @@ class Game {
 	private $conquered;
 	private $units;
 	private $mapLoaded = false;
+	/**
+	 * @var game\Attack
+	 */
 	private $attacks;
 
-	public function __construct($id, User $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0, $conquered = false, $units = 0) {
+	public function __construct($id, game\Player $owner, $name, $mapId, $state = 0, $turn = 0, $numPlayers = 1, $password = null, $time = 0, $conquered = false, $units = 0) {
 		$this->id = $id;
 		$this->owner = $owner;
 		$this->name = $name;
@@ -130,7 +133,7 @@ class Game {
 	}
 
 	/**
-	 * @return User The player whose turn it is
+	 * @return game\Player The player whose turn it is
 	 */
 	public function getCurrentPlayer() {
 		foreach($this->users as $player) {
@@ -142,14 +145,14 @@ class Game {
 	}
 
 	/**
-	 * @return User[] An array of users
+	 * @return game\Player[] An array of players
 	 */
 	public function getPlayers() {
 		return $this->users;
 	}
 
 	/**
-	 * @param User[] $players
+	 * @param game\Player[] $players
 	 */
 	public function setPlayers(array $players) {
 		$this->users = $players;
@@ -171,16 +174,16 @@ class Game {
 	}
 
 	/**
-	 * @return User
+	 * @return game\Player
 	 */
 	public function getOwner() {
 		return $this->owner;
 	}
 
 	/**
-	 * @param User $owner
+	 * @param game\Player $owner
 	 */
-	public function setOwner(User $owner) {
+	public function setOwner(game\Player $owner) {
 		$this->owner = $owner;
 	}
 
@@ -199,12 +202,12 @@ class Game {
 	}
 
 	/**
-	 * @param User $user
+	 * @param Member $user
 	 * @return bool
 	 */
-	public function containsPlayer(User $user) {
+	public function containsPlayer(Member $user) {
 		foreach($this->users as $player) {
-			if($player->equals($user)) {
+			if($player->getId() == $user->getId()) {
 				return true;
 			}
 		}
@@ -213,11 +216,11 @@ class Game {
 
 	/**
 	 * @param User $user
-	 * @return User
+	 * @return game\Player
 	 */
 	public function getPlayerByUser(User $user) {
 		foreach($this->users as $player) {
-			if($player->equals($user)) {
+			if($player->getUser()->equals($user)) {
 				return $player;
 			}
 		}
@@ -314,15 +317,16 @@ class Game {
 	/**
 	 * Creates a new game in the database.
 	 * 
-	 * @param User $user
+	 * @param game\Player $user
 	 * @param int $mapId
 	 * @param string $name
 	 * @param string $password
 	 * @return \imperator\Game
 	 */
-	public static function create(User $user, $mapId, $name, $password = null) {
+	public static function create(game\Player $user, $mapId, $name, $password = null) {
 		$game = new Game(-1, $user, $name, $mapId);
 		$game->setPassword($password);
+		$user->setGame($game);
 		Imperator::getDatabaseManager()->getTable('Games')->createNewGame($game);
 		$game->addUser($user);
 		return $game;
@@ -331,10 +335,10 @@ class Game {
 	/**
 	 * Adds a user to a game in the database.
 	 * 
-	 * @param User $user
+	 * @param game\Player $user
 	 */
-	public function addUser(User $user) {
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->addUserToGame($user, $this);
+	public function addUser(game\Player $user) {
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->addUserToGame($user);
 		Imperator::getDatabaseManager()->getTable('Games')->updateTime($this);
 		$this->users[] = $user;
 	}
@@ -342,13 +346,13 @@ class Game {
 	/**
 	 * Removes a user from a game in the database.
 	 * 
-	 * @param User $user
+	 * @param game\Player $user
 	 */
-	public function removeUser(User $user) {
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->removeUserFromGame($user, $this);
+	public function removeUser(game\Player $user) {
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->removeUserFromGame($user);
 		Imperator::getDatabaseManager()->getTable('Games')->updateTime($this);
 		foreach($this->users as $key => $player) {
-			if($user->equals($player)) {
+			if($user == $player) {
 				unset($this->users[$key]);
 				break;
 			}
@@ -377,7 +381,7 @@ class Game {
 	}
 
 	/**
-	 * @return User
+	 * @return game\Player
 	 */
 	private function getRandomUser() {
 		$index = mt_rand(0, $this->getNumberOfPlayers()-1);
@@ -395,16 +399,16 @@ class Game {
 	}
 
 	/**
-	 * @param User $user
+	 * @param game\Player $user
 	 * @return bool True if the player needs to defend against an attack
 	 */
-	public function playerHasToDefend(User $user) {
+	public function playerHasToDefend(game\Player $user) {
 		foreach($attacks as $attack) {
-			if($user->equals($attack->getDefender())) {
+			if($user == $attack->getDefender()->getOwner()) {
 				return true;
 			}
 		}
-		return Imperator::getDatabaseManager()->getTable('Attacks')->playerHasToDefend($this, $user);
+		return Imperator::getDatabaseManager()->getTable('Attacks')->playerHasToDefend($user);
 	}
 
 	/**
@@ -412,15 +416,15 @@ class Game {
 	 * Calls victory() if there are no other players left.
 	 * Calls nextTurn() if it was the forfeiting player's turn.
 	 * 
-	 * @param User $user
+	 * @param game\Player $user
 	 */
-	public function forfeit(User $user) {
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->forfeit($this, $user);
+	public function forfeit(game\Player $user) {
+		Imperator::getDatabaseManager()->getTable('GamesJoined')->forfeit($user);
 		//TODO combat log
 		$numPlayers = 0;
 		$lastPlayer = $user;
 		foreach($this->users as $player) {
-			if($player->equals($user)) {
+			if($player == $user) {
 				$player->setState(User::STATE_GAME_OVER);
 				$player->setAutoRoll(true);
 			} else if($player->getState() != User::STATE_GAME_OVER) {
@@ -436,24 +440,24 @@ class Game {
 	}
 
 	/**
-	 * @param User $user
+	 * @param game\Player $user
 	 */
-	public function victory(User $user) {
+	public function victory(game\Player $user) {
 		$db = Imperator::getDatabaseManager();
 		$db->getTable('CombatLog')->deleteGame($this);
 		$db->getTable('Territories')->removeTerritoriesFromGame($this);
 		$users = $db->getTable('Users');
 		$user->setState(User::STATE_VICTORIOUS);
-		$db->getTable('GamesJoined')->saveState($this, $user);
+		$db->getTable('GamesJoined')->saveState($user);
 		$this->turn = 0;
 		$this->time = time();
 		$this->state = static::STATE_FINISHED;
 		$db->getTable('Games')->updateStateAndTurn($this);
 		foreach($this->getPlayers() as $player) {
-			if($player->equals($user)) {
-				$users->addWin($player, $this->getNumberOfPlayers() - 1);
+			if($player == $user) {
+				$users->addWin($player->getUser(), $this->getNumberOfPlayers() - 1);
 			} else {
-				$users->addLoss($player);
+				$users->addLoss($player->getUser());
 			}
 		}
 	}
@@ -496,35 +500,10 @@ class Game {
 			}
 			$this->state = static::STATE_TURN_START;
 			$this->time = time();
-			$this->units = $this->getUnitsFromRegionsPerTurn($players[$this->turn]);
+			$this->units = $players[$this->turn]->getUnitsFromRegionsPerTurn();
 			$this->conquered = false;
 			Imperator::getDatabaseManager()->getTable('Games')->nextTurn($this);
 		}
-	}
-
-	/**
-	 * @param User $user
-	 * @return int
-	 */
-	public function getUnitsFromRegionsPerTurn(User $user) {
-		$this->loadMap();
-		$units = 0;
-		foreach($this->map->getRegions() as $region) {
-			if($region->isOwnedBy($user)) {
-				$units += $region->getUnitsPerTurn();
-			}
-		}
-		return $units;
-	}
-
-	/**
-	 * @param User $user
-	 * @return int
-	 */
-	public function getUnitsFromTerritoriesPerTurn(User $user) {
-		$this->loadMap();
-		$units = count($this->map->getTerritoriesFor($user)) / 3;
-		return max(floor($units), 3);
 	}
 
 	/**
@@ -538,12 +517,12 @@ class Game {
 	}
 
 	/**
-	 * @param User $user
+	 * @param game\Player $user
 	 * @param int $card
 	 * @return int
 	 */
-	public function giveCard(User $user, $card) {
-		$cards = $user->getCards($this);
+	public function giveCard(game\Player $user, $card) {
+		$cards = $user->getCards();
 		if(($card != game\Cards::CARD_NONE && $cards->getNumberOf($card) > 0) || $cards->getNumberOfCards() < game\Cards::MAX_CARDS) {
 			$gj = Imperator::getDatabaseManager()->getTable('GamesJoined');
 			$possibleCards = array(
@@ -559,7 +538,7 @@ class Game {
 				$cards->setNumberOf($card, $cards->getNumberOf($card) - 1);
 			}
 			$cards->setNumberOf($newCard, $cards->getNumberOf($newCard) + 1);
-			$gj->saveCards($this, $user, $cards);
+			$gj->saveCards($user);
 			return $newCard;
 		}
 		return game\Cards::CARD_NONE;
@@ -577,10 +556,10 @@ class Game {
 	/**
 	 * Makes the player passively stack units.
 	 * 
-	 * @param User $user
+	 * @param game\Player $user
 	 */
-	public function fortify(User $user) {
-		$this->units += $this->getUnitsFromTerritoriesPerTurn($user);
+	public function fortify(game\Player $user) {
+		$this->units += $user->getUnitsFromTerritoriesPerTurn();
 		$this->state = static::STATE_FORTIFY;
 		Imperator::getDatabaseManager()->getTable('Games')->updateUnitsAndState($this);
 	}
@@ -588,15 +567,15 @@ class Game {
 	/**
 	 * Makes the player trade cards for units.
 	 * 
-	 * @param User $user
+	 * @param game\Player $user
 	 * @param int $units
 	 */
-	public function playCardCombination(User $user, $units) {
-		$cards = $user->getCards($this);
+	public function playCardCombination(game\Player $user, $units) {
+		$cards = $user->getCards();
 		$cards->removeCombination($units);
 		$this->units += $units;
 		$db = Imperator::getDatabaseManager();
-		$db->getTable('GamesJoined')->saveCards($this, $user, $cards);
+		$db->getTable('GamesJoined')->saveCards($user);
 		$db->getTable('Games')->updateUnits($this);
 	}
 
@@ -654,16 +633,16 @@ class Game {
 			$missions = $this->map->getMissions();
 			if(!$this->map->playerHasTerritories($defender)) {
 				$defender->setState(User::STATE_GAME_OVER);
-				$gjTable->saveState($this, $defender);
+				$gjTable->saveState($defender);
 				$playersWithNewMissions = array();
 				foreach($missions as $mission) {
 					if($mission->containsEliminate()) {
 						foreach($this->users as $player) {
 							$playerMission = $player->getMission();
 							if($mission->equals($playerMission) && $playerMission->getUid() == $defender->getId()) {
-								if($player->equals($attackingTerritory->getOwner())) {
+								if($player == $attackingTerritory->getOwner()) {
 									$player->setState(User::STATE_DESTROYED_RIVAL);
-									$gjTable->saveState($this, $player);
+									$gjTable->saveState($player);
 								} else {
 									$newMission = clone $missions[$mission->getFallback()];
 									$newMission->setUid($playerMission->getUid());
@@ -674,7 +653,7 @@ class Game {
 						}
 					}
 				}
-				$gjTable->saveMissions($this, $playersWithNewMissions);
+				$gjTable->saveMissions($playersWithNewMissions);
 			}
 			$db->getTable('Games')->updateConquered($this);
 			$territoriesTable->updateUnitsAndOwner($attackingTerritory);

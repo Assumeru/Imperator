@@ -1,5 +1,6 @@
 <?php
 namespace imperator\outside\mybb;
+use imperator\Imperator;
 
 class MyBBSettings extends \imperator\Settings {
 	public function getDatabaseManager() {
@@ -27,6 +28,7 @@ class MyBBSettings extends \imperator\Settings {
 			define('IN_MYBB', true);
 		}
 		require_once $path;
+		Imperator::getShutDownHandler()->resetErrorHandler();
 	}
 
 	public function getAutoLoaderClass() {

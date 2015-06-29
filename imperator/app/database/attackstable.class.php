@@ -12,13 +12,13 @@ class AttacksTable extends Table {
 	/**
 	 * @return bool
 	 */
-	public function playerHasToDefend(\imperator\Game $game, \imperator\User $user) {
+	public function playerHasToDefend(\imperator\game\Player $user) {
 		$t = $this->getManager()->getTable('Territories');
 		return $this->getManager()->rowExists(static::NAME.' AS a
 				JOIN '.$t::NAME.' AS t
 				ON (a.'.static::COLUMN_GID.' = t.'.$t::COLUMN_GID.'
 				AND a.'.static::COLUMN_DEFENDING_TERRITORY.' = t.'.$t::COLUMN_TERRITORY.')',
-			'a.'.static::COLUMN_GID.' = '.$game->getId().'
+			'a.'.static::COLUMN_GID.' = '.$user->getGame()->getId().'
 				AND '.$t::COLUMN_UID.' = '.$user->getId());
 	}
 

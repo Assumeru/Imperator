@@ -16,6 +16,10 @@ class GameList extends DefaultPage {
 		return $user->isLoggedIn();
 	}
 
+	/**
+	 * @param \imperator\User $user
+	 * @return \imperator\Game[]
+	 */
 	protected function getGames(\imperator\User $user) {
 		return Imperator::getDatabaseManager()->getTable('Games')->getAllGames();
 	}
@@ -45,7 +49,7 @@ class GameList extends DefaultPage {
 					'map' => $lang->translate($map->getName()),
 					'mapurl' => Map::getURL($map->getId(), $map->getName()),
 					'players' => $lang->translate('%1$d / %2$d', $game->getNumberOfPlayers(), $map->getPlayers()),
-					'host' => DefaultPage::getProfileLink($game->getOwner()),
+					'host' => DefaultPage::getProfileLink($game->getOwner()->getUser()),
 					'url' => Game::getURL($game),
 					'startedendedlocked' => $startedEndedLocked
 				))->getData();

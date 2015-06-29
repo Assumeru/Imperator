@@ -20,24 +20,24 @@ class GamesJoinedTable extends Table {
 		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
 	}
 
-	public function addUserToGame(\imperator\User $user, \imperator\Game $game) {
+	public function addUserToGame(\imperator\game\Player $user) {
 		$this->getManager()->insert(static::NAME, array(
-			static::COLUMN_GID => $game->getId(),
+			static::COLUMN_GID => $user->getGame()->getId(),
 			static::COLUMN_UID => $user->getId(),
 			static::COLUMN_COLOR => $user->getColor()
 		))->free();
 	}
 
-	public function removeUserFromGame(\imperator\User $user, \imperator\Game $game) {
+	public function removeUserFromGame(\imperator\game\Player $user) {
 		$query = $this->getManager()->delete(static::NAME,
-			static::COLUMN_GID.' = '.$game->getId().' AND '.static::COLUMN_UID.' = '.$user->getId());
+			static::COLUMN_GID.' = '.$user->getGame()->getId().' AND '.static::COLUMN_UID.' = '.$user->getId());
 		$query->free();
 	}
 
 	/**
 	 * 
 	 * @param \imperator\Game $game
-	 * @return \imperator\User[]
+	 * @return \imperator\game\Player[]
 	 */
 	public function getPlayersForGame(\imperator\Game $game) {
 		$gid = $game->getId();
@@ -55,10 +55,10 @@ class GamesJoinedTable extends Table {
 		$userClass = Imperator::getSettings()->getUserClass();
 		$missions = $game->getMap()->getMissions();
 		while($result = $query->fetchResult()) {
-			$player = new $userClass(
+			$player = new \imperator\game\Player(new $userClass(
 				$result->getInt($u::COLUMN_UID),
 				$result->get($u::COLUMN_USERNAME)
-			);
+			), $game);
 			$player->setColor($result->get(static::COLUMN_COLOR));
 			$player->setState($result->getInt(static::COLUMN_STATE));
 			$player->setAutoRoll($result->getBool(static::COLUMN_AUTOROLL));
@@ -77,49 +77,48 @@ class GamesJoinedTable extends Table {
 		return $players;
 	}
 
-	public function saveMissions(\imperator\Game $game, array $players) {
+	public function saveMissions(array $players) {
 		foreach($players as $player) {
 			$mission = $player->getMission();
 			$this->getManager()->update(static::NAME, array(
 				static::COLUMN_MISSION => $mission->getId(),
 				static::COLUMN_MISSION_UID => $mission->getUid()
-			), static::COLUMN_UID.' = '.$player->getId().' AND '.static::COLUMN_GID.' = '.$game->getId())->free();
+			), static::COLUMN_UID.' = '.$player->getId().' AND '.static::COLUMN_GID.' = '.$player->getGame()->getId())->free();
 		}
 	}
 
 	/**
 	 * @param int $gid
-	 * @param \imperator\User $user
+	 * @param \imperator\Member $user
 	 * @return bool
 	 */
-	public function gameContainsPlayer($gid, \imperator\User $user) {
+	public function gameContainsPlayer($gid, \imperator\Member $user) {
 		return $this->getManager()->rowExists(static::NAME,
 			static::COLUMN_GID.' = '.$gid.' AND '.
 			static::COLUMN_UID.' = '.$user->getId());
 	}
 
-	public function forfeit(\imperator\Game $game, \imperator\User $user) {
+	public function forfeit(\imperator\game\Player $user) {
 		$this->getManager()->update(static::NAME, array(
-				static::COLUMN_STATE => \imperator\User::STATE_GAME_OVER,
+				static::COLUMN_STATE => \imperator\game\Player::STATE_GAME_OVER,
 				static::COLUMN_AUTOROLL => true
-			), static::COLUMN_GID.' = '.$game->getId().'
+			), static::COLUMN_GID.' = '.$user->getGame()->getId().'
 			AND '.static::COLUMN_UID.' = '.$user->getId()
 		)->free();
 	}
 
 	/**
-	 * @param \imperator\Game $game
-	 * @param \imperator\User $user
+	 * @param \imperator\game\Player $user
 	 * @return \imperator\game\Cards
 	 */
-	public function getCardsFor(\imperator\Game $game, \imperator\User $user) {
+	public function getCardsFor(\imperator\game\Player $user) {
 		$query = $this->getManager()->query('SELECT '.
 			static::COLUMN_CARD_ARTILLERY.','.
 			static::COLUMN_CARD_CAVALRY.','.
 			static::COLUMN_CARD_INFANTRY.','.
 			static::COLUMN_CARD_JOKER.'
 			FROM '.static::NAME.'
-			WHERE '.static::COLUMN_GID.' = '.$game->getId().'
+			WHERE '.static::COLUMN_GID.' = '.$user->getGame()->getId().'
 			AND '.static::COLUMN_UID.' = '.$user->getId());
 		$result = $query->fetchResult();
 		$query->free();
@@ -140,25 +139,26 @@ class GamesJoinedTable extends Table {
 		return $result->getInt('jokers');
 	}
 
-	public function saveCards(\imperator\Game $game, \imperator\User $user, \imperator\game\Cards $cards) {
+	public function saveCards(\imperator\game\Player $user) {
+		$cards = $user->getCards();
 		$this->getManager()->update(static::NAME, array(
 			static::COLUMN_CARD_ARTILLERY => $cards->getArtillery(),
 			static::COLUMN_CARD_CAVALRY => $cards->getCavalry(),
 			static::COLUMN_CARD_INFANTRY => $cards->getInfantry(),
 			static::COLUMN_CARD_JOKER => $cards->getJokers()
-		), static::COLUMN_GID.' = '.$game->getId().'
+		), static::COLUMN_GID.' = '.$user->getGame()->getId().'
 			AND '.static::COLUMN_UID.' = '.$user->getId())->free();
 	}
 
-	public function saveState(\imperator\Game $game, \imperator\User $user) {
+	public function saveState(\imperator\game\Player $user) {
 		$this->getManager()->update(static::NAME, array(
 			static::COLUMN_STATE => $user->getState()
-		), static::COLUMN_GID.' = '.$game->getId().' AND '.static::COLUMN_UID.' = '.$user->getId())->free();
+		), static::COLUMN_GID.' = '.$user->getGame()->getId().' AND '.static::COLUMN_UID.' = '.$user->getId())->free();
 	}
 
-	public function saveAutoRoll(\imperator\Game $game, \imperator\User $user) {
+	public function saveAutoRoll(\imperator\game\Player $user) {
 		$this->getManager()->update(static::NAME, array(
 			static::COLUMN_AUTOROLL => (int)$user->getAutoRoll()
-		), static::COLUMN_GID.' = '.$game->getId().' AND '.static::COLUMN_UID.' = '.$user->getId())->free();
+		), static::COLUMN_GID.' = '.$user->getGame()->getId().' AND '.static::COLUMN_UID.' = '.$user->getId())->free();
 	}
 }

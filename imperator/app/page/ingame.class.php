@@ -155,10 +155,10 @@ class InGame extends DefaultPage {
 		$this->addJavascript('game.js');
 	}
 
-	private function getCardList(\imperator\User $user) {
-		$cards = $user->getCards($this->game);
+	private function getCardList(\imperator\game\Player $user) {
+		$cards = $user->getCards();
 		$cardList = '';
-		$names = \imperator\game\Cards::getCardNames($user->getLanguage());
+		$names = \imperator\game\Cards::getCardNames($user->getUser()->getLanguage());
 		$url = $this->getCardURL();
 		foreach($cards->getCards() as $card) {
 			$cardList .= Template::getInstance('game_card')->replace(array(
@@ -199,11 +199,12 @@ class InGame extends DefaultPage {
 	}
 
 	private function getRegionsForTerritory(\imperator\map\Territory $territory, \imperator\User $user) {
+		$language = $user->getLanguage();
 		$regions = '';
 		foreach($territory->getRegions() as $region) {
 			$regions .= Template::getInstance('game_territories_region')->replace(array(
 				'flagURL' => Game::getRegionFlag($region),
-				'region' => $user->getLanguage()->translate($region->getName())
+				'region' => $language->translate($region->getName())
 			))->getData();
 		}
 		return $regions;
@@ -243,7 +244,7 @@ class InGame extends DefaultPage {
 		$players = '';
 		foreach($this->game->getPlayers() as $player) {
 			$players .= Template::getInstance('game_players_player')->replace(array(
-				'player' => DefaultPage::getProfileLink($player),
+				'player' => DefaultPage::getProfileLink($player->getUser()),
 				'id' => $player->getId()
 			))->getData();
 		}
