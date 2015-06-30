@@ -9,9 +9,10 @@ class ForfeitGameRequest extends GameRequest {
 
 	public function handle(\imperator\User $user) {
 		parent::handle($user);
-		if($this->getGame()->getState() == \imperator\Game::STATE_COMBAT && $this->getGame()->playerHasToDefend($user)) {
+		$game = $this->getGame();
+		if($game->getState() == \imperator\Game::STATE_COMBAT && $game->playerHasToDefend($user)) {
 			throw new \imperator\exceptions\InvalidRequestException('You cannot forfeit without finishing all battles.');
 		}
-		$this->getGame()->forfeit($user);
+		$this->getGame()->forfeit($game->getPlayerByUser($user));
 	}
 }
