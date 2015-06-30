@@ -502,6 +502,10 @@
 			if($msg.request !== undefined && $msg.request.mode == 'update' && $msg.request.type == 'game') {
 				sendUpdateRequest();
 			}
+			if($msg.mission !== undefined) {
+				$('#players [data-value="mission-name"]').text($msg.mission.name);
+				$('#players [data-value="mission-description"]').text($msg.mission.description);
+			}
 		}
 		for($key in $update) {
 			if($update[$key][0]) {

@@ -86,6 +86,10 @@ class GameUpdateRequest extends UpdateRequest {
 				\imperator\game\Cards::CARD_INFANTRY => $cards->getInfantry(),
 				\imperator\game\Cards::CARD_JOKER => $cards->getJokers()
 			);
+			$output['mission'] = array(
+				'name' => $player->getMission()->getName(),
+				'description' => $player->getMission()->getDescription($user->getLanguage())
+			);
 		}
 		return $output;
 	}
