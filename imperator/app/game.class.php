@@ -26,7 +26,7 @@ class Game {
 	private $units;
 	private $mapLoaded = false;
 	/**
-	 * @var game\Attack
+	 * @var game\Attack[]
 	 */
 	private $attacks;
 

@@ -4,7 +4,8 @@
 	$time = 0,
 	$resizeTimeout,
 	$emptyBorder,
-	$dialogs = {};
+	$dialogs = {},
+	$touches = {};
 	if(Number.parseInt === undefined) {
 		Number.parseInt = parseInt;
 	}
@@ -68,6 +69,27 @@
 		$radialMenu.find('[data-button="move-from"]').click(function() {
 			showMoveDialog($radialMenu.attr('data-territory'));
 			closeRadialMenu();
+		});
+		$('.swipe-panes').on('touchstart', function($e) {
+			$touches = {
+				x: $e.touches[0].clientX,
+				y: $e.touches[0].clientY
+			};
+		});
+		$('.swipe-panes').on('touchmove', function($e) {
+			var $deltaX, $deltaY, $absX;
+			if($touches.x !== undefined && $touches.y !== undefined) {
+				$deltaX = $touches.x - $e.touches[0].clientX;
+				$deltaY = $touches.y - $e.touches[0].clientY;
+				$absX = Math.abs($deltaX);
+				if(Math.abs($deltaY) < $absX /*&& $absX > 10*/) {
+					if($deltaX > 0) {
+						swipeToTab('prev');
+					} else {
+						swipeToTab('next');
+					}
+				}
+			}
 		});
 	}
 
@@ -875,6 +897,17 @@
 			$currentTab = ['territories'];
 		}
 		window.location.hash = 'tab-'+$currentTab.join('-');
+	}
+
+	function swipeToTab($func) {
+		var $page, $current,
+		$tab = $('#content nav li.active')[$func]();
+		if($tab.length !== 0 && !$tab.is(':hidden')) {
+			$page = $tab.find('a').attr('href').split('-');
+			$current = $currentTab[0];
+			$currentTab = [$page[1]];
+			updateTab($current);
+		}
 	}
 
 	$(init);
