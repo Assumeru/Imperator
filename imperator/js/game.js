@@ -71,6 +71,7 @@
 			closeRadialMenu();
 		});
 		$('.swipe-panes').on('touchstart', function($e) {
+			$e = $e.originalEvent;
 			$touches = {
 				x: $e.touches[0].clientX,
 				y: $e.touches[0].clientY
@@ -79,15 +80,17 @@
 		$('.swipe-panes').on('touchmove', function($e) {
 			var $deltaX, $deltaY, $absX;
 			if($touches.x !== undefined && $touches.y !== undefined) {
+				$e = $e.originalEvent;
 				$deltaX = $touches.x - $e.touches[0].clientX;
 				$deltaY = $touches.y - $e.touches[0].clientY;
 				$absX = Math.abs($deltaX);
-				if(Math.abs($deltaY) < $absX /*&& $absX > 10*/) {
+				if(Math.abs($deltaY) < $absX && $absX > 10) {
 					if($deltaX > 0) {
 						swipeToTab('prev');
 					} else {
 						swipeToTab('next');
 					}
+					$touches = {};
 				}
 			}
 		});
