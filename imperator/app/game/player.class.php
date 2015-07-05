@@ -28,6 +28,10 @@ class Player implements \imperator\Member {
 		return $this->user->getName();
 	}
 
+	public function getProfileLink() {
+		return $this->user->getProfileLink();
+	}
+
 	public function setGame(\imperator\Game $game) {
 		$this->game = $game;
 	}

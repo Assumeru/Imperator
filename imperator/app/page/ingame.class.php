@@ -73,7 +73,7 @@ class InGame extends DefaultPage {
 		))->getData());
 		$mainClass = ' not-player';
 		if($inGame) {
-			$this->addChatJavascript($this->game->getId());
+			$this->addChatJavascript($this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->getUser()->equals($user));
 			$mainClass = '';
 		}
 		$this->renderJavascript($user);

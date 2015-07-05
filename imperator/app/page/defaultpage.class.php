@@ -137,26 +137,26 @@ abstract class DefaultPage extends Page {
 	}
 
 	public static function getProfileLink(\imperator\Member $user) {
+		$name = htmlentities($user->getName());
+		$url = $user->getProfileLink();
 		if($user instanceof \imperator\game\Player) {
-			$url = $user->getUser()->getProfileLink();
 			return Template::getInstance('profile_link_color')->replace(array(
 				'url' => $url,
-				'name' => htmlentities($user->getName()),
+				'name' => $name,
 				'color' => $user->getColor()
 			))->getData();
-		}
-		if($user instanceof \imperator\User && $url = $user->getProfileLink()) {
+		} else if($url) {
 			return Template::getInstance('profile_link')->replace(array(
 				'url' => $url,
-				'name' => htmlentities($user->getName())
+				'name' => $name
 			))->getData();
 		}
 		return Template::getInstance('profile_nolink')->replace(array(
-			'name' => htmlentities($user->getName())
+			'name' => $name
 		))->getData();
 	}
 
-	protected function addChatJavascript($gid) {
+	protected function addChatJavascript($gid, $canDelete = false) {
 		$this->addJavascript('store.js');
 		$this->addJavascript('api.js');
 		$this->addJavascript('chat.js');
@@ -164,6 +164,10 @@ abstract class DefaultPage extends Page {
 			'longpollingURL' => Ajax::getURL()
 		));
 		$this->setJavascriptSetting('gid', $gid);
+		$this->setJavascriptSetting('chat', array(
+			'canDelete' => $canDelete,
+			'template' => Template::getInstance('chat_message')->getData()
+		));
 	}
 
 	protected function getChatBox(\imperator\User $user) {

@@ -3,7 +3,8 @@
 	$gid = Imperator.settings.gid,
 	$time = 0,
 	$loading = true,
-	$postgame = Imperator.settings.postgame !== undefined ? Imperator.settings.postgame : false;
+	$postgame = Imperator.settings.postgame !== undefined ? Imperator.settings.postgame : false,
+	$canDelete = Imperator.settings.chat.canDelete;
 
 	function create() {
 		var $chat = $('#chat');
@@ -75,14 +76,35 @@
 
 	function addMessage($msg) {
 		var $time = new Date($msg.time),
-		$chat = $('<div class="chat"><a href="'+$msg.user.url+'" class="user">'+$msg.user.name+'</a> (<time title="'+$time.toLocaleString()+'" datetime="'+$msg.time+'">'+$time.toLocaleTimeString()+'</time>): </div>'),
-		$message = $('<span class="message"></span>');
-		if($msg.user.color !== undefined) {
-			$chat.find('a.user').css('color', '#'+$msg.user.color);
+		$message = $(Imperator.settings.chat.template),
+		$deleteButton = $message.find('[data-type="delete"]'),
+		$user = $message.find('a.user'),
+		$stamp = $message.find('time');
+		if($canDelete) {
+			$deleteButton.click(function($e) {
+				$e.preventDefault();
+				Imperator.API.send({
+					uid: $msg.user.id,
+					time: $msg.timestamp,
+					gid: $gid,
+					type: 'delete',
+					mode: 'chat'
+				});
+				$message.remove();
+			});
+		} else {
+			$deleteButton.hide();
 		}
-		$message.text($msg.message);
-		$chat.append($message);
-		$chatWindow.append($chat);
+		$user.attr('href', $msg.user.url);
+		$user.text($msg.user.name);
+		if($msg.user.color !== undefined) {
+			$user.css('color', '#'+$msg.user.color);
+		}
+		$stamp.attr('title', $time.toLocaleString());
+		$stamp.attr('datetime', $msg.time);
+		$stamp.text($time.toLocaleTimeString());
+		$message.find('.message').text($msg.message);
+		$chatWindow.append($message);
 	}
 
 	$(create);

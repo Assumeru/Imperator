@@ -48,6 +48,10 @@ span .user {
 	padding: 0.25em;
 }
 
+#chat .chat .btn {
+	padding: 3px 6px;
+}
+
 #chat .chat-scrolling {
 	position: absolute;
 	top: 0;

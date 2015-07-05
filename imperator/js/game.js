@@ -4,18 +4,27 @@
 	$time = 0,
 	$resizeTimeout,
 	$emptyBorder,
-	$dialogs = {},
-	$touches = {};
+	$dialogs = {};
 	if(Number.parseInt === undefined) {
 		Number.parseInt = parseInt;
 	}
 
 	function init() {
-		var $window = $(window),
-		$unitGraphics = Imperator.Store.getItem('unit-graphics', 'default'),
-		$radialMenu = $('#radial-menu');
+		var $unitGraphics = Imperator.Store.getItem('unit-graphics', 'default');
 		Imperator.API.onMessage(parseUpdateMessage);
 		Imperator.API.onOpen(sendUpdateRequest);
+		initEventListeners();
+		$('#settings input[name="unitgraphics"][value="'+$unitGraphics+'"]').prop('checked', true);
+		$emptyBorder = $('#territory [data-value="border"]');
+		$emptyBorder.remove();
+		parseHash();
+		resetTabScroll();
+		initRadialMenu();
+		initTabSwiping();
+	}
+
+	function initEventListeners() {
+		var $window = $(window);
 		Imperator.Map.onLoad(function() {
 			$('#map svg g[id]').click(function() {
 				window.location = '#tab-territory-'+this.id;
@@ -26,11 +35,6 @@
 				}
 			});
 		});
-		$('#settings input[name="unitgraphics"][value="'+$unitGraphics+'"]').prop('checked', true);
-		$emptyBorder = $('#territory [data-value="border"]');
-		$emptyBorder.remove();
-		parseHash();
-		resetTabScroll();
 		$window.on('hashchange', function($e) {
 			var $previous = $currentTab[0];
 			parseHash();
@@ -48,6 +52,10 @@
 		$('#controls-box [data-button="forfeit"]').click(sendForfeit);
 		$('#controls-box [data-button="move"]').click(sendMove);
 		$('#card-controls [data-button="cards"]').click(sendCards);
+	}
+
+	function initRadialMenu() {
+		var $radialMenu = $('#radial-menu');
 		$radialMenu.mouseleave(closeRadialMenu);
 		$radialMenu.find('.inner').click(closeRadialMenu);
 		$radialMenu.find('[data-button="stack"]').click(function() {
@@ -70,6 +78,10 @@
 			showMoveDialog($radialMenu.attr('data-territory'));
 			closeRadialMenu();
 		});
+	}
+
+	function initTabSwiping() {
+		var $touches = {};
 		$('.swipe-panes').on('touchstart', function($e) {
 			$e = $e.originalEvent;
 			$touches = {

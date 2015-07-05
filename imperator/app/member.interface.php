@@ -11,4 +11,9 @@ interface Member {
 	 * @return string
 	 */
 	public function getName();
+
+	/**
+	 * @return string|false
+	 */
+	public function getProfileLink();
 }

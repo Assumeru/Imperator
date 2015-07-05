@@ -49,15 +49,14 @@ abstract class UpdateRequest extends \imperator\api\Request {
 				'message' => $message->getMessage(),
 				'user' => array(
 					'id' => $user->getId(),
-					'name' => $user->getName()
+					'name' => $user->getName(),
+					'url' => $user->getProfileLink()
 				),
-				'time' => date(DATE_ATOM, $message->getTime())
+				'time' => date(DATE_ATOM, $message->getTime()),
+				'timestamp' => $message->getTime()
 			);
 			if($user instanceof \imperator\game\Player) {
 				$jsonMessage['user']['color'] = $user->getColor();
-				$jsonMessage['user']['url'] = $user->getUser()->getProfileLink();
-			} else if($user instanceof \imperator\User) {
-				$jsonMessage['user']['url'] = $user->getProfileLink();
 			}
 			$json[] = $jsonMessage;
 		}
