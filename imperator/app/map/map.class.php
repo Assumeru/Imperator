@@ -251,7 +251,7 @@ class Map {
 		shuffle($missionDistribution);
 		$numPlayers = count($players);
 		foreach($players as $player) {
-			$mission = $missions[array_pop($missionDistribution)];
+			$mission = clone $missions[array_pop($missionDistribution)];
 			if($mission->containsEliminate()) {
 				$index = mt_rand(0, $numPlayers-2);
 				$target = $players[$index];

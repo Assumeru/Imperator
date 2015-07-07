@@ -16,7 +16,7 @@ class EliminateCondition implements WinCondition, UidCondition {
 		return $this->uid;
 	}
 
-	public function setUid() {
-		return $this->uid;
+	public function setUid($uid) {
+		$this->uid = $uid;
 	}
 }

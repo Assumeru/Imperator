@@ -9,13 +9,15 @@ class MyBBUser extends \imperator\User {
 		if(!self::$current) {
 			global $mybb;
 			Imperator::getSettings()->includeMyBB(false);
-			self::$current = new MyBBUser((int)$mybb->user['uid'], $mybb->user['username'], $mybb->user['uid'] != 0);
+			self::$current = new self((int)$mybb->user['uid'], $mybb->user['username'], $mybb->user['uid'] != 0);
 		}
 		return self::$current;
 	}
 
 	public static function getUserById($uid) {
-		return null;
+		Imperator::getSettings()->includeMyBB(false);
+		$user = get_user($uid);
+		return new self($uid, $user['username'], false);
 	}
 
 	public function getProfileLink() {

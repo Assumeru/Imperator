@@ -244,7 +244,7 @@ class InGame extends DefaultPage {
 		$players = '';
 		foreach($this->game->getPlayers() as $player) {
 			$players .= Template::getInstance('game_players_player')->replace(array(
-				'player' => DefaultPage::getProfileLink($player->getUser()),
+				'player' => DefaultPage::getProfileLink($player),
 				'id' => $player->getId()
 			))->getData();
 		}

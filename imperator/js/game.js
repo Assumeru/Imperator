@@ -217,7 +217,8 @@
 			var $mMax = $game.map.territories[$selectF.val()].units - 1,
 			$aMax = Math.min(3, $mMax),
 			$aVal = $inputA.val(),
-			$mVal = $inputM.val();
+			$mVal = $inputM.val(),
+			$defender = $game.map.territories[$selectT.val()];
 			$inputA.attr('max', $aMax);
 			if($aVal !== '' && !isNaN($aVal) && $aVal > 0) {
 				$inputA.val(Math.min($aMax, $aVal));
@@ -226,7 +227,7 @@
 			if($mVal !== '' && !isNaN($mVal) && $mVal > 0) {
 				$inputM.val(Math.min($mMax, $mVal));
 			}
-			if($aMax < $game.map.territories[$selectT.val()].units) {
+			if($aMax < $defender.units || $defender.units > 2) {
 				$move.hide();
 			} else {
 				$move.show();

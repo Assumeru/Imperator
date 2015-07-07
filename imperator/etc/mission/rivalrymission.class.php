@@ -16,7 +16,7 @@ class RivalryMission extends Mission {
 		if($this->user === null) {
 			return parent::getDescription($language);
 		}
-		return $language->translate('Two win this game you will have to conquer the last of %1$s\'s territories.', $user->getName());
+		return $language->translate('Two win this game you will have to conquer the last of %1$s\'s territories.', $this->user->getName());
 	}
 
 	public function setUid($uid) {

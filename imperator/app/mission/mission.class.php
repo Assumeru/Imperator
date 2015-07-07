@@ -79,4 +79,12 @@ class Mission {
 	public function equals(Mission $that) {
 		return $this->id == $that->id;
 	}
+
+	public function __clone() {
+		$conditions = array();
+		foreach($this->conditions as $condition) {
+			$conditions[] = clone $condition;
+		}
+		$this->conditions = $conditions;
+	}
 }

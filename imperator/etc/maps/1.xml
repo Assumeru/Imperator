@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map id="1">
+	<name>Classic</name>
+	<players>4</players>
+	<description lang="en-US">TODO</description>
+	<territories>
+		<territory id="af_central">
+			<name>Central Africa</name>
+			<borders>
+				<border>af_east</border>
+				<border>af_north</border>
+				<border>af_south</border>
+			</borders>
+			<regions>
+				<region>africa</region>
+			</regions>
+		</territory>
+		<territory id="af_east">
+			<name>East Africa</name>
+			<borders>
+				<border>af_central</border>
+				<border>af_egypt</border>
+				<border>af_madagascar</border>
+				<border>af_north</border>
+				<border>af_south</border>
+				<border>as_middleeast</border>
+			</borders>
+			<regions>
+				<region>africa</region>
+			</regions>
+		</territory>
+		<territory id="af_egypt">
+			<name>Egypt</name>
+			<borders>
+				<border>af_east</border>
+				<border>af_north</border>
+				<border>as_middleeast</border>
+				<border>eu_south</border>
+			</borders>
+			<regions>
+				<region>africa</region>
+			</regions>
+		</territory>
+		<territory id="af_madagascar">
+			<name>Madagascar</name>
+			<borders>
+				<border>af_east</border>
+				<border>af_south</border>
+			</borders>
+			<regions>
+				<region>africa</region>
+			</regions>
+		</territory>
+		<territory id="af_north">
+			<name>North Africa</name>
+			<borders>
+				<border>af_central</border>
+				<border>af_east</border>
+				<border>af_egypt</border>
+				<border>eu_west</border>
+				<border>sa_brazil</border>
+			</borders>
+			<regions>
+				<region>africa</region>
+			</regions>
+		</territory>
+		<territory id="af_south">
+			<name>South Africa</name>
+			<borders>
+				<border>af_central</border>
+				<border>af_east</border>
+				<border>af_madagascar</border>
+			</borders>
+			<regions>
+				<region>africa</region>
+			</regions>
+		</territory>
+		<territory id="as_china">
+			<name>China</name>
+			<borders>
+				<border>as_india</border>
+				<border>as_japan</border>
+				<border>as_ru_kamchatka</border>
+				<border>as_kazakhstan</border>
+				<border>as_mongolia</border>
+				<border>as_ru_siberia</border>
+				<border>as_southeast</border>
+				<border>as_ru_yakutsk</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_india">
+			<name>India</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_kazakhstan</border>
+				<border>as_middleeast</border>
+				<border>as_southeast</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_japan">
+			<name>Japan</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_ru_kamchatka</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_ru_kamchatka">
+			<name>Kamchatka</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_japan</border>
+				<border>as_ru_siberia</border>
+				<border>na_usa_alaska</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_kazakhstan">
+			<name>Kazakhstan</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_india</border>
+				<border>as_middleeast</border>
+				<border>as_mongolia</border>
+				<border>as_ru_ural</border>
+				<border>as_ru_yakutsk</border>
+				<border>eu_east</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_middleeast">
+			<name>Middle East</name>
+			<borders>
+				<border>af_east</border>
+				<border>af_egypt</border>
+				<border>as_india</border>
+				<border>as_kazakhstan</border>
+				<border>eu_east</border>
+				<border>eu_south</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_mongolia">
+			<name>Mongolia</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_kazakhstan</border>
+				<border>as_ru_siberia</border>
+				<border>as_ru_yakutsk</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_ru_siberia">
+			<name>Siberia</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_ru_kamchatka</border>
+				<border>as_mongolia</border>
+				<border>as_ru_yakutsk</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_southeast">
+			<name>Southeast Asia</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_india</border>
+				<border>oc_indonesia</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_ru_ural">
+			<name>Ural</name>
+			<borders>
+				<border>as_kazakhstan</border>
+				<border>as_ru_yakutsk</border>
+				<border>eu_east</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="as_ru_yakutsk">
+			<name>Yakutsk</name>
+			<borders>
+				<border>as_china</border>
+				<border>as_kazakhstan</border>
+				<border>as_mongolia</border>
+				<border>as_ru_siberia</border>
+				<border>as_ru_ural</border>
+			</borders>
+			<regions>
+				<region>asia</region>
+			</regions>
+		</territory>
+		<territory id="eu_britain">
+			<name>British Isles</name>
+			<borders>
+				<border>eu_iceland</border>
+				<border>eu_north</border>
+				<border>eu_scandinavia</border>
+				<border>eu_west</border>
+			</borders>
+			<regions>
+				<region>europe</region>
+			</regions>
+		</territory>
+		<territory id="eu_east">
+			<name>Eastern Europe</name>
+			<borders>
+				<border>as_kazakhstan</border>
+				<border>as_middleeast</border>
+				<border>as_ru_ural</border>
+				<border>eu_north</border>
+				<border>eu_scandinavia</border>
+				<border>eu_south</border>
+			</borders>
+			<regions>
+				<region>europe</region>
+			</regions>
+		</territory>
+		<territory id="eu_iceland">
+			<name>Iceland</name>
+			<borders>
+				<border>eu_britain</border>
+				<border>eu_scandinavia</border>
+				<border>na_dk_greenland</border>
+			</borders>
+			<regions>
+				<region>europe</region>
+			</regions>
+		</territory>
+		<territory id="eu_north">
+			<name>Northern Europe</name>
+			<borders>
+				<border>eu_britain</border>
+				<border>eu_east</border>
+				<border>eu_scandinavia</border>
+				<border>eu_south</border>
+				<border>eu_west</border>
+			</borders>
+			<regions>
+				<region>europe</region>
+			</regions>
+		</territory>
+		<territory id="eu_scandinavia">
+			<name>Scandinavia</name>
+			<borders>
+				<border>eu_britain</border>
+				<border>eu_east</border>
+				<border>eu_iceland</border>
+				<border>eu_north</border>
+			</borders>
+			<regions>
+				<region>europe</region>
+			</regions>
+		</territory>
+		<territory id="eu_south">
+			<name>Southern Europe</name>
+			<borders>
+				<border>af_egypt</border>
+				<border>as_middleeast</border>
+				<border>eu_east</border>
+				<border>eu_north</border>
+				<border>eu_west</border>
+			</borders>
+			<regions>
+				<region>europe</region>
+			</regions>
+		</territory>
+		<territory id="eu_west">
+			<name>Western Europe</name>
+			<borders>
+				<border>af_north</border>
+				<border>eu_britain</border>
+				<border>eu_north</border>
+				<border>eu_south</border>
+			</borders>
+			<regions>
+				<region>europe</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_alaska">
+			<name>Alaska</name>
+			<borders>
+				<border>as_ru_kamchatka</border>
+				<border>na_ca_alberta</border>
+				<border>na_ca_northwestterritories</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_alberta">
+			<name>Alberta</name>
+			<borders>
+				<border>na_ca_northwestterritories</border>
+				<border>na_ca_quebec</border>
+				<border>na_dk_greenland</border>
+				<border>na_usa_alaska</border>
+				<border>na_usa_east</border>
+				<border>na_usa_west</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="na_central">
+			<name>Central America</name>
+			<borders>
+				<border>na_usa_east</border>
+				<border>na_usa_west</border>
+				<border>sa_venezuela</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_east">
+			<name>Eastern United States</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_ca_quebec</border>
+				<border>na_central</border>
+				<border>na_usa_west</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="na_dk_greenland">
+			<name>Greenland</name>
+			<borders>
+				<border>eu_iceland</border>
+				<border>na_ca_alberta</border>
+				<border>na_ca_northwestterritories</border>
+				<border>na_ca_quebec</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_northwestterritories">
+			<name>Northwest Territories</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_dk_greenland</border>
+				<border>na_usa_alaska</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_quebec">
+			<name>Quebec</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_dk_greenland</border>
+				<border>na_usa_east</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_west">
+			<name>Western United States</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_central</border>
+				<border>na_usa_east</border>
+			</borders>
+			<regions>
+				<region>northamerica</region>
+			</regions>
+		</territory>
+		<territory id="oc_au_east">
+			<name>Eastern Australia</name>
+			<borders>
+				<border>oc_newguinea</border>
+				<border>oc_au_west</border>
+			</borders>
+			<regions>
+				<region>oceania</region>
+			</regions>
+		</territory>
+		<territory id="oc_indonesia">
+			<name>Indonesia</name>
+			<borders>
+				<border>as_southeast</border>
+				<border>oc_newguinea</border>
+				<border>oc_au_west</border>
+			</borders>
+			<regions>
+				<region>oceania</region>
+			</regions>
+		</territory>
+		<territory id="oc_newguinea">
+			<name>New Guinea</name>
+			<borders>
+				<border>oc_au_east</border>
+				<border>oc_indonesia</border>
+				<border>oc_au_west</border>
+			</borders>
+			<regions>
+				<region>oceania</region>
+			</regions>
+		</territory>
+		<territory id="oc_au_west">
+			<name>Western Autralia</name>
+			<borders>
+				<border>oc_au_east</border>
+				<border>oc_indonesia</border>
+				<border>oc_newguinea</border>
+			</borders>
+			<regions>
+				<region>oceania</region>
+			</regions>
+		</territory>
+		<territory id="sa_argentina">
+			<name>Argentina</name>
+			<borders>
+				<border>sa_brazil</border>
+				<border>sa_peru</border>
+			</borders>
+			<regions>
+				<region>southamerica</region>
+			</regions>
+		</territory>
+		<territory id="sa_brazil">
+			<name>Brazil</name>
+			<borders>
+				<border>af_north</border>
+				<border>sa_argentina</border>
+				<border>sa_peru</border>
+				<border>sa_venezuela</border>
+			</borders>
+			<regions>
+				<region>southamerica</region>
+			</regions>
+		</territory>
+		<territory id="sa_peru">
+			<name>Peru</name>
+			<borders>
+				<border>sa_argentina</border>
+				<border>sa_brazil</border>
+				<border>sa_venezuela</border>
+			</borders>
+			<regions>
+				<region>southamerica</region>
+			</regions>
+		</territory>
+		<territory id="sa_venezuela">
+			<name>Venezuela</name>
+			<borders>
+				<border>na_central</border>
+				<border>sa_brazil</border>
+				<border>sa_peru</border>
+			</borders>
+			<regions>
+				<region>southamerica</region>
+			</regions>
+		</territory>
+	</territories>
+	<regions>
+		<region id="africa">
+			<name>Africa</name>
+			<units>3</units>
+		</region>
+		<region id="asia">
+			<name>Asia</name>
+			<units>7</units>
+		</region>
+		<region id="europe">
+			<name>Europe</name>
+			<units>5</units>
+		</region>
+		<region id="northamerica">
+			<name>North America</name>
+			<units>5</units>
+		</region>
+		<region id="oceania">
+			<name>Oceania</name>
+			<units>2</units>
+		</region>
+		<region id="southamerica">
+			<name>South America</name>
+			<units>2</units>
+		</region>
+	</regions>
+	<missions>
+		<mission missionId="0" availability="0" class="DominationMission">
+			<argument type="int">24</argument>
+		</mission>
+		<mission missionId="1" availability="4" fallback="0" class="RivalryMission" />
+		<mission missionId="2" availability="1">
+			<name>Zeeland and New Zealand</name>
+			<description>To win this game you will have to conquer Europe, Oceania and a third continent.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>europe</argument>
+					<argument>oceania</argument>
+				</condition>
+				<condition class="RegionsCondition">
+					<argument>3</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="3" availability="1">
+			<name>Age of Empires</name>
+			<description>To win this game you will have to conquer Europe, South America and a third continent.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>europe</argument>
+					<argument>southamerica</argument>
+				</condition>
+				<condition class="RegionsCondition">
+					<argument>3</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="4" availability="1">
+			<name>Colonization</name>
+			<description>To win this game you will have to conquer North America and Africa.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>northamerica</argument>
+					<argument>africa</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="5" availability="1">
+			<name>Pacific Empire</name>
+			<description>To win this game you will have to conquer North America and Oceania.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>northamerica</argument>
+					<argument>oceania</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="6" availability="1">
+			<name>Fusang</name>
+			<description>To win this game you will have to conquer Asia and South America.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>asia</argument>
+					<argument>southamerica</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="7" availability="1">
+			<name>Cradle</name>
+			<description>To win this game you will have to conquer Asia and Africa.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>asia</argument>
+					<argument>africa</argument>
+				</condition>
+			</conditions>
+		</mission>
+	</missions>
+</map>
