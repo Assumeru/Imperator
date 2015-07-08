@@ -2,7 +2,7 @@
 <map id="1">
 	<name>Classic</name>
 	<players>4</players>
-	<description lang="en-US">TODO</description>
+	<description xml:lang="en-US">TODO</description>
 	<territories>
 		<territory id="af_central">
 			<name>Central Africa</name>

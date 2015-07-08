@@ -1,6 +1,7 @@
 <?php
 namespace imperator\map;
 
+use imperator\Imperator;
 class MapParser {
 	private $xpath;
 
@@ -11,8 +12,9 @@ class MapParser {
 		$xml = new \DOMDocument();
 		if($xml->load(realpath($path)) === false) {
 			throw new \imperator\exceptions\MapParserException('Failed to load "'.$path.'"');
-		}
-		//$xml->schemaValidate($filename);
+		}/* else if($xml->schemaValidate(Imperator::getSettings()->getBasePath().'/app/map/map.xsd') === false) {
+			throw new \imperator\exceptions\MapParserException('Invalid map "'.$path.'"');
+		}*/
 		$this->xpath = new \DOMXPath($xml);
 	}
 
@@ -150,7 +152,7 @@ class MapParser {
 		$descriptionElements = $this->xpath->query('child::description');
 		$descriptions = array();
 		foreach($descriptionElements as $description) {
-			$lang = $description->getAttribute('lang');
+			$lang = $description->getAttribute('xml:lang');
 			$descriptions[strtolower($lang)] = $description->nodeValue;
 		}
 		return $descriptions;

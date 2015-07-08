@@ -2,7 +2,7 @@
 <map id="0">
 	<name>Benelux</name>
 	<players>2</players>
-	<description lang="en-US"><![CDATA[
+	<description xml:lang="en-US"><![CDATA[
 		TODO: Description of <strong>Be</strong>lgium <strong>Ne</strong>therlands <strong>Lux</strong>embourg.
 	]]></description>
 	<territories>
@@ -149,7 +149,6 @@
 				<border>eu_be_liege</border>
 				<border>eu_be_luxembourg</border>
 			</borders>
-			<regions />
 		</territory>
 		<territory id="eu_nl_drenthe">
 			<name>Drenthe</name>

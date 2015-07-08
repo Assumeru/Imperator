@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+	<xs:element name="map">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:string" name="name"/>
+				<xs:element name="players">
+					<xs:simpleType>
+						<xs:restriction base="xs:positiveInteger">
+							<xs:minInclusive value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="description" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute ref="xml:lang" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="territories">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="territory" maxOccurs="unbounded" minOccurs="2">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element type="xs:string" name="name"/>
+										<xs:element name="borders">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element type="xs:string" name="border" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="regions" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element type="xs:string" name="region" maxOccurs="unbounded" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute type="xs:string" name="id" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="regions" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="region" maxOccurs="unbounded" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element type="xs:string" name="name"/>
+										<xs:element type="xs:integer" name="units"/>
+									</xs:sequence>
+									<xs:attribute type="xs:string" name="id" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="missions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="mission" maxOccurs="unbounded">
+								<xs:complexType mixed="true">
+									<xs:sequence>
+										<xs:element name="argument" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute type="xs:string" name="type"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element type="xs:string" name="name" minOccurs="0"/>
+										<xs:element type="xs:string" name="description" minOccurs="0"/>
+										<xs:element name="conditions" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="condition" maxOccurs="unbounded" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element type="xs:string" name="argument" maxOccurs="unbounded" minOccurs="0"/>
+															</xs:sequence>
+															<xs:attribute type="xs:string" name="class" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute type="xs:integer" name="missionId" use="required"/>
+									<xs:attribute name="availability" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:integer">
+												<xs:minInclusive value="0"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute type="xs:string" name="class" use="optional"/>
+									<xs:attribute type="xs:integer" name="fallback" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute type="xs:integer" name="id" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
