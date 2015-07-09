@@ -1,0 +1,8 @@
+<section id="owner-controls">
+	<form method="post">
+<?php	if($canStart) { ?>
+		<input class="btn btn-success" type="submit" name="startgame" value="<?php echo $this->__('Start game'); ?>" />
+<?php	} ?>
+		<input class="btn btn-danger" type="submit" name="disband" value="<?php echo $this->__('Disband game'); ?>" />
+	</form>
+</section>

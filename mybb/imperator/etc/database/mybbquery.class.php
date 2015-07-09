@@ -18,8 +18,10 @@ class MyBBQuery implements \imperator\database\Query {
 	}
 
 	public function free() {
-		global $db;
-		$db->free_result($this->query);
+		if(is_resource($this->query) || is_object($this->query)) {
+			global $db;
+			$db->free_result($this->query);
+		}
 	}
 
 	public function getInsertId() {

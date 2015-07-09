@@ -8,7 +8,10 @@ class GameList extends DefaultPage {
 	public function render(\imperator\User $user) {
 		$this->addChatJavascript(0, $user->canDeleteChatMessages());
 		$this->setTitle($user->getLanguage()->translate(static::NAME));
-		$this->setBodyContents($this->getGameList($user));
+		$this->setBodyContents(Template::getInstance('games', $user->getLanguage())->setVariables(array(
+			'games' => $this->getGames($user),
+			'chat' => $this->getChatBox($user)
+		)));
 		parent::render($user);
 	}
 
@@ -62,10 +65,10 @@ class GameList extends DefaultPage {
 				'host' => $lang->translate('Host')
 			))->getData();
 		}
-		return Template::getInstance('games')->replace(array(
+		return Template::getInstance('games')->setVariables(array(
 			'title' => $lang->translate('Games'),
-			'games' => $gameHTML,
+			'games' => $games,
 			'chat' => $this->getChatBox($user)
-		))->getData();
+		));
 	}
 }

@@ -1,0 +1,30 @@
+<section id="new-game">
+	<h1><?php echo $this->__('New Game'); ?></h1>
+	<form method="post">
+		<span class="help-inline"><?php echo $this->__($error); ?></span>
+		<div class="input-group<?php if(!empty($error)) echo ' has-error'; ?>">
+			<div class="input-group-addon">
+				<span class="glyphicon glyphicon-tag"></span>
+			</div>
+			<input class="form-control" type="text" name="name" value="<?php echo $name; ?>" maxlength="<?php echo $settings->getMaxGameNameLength(); ?>" placeholder="<?php echo $this->__('Enter game name'); ?>" required />
+		</div>
+		<select class="form-control" name="map" required>
+			<option disabled selected value=""><?php echo $this->__('Choose a map'); ?></option>
+<?php	foreach($maps as $map) { ?>
+			<option value="<?php echo $map->getId(); ?>"><?php echo $this->__('%1$s (%2$d players)', $this->__($map->getName()), $map->getPlayers()); ?></option>
+<?php	} ?>
+		</select>
+		<div class="input-group" id="game-color">
+			<h3 class="sr-only"><?php echo $this->__('Choose a color'); ?></h3>
+			<?php $colors->execute(true); ?>
+		</div>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<span class="glyphicon glyphicon-lock"></span>
+			</div>
+			<input class="form-control" type="password" name="password" value="" placeholder="<?php echo $this->__('Enter password (optional)'); ?>" />
+		</div>
+		<hr />
+		<input class="btn btn-success" type="submit" value="<?php echo $this->__('Create game'); ?>" />
+	</form>
+</section>

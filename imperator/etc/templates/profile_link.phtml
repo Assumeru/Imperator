@@ -1,0 +1,10 @@
+<?php
+	$name = htmlentities($user->getName());
+	$url = $user->getProfileLink();
+	if($user instanceof \imperator\game\Player) {
+		echo '<a href="', $url, '" class="user" style="color: #', $user->getColor(), ';">', $name, '</a>';
+	} else if($url) {
+		echo '<a href="', $url, '" class="user">', $name, '</a>';
+	} else {
+		echo '<span class="user">', $name, '</span>';
+	}

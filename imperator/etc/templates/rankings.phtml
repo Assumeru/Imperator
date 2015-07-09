@@ -1,0 +1,23 @@
+<section>
+	<h1><?php echo $this->__('Rankings'); ?></h1>
+	<table id="rankings" class="table table-striped table-hover sortable">
+		<thead>
+			<tr><th><?php echo $this->__('#'); ?></th><th><?php echo $this->__('Name'); ?></th><th><?php echo $this->__('Wins'); ?></th><th><?php echo $this->__('Losses'); ?></th><th class="headerSortUp"><?php echo $this->__('Score'); ?></th></tr>
+		</thead>
+		<tbody>
+<?php
+	$number = 0;
+	foreach($users as $user) {
+		$number++;
+?>
+			<tr>
+				<td><?php echo $number; ?></td>
+				<td><?php echo \imperator\page\DefaultPage::getProfileLink($user); ?></td>
+				<td><?php echo $user->getWins(); ?></td>
+				<td><?php echo $user->getLosses(); ?></td>
+				<td><?php echo $user->getScore(); ?></td>
+			</tr>
+<?php	} ?>
+		</tbody>
+	</table>
+</section>

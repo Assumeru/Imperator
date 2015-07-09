@@ -5,20 +5,13 @@ class LoginSplash extends DefaultPage {
 	const NAME = 'Home';
 
 	public function render(\imperator\User $user) {
-		$this->setTitle($user->getLanguage()->translate(self::NAME));
-		$this->setBodyContents($this->getSplash($user));
+		$language = $user->getLanguage();
+		$this->setTitle($language->translate(self::NAME));
+		$this->setBodyContents(Template::getInstance('splash', $language));
 		parent::render($user);
 	}
 
 	public function canBeUsedBy(\imperator\User $user) {
 		return true;
-	}
-
-	private function getSplash(\imperator\User $user) {
-		$lang = $user->getLanguage();
-		return Template::getInstance('splash')->replace(array(
-			'welcome' => $lang->translate('Welcome to Imperator'),
-			'login' => $lang->translate('Please login to continue.')
-		))->getData();
 	}
 }

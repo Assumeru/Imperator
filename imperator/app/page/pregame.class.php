@@ -32,7 +32,11 @@ class PreGame extends DefaultPage {
 			Imperator::redirect(Game::getURL($this->game));
 		}
 		$this->setTitle($this->game->getName());
-		$this->setBodyContents($this->getPregame($user, $joinForm));
+		$this->setBodyContents(Template::getInstance('game_pregame', $user->getLanguage())->setVariables(array(
+			'chat' => $this->getChat($user),
+			'game' => $this->game,
+			'controls' => $this->getControls($user, $joinForm)
+		)));
 		parent::render($user);
 	}
 
@@ -56,26 +60,12 @@ class PreGame extends DefaultPage {
 		$this->game->addUser($player);
 	}
 
-	private function getPregame(\imperator\User $user, form\JoinGameForm $form) {
-		$language = $user->getLanguage();
-		return Template::getInstance('game_pregame')->replace(array(
-			'title' => $this->game->getName(),
-			'players' => $this->getPlayers($user),
-			'mapheading' => $language->translate('Map'),
-			'playersheading' => $language->translate('Players'),
-			'map' => $this->game->getMap()->getName(),
-			'mapurl' => Map::getURL($this->game->getMap()->getId(), $this->game->getMap()->getName()),
-			'startjoingame' => $this->getControls($user, $form),
-			'chat' => $this->getChat($user)
-		))->getData();
-	}
-
 	private function getChat(\imperator\User $user) {
 		if($this->game->containsPlayer($user)) {
 			$this->addChatJavascript($this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->getUser()->equals($user));
 			return $this->getChatBox($user);
 		}
-		return '';
+		return null;
 	}
 
 	private function getControls(\imperator\User $user, form\JoinGameForm $form) {
@@ -84,81 +74,23 @@ class PreGame extends DefaultPage {
 			$this->addJavascript('pregame.js');
 			return $this->getOwnerGameForm($user);
 		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && $player === null) {
-			return $this->getJoinGameForm($user, $form);
+			$this->addCSS('newgame.css');
+			return Template::getInstance('game_pregame_join', $user->getLanguage())->setVariables(array(
+				'hasPassword' => $this->game->hasPassword(),
+				'passwordError' => $form->getPasswordError(),
+				'colorError' => $form->getColorError(),
+				'colors' => Game::getColors($user, $this->game->getRemainingColors())
+			));
 		} else if($player !== null) {
 			$this->addJavascript('pregame.js');
-			return $this->getLeaveForm($user);
+			return Template::getInstance('game_pregame_leave', $user->getLanguage());
 		}
-		return '';
+		return null;
 	}
 
 	public function getOwnerGameForm(\imperator\User $user) {
-		$language = $user->getLanguage();
-		$disband = Template::getInstance('game_pregame_disband')->replace(array(
-			'disband' => $language->translate('Disband game')
-		))->getData();
-		$start = '';
-		if($this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
-			$start = Template::getInstance('game_pregame_start')->replace(array(
-				'start' => $user->getLanguage()->translate('Start game')
-			))->getData();
-		}
-		return Template::getInstance('game_pregame_owner')->replace(array(
-			'disband' => $disband,
-			'start' => $start
-		))->getData();
-	}
-
-	private function getLeaveForm(\imperator\User $user) {
-		return Template::getInstance('game_pregame_leave')->replace(array(
-			'leave' => $user->getLanguage()->translate('Leave game')
-		))->getData();
-	}
-
-	private function getJoinGameForm(\imperator\User $user, form\JoinGameForm $form) {
-		$this->addCSS('newgame.css');
-		$language = $user->getLanguage();
-		$passwordError = $form->getPasswordError();
-		$hasPasswordError = '';
-		if(!empty($passwordError)) {
-			$hasPasswordError = ' has-error';
-			$passwordError = $language->translate($passwordError);
-		}
-		$colorError = $form->getColorError();
-		$hasColorError = '';
-		if(!empty($colorError)) {
-			$hasColorError = ' has-error';
-			$colorError = $language->translate($colorError);
-		}
-		return Template::getInstance('game_pregame_join')->replace(array(
-			'choosecolor' => $language->translate('Choose a color'),
-			'password' => $this->getJoinPassword($user),
-			'join' => $language->translate('Join game'),
-			'colors' => Game::getColors($user, $this->game->getRemainingColors()),
-			'hasPasswordError' => $hasPasswordError,
-			'hasColorError' => $hasColorError,
-			'colorError' => $colorError,
-			'passwordError' => $passwordError
-		))->getData();
-	}
-
-	private function getJoinPassword(\imperator\User $user) {
-		if($this->game->hasPassword()) {
-			return Template::getInstance('game_pregame_password')->replace(array(
-				'enterpassword' => $user->getLanguage()->translate('Enter password')
-			))->getData();
-		}
-		return '';
-	}
-
-	private function getPlayers(\imperator\User $user) {
-		$players = '';
-		foreach($this->game->getPlayers() as $player) {
-			$players .= Template::getInstance('game_player')->replace(array(
-				'owner' => $player == $this->game->getOwner() ? $user->getLanguage()->translate('(Owner)') : '',
-				'user' => DefaultPage::getProfileLink($player)
-			))->getData();
-		}
-		return $players;
+		return Template::getInstance('game_pregame_owner', $user->getLanguage())->setVariables(array(
+			'canStart' => $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()
+		));
 	}
 }

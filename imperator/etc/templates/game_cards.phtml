@@ -1,0 +1,7 @@
+<?php
+	foreach($cards as $card) {
+		$this->includeTemplate('game_card', array(
+			'url' => sprintf($url, $card),
+			'name' => $names[$card]
+		));
+	}

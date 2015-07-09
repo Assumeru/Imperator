@@ -1,0 +1,21 @@
+<section>
+	<h1><?php echo $game->getName(); ?></h1>
+	<h4><?php echo $this->__('Map'); ?></h4>
+	<p><a href="<?php echo \imperator\page\Map::getURL($game->getMap()); ?>"><?php echo $this->__($game->getMap()->getName()); ?></a></p>
+	<h4><?php echo $this->__('Players'); ?></h4>
+	<ul id="player-list">
+<?php
+	foreach($game->getPlayers() as $player) {
+		$this->includeTemplate('game_player', array('player' => $player));
+	}
+?>
+	</ul>
+</section>
+<?php
+	if($controls) {
+		$controls->execute(true);
+	}
+	if($chat) {
+		$chat->execute(true);
+	}
+?>

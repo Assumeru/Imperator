@@ -1,0 +1,19 @@
+<div class="clearfix">
+	<div class="col-md-4">
+		<strong><?php echo $this->__('Select a territory to move from'); ?></strong>
+		<select class="form-control" name="from"></select>
+	</div>
+	<div class="col-md-4">
+		<strong><?php echo $this->__('Select a territory to move to'); ?></strong>
+		<select class="form-control" name="to"></select>
+	</div>
+	<div class="col-md-4">
+		<strong><?php echo $this->__('Enter the number of units to move'); ?></strong>
+		<div class="input-group">
+			<div class="input-group-addon">
+<?php	$this->includeTemplate('unit_icon'); ?>
+			</div>
+			<input class="form-control" type="number" name="move" value="1" min="1" placeholder="<?php echo $this->__('Enter the number of units to move'); ?>" required />
+		</div>
+	</div>
+</div>

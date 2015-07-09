@@ -1,0 +1,22 @@
+<section class="hidden">
+	<form id="chat">
+		<div id="chat-window" class="form-control">
+			<p class="loading"><?php echo $this->__('Loading messages...'); ?></p>
+		</div>
+		<label title="<?php echo $this->__('Enable this to automatically scroll down to the latest message'); ?>" class="btn chat-scrolling">
+			<input type="checkbox" name="chatscrolling" />
+			<span>
+				<span class="glyphicon glyphicon-play"></span>
+				<span class="glyphicon glyphicon-pause"></span>
+			</span>
+		</label>
+		<div class="row">
+			<div class="col-xs-10">
+				<input type="text" name="message" class="form-control" placeholder="<?php echo $this->__('Say something'); ?>" />
+			</div>
+			<div class="col-xs-2">
+				<input type="submit" value="<?php echo $this->__('Chat'); ?>" class="btn btn-success form-control" />
+			</div>
+		</div>
+	</form>
+</section>

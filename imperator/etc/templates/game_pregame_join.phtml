@@ -1,0 +1,21 @@
+<section id="join-game">
+	<form method="post">
+		<span class="help-inline"><?php echo $this->__($colorError); ?></span>
+		<div class="input-group<?php if(!empty($colorError)) echo ' has-error'; ?>" id="game-color">
+			<h3><?php echo $this->__('Choose a color'); ?></h3>
+			<?php $colors->execute(true); ?>
+		</div>
+		<div class="<?php if(!empty($passwordError)) echo 'has-error'; ?>">
+			<span class="help-inline"><?php echo $this->__($passwordError); ?></span>
+<?php 	if($hasPassword) { ?>
+			<div class="input-group">
+				<div class="input-group-addon">
+					<span class="glyphicon glyphicon-lock"></span>
+				</div>
+				<input class="form-control" type="password" name="password" value="" placeholder="<?php echo $this->__('Enter password'); ?>" required />
+			</div>
+<?php	} ?>
+		</div>
+		<input class="btn btn-success" type="submit" value="<?php echo $this->__('Join game'); ?>" />
+	</form>
+</section>

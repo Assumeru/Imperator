@@ -6,7 +6,10 @@ abstract class ErrorPage extends DefaultPage {
 	private $description;
 
 	public function render(\imperator\User $user) {
-		$this->setBodyContents($this->getErrorPage($user));
+		$this->setBodyContents(Template::getInstance('errorpage')->setVariables(array(
+			'error' => $this->error,
+			'description' => $this->description
+		)));
 		parent::render($user);
 	}
 
@@ -17,13 +20,6 @@ abstract class ErrorPage extends DefaultPage {
 
 	protected function setDescription($description) {
 		$this->description = $description;
-	}
-
-	protected function getErrorPage(\imperator\User $user) {
-		return Template::getInstance('errorpage')->replace(array(
-			'error' => $this->error,
-			'description' => $this->description
-		))->getData();
 	}
 
 	public function canBeUsedBy(\imperator\User $user) {

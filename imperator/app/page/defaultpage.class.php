@@ -5,23 +5,25 @@ use imperator\Imperator;
 abstract class DefaultPage extends Page {
 	private $title = '';
 	private $head = '';
-	private $js = '';
-	private $css = '';
-	private $content = '';
+	private $js = array();
+	private $css = array();
+	private $content;
 	private $jsSettings = array();
 	private $mainClass = 'container';
 
 	public function render(\imperator\User $user) {
 		$language = $user->getLanguage();
-		echo Template::getInstance('page')->replace(array(
-			'lang' => $language->getHtmlLang(),
-			'dir' => $language->getTextDirection(),
-			'head' => $this->getHead($user),
-			'header' => $this->getHeader($user),
-			'body' => $this->getBody($user),
+		Template::getInstance('page', $language)->setVariables(array(
+			'language' => $language,
+			'title' => $this->title,
+			'settings' => Imperator::getSettings(),
+			'javascriptSettings' => $this->getJavascriptSettings(),
+			'css' => $this->css,
+			'javascript' => $this->js,
 			'footer' => $this->getFooter($user),
-			'container' => $this->mainClass
-		))->getData();
+			'mainClass' => $this->mainClass,
+			'body' => $this->content
+		))->execute(true);
 	}
 
 	/**
@@ -43,21 +45,12 @@ abstract class DefaultPage extends Page {
 	}
 
 	/**
-	 * Adds additional content to the head.
-	 * 
-	 * @param string $head Additional HTML
-	 */
-	protected function setHead($head) {
-		$this->head = $head;
-	}
-
-	/**
 	 * Adds a javascript file to the head.
 	 * 
 	 * @param string $file The name of the file to add
 	 */
 	protected function addJavascript($file) {
-		$this->js .= '<script src="'.Imperator::getSettings()->getBaseURL().'/js/'.$file.'"></script>'."\n";
+		$this->js[] = $file;
 	}
 
 	/**
@@ -66,7 +59,7 @@ abstract class DefaultPage extends Page {
 	 * @param string $file The name of the file to add
 	 */
 	protected function addCSS($file) {
-		$this->css .= '<link href="'.Imperator::getSettings()->getBaseURL().'/css/'.$file.'" type="text/css" rel="stylesheet" />'."\n";
+		$this->css[] = $file;
 	}
 
 	/**
@@ -90,70 +83,18 @@ abstract class DefaultPage extends Page {
 	 * 
 	 * @param string $content The HTML to add
 	 */
-	protected function setBodyContents($content) {
+	protected function setBodyContents(Template $content) {
 		$this->content = $content;
 	}
 
-	protected function getHead(\imperator\User $user) {
-		return Template::getInstance('head')->replace(array(
-			'title' => $user->getLanguage()->translate('Imperator | %1$s', $this->title),
-			'head' => $this->getJavascriptSettings().$this->head."\n".$this->css.$this->js,
-			'basepath' => Imperator::getSettings()->getBaseURL()
-		))->getData();
-	}
-
-	protected function getHeader(\imperator\User $user) {
-		return Template::getInstance('header')->replace(array(
-			'brandlink' => Imperator::getSettings()->getBrandLink(),
-			'nav' => $this->getNavigation($user)
-		))->getData();
-	}
-
-	protected function getBody(\imperator\User $user) {
-		return Template::getInstance('body')->replace(array(
-			'content' => $this->content
-		))->getData();
-	}
-
 	protected function getFooter(\imperator\User $user) {
-		return Template::getInstance('footer')->replace(array(
-			'copyright' => $user->getLanguage()->translate('&copy; %1$d %2$s.', date('Y'), Template::getInstance('copyright')->getData())
-		))->getData();
-	}
-
-	protected function getNavigation(\imperator\User $user) {
-		$settings = Imperator::getSettings();
-		$language = $user->getLanguage();
-		$nav = '';
-		$elements = array('Index', 'YourGameList', 'NewGame', 'Rankings', 'MapList', 'About');
-		foreach($elements as $element) {
-			$page = '\\imperator\\page\\'.$element;
-			$nav .= Template::getInstance('nav_element')->replace(array(
-				'url' => $page::getURL(),
-				'name' => $language->translate($page::NAME)
-			))->getData();
-		}
-		return $nav;
+		return Template::getInstance('footer', $user->getLanguage())->setVariables(array(
+			'date' => date('Y')
+		))->execute();
 	}
 
 	public static function getProfileLink(\imperator\Member $user) {
-		$name = htmlentities($user->getName());
-		$url = $user->getProfileLink();
-		if($user instanceof \imperator\game\Player) {
-			return Template::getInstance('profile_link_color')->replace(array(
-				'url' => $url,
-				'name' => $name,
-				'color' => $user->getColor()
-			))->getData();
-		} else if($url) {
-			return Template::getInstance('profile_link')->replace(array(
-				'url' => $url,
-				'name' => $name
-			))->getData();
-		}
-		return Template::getInstance('profile_nolink')->replace(array(
-			'name' => $name
-		))->getData();
+		return Template::getInstance('profile_link')->setVariables(array('user' => $user))->execute();
 	}
 
 	protected function addChatJavascript($gid, $canDelete = false) {
@@ -166,17 +107,11 @@ abstract class DefaultPage extends Page {
 		$this->setJavascriptSetting('gid', $gid);
 		$this->setJavascriptSetting('chat', array(
 			'canDelete' => $canDelete,
-			'template' => Template::getInstance('chat_message')->getData()
+			'template' => Template::getInstance('chat_message')->execute()
 		));
 	}
 
 	protected function getChatBox(\imperator\User $user) {
-		$language = $user->getLanguage();
-		return Template::getInstance('chat')->replace(array(
-			'loading' => $language->translate('Loading messages...'),
-			'submit' => $language->translate('Chat'),
-			'placeholder' => $language->translate('Say something'),
-			'chatscrollingtitle' => $language->translate('Enable this to automatically scroll down to the latest message')
-		))->getData();
+		return Template::getInstance('chat', $user->getLanguage());
 	}
 }

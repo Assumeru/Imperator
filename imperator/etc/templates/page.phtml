@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="<?php echo $language->getHtmlLang(); ?>" dir="<?php echo $language->getTextDirection(); ?>">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title><?php echo $this->__('Imperator | %1$s', $title); ?></title>
+	<link href="<?php echo $settings->getBaseURL(); ?>/img/favicon.png" type="image/png" rel="shortcut icon" />
+	<script src="<?php echo $settings->getBaseURL(); ?>/js/jquery-2.1.3.min.js"></script>
+	<script src="<?php echo $settings->getBaseURL(); ?>/js/bootstrap.min.js"></script>
+	<link href="<?php echo $settings->getBaseURL(); ?>/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<link href="<?php echo $settings->getBaseURL(); ?>/css/style.css" type="text/css" rel="stylesheet" />
+<?php
+	echo $javascriptSettings, "\n";
+	foreach($css as $file) {
+		echo '<link href="', $settings->getBaseURL(), '/css/', $file, '" type="text/css" rel="stylesheet" />', "\n";
+	}
+	foreach($javascript as $file) {
+		echo '<script src="', $settings->getBaseURL(), '/js/', $file, '"></script>', "\n";
+	}
+?>
+</head>
+<body>
+<?php
+	$this->includeTemplate('header');
+?>
+<div id="main" class="<?php echo $mainClass; ?>">
+	<div id="content">
+<?php
+	$body->execute(true);
+?>
+	</div>
+<?php
+	echo $footer;
+?>
+</div>
+</body>
+</html>

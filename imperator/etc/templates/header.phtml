@@ -1,0 +1,21 @@
+<header class="container-fluid">
+	<nav class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="<?php echo $settings->getBrandLink(); ?>">Imperator</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+<?php	foreach($settings->getNavigationPages() as $navPage) { ?>
+				<li>
+					<a href="<?php echo $navPage::getURL(); ?>"><?php echo $this->__($navPage::NAME); ?></a>
+				</li>
+<?php	} ?>
+			</ul>
+		</div>
+	</nav>
+</header>

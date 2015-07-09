@@ -1,0 +1,7 @@
+<p><?php echo $this->__('How many units would you like to place?'); ?></p>
+<div class="input-group">
+	<div class="input-group-addon">
+<?php	$this->includeTemplate('unit_icon'); ?>
+	</div>
+	<input class="form-control" type="number" name="stack" value="1" min="1" placeholder="<?php echo $this->__('Units to place'); ?>" required />
+</div>

@@ -29,6 +29,17 @@ class Settings {
 		return $this->baseURL;
 	}
 
+	public function getNavigationPages() {
+		return array(
+			'\\imperator\\page\\Index',
+			'\\imperator\\page\\YourGameList',
+			'\\imperator\\page\\NewGame',
+			'\\imperator\\page\\Rankings',
+			'\\imperator\\page\\MapList',
+			'\\imperator\\page\\About'
+		);
+	}
+
 	/**
 	 * @return array An associative array of color names by hex value
 	 */

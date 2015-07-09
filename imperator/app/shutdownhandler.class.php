@@ -15,6 +15,9 @@ class ShutDownHandler {
 		$error = error_get_last();
 		if($error !== null && $error['type'] == E_ERROR) {
 			Imperator::getLogger()->log(Logger::LEVEL_FATAL, $error);
+			while(ob_get_level() > 0) {
+				ob_end_clean();
+			}
 			if($this->mode == self::MODE_OUTPUT_PAGE) {
 				Imperator::renderErrorPage(Imperator::getCurrentUser());
 			} else if($this->mode == self::MODE_OUTPUT_JSON) {

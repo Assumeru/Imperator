@@ -50,20 +50,13 @@ class Game extends DefaultPage {
 	}
 
 	public static function getColors(\imperator\User $user, array $colorList = null) {
-		$colors = '';
 		if($colorList === null) {
 			$colorList = Imperator::getSettings()->getPlayerColors();
 		}
 		$language = $user->getLanguage();
 		$first = true;
-		foreach($colorList as $value => $color) {
-			$colors .= Template::getInstance('newgame_color')->replace(array(
-				'value' => $value,
-				'name' => $language->translate($color),
-				'checked' => $first ? 'checked' : ''
-			))->getData();
-			$first = false;
-		}
-		return $colors;
+		return Template::getInstance('newgame_color', $language)->setVariables(array(
+			'colors' => $colorList
+		));
 	}
 }

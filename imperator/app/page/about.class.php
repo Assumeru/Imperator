@@ -11,14 +11,7 @@ class About extends DefaultPage {
 
 	public function render(\imperator\User $user) {
 		$this->setTitle($user->getLanguage()->translate(self::NAME));
-		$this->setBodyContents($this->getAbout($user));
+		$this->setBodyContents(Template::getInstance('about', $user->getLanguage()));
 		parent::render($user);
-	}
-
-	private function getAbout(\imperator\User $user) {
-		$language = $user->getLanguage();
-		return Template::getInstance('about')->replace(array(
-			'title' => $language->translate(self::NAME)
-		))->getData();
 	}
 }

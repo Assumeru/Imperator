@@ -1,0 +1,15 @@
+<?php
+	$first = 'checked';
+	foreach($colors as $value => $color) {
+?>
+	<div class="radio-color">
+		<input type="radio" value="<?php echo $value; ?>" name="color" id="color-<?php echo $value; ?>" <?php echo $first; ?> required />
+		<label for="color-<?php echo $value; ?>" title="<?php echo $this->__($color) ?>">
+			<span style="background-color: #<?php echo $value; ?>;" class="btn btn-default"></span>
+			<span class="glyphicon glyphicon-chevron-up"></span>
+		</label>
+	</div>
+<?php
+		$first = '';
+	}
+?>
