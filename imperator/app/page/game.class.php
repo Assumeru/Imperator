@@ -34,11 +34,20 @@ class Game extends DefaultPage {
 		$page->render($user);
 	}
 
-	public static function getURL(\imperator\Game $game = null) {
+	public static function getURL(\imperator\Game $game = null, $invite = false) {
 		if($game === null) {
 			return parent::getURL();
 		}
-		return parent::getURL().'/'.$game->getId().'/'.urlencode($game->getName());
+		$url = parent::getURL().'/'.$game->getId().'/'.urlencode($game->getName());
+		if($invite && $game->hasPassword()) {
+			if(strpos($url, '?') === false) {
+				$url .= '?';
+			} else {
+				$url .= '&';
+			}
+			$url .= 'code='.urlencode($game->getInviteCode());
+		}
+		return $url;
 	}
 
 	public static function getTerritoryFlag(\imperator\map\Territory $territory) {

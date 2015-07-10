@@ -27,18 +27,18 @@ class Template {
 		return call_user_func_array(array($this->language, 'translate'), func_get_args());
 	}
 
-	protected function includeTemplate($template, array $variables = null) {
-		$path = Imperator::getSettings()->getBasePath().'/etc/templates/'.$template.'.phtml';
-		if(file_exists($path)) {
-			if($variables) {
-				extract($variables, EXTR_SKIP);
+	protected function includeTemplate($imperatorTemplate, array $imperatorVariables = null) {
+		$imperatorPath = Imperator::getSettings()->getBasePath().'/etc/templates/'.$imperatorTemplate.'.phtml';
+		if(file_exists($imperatorPath)) {
+			if($imperatorVariables) {
+				extract($imperatorVariables, EXTR_SKIP);
 			}
 			if($this->variables) {
 				extract($this->variables, EXTR_SKIP);
 			}
-			include $path;
+			include $imperatorPath;
 		} else {
-			throw new \imperator\exceptions\ImperatorException('Template "'.$template.'" not found.');
+			throw new \imperator\exceptions\ImperatorException('Template "'.$imperatorTemplate.'" not found.');
 		}
 	}
 

@@ -1,14 +1,10 @@
 <section>
 	<h1><?php echo $this->__('Games'); ?></h1>
-<?php
-	if(empty($games)) {
-?>
+<?php	if(empty($games)) { ?>
 	<div class="jumbotron">
 		<p class="text-info"><span class="glyphicon glyphicon-info-sign"></span> <?php echo $this->__('There are no games available at this time.'); ?></p>
 	</div>
-<?php
-	} else {
-?>
+<?php	} else { ?>
 	<table id="gamelist" class="table table-striped table-hover">
 		<thead>
 			<tr><th><?php echo $this->__('Name'); ?></th><th><?php echo $this->__('Map'); ?></th><th><?php echo $this->__('Players'); ?></th><th><?php echo $this->__('Host'); ?></th></tr>
@@ -17,30 +13,26 @@
 <?php
 		foreach($games as $game) {
 			$map = $game->getMap();
-			$startedEndedLocked = '';
-			if($game->hasStarted()) {
-				$startedEndedLocked = 'started';
-			} else if($game->hasEnded()) {
-				$startedEndedLocked = 'ended';
-			}
-			if($game->hasPassword()) {
-				$startedEndedLocked .= ' password';
-			}
 ?>
-			<tr class="<?php echo $startedEndedLocked; ?>">
-				<td><a href="<?php echo \imperator\page\Game::getURL($game); ?>"><?php echo $game->getName(); ?></a></td>
+			<tr>
+				<td>
+					<a href="<?php echo \imperator\page\Game::getURL($game); ?>"><?php echo $game->getName(); ?></a>
+<?php	if($game->hasStarted()) { ?>
+					<span class="glyphicon glyphicon-hourglass" title="<?php echo $this->__('This game is in progress.'); ?>"></span>
+<?php	} else if($game->hasEnded()) { ?>
+					<span class="glyphicon glyphicon-ok" title="<?php echo $this->__('This game has ended.'); ?>"></span>
+<?php	} else if($game->hasPassword()) { ?>
+					<span class="glyphicon glyphicon-lock" title="<?php echo $this->__('This game requires a password to join.'); ?>"></span>
+<?php	} ?>
+				</td>
 				<td><a href="<?php echo \imperator\page\Map::getURL($map); ?>"><?php echo $this->__($map->getName()); ?></a></td>
 				<td><?php echo $this->__('%1$d / %2$d', $game->getNumberOfPlayers(), $map->getPlayers()); ?></td>
 				<td><?php echo \imperator\page\DefaultPage::getProfileLink($game->getOwner()->getUser()); ?></td>
 			</tr>
-<?php
-		}
-?>
+<?php		} ?>
 		</tbody>
 	</table>
-<?php
-	}
-?>
+<?php	} ?>
 </section>
 <?php
 	$chat->execute(true);

@@ -10,6 +10,10 @@
 	}
 ?>
 	</ul>
+<?php	if($invitelink) { ?>
+	<h4><?php echo $this->__('Invite code'); ?></h4>
+	<p><code><a href="<?php echo $invitelink; ?>"><?php echo $game->getInviteCode(); ?></a></code></p>
+<?php	} ?>
 </section>
 <?php
 	if($controls) {

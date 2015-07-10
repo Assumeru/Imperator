@@ -32,7 +32,7 @@ class GamesTable extends Table {
 	public function createNewGame(\imperator\Game $game) {
 		$array = array(
 			static::COLUMN_MAP => $game->getMap()->getId(),
-			static::COLUMN_NAME => $game->getName(),
+			static::COLUMN_NAME => $game->getName(false),
 			static::COLUMN_UID => $game->getOwner()->getId(),
 			static::COLUMN_TIME => time()
 		);

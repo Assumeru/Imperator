@@ -11,7 +11,7 @@
 	foreach($game->getPlayers() as $player) {
 ?>
 <tr>
-	<td><?php echo \imperator\page\DefaultPage::getProfileLink($player), ($game->getOwner() == $player ? ' '.$this->__('Owner') : '' ), ($player->getState() == \imperator\game\Player::STATE_VICTORIOUS ? ' '.$this->__('(Winner)') : ''); ?></td>
+	<td><?php echo \imperator\page\DefaultPage::getProfileLink($player), ($game->getOwner() == $player ? ' '.$this->__('(Owner)') : '' ), ($player->getState() == \imperator\game\Player::STATE_VICTORIOUS ? ' '.$this->__('(Winner)') : ''); ?></td>
 	<td><strong><?php echo $player->getMission()->getName(); ?></strong><p><?php echo $player->getMission()->getDescription($language); ?></p></td>
 </tr>
 <?php	} ?>

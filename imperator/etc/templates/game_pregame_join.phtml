@@ -8,11 +8,26 @@
 		<div class="<?php if(!empty($passwordError)) echo 'has-error'; ?>">
 			<span class="help-inline"><?php echo $this->__($passwordError); ?></span>
 <?php 	if($hasPassword) { ?>
-			<div class="input-group">
-				<div class="input-group-addon">
-					<span class="glyphicon glyphicon-lock"></span>
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-lock"></span>
+						</div>
+						<input class="form-control" type="password" name="password" value="" placeholder="<?php echo $this->__('Enter password'); ?>" />
+					</div>
 				</div>
-				<input class="form-control" type="password" name="password" value="" placeholder="<?php echo $this->__('Enter password'); ?>" required />
+				<div class="col-sm-2">
+					<p class="text-center"><?php echo $this->__('or'); ?></p>
+				</div>
+				<div class="col-sm-5">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-bookmark"></span>
+						</div>
+						<input class="form-control" type="text" name="code" value="<?php echo $code; ?>" placeholder="<?php echo $this->__('Enter invite code'); ?>" />
+					</div>
+				</div>
 			</div>
 <?php	} ?>
 		</div>

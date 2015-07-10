@@ -35,7 +35,8 @@ class PreGame extends DefaultPage {
 		$this->setBodyContents(Template::getInstance('game_pregame', $user->getLanguage())->setVariables(array(
 			'chat' => $this->getChat($user),
 			'game' => $this->game,
-			'controls' => $this->getControls($user, $joinForm)
+			'controls' => $this->getControls($user, $joinForm),
+			'invitelink' => $this->game->containsPlayer($user) && $this->game->hasPassword() ? Game::getURL($this->game, true) : ''
 		)));
 		parent::render($user);
 	}
@@ -79,7 +80,8 @@ class PreGame extends DefaultPage {
 				'hasPassword' => $this->game->hasPassword(),
 				'passwordError' => $form->getPasswordError(),
 				'colorError' => $form->getColorError(),
-				'colors' => Game::getColors($user, $this->game->getRemainingColors())
+				'colors' => Game::getColors($user, $this->game->getRemainingColors()),
+				'code' => $form->getInviteCode()
 			));
 		} else if($player !== null) {
 			$this->addJavascript('pregame.js');

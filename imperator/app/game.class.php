@@ -282,7 +282,7 @@ class Game {
 		if($this->password === null) {
 			return '';
 		}
-		return md5($this->password);
+		return md5($this->id.$this->password);
 	}
 
 	/**
@@ -290,7 +290,7 @@ class Game {
 	 * @return bool
 	 */
 	public function isValidInviteCode($code) {
-		return $code == md5($this->password);
+		return $code == md5($this->id.$this->password);
 	}
 
 	/**
