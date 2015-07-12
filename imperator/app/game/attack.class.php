@@ -76,7 +76,7 @@ class Attack {
 
 	public function autoRollDefence() {
 		$dice = 1;
-		if($this->defender->getUnits() > 1 && (count($this->attackRoll) === 1 || ($this->attackRoll[0] + $this->attackRoll[1]) / 2 <= 3.5 || $this->attackRoll[1] < 4)) {
+		if($this->defender->getUnits() > 1 && (count($this->attackRoll) === 1 || ($this->attackRoll[0] + $this->attackRoll[1]) / 2 <= 3.5)) {
 			$dice++;
 		}
 		$this->rollDefence($dice);
