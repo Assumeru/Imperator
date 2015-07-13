@@ -59,6 +59,11 @@ class LongPolling extends Api {
 		return parent::sendError($e);
 	}
 
+	protected function sendFatalError() {
+		$this->sendHeader('500 Internal server error');
+		return parent::sendFatalError($e);
+	}
+
 	private function sendHeader($header) {
 		if(!$this->hasHeaders) {
 			header('Content-Type: application/json');

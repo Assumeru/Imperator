@@ -21,6 +21,8 @@ class ShutDownHandler {
 			if($this->mode == self::MODE_OUTPUT_PAGE) {
 				Imperator::renderErrorPage(Imperator::getCurrentUser());
 			} else if($this->mode == self::MODE_OUTPUT_JSON) {
+				header('Content-Type: application/json');
+				header('HTTP/1.0 500 Internal server error');
 				echo '{"error": "Fatal error"}';
 			}
 		}

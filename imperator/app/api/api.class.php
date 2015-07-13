@@ -27,6 +27,12 @@ abstract class Api {
 		));
 	}
 
+	protected function sendFatalError() {
+		return $this->reply(array(
+			'error' => 'Fatal error'
+		));
+	}
+
 	public function handleRequest() {
 		try {
 			$output = $this->request->handle($this->user);
@@ -38,14 +44,10 @@ abstract class Api {
 			return $this->sendError($e);
 		} catch(\imperator\exceptions\ImperatorException $e) {
 			Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
-			return $this->reply(array(
-				'error' => 'Fatal error'
-			));
+			return $this->sendFatalError();
 		} catch(\Exception $e) {
 			Imperator::getLogger()->log(\imperator\Logger::LEVEL_FATAL, $e);
-			return $this->reply(array(
-				'error' => 'Fatal error'
-			));
+			return $this->sendFatalError();
 		}
 	}
 

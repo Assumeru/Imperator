@@ -2,6 +2,7 @@ Imperator.API = (function($) {
 	var $open = false,
 	$onOpen = [],
 	$onMessage = [],
+	$onError = [],
 	$mode,
 	$longPollingURL = Imperator.settings.API.longpollingURL;
 
@@ -48,6 +49,16 @@ Imperator.API = (function($) {
 		}
 	}
 
+	function onError($json) {
+		for(var $n = 0; $n < $onError.length; $n++) {
+			$onError[$n]($json);
+		}
+	}
+
+	function addOnError($function) {
+		$onError.push($function);
+	}
+
 	function onMessage($json) {
 		for(var $n = 0; $n < $onMessage.length; $n++) {
 			$onMessage[$n]($json);
@@ -70,7 +81,7 @@ Imperator.API = (function($) {
 		}).done(function($msg) {
 			onMessage($msg);
 		}).error(function($msg) {
-			console.log($msg);
+			onError($msg);
 		});
 	}
 
@@ -89,6 +100,7 @@ Imperator.API = (function($) {
 
 	return {
 		onOpen: addOnOpen,
+		onError: addOnError,
 		onMessage: addOnMessage,
 		send: send
 	};
