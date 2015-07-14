@@ -63,7 +63,7 @@ class PreGame extends DefaultPage {
 
 	private function getChat(\imperator\User $user) {
 		if($this->game->containsPlayer($user)) {
-			$this->addChatJavascript($this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->getUser()->equals($user));
+			$this->addChatJavascript($user, $this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->getUser()->equals($user));
 			return $this->getChatBox($user);
 		}
 		return null;

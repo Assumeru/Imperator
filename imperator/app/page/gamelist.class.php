@@ -6,7 +6,7 @@ class GameList extends DefaultPage {
 	const NAME = 'Games';
 
 	public function render(\imperator\User $user) {
-		$this->addChatJavascript(0, $user->canDeleteChatMessages());
+		$this->addChatJavascript($user, 0, $user->canDeleteChatMessages());
 		$this->setTitle($user->getLanguage()->translate(static::NAME));
 		$this->setBodyContents(Template::getInstance('games', $user->getLanguage())->setVariables(array(
 			'games' => $this->getGames($user),

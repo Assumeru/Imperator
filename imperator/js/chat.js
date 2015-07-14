@@ -4,11 +4,14 @@
 	$time = 0,
 	$loading = true,
 	$postgame = Imperator.settings.postgame !== undefined ? Imperator.settings.postgame : false,
-	$canDelete = Imperator.settings.chat.canDelete;
+	$canDelete = Imperator.settings.chat.canDelete,
+	$updateErrors = 0,
+	MAX_UPDATE_ERRORS = 5;
 
 	function create() {
 		var $chat = $('#chat');
 		$chatWindow = $('#chat-window');
+		Imperator.API.onError(parseErrorMessage);
 		Imperator.API.onMessage(parseChatMessage);
 		Imperator.API.onOpen(function() {
 			var $chatScrolling = $chat.find('input[name="chatscrolling"]');
@@ -55,22 +58,31 @@
 		}
 	}
 
+	function parseErrorMessage($msg) {
+		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && $msg.mode == 'update' && $msg.type == 'chat') {
+			$updateErrors++;
+			Imperator.Dialog.showDialog(Imperator.settings.chat.chaterror, $msg.error, true);
+			if($updateErrors < MAX_UPDATE_ERRORS) {
+				sendUpdateRequest();
+			}
+		}
+	}
+
 	function parseChatMessage($msg) {
 		if($loading) {
 			$chatWindow.empty();
 			$loading = false;
 		}
-		if($msg !== undefined && $msg !== '') {
-			if($msg.update !== undefined && $msg.messages !== undefined) {
-				for(var $n = 0; $n < $msg.messages.length; $n++) {
-					addMessage($msg.messages[$n]);
-				}
-				if($msg.messages.length > 0 && Imperator.Store.getBoolean('chatscrolling', true)) {
-					$chatWindow.scrollTop($chatWindow[0].scrollHeight);
-				}
-				$time = $msg.update;
-				sendUpdateRequest();
+		if($msg !== undefined && $msg !== '' && $msg.update !== undefined && $msg.messages !== undefined) {
+			for(var $n = 0; $n < $msg.messages.length; $n++) {
+				addMessage($msg.messages[$n]);
 			}
+			if($msg.messages.length > 0 && Imperator.Store.getBoolean('chatscrolling', true)) {
+				$chatWindow.scrollTop($chatWindow[0].scrollHeight);
+			}
+			$time = $msg.update;
+			sendUpdateRequest();
+			$updateErrors = 0;
 		}
 	}
 

@@ -25,7 +25,7 @@ class InGame extends DefaultPage {
 		)));
 		$mainClass = ' not-player';
 		if($inGame) {
-			$this->addChatJavascript($this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->getUser()->equals($user));
+			$this->addChatJavascript($user, $this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->getUser()->equals($user));
 			$mainClass = '';
 		}
 		$this->renderJavascript($user);
@@ -74,7 +74,6 @@ class InGame extends DefaultPage {
 			'wait' => $language->translate('Please wait...')
 		));
 		$this->addJavascript('classes.js');
-		$this->addJavascript('dialog.js');
 		$this->addJavascript('map.js');
 		$this->addJavascript('game.js');
 	}

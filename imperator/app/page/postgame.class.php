@@ -19,7 +19,7 @@ class PostGame extends DefaultPage {
 			'chat' => $this->game->containsPlayer($user) ? $this->getChatBox($user) : null,
 			'language' => $user->getLanguage()
 		)));
-		$this->addChatJavascript($this->game->getId());
+		$this->addChatJavascript($user, $this->game->getId());
 		$this->setJavascriptSetting('postgame', true);
 		parent::render($user);
 	}
