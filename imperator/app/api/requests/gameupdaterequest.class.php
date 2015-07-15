@@ -27,13 +27,13 @@ class GameUpdateRequest extends UpdateRequest {
 			'state' => $game->getState()
 		);
 		if($game->getTime() > $this->getTime() && $game->getState() != \imperator\Game::STATE_FINISHED) {
-			$game->loadMap();
 			$output = $this->fillOutput($game, $user, $output);
 		}
 		return $output;
 	}
 
 	protected function fillOutput(\imperator\Game $game, \imperator\User $user, array $output) {
+		$game->loadMap();
 		if($this->getTime() === 0) {
 			$output['regions'] = array();
 			foreach($game->getMap()->getRegions() as $region) {

@@ -8,7 +8,7 @@ class TerritoriesCondition implements WinCondition {
 		$this->numTerritories = $numTerritories;
 	}
 
-	public function isFulfilled(\imperator\game\Player $user) {
-		return count($user->getTerritories()) >= $this->numTerritories;
+	public function isFulfilled(PlayerMission $mission) {
+		return count($mission->getPlayer()->getTerritories()) >= $this->numTerritories;
 	}
 }

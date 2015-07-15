@@ -1,7 +1,7 @@
 <?php
 namespace imperator\mission;
 
-class Mission {
+class MapMission implements Mission {
 	private $id;
 	private $name;
 	private $description;
@@ -23,15 +23,9 @@ class Mission {
 		return $this->fallback;
 	}
 
-	/**
-	 * Checks if a user has completed this mission.
-	 * 
-	 * @param \imperator\game\Player $user The user to check for
-	 * @return bool True if all of this mission's conditions are met
-	 */
-	public function hasBeenCompleted(\imperator\game\Player $user) {
+	public function hasBeenCompleted(PlayerMission $mission) {
 		foreach($this->conditions as $condition) {
-			if(!$condition->isFulfilled($user)) {
+			if(!$condition->isFulfilled($mission)) {
 				return false;
 			}
 		}
@@ -40,23 +34,6 @@ class Mission {
 
 	public function getName() {
 		return $this->name;
-	}
-
-	public function setUid($uid) {
-		foreach($this->conditions as $condition) {
-			if($condition instanceof UidCondition) {
-				$condition->setUid($uid);
-			}
-		}
-	}
-
-	public function getUid() {
-		foreach($this->conditions as $condition) {
-			if($condition instanceof UidCondition) {
-				return $condition->getUid();
-			}
-		}
-		return 0;
 	}
 
 	public function getId() {
@@ -77,14 +54,6 @@ class Mission {
 	}
 
 	public function equals(Mission $that) {
-		return $this->id == $that->id;
-	}
-
-	public function __clone() {
-		$conditions = array();
-		foreach($this->conditions as $condition) {
-			$conditions[] = clone $condition;
-		}
-		$this->conditions = $conditions;
+		return $this->id == $that->getId();
 	}
 }

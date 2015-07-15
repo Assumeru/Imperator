@@ -16,9 +16,23 @@ class Map {
 	private $missions = null;
 	private $missionDistribution = null;
 
-	private function __construct($path) {
-		$this->id = (int)(basename($path, '.xml'));
-		$this->path = $path;
+	/**
+	 * Creates a new, empty map.
+	 * 
+	 * @param int|path $map Either the map ID or the path to the map's xml file
+	 * @throws \InvalidArgumentException
+	 */
+	public function __construct($map) {
+		if(is_numeric($map)) {
+			$this->id = (int)$map;
+			$this->path = Imperator::getSettings()->getBasePath().'/etc/maps/'.$map.'.xml';
+		} else {
+			$this->id = (int)(basename($map, '.xml'));
+			$this->path = $map;
+		}
+		if(!file_exists($this->path)) {
+			throw new \InvalidArgumentException('Map "'.$this->id.'" not found.');
+		}
 	}
 
 	/**
@@ -107,7 +121,7 @@ class Map {
 	}
 
 	/**
-	 * @return \imperator\mission\Mission[]
+	 * @return \imperator\mission\MapMission[]
 	 */
 	public function getMissions() {
 		if($this->missions === null) {
@@ -208,20 +222,6 @@ class Map {
 		return self::$maps;
 	}
 
-	/**
-	 * Returns a new instance of the specified map ID.
-	 * 
-	 * @param int $mapId The ID of the map
-	 * @return Map A new map without users
-	 */
-	public static function getInstance($mapId) {
-		$path = Imperator::getSettings()->getBasePath().'/etc/maps/'.$mapId.'.xml';
-		if(file_exists($path)) {
-			return new Map($path);
-		}
-		return null;
-	}
-
 	private static function loadMaps() {
 		$files = glob(Imperator::getSettings()->getBasePath().'/etc/maps/*.xml');
 		$maps = array();
@@ -251,7 +251,7 @@ class Map {
 		shuffle($missionDistribution);
 		$numPlayers = count($players);
 		foreach($players as $player) {
-			$mission = clone $missions[array_pop($missionDistribution)];
+			$mission = new \imperator\mission\PlayerMission($missions[array_pop($missionDistribution)], $player);
 			if($mission->containsEliminate()) {
 				$index = mt_rand(0, $numPlayers-2);
 				$target = $players[$index];

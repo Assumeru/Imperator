@@ -1,7 +1,7 @@
 <?php
 namespace imperator\mission;
 
-class DominationMission extends Mission {
+class DominationMission extends MapMission {
 	const DESCRIPTION = 'To win this game you will have to conquer %1$d territories.';
 	private $numTerritories;
 

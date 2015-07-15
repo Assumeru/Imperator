@@ -2,6 +2,7 @@
 namespace imperator\database;
 
 use imperator\Imperator;
+use imperator\mission\PlayerMission;
 class GamesJoinedTable extends Table {
 	const NAME					= 'imperator_gamesjoined';
 	const COLUMN_UID			= 'uid';
@@ -68,7 +69,7 @@ class GamesJoinedTable extends Table {
 				$result->getInt(static::COLUMN_CARD_INFANTRY),
 				$result->getInt(static::COLUMN_CARD_JOKER)
 			));
-			$mission = clone $missions[$result->getInt(static::COLUMN_MISSION)];
+			$mission = new PlayerMission($missions[$result->getInt(static::COLUMN_MISSION)], $player);
 			$mission->setUid($result->getInt(static::COLUMN_MISSION_UID));
 			$player->setMission($mission);
 			$players[] = $player;

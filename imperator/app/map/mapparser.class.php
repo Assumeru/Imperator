@@ -60,7 +60,7 @@ class MapParser {
 				foreach($this->xpath->query('child::conditions/condition', $mission) as $condition) {
 					$conditions[] = $this->getMissionCondition($condition);
 				}
-				$missions[$id] = new \imperator\mission\Mission($id, $name, $description, $conditions);
+				$missions[$id] = new \imperator\mission\MapMission($id, $name, $description, $conditions);
 			}
 			if($mission->hasAttribute('fallback')) {
 				$missions[$id]->setFallback((int)$mission->getAttribute('fallback'));

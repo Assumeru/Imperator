@@ -2,26 +2,17 @@
 namespace imperator\mission;
 use imperator\Imperator;
 
-class RivalryMission extends Mission {
-	private $user;
-
-	public function __construct($id, $uid = null) {
-		parent::__construct($id, 'Rivalry', 'Two win this game you will have to conquer the last of an opponent\'s territories.', array(
-			new EliminateCondition($uid)
+class RivalryMission extends MapMission {
+	public function __construct($id) {
+		parent::__construct($id, 'Rivalry', 'To win this game you will have to conquer the last of an opponent\'s territories.', array(
+			new EliminateCondition()
 		));
-		$this->setUid($uid);
 	}
 
-	public function getDescription(\imperator\Language $language) {
-		if($this->user === null) {
+	public function getDescription(\imperator\Language $language, PlayerMission $mission = null) {
+		if($mission === null || ($player = $mission->getGame()->getPlayerById($mission->getUid())) === null) {
 			return parent::getDescription($language);
 		}
-		return $language->translate('Two win this game you will have to conquer the last of %1$s\'s territories.', $this->user->getName());
-	}
-
-	public function setUid($uid) {
-		$class = Imperator::getSettings()->getUserClass();
-		$this->user = $class::getUserById($uid);
-		parent::setUid($uid);
+		return $language->translate('To win this game you will have to conquer the last of %1$s\'s territories.', $player->getName());
 	}
 }

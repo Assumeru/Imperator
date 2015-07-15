@@ -45,7 +45,10 @@ class NewGameForm extends Form {
 	private function isValidMap() {
 		if(is_numeric($this->map)) {
 			$this->map = (int)$this->map;
-			return \imperator\map\Map::getInstance($this->map) !== null;
+			try {
+				new \imperator\map\Map($this->map);
+				return true;
+			} catch(\InvalidArgumentException $e) {}
 		}
 		return false;
 	}

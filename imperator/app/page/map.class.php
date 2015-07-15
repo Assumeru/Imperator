@@ -11,7 +11,11 @@ class Map extends DefaultPage {
 		if(isset($arguments[0]) && is_numeric($arguments[0])) {
 			$mapId = (int)$arguments[0];
 		}
-		$this->map = \imperator\map\Map::getInstance($mapId);
+		try {
+			$this->map = new \imperator\map\Map($mapId);
+		} catch(InvalidArgumentException $e) {
+			$this->map = null;
+		}
 	}
 
 	public function canBeUsedBy(\imperator\User $user) {

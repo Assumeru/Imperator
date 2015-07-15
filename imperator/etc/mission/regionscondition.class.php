@@ -8,7 +8,8 @@ class RegionsCondition implements WinCondition {
 		$this->numRegions = $numRegions;
 	}
 
-	public function isFulfilled(\imperator\game\Player $user) {
+	public function isFulfilled(PlayerMission $mission) {
+		$user = $mission->getPlayer();
 		$regions = $user->getGame()->getMap()->getRegions();
 		$numRegions = 0;
 		foreach($regions as $region) {

@@ -60,7 +60,7 @@ class Player implements \imperator\Member {
 		return $this->state;
 	}
 
-	public function setMission(\imperator\mission\Mission $mission) {
+	public function setMission(\imperator\mission\PlayerMission $mission) {
 		$this->mission = $mission;
 	}
 

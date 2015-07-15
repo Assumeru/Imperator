@@ -34,7 +34,7 @@ class Game {
 		$this->id = $id;
 		$this->owner = $owner;
 		$this->name = $name;
-		$this->map = \imperator\map\Map::getInstance($mapId);
+		$this->map = new \imperator\map\Map($mapId);
 		$this->numPlayers = $numPlayers;
 		$this->state = $state;
 		$this->turn = $turn;
@@ -221,6 +221,19 @@ class Game {
 	public function getPlayerByUser(User $user) {
 		foreach($this->users as $player) {
 			if($player->getUser()->equals($user)) {
+				return $player;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param int $id
+	 * @return game\Player
+	 */
+	public function getPlayerById($id) {
+		foreach($this->users as $player) {
+			if($player->getId() == $id) {
 				return $player;
 			}
 		}

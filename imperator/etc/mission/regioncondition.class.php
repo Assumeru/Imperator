@@ -12,7 +12,8 @@ class RegionCondition implements WinCondition {
 		}
 	}
 
-	public function isFulfilled(\imperator\game\Player $user) {
+	public function isFulfilled(PlayerMission $mission) {
+		$user = $mission->getPlayer();
 		$regions = $user->getGame()->getMap()->getRegions();
 		foreach($this->regions as $id) {
 			if(!$regions[$id]->isOwnedBy($user)) {
