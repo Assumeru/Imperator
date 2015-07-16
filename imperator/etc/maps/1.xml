@@ -83,9 +83,9 @@
 				<border>as_ru_kamchatka</border>
 				<border>as_kazakhstan</border>
 				<border>as_mongolia</border>
-				<border>as_ru_siberia</border>
+				<border>as_ru_sakha</border>
 				<border>as_southeast</border>
-				<border>as_ru_yakutsk</border>
+				<border>as_ru_siberia</border>
 			</borders>
 			<regions>
 				<region>asia</region>
@@ -118,7 +118,7 @@
 			<borders>
 				<border>as_china</border>
 				<border>as_japan</border>
-				<border>as_ru_siberia</border>
+				<border>as_ru_sakha</border>
 				<border>na_usa_alaska</border>
 			</borders>
 			<regions>
@@ -133,7 +133,7 @@
 				<border>as_middleeast</border>
 				<border>as_mongolia</border>
 				<border>as_ru_ural</border>
-				<border>as_ru_yakutsk</border>
+				<border>as_ru_siberia</border>
 				<border>eu_east</border>
 			</borders>
 			<regions>
@@ -159,20 +159,20 @@
 			<borders>
 				<border>as_china</border>
 				<border>as_kazakhstan</border>
+				<border>as_ru_sakha</border>
 				<border>as_ru_siberia</border>
-				<border>as_ru_yakutsk</border>
 			</borders>
 			<regions>
 				<region>asia</region>
 			</regions>
 		</territory>
-		<territory id="as_ru_siberia">
-			<name>Siberia</name>
+		<territory id="as_ru_sakha">
+			<name>Sakha</name>
 			<borders>
 				<border>as_china</border>
 				<border>as_ru_kamchatka</border>
 				<border>as_mongolia</border>
-				<border>as_ru_yakutsk</border>
+				<border>as_ru_siberia</border>
 			</borders>
 			<regions>
 				<region>asia</region>
@@ -193,20 +193,20 @@
 			<name>Ural</name>
 			<borders>
 				<border>as_kazakhstan</border>
-				<border>as_ru_yakutsk</border>
+				<border>as_ru_siberia</border>
 				<border>eu_east</border>
 			</borders>
 			<regions>
 				<region>asia</region>
 			</regions>
 		</territory>
-		<territory id="as_ru_yakutsk">
-			<name>Yakutsk</name>
+		<territory id="as_ru_siberia">
+			<name>Siberia</name>
 			<borders>
 				<border>as_china</border>
 				<border>as_kazakhstan</border>
 				<border>as_mongolia</border>
-				<border>as_ru_siberia</border>
+				<border>as_ru_sakha</border>
 				<border>as_ru_ural</border>
 			</borders>
 			<regions>
