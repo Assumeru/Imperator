@@ -1,0 +1,1394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map id="3">
+	<name>North America</name>
+	<players>8</players>
+	<description lang="en-US">TODO</description>
+	<territories>
+		<territory id="na_ca_alberta">
+			<name>Alberta</name>
+			<borders>
+				<border>na_ca_britishcolombia</border>
+				<border>na_ca_northwestterritories</border>
+				<border>na_ca_saskatchewan</border>
+				<border>na_usa_montana</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_britishcolombia">
+			<name>British Colombia</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_ca_northwestterritories</border>
+				<border>na_ca_yukon</border>
+				<border>na_usa_alaska</border>
+				<border>na_usa_idaho</border>
+				<border>na_usa_montana</border>
+				<border>na_usa_washington</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_manitoba">
+			<name>Manitoba</name>
+			<borders>
+				<border>na_ca_nunavut</border>
+				<border>na_ca_ontario</border>
+				<border>na_ca_saskatchewan</border>
+				<border>na_usa_minnesota</border>
+				<border>na_ca_northwestterritories</border>
+				<border>na_usa_northdakota</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_newbrunswick">
+			<name>New Brunswick</name>
+			<borders>
+				<border>na_ca_novascotia</border>
+				<border>na_ca_princeedwardisland</border>
+				<border>na_ca_quebec</border>
+				<border>na_usa_maine</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_newfoundland">
+			<name>Newfoundland</name>
+			<borders>
+				<border>na_ca_novascotia</border>
+				<border>na_ca_princeedwardisland</border>
+				<border>na_ca_quebec</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_northwestterritories">
+			<name>Northwest Territories</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_ca_britishcolombia</border>
+				<border>na_ca_manitoba</border>
+				<border>na_ca_nunavut</border>
+				<border>na_ca_saskatchewan</border>
+				<border>na_ca_yukon</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_novascotia">
+			<name>Nova Scotia</name>
+			<borders>
+				<border>na_ca_newbrunswick</border>
+				<border>na_ca_newfoundland</border>
+				<border>na_ca_princeedwardisland</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_nunavut">
+			<name>Nunavut</name>
+			<borders>
+				<border>na_ca_manitoba</border>
+				<border>na_ca_northwestterritories</border>
+				<border>na_ca_quebec</border>
+				<border>na_ca_saskatchewan</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_ontario">
+			<name>Ontario</name>
+			<borders>
+				<border>na_ca_manitoba</border>
+				<border>na_ca_quebec</border>
+				<border>na_usa_michigan</border>
+				<border>na_usa_minnesota</border>
+				<border>na_usa_newyork</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_princeedwardisland">
+			<name>Prince Edward Island</name>
+			<borders>
+				<border>na_ca_newbrunswick</border>
+				<border>na_ca_newfoundland</border>
+				<border>na_ca_novascotia</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_quebec">
+			<name>Quebec</name>
+			<borders>
+				<border>na_ca_newbrunswick</border>
+				<border>na_ca_newfoundland</border>
+				<border>na_ca_nunavut</border>
+				<border>na_ca_ontario</border>
+				<border>na_usa_maine</border>
+				<border>na_usa_newhampshire</border>
+				<border>na_usa_newyork</border>
+				<border>na_usa_vermont</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_saskatchewan">
+			<name>Saskatchewan</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_ca_manitoba</border>
+				<border>na_ca_northwestterritories</border>
+				<border>na_ca_nunavut</border>
+				<border>na_usa_montana</border>
+				<border>na_usa_northdakota</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_ca_yukon">
+			<name>Yukon</name>
+			<borders>
+				<border>na_ca_britishcolombia</border>
+				<border>na_ca_northwestterritories</border>
+				<border>na_usa_alaska</border>
+			</borders>
+			<regions>
+				<region>na_canada</region>
+			</regions>
+		</territory>
+		<territory id="na_cuba">
+			<name>Republic of Cuba</name>
+			<borders>
+				<border>na_mx_quintanaroo</border>
+				<border>na_usa_florida</border>
+			</borders>
+			<regions>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_aguascalientes">
+			<name>Aguascalientes</name>
+			<borders>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_zacatecas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_bajacalifornia">
+			<name>Baja California</name>
+			<borders>
+				<border>na_mx_bajacaliforniasur</border>
+				<border>na_mx_sonora</border>
+				<border>na_usa_arizona</border>
+				<border>na_usa_california</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_bajacaliforniasur">
+			<name>Baja California Sur</name>
+			<borders>
+				<border>na_mx_bajacalifornia</border>
+				<border>na_mx_sonora</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_campeche">
+			<name>Campeche</name>
+			<borders>
+				<border>na_mx_quintanaroo</border>
+				<border>na_mx_tabasco</border>
+				<border>na_mx_yucatan</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_chiapas">
+			<name>Chiapas</name>
+			<borders>
+				<border>na_mx_oaxaca</border>
+				<border>na_mx_tabasco</border>
+				<border>na_mx_veracruz</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_chihuahua">
+			<name>Chihuahua</name>
+			<borders>
+				<border>na_mx_coahuila</border>
+				<border>na_mx_durango</border>
+				<border>na_mx_sinaloa</border>
+				<border>na_mx_sonora</border>
+				<border>na_usa_arizona</border>
+				<border>na_usa_newmexico</border>
+				<border>na_usa_texas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_coahuila">
+			<name>Coahuila</name>
+			<borders>
+				<border>na_mx_chihuahua</border>
+				<border>na_mx_durango</border>
+				<border>na_mx_nuevoleon</border>
+				<border>na_mx_sanluispotosi</border>
+				<border>na_mx_zacatecas</border>
+				<border>na_usa_texas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_colima">
+			<name>Colima</name>
+			<borders>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_michoacan</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_durango">
+			<name>Durango</name>
+			<borders>
+				<border>na_mx_chihuahua</border>
+				<border>na_mx_coahuila</border>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_nayarit</border>
+				<border>na_mx_sinaloa</border>
+				<border>na_mx_zacatecas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_guanajuato">
+			<name>Guanajuato</name>
+			<borders>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_michoacan</border>
+				<border>na_mx_queretaro</border>
+				<border>na_mx_sanluispotosi</border>
+				<border>na_mx_zacatecas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_guerrero">
+			<name>Guerrero</name>
+			<borders>
+				<border>na_mx_mexico</border>
+				<border>na_mx_michoacan</border>
+				<border>na_mx_morelos</border>
+				<border>na_mx_oaxaca</border>
+				<border>na_mx_puebla</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_hidalgo">
+			<name>Hidalgo</name>
+			<borders>
+				<border>na_mx_mexico</border>
+				<border>na_mx_michoacan</border>
+				<border>na_mx_puebla</border>
+				<border>na_mx_queretaro</border>
+				<border>na_mx_sanluispotosi</border>
+				<border>na_mx_tlaxcala</border>
+				<border>na_mx_veracruz</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_jalisco">
+			<name>Jalisco</name>
+			<borders>
+				<border>na_mx_aguascalientes</border>
+				<border>na_mx_colima</border>
+				<border>na_mx_durango</border>
+				<border>na_mx_guanajuato</border>
+				<border>na_mx_michoacan</border>
+				<border>na_mx_nayarit</border>
+				<border>na_mx_sanluispotosi</border>
+				<border>na_mx_zacatecas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_mexico">
+			<name>Mexico</name>
+			<borders>
+				<border>na_mx_guerrero</border>
+				<border>na_mx_hidalgo</border>
+				<border>na_mx_mexicocity</border>
+				<border>na_mx_michoacan</border>
+				<border>na_mx_morelos</border>
+				<border>na_mx_puebla</border>
+				<border>na_mx_queretaro</border>
+				<border>na_mx_tlaxcala</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_mexicocity">
+			<name>Mexico City</name>
+			<borders>
+				<border>na_mx_mexico</border>
+				<border>na_mx_morelos</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_michoacan">
+			<name>Michoacan</name>
+			<borders>
+				<border>na_mx_colima</border>
+				<border>na_mx_guanajuato</border>
+				<border>na_mx_guerrero</border>
+				<border>na_mx_hidalgo</border>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_mexico</border>
+				<border>na_mx_queretaro</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_morelos">
+			<name>Morelos</name>
+			<borders>
+				<border>na_mx_guerrero</border>
+				<border>na_mx_mexico</border>
+				<border>na_mx_mexicocity</border>
+				<border>na_mx_puebla</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_nayarit">
+			<name>Nayarit</name>
+			<borders>
+				<border>na_mx_durango</border>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_sinaloa</border>
+				<border>na_mx_zacatecas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_nuevoleon">
+			<name>Nuevoleon</name>
+			<borders>
+				<border>na_mx_coahuila</border>
+				<border>na_mx_sanluispotosi</border>
+				<border>na_mx_tamaulipas</border>
+				<border>na_mx_zacatecas</border>
+				<border>na_usa_texas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_oaxaca">
+			<name>Oaxaca</name>
+			<borders>
+				<border>na_mx_chiapas</border>
+				<border>na_mx_guerrero</border>
+				<border>na_mx_puebla</border>
+				<border>na_mx_tabasco</border>
+				<border>na_mx_veracruz</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_puebla">
+			<name>Puebla</name>
+			<borders>
+				<border>na_mx_guerrero</border>
+				<border>na_mx_hidalgo</border>
+				<border>na_mx_mexico</border>
+				<border>na_mx_morelos</border>
+				<border>na_mx_oaxaca</border>
+				<border>na_mx_tlaxcala</border>
+				<border>na_mx_veracruz</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_queretaro">
+			<name>Queretaro</name>
+			<borders>
+				<border>na_mx_guanajuato</border>
+				<border>na_mx_hidalgo</border>
+				<border>na_mx_mexico</border>
+				<border>na_mx_michoacan</border>
+				<border>na_mx_sanluispotosi</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_quintanaroo">
+			<name>Quintana Roo</name>
+			<borders>
+				<border>na_cuba</border>
+				<border>na_mx_campeche</border>
+				<border>na_mx_yucatan</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_sanluispotosi">
+			<name>San Luis Potosi</name>
+			<borders>
+				<border>na_mx_coahuila</border>
+				<border>na_mx_guanajuato</border>
+				<border>na_mx_hidalgo</border>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_nuevoleon</border>
+				<border>na_mx_queretaro</border>
+				<border>na_mx_tamaulipas</border>
+				<border>na_mx_veracruz</border>
+				<border>na_mx_zacatecas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_sinaloa">
+			<name>Sinaloa</name>
+			<borders>
+				<border>na_mx_chihuahua</border>
+				<border>na_mx_durango</border>
+				<border>na_mx_nayarit</border>
+				<border>na_mx_sonora</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_sonora">
+			<name>Sonora</name>
+			<borders>
+				<border>na_mx_bajacalifornia</border>
+				<border>na_mx_bajacaliforniasur</border>
+				<border>na_mx_chihuahua</border>
+				<border>na_mx_sinaloa</border>
+				<border>na_usa_arizona</border>
+				<border>na_usa_newmexico</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_tabasco">
+			<name>Tabasco</name>
+			<borders>
+				<border>na_mx_campeche</border>
+				<border>na_mx_chiapas</border>
+				<border>na_mx_oaxaca</border>
+				<border>na_mx_veracruz</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_tamaulipas">
+			<name>Tamaulipas</name>
+			<borders>
+				<border>na_mx_nuevoleon</border>
+				<border>na_mx_sanluispotosi</border>
+				<border>na_mx_veracruz</border>
+				<border>na_usa_texas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_tlaxcala">
+			<name>Tlaxcala</name>
+			<borders>
+				<border>na_mx_hidalgo</border>
+				<border>na_mx_mexico</border>
+				<border>na_mx_puebla</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_veracruz">
+			<name>Veracruz</name>
+			<borders>
+				<border>na_mx_chiapas</border>
+				<border>na_mx_hidalgo</border>
+				<border>na_mx_oaxaca</border>
+				<border>na_mx_puebla</border>
+				<border>na_mx_sanluispotosi</border>
+				<border>na_mx_tabasco</border>
+				<border>na_mx_tamaulipas</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_yucatan">
+			<name>Yucatan</name>
+			<borders>
+				<border>na_mx_campeche</border>
+				<border>na_mx_quintanaroo</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_mx_zacatecas">
+			<name>Zacatecas</name>
+			<borders>
+				<border>na_mx_aguascalientes</border>
+				<border>na_mx_coahuila</border>
+				<border>na_mx_durango</border>
+				<border>na_mx_guanajuato</border>
+				<border>na_mx_jalisco</border>
+				<border>na_mx_nayarit</border>
+				<border>na_mx_nuevoleon</border>
+				<border>na_mx_sanluispotosi</border>
+			</borders>
+			<regions>
+				<region>na_mexico</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_alabama">
+			<name>Alabama</name>
+			<borders>
+				<border>na_usa_florida</border>
+				<border>na_usa_georgia</border>
+				<border>na_usa_mississippi</border>
+				<border>na_usa_tennessee</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_alaska">
+			<name>Alaska</name>
+			<borders>
+				<border>na_ca_britishcolombia</border>
+				<border>na_ca_yukon</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_arizona">
+			<name>Arizona</name>
+			<borders>
+				<border>na_mx_bajacalifornia</border>
+				<border>na_mx_chihuahua</border>
+				<border>na_mx_sonora</border>
+				<border>na_usa_california</border>
+				<border>na_usa_nevada</border>
+				<border>na_usa_newmexico</border>
+				<border>na_usa_utah</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_arkansas">
+			<name>Arkansas</name>
+			<borders>
+				<border>na_usa_louisiana</border>
+				<border>na_usa_mississippi</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_oklahoma</border>
+				<border>na_usa_tennessee</border>
+				<border>na_usa_texas</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_california">
+			<name>California</name>
+			<borders>
+				<border>na_mx_bajacalifornia</border>
+				<border>na_usa_arizona</border>
+				<border>na_usa_hawaii</border>
+				<border>na_usa_nevada</border>
+				<border>na_usa_oregon</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_colorado">
+			<name>Colorado</name>
+			<borders>
+				<border>na_usa_kansas</border>
+				<border>na_usa_nebraska</border>
+				<border>na_usa_newmexico</border>
+				<border>na_usa_oklahoma</border>
+				<border>na_usa_utah</border>
+				<border>na_usa_wyoming</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_connecticut">
+			<name>Connecticut</name>
+			<borders>
+				<border>na_usa_massachusetts</border>
+				<border>na_usa_newyork</border>
+				<border>na_usa_rhodeisland</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_delaware">
+			<name>Delaware</name>
+			<borders>
+				<border>na_usa_maryland</border>
+				<border>na_usa_newjersey</border>
+				<border>na_usa_pennsylvania</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_florida">
+			<name>Florida</name>
+			<borders>
+				<border>na_cuba</border>
+				<border>na_usa_alabama</border>
+				<border>na_usa_georgia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_georgia">
+			<name>Georgia</name>
+			<borders>
+				<border>na_usa_alabama</border>
+				<border>na_usa_florida</border>
+				<border>na_usa_northcarolina</border>
+				<border>na_usa_southcarolina</border>
+				<border>na_usa_tennessee</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_hawaii">
+			<name>Hawaii</name>
+			<borders>
+				<border>na_usa_california</border>
+				<border>na_usa_oregon</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_idaho">
+			<name>Idaho</name>
+			<borders>
+				<border>na_ca_britishcolombia</border>
+				<border>na_usa_montana</border>
+				<border>na_usa_nevada</border>
+				<border>na_usa_oregon</border>
+				<border>na_usa_utah</border>
+				<border>na_usa_washington</border>
+				<border>na_usa_wyoming</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_illinois">
+			<name>Illinois</name>
+			<borders>
+				<border>na_usa_indiana</border>
+				<border>na_usa_iowa</border>
+				<border>na_usa_kentucky</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_wisconsin</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_indiana">
+			<name>Indiana</name>
+			<borders>
+				<border>na_usa_illinois</border>
+				<border>na_usa_kentucky</border>
+				<border>na_usa_michigan</border>
+				<border>na_usa_ohio</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_iowa">
+			<name>Iowa</name>
+			<borders>
+				<border>na_usa_illinois</border>
+				<border>na_usa_minnesota</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_nebraska</border>
+				<border>na_usa_southdakota</border>
+				<border>na_usa_wisconsin</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_kansas">
+			<name>Kansas</name>
+			<borders>
+				<border>na_usa_colorado</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_nebraska</border>
+				<border>na_usa_oklahoma</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_kentucky">
+			<name>Kentucky</name>
+			<borders>
+				<border>na_usa_illinois</border>
+				<border>na_usa_indiana</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_ohio</border>
+				<border>na_usa_tennessee</border>
+				<border>na_usa_virginia</border>
+				<border>na_usa_westvirginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_louisiana">
+			<name>Louisiana</name>
+			<borders>
+				<border>na_usa_arkansas</border>
+				<border>na_usa_mississippi</border>
+				<border>na_usa_texas</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_maine">
+			<name>Maine</name>
+			<borders>
+				<border>na_ca_newbrunswick</border>
+				<border>na_ca_quebec</border>
+				<border>na_usa_newhampshire</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_maryland">
+			<name>Maryland</name>
+			<borders>
+				<border>na_usa_delaware</border>
+				<border>na_usa_pennsylvania</border>
+				<border>na_usa_virginia</border>
+				<border>na_usa_westvirginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_massachusetts">
+			<name>Massachusetts</name>
+			<borders>
+				<border>na_usa_connecticut</border>
+				<border>na_usa_newhampshire</border>
+				<border>na_usa_newyork</border>
+				<border>na_usa_rhodeisland</border>
+				<border>na_usa_vermont</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_michigan">
+			<name>Michigan</name>
+			<borders>
+				<border>na_ca_ontario</border>
+				<border>na_usa_indiana</border>
+				<border>na_usa_ohio</border>
+				<border>na_usa_wisconsin</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_minnesota">
+			<name>Minnesota</name>
+			<borders>
+				<border>na_ca_manitoba</border>
+				<border>na_ca_ontario</border>
+				<border>na_usa_iowa</border>
+				<border>na_usa_northdakota</border>
+				<border>na_usa_southdakota</border>
+				<border>na_usa_wisconsin</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_mississippi">
+			<name>Mississippi</name>
+			<borders>
+				<border>na_usa_alabama</border>
+				<border>na_usa_arkansas</border>
+				<border>na_usa_louisiana</border>
+				<border>na_usa_tennessee</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_missouri">
+			<name>Missouri</name>
+			<borders>
+				<border>na_usa_arkansas</border>
+				<border>na_usa_illinois</border>
+				<border>na_usa_iowa</border>
+				<border>na_usa_kansas</border>
+				<border>na_usa_kentucky</border>
+				<border>na_usa_nebraska</border>
+				<border>na_usa_oklahoma</border>
+				<border>na_usa_tennessee</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_montana">
+			<name>Montana</name>
+			<borders>
+				<border>na_ca_alberta</border>
+				<border>na_ca_britishcolombia</border>
+				<border>na_ca_saskatchewan</border>
+				<border>na_usa_idaho</border>
+				<border>na_usa_northdakota</border>
+				<border>na_usa_southdakota</border>
+				<border>na_usa_wyoming</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_nebraska">
+			<name>Nebraska</name>
+			<borders>
+				<border>na_usa_colorado</border>
+				<border>na_usa_iowa</border>
+				<border>na_usa_kansas</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_southdakota</border>
+				<border>na_usa_wyoming</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_nevada">
+			<name>Nevada</name>
+			<borders>
+				<border>na_usa_arizona</border>
+				<border>na_usa_california</border>
+				<border>na_usa_idaho</border>
+				<border>na_usa_oregon</border>
+				<border>na_usa_utah</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_newhampshire">
+			<name>New Hampshire</name>
+			<borders>
+				<border>na_ca_quebec</border>
+				<border>na_usa_maine</border>
+				<border>na_usa_massachusetts</border>
+				<border>na_usa_vermont</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_newjersey">
+			<name>New Jersey</name>
+			<borders>
+				<border>na_usa_delaware</border>
+				<border>na_usa_newyork</border>
+				<border>na_usa_pennsylvania</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_newmexico">
+			<name>New Mexico</name>
+			<borders>
+				<border>na_mx_chihuahua</border>
+				<border>na_mx_sonora</border>
+				<border>na_usa_arizona</border>
+				<border>na_usa_colorado</border>
+				<border>na_usa_oklahoma</border>
+				<border>na_usa_texas</border>
+				<border>na_usa_utah</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_newyork">
+			<name>New York</name>
+			<borders>
+				<border>na_ca_ontario</border>
+				<border>na_ca_quebec</border>
+				<border>na_usa_connecticut</border>
+				<border>na_usa_massachusetts</border>
+				<border>na_usa_newjersey</border>
+				<border>na_usa_pennsylvania</border>
+				<border>na_usa_vermont</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_northdakota">
+			<name>North Dakota</name>
+			<borders>
+				<border>na_ca_manitoba</border>
+				<border>na_ca_saskatchewan</border>
+				<border>na_usa_minnesota</border>
+				<border>na_usa_montana</border>
+				<border>na_usa_southdakota</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_northcarolina">
+			<name>North Carolina</name>
+			<borders>
+				<border>na_usa_georgia</border>
+				<border>na_usa_southcarolina</border>
+				<border>na_usa_tennessee</border>
+				<border>na_usa_virginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_ohio">
+			<name>Ohio</name>
+			<borders>
+				<border>na_usa_indiana</border>
+				<border>na_usa_kentucky</border>
+				<border>na_usa_michigan</border>
+				<border>na_usa_pennsylvania</border>
+				<border>na_usa_westvirginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_oklahoma">
+			<name>Oklahoma</name>
+			<borders>
+				<border>na_usa_arkansas</border>
+				<border>na_usa_colorado</border>
+				<border>na_usa_kansas</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_newmexico</border>
+				<border>na_usa_texas</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_oregon">
+			<name>Oregon</name>
+			<borders>
+				<border>na_usa_california</border>
+				<border>na_usa_hawaii</border>
+				<border>na_usa_idaho</border>
+				<border>na_usa_nevada</border>
+				<border>na_usa_washington</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_pennsylvania">
+			<name>Pennsylvania</name>
+			<borders>
+				<border>na_usa_delaware</border>
+				<border>na_usa_maryland</border>
+				<border>na_usa_newjersey</border>
+				<border>na_usa_newyork</border>
+				<border>na_usa_ohio</border>
+				<border>na_usa_westvirginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_rhodeisland">
+			<name>Rhode Island</name>
+			<borders>
+				<border>na_usa_connecticut</border>
+				<border>na_usa_massachusetts</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_southdakota">
+			<name>South Dakota</name>
+			<borders>
+				<border>na_usa_iowa</border>
+				<border>na_usa_minnesota</border>
+				<border>na_usa_montana</border>
+				<border>na_usa_nebraska</border>
+				<border>na_usa_northdakota</border>
+				<border>na_usa_wyoming</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_southcarolina">
+			<name>South Carolina</name>
+			<borders>
+				<border>na_usa_georgia</border>
+				<border>na_usa_northcarolina</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_tennessee">
+			<name>Tennessee</name>
+			<borders>
+				<border>na_usa_alabama</border>
+				<border>na_usa_arkansas</border>
+				<border>na_usa_georgia</border>
+				<border>na_usa_kentucky</border>
+				<border>na_usa_mississippi</border>
+				<border>na_usa_missouri</border>
+				<border>na_usa_northcarolina</border>
+				<border>na_usa_virginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_texas">
+			<name>Texas</name>
+			<borders>
+				<border>na_mx_chihuahua</border>
+				<border>na_mx_coahuila</border>
+				<border>na_mx_nuevoleon</border>
+				<border>na_mx_tamaulipas</border>
+				<border>na_usa_arkansas</border>
+				<border>na_usa_louisiana</border>
+				<border>na_usa_newmexico</border>
+				<border>na_usa_oklahoma</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_utah">
+			<name>Utah</name>
+			<borders>
+				<border>na_usa_arizona</border>
+				<border>na_usa_colorado</border>
+				<border>na_usa_idaho</border>
+				<border>na_usa_nevada</border>
+				<border>na_usa_newmexico</border>
+				<border>na_usa_wyoming</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_newspain</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_vermont">
+			<name>Vermont</name>
+			<borders>
+				<border>na_ca_quebec</border>
+				<border>na_usa_massachusetts</border>
+				<border>na_usa_newhampshire</border>
+				<border>na_usa_newyork</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_virginia">
+			<name>Virginia</name>
+			<borders>
+				<border>na_usa_kentucky</border>
+				<border>na_usa_maryland</border>
+				<border>na_usa_northcarolina</border>
+				<border>na_usa_tennessee</border>
+				<border>na_usa_westvirginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_confederacy</region>
+				<region>na_colonies</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_washington">
+			<name>Washington</name>
+			<borders>
+				<border>na_ca_britishcolombia</border>
+				<border>na_usa_idaho</border>
+				<border>na_usa_oregon</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_westvirginia">
+			<name>West Virginia</name>
+			<borders>
+				<border>na_usa_kentucky</border>
+				<border>na_usa_maryland</border>
+				<border>na_usa_ohio</border>
+				<border>na_usa_pennsylvania</border>
+				<border>na_usa_virginia</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+				<region>na_colonies</region>
+				<region>na_iroquois</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_wisconsin">
+			<name>Wisconsin</name>
+			<borders>
+				<border>na_usa_illinois</border>
+				<border>na_usa_iowa</border>
+				<border>na_usa_michigan</border>
+				<border>na_usa_minnesota</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+		<territory id="na_usa_wyoming">
+			<name>Wyoming</name>
+			<borders>
+				<border>na_usa_colorado</border>
+				<border>na_usa_idaho</border>
+				<border>na_usa_montana</border>
+				<border>na_usa_nebraska</border>
+				<border>na_usa_southdakota</border>
+				<border>na_usa_utah</border>
+			</borders>
+			<regions>
+				<region>na_usa</region>
+			</regions>
+		</territory>
+	</territories>
+	<regions>
+		<region id="na_canada">
+			<name>Canada</name>
+			<units>3</units>
+		</region>
+		<region id="na_confederacy">
+			<name>Confederated States of America</name>
+			<units>2</units>
+		</region>
+		<region id="na_colonies">
+			<name>Thirteen United States of America</name>
+			<units>3</units>
+		</region>
+		<region id="na_iroquois">
+			<name>Iroquois League</name>
+			<units>2</units>
+		</region>
+		<region id="na_mexico">
+			<name>United Mexican States</name>
+			<units>5</units>
+		</region>
+		<region id="na_usa">
+			<name>United States of America</name>
+			<units>2</units>
+		</region>
+		<region id="na_newspain">
+			<name>Viceroyalty of New Spain</name>
+			<units>2</units>
+		</region>
+	</regions>
+	<missions>
+		<mission missionId="0" availability="0" class="DominationMission">
+			<argument type="int">50</argument>
+		</mission>
+		<mission missionId="1" availability="5" fallback="0" class="RivalryMission" />
+		<mission missionId="2" availability="1">
+			<name>Uncle Sam</name>
+			<description>To win this game you need to control the United States of America.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>na_usa</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="3" availability="1">
+			<name>Old Times</name>
+			<description>To win this game you need to control the Viceroyalty of New Spain and the Confederated States of America.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>na_newspain</argument>
+					<argument>na_confederacy</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="4" availability="1">
+			<name>Native Power</name>
+			<description>To win this game you need to control the United Mexican States and the Iroquois League.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>na_mexico</argument>
+					<argument>na_iroquois</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="5" availability="1">
+			<name>Canadian Expansion</name>
+			<description>To win this game you need to control Canada and 35 other territories (48 total).</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>na_canada</argument>
+				</condition>
+				<condition class="TerritoriesCondition">
+					<argument>48</argument>
+				</condition>
+			</conditions>
+		</mission>
+	</missions>
+</map>
