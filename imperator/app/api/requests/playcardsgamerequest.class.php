@@ -1,6 +1,5 @@
 <?php
 namespace imperator\api\requests;
-use imperator\Imperator;
 
 class PlayCardsGameRequest extends GameRequest {
 	private $units;

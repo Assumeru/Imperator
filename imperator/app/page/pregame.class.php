@@ -27,6 +27,7 @@ class PreGame extends DefaultPage {
 			}
 		} else if($controlForm->leaveHasBeenSubmitted() && $this->game->containsPlayer($user)) {
 			$this->leaveGame($user);
+			Imperator::redirect(GameList::getURL());
 		} else if($joinForm->hasBeenSubmitted() && !$this->game->containsPlayer($user) && $joinForm->validateRequest()) {
 			$this->joinGame($user, $joinForm);
 			Imperator::redirect(Game::getURL($this->game));
@@ -36,7 +37,9 @@ class PreGame extends DefaultPage {
 			'chat' => $this->getChat($user),
 			'game' => $this->game,
 			'controls' => $this->getControls($user, $joinForm),
-			'invitelink' => $this->game->containsPlayer($user) && $this->game->hasPassword() ? Game::getURL($this->game, true) : ''
+			'invitelink' => $this->game->containsPlayer($user) && $this->game->hasPassword() ? Game::getURL($this->game, true) : '',
+			'canKick' => $user->equals($this->game->getOwner()->getUser()),
+			'user' => $user
 		)));
 		parent::render($user);
 	}
@@ -72,6 +75,9 @@ class PreGame extends DefaultPage {
 	private function getControls(\imperator\User $user, form\JoinGameForm $form) {
 		$player = $this->game->getPlayerByUser($user);
 		if($this->game->getOwner() == $player) {
+			$this->setJavascriptSetting('language', array(
+				'confirmkick' => $user->getLanguage()->translate('Are you sure you want to kick this player?')
+			));
 			$this->addJavascript('pregame.js');
 			return $this->getOwnerGameForm($user);
 		} else if($this->game->getNumberOfPlayers() < $this->game->getMap()->getPlayers() && $player === null) {

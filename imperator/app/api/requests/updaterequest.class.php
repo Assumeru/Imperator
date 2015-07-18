@@ -1,6 +1,5 @@
 <?php
 namespace imperator\api\requests;
-use imperator\Imperator;
 
 abstract class UpdateRequest extends \imperator\api\Request {
 	private $gid;

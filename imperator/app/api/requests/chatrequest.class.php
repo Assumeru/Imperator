@@ -1,6 +1,5 @@
 <?php
 namespace imperator\api\requests;
-use imperator\Imperator;
 
 abstract class ChatRequest extends \imperator\api\Request {
 	private $gid;

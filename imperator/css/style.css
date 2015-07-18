@@ -48,7 +48,7 @@ span .user {
 	padding: 0.25em;
 }
 
-#chat .chat .btn {
+#chat .chat .btn, #player-list .btn {
 	padding: 3px 6px;
 }
 

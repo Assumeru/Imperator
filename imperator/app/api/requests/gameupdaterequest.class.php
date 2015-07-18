@@ -1,6 +1,6 @@
 <?php
 namespace imperator\api\requests;
-use imperator\Imperator;
+use \imperator\Imperator;
 
 class GameUpdateRequest extends UpdateRequest {
 	public function getType() {

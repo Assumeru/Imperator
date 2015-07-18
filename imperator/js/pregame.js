@@ -5,6 +5,22 @@
 	function init() {
 		Imperator.API.onMessage(parseGameUpdate);
 		Imperator.API.onOpen(sendUpdateRequest);
+		addKickListeners();
+	}
+
+	function addKickListeners() {
+		$('#player-list [data-kick]').click(kickPlayer);
+	}
+
+	function kickPlayer() {
+		if(window.confirm(Imperator.settings.language.confirmkick)) {
+			Imperator.API.send({
+				gid: $gid,
+				mode: 'game',
+				type: 'kick',
+				uid: $(this).attr('data-kick')
+			});
+		}
 	}
 
 	function sendUpdateRequest() {
@@ -30,6 +46,7 @@
 				for($n = 0; $n < $msg.players.length; $n++) {
 					$playerList.append($msg.players[$n]);
 				}
+				addKickListeners();
 				if($msg.players.length === $msg.maxPlayers) {
 					$('#join-game').hide();
 				} else {

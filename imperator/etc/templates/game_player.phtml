@@ -1,1 +1,5 @@
-<li><?php echo \imperator\page\DefaultPage::getProfileLink($player), ($game->getOwner() == $player ? ' '.$this->__('(Owner)') : '' ); ?></li>
+<li><?php
+	echo \imperator\page\DefaultPage::getProfileLink($player), ($game->getOwner() == $player ? ' '.$this->__('(Owner)') : '' );
+	if($canKick && !$player->getUser()->equals($user)) { ?>
+	<button class="btn btn-danger" title="<?php echo $this->__('Kick'); ?>" data-kick="<?php echo $player->getId(); ?>"><span class="glyphicon glyphicon-remove"></span></button>
+<?php	} ?></li>

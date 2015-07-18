@@ -27,6 +27,8 @@ abstract class GameRequest extends \imperator\api\Request {
 				return new DefendGameRequest($params['gid'], $params['units'], $params['to'], $params['from']);
 			} else if($params['type'] == 'move' && isset($params['to']) && isset($params['from']) && isset($params['move']) && is_numeric($params['move']) && $params['move'] > 0) {
 				return new MoveGameRequest($params['gid'], $params['move'], $params['to'], $params['from']);
+			} else if($params['type'] == 'kick' && isset($params['uid']) && is_numeric($params['uid'])) {
+				return new KickGameRequest($params['gid'], $params['uid']);
 			}
 		}
 		return new InvalidRequest($params);
