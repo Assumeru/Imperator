@@ -5,8 +5,7 @@
 	$loading = true,
 	$postgame = Imperator.settings.postgame !== undefined ? Imperator.settings.postgame : false,
 	$canDelete = Imperator.settings.chat.canDelete,
-	$updateErrors = 0,
-	MAX_UPDATE_ERRORS = 5;
+	$updateErrors = 0;
 
 	function create() {
 		var $chat = $('#chat');
@@ -59,12 +58,14 @@
 	}
 
 	function parseErrorMessage($msg) {
-		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && $msg.mode == 'update' && $msg.type == 'chat') {
-			$updateErrors++;
-			Imperator.Dialog.showDialog(Imperator.settings.chat.chaterror, $msg.error, true);
-			if($updateErrors < MAX_UPDATE_ERRORS) {
-				sendUpdateRequest();
+		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && (($msg.mode == 'update' && $msg.type == 'chat') || $msg.mode == 'chat')) {
+			if($msg.mode == 'update') {
+				$updateErrors++;
+				if($updateErrors < Imperator.API.MAX_CHAT_ERRORS) {
+					sendUpdateRequest();
+				}
 			}
+			Imperator.Dialog.showDialog(Imperator.settings.chat.chaterror, $msg.error, true);
 		}
 	}
 

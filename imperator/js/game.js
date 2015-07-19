@@ -4,13 +4,15 @@
 	$time = 0,
 	$resizeTimeout,
 	$emptyBorder,
-	$dialogs = {};
+	$dialogs = {},
+	$updateErrors = 0;
 	if(Number.parseInt === undefined) {
 		Number.parseInt = parseInt;
 	}
 
 	function init() {
 		var $unitGraphics = Imperator.Store.getItem('unit-graphics', 'default');
+		Imperator.API.onError(parseErrorMessage);
 		Imperator.API.onMessage(parseUpdateMessage);
 		Imperator.API.onOpen(sendUpdateRequest);
 		initEventListeners();
@@ -21,6 +23,16 @@
 		resetTabScroll();
 		initRadialMenu();
 		initTabSwiping();
+	}
+
+	function parseErrorMessage($msg) {
+		console.error($msg);
+		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && (($msg.mode == 'update' && $msg.type == 'game') || $msg.mode == 'game')) {
+			if($msg.mode == 'update' && $updateErrors < Imperator.API.MAX_GAME_ERRORS) {
+				$updateErrors++;
+				sendUpdateRequest();
+			}
+		}
 	}
 
 	function initEventListeners() {

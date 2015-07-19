@@ -27,10 +27,8 @@ class PreGame extends DefaultPage {
 			}
 		} else if($controlForm->leaveHasBeenSubmitted() && $this->game->containsPlayer($user)) {
 			$this->leaveGame($user);
-			Imperator::redirect(GameList::getURL());
 		} else if($joinForm->hasBeenSubmitted() && !$this->game->containsPlayer($user) && $joinForm->validateRequest()) {
 			$this->joinGame($user, $joinForm);
-			Imperator::redirect(Game::getURL($this->game));
 		}
 		$this->setTitle($this->game->getName());
 		$this->setBodyContents(Template::getInstance('game_pregame', $user->getLanguage())->setVariables(array(
@@ -56,12 +54,14 @@ class PreGame extends DefaultPage {
 
 	private function leaveGame(\imperator\User $user) {
 		$this->game->removeUser($this->game->getPlayerByUser($user));
+		Imperator::redirect(GameList::getURL());
 	}
 
 	private function joinGame(\imperator\User $user, form\JoinGameForm $form) {
 		$player = new \imperator\game\Player($user, $this->game);
 		$player->setColor($form->getColor());
 		$this->game->addUser($player);
+		Imperator::redirect(Game::getURL($this->game));
 	}
 
 	private function getChat(\imperator\User $user) {

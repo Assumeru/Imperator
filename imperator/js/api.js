@@ -102,6 +102,8 @@ Imperator.API = (function($) {
 		onOpen: addOnOpen,
 		onError: addOnError,
 		onMessage: addOnMessage,
-		send: send
+		send: send,
+		MAX_CHAT_ERRORS: 5,
+		MAX_GAME_ERRORS: 5
 	};
 })(jQuery);
