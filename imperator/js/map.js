@@ -1,6 +1,6 @@
 Imperator.Map = (function($) {
 	var $currentHover,
-	MAX_ZOOM = [50, 250],
+	MAX_ZOOM = [40, 500],
 	$dragPosition = {
 		x: 0,
 		y: 0
@@ -71,7 +71,7 @@ Imperator.Map = (function($) {
 		$controls.show();
 		$container.on('wheel', zoomScroll);
 		if($width > $height) {
-			zoomMap(-100 * $height / $width);
+			zoomMap(100 * ($height / $width - 1));
 		}
 	}
 
