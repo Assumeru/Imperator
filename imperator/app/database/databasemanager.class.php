@@ -114,4 +114,12 @@ abstract class DatabaseManager {
 		$query->free();
 		return false;
 	}
+
+	public function startTransaction() {
+		$this->query('START TRANSACTION');
+	}
+
+	public function commitTransaction() {
+		$this->query('COMMIT');
+	}
 }
