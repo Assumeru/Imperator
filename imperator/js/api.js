@@ -49,7 +49,23 @@ Imperator.API = (function($) {
 		}
 	}
 
-	function onError($json) {
+	function onError($json, $msg) {
+		if($msg !== undefined && $msg.mode !== undefined && $msg.type !== undefined) {
+			if($json === undefined || $json.error === undefined) {
+				$json = {
+					mode: $msg.mode,
+					type: $msg.type,
+					error: $json
+				};
+			} else {
+				if($json.mode === undefined) {
+					$json.mode = $msg.mode;
+				}
+				if($json.type === undefined) {
+					$json.type === undefined
+				}
+			}
+		}
 		for(var $n = 0; $n < $onError.length; $n++) {
 			$onError[$n]($json);
 		}

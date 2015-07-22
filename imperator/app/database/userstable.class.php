@@ -1,7 +1,7 @@
 <?php
 namespace imperator\database;
-
 use imperator\Imperator;
+
 class UsersTable extends Table {
 	const NAME				= 'imperator_users';
 	const COLUMN_UID		= 'uid';
