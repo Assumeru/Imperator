@@ -1,0 +1,5 @@
+<a href="#tab-territory-<?php echo $territory->getId(); ?>"<?php
+	if(isset($color)) {
+		echo ' style="color: #',$color,'"';
+	}
+?>><?php echo $this->__($territory->getName()); ?></a>

@@ -79,7 +79,7 @@ class GameUpdateRequest extends UpdateRequest {
 		if($game->containsPlayer($user)) {
 			$player = $game->getPlayerByUser($user);
 			$output['autoroll'] = $player->getAutoRoll();
-			$cards = $player->getCards($game);
+			$cards = $player->getCards();
 			$output['cards'] = array(
 				\imperator\game\Cards::CARD_ARTILLERY => $cards->getArtillery(),
 				\imperator\game\Cards::CARD_CAVALRY => $cards->getCavalry(),

@@ -1,7 +1,9 @@
 <?php
 namespace imperator\combatlog;
+use imperator\Imperator;
 
 class AttackedEntry extends LogEntry {
+	const TYPE = 1;
 	private $defender;
 	private $attackRoll;
 	private $defendRoll;
@@ -17,23 +19,49 @@ class AttackedEntry extends LogEntry {
 		$this->defendingTerritory = $defending;
 	}
 
-	protected function getDefender() {
+	public function getDefender() {
 		return $this->defender;
 	}
 
-	protected function getAttackRoll() {
+	public function getAttackRoll() {
 		return $this->attackRoll;
 	}
 
-	protected function getDefendRoll() {
+	public function getDefendRoll() {
 		return $this->defendRoll;
 	}
 
-	protected function getAttackingTerritory() {
+	public function getAttackingTerritory() {
 		return $this->attackingTerritory;
 	}
 
-	protected function getDefendingTerritory() {
+	public function getDefendingTerritory() {
 		return $this->defendingTerritory;
+	}
+
+	public function getMessage(\imperator\Language $language) {
+		return $language->translate(
+			'%1$s vs %2$s: %3$s %4$s',
+			\imperator\page\Template::getInstance('game_territory_link', $language)->setVariables(array(
+				'territory' => $this->attackingTerritory,
+				'color' => $this->getUser()->getColor()
+			))->execute(),
+			\imperator\page\Template::getInstance('game_territory_link', $language)->setVariables(array(
+				'territory' => $this->defendingTerritory,
+				'color' => $this->defender->getColor()
+			))->execute(),
+			\imperator\page\Template::getInstance('roll')->setVariables(array(
+				'dice' => $this->attackRoll,
+				'type' => 'attack'
+			))->execute(),
+			\imperator\page\Template::getInstance('roll')->setVariables(array(
+				'dice' => $this->defendRoll,
+				'type' => 'defend'
+			))->execute()
+		);
+	}
+
+	public function save() {
+		Imperator::getDatabaseManager()->getTable('CombatLog')->saveAttackedEntry($this);
 	}
 }

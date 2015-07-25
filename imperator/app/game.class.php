@@ -437,14 +437,14 @@ class Game {
 	 */
 	public function forfeit(game\Player $user) {
 		Imperator::getDatabaseManager()->getTable('GamesJoined')->forfeit($user);
-		//TODO combat log
+		$user->setState(game\Player::STATE_GAME_OVER);
+		$user->setAutoRoll(true);
+		$entry = new \imperator\combatlog\ForfeitedEntry(time(), $user);
+		$entry->save();
 		$numPlayers = 0;
 		$lastPlayer = $user;
 		foreach($this->users as $player) {
-			if($player == $user) {
-				$player->setState(game\Player::STATE_GAME_OVER);
-				$player->setAutoRoll(true);
-			} else if($player->getState() != game\Player::STATE_GAME_OVER) {
+			if($player != $user && $player->getState() != game\Player::STATE_GAME_OVER) {
 				$numPlayers++;
 				$lastPlayer = $player;
 			}
@@ -493,9 +493,11 @@ class Game {
 				$uids[] = $player->getId();
 			}
 		}
-		if($currentPlayer->getMission()->hasBeenCompleted($currentPlayer)) {
+		if($currentPlayer->getMission()->hasBeenCompleted()) {
 			$this->victory($currentPlayer);
 		} else {
+			$entry = new \imperator\combatlog\EndedTurnEntry(time(), $currentPlayer);
+			$entry->save();
 			$numPlayers = count($uids);
 			if($numPlayers < 1) {
 				//probably not possible
@@ -584,16 +586,18 @@ class Game {
 	/**
 	 * Makes the player trade cards for units.
 	 * 
-	 * @param game\Player $user
+	 * @param \imperator\game\Player $user
 	 * @param int $units
 	 */
-	public function playCardCombination(game\Player $user, $units) {
+	public function playCardCombination(\imperator\game\Player $user, $units) {
 		$cards = $user->getCards();
-		$cards->removeCombination($units);
+		$combination = $cards->removeCombination($units);
 		$this->units += $units;
 		$db = Imperator::getDatabaseManager();
 		$db->getTable('GamesJoined')->saveCards($user);
 		$db->getTable('Games')->updateUnits($this);
+		$entry = new \imperator\combatlog\CardsPlayedEntry(time(), $user, $combination, $units);
+		$entry->save();
 	}
 
 	/**
@@ -635,7 +639,17 @@ class Game {
 		$gjTable = $db->getTable('GamesJoined');
 		$attackingTerritory = $attack->getAttacker();
 		$defendingTerritory = $attack->getDefender();
-		//TODO combat log
+		$defender = $defendingTerritory->getOwner();
+		$entry = new \imperator\combatlog\AttackedEntry(
+			time(),
+			$attackingTerritory->getOwner(),
+			$defender,
+			$attack->getAttackRoll(),
+			$attack->getDefenceRoll(),
+			$attackingTerritory,
+			$defendingTerritory
+		);
+		$entry->save();
 		$attackerUnits = $attackingTerritory->getUnits() - $attack->getAttackerLosses();
 		$defenderUnits = $defendingTerritory->getUnits() - $attack->getDefenderLosses();
 		if($defenderUnits === 0) {
@@ -645,7 +659,6 @@ class Game {
 			if($move >= $attackerUnits) {
 				$move = $attackerUnits - 1;
 			}
-			$defender = $defendingTerritory->getOwner();
 			$attackingTerritory->setUnits($attackerUnits - $move);
 			$defendingTerritory->setUnits($move);
 			$defendingTerritory->setOwner($attackingTerritory->getOwner());

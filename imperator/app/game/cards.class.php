@@ -150,50 +150,61 @@ class Cards {
 		$num = $this->getNumberOf($card);
 		if($num >= 3) {
 			$this->setNumberOf($card, $num - 3);
+			return array($card, $card, $card);
 		} else if($num == 2) {
 			$this->setNumberOf($card, $num - 2);
 			$this->jokers -= 1;
-		} else {
-			$this->setNumberOf($card, $num - 1);
-			$this->jokers -= 2;
+			return array($card, $card, static::CARD_JOKER);
 		}
+		$this->setNumberOf($card, $num - 1);
+		$this->jokers -= 2;
+		return array($card, static::CARD_JOKER, static::CARD_JOKER);
 	}
 
+	/**
+	 * @param int $units
+	 * @return int[] The combination of cards that was removed
+	 */
 	public function removeCombination($units) {
 		if($units == 4) {
-			$this->removeBestCombination(static::CARD_ARTILLERY);
+			return $this->removeBestCombination(static::CARD_ARTILLERY);
 		} else if($units == 6) {
-			$this->removeBestCombination(static::CARD_INFANTRY);
+			return $this->removeBestCombination(static::CARD_INFANTRY);
 		} else if($units == 8) {
-			$this->removeBestCombination(static::CARD_CAVALRY);
-		} else {
-			if($this->artillery >= 1 && $this->cavalry >= 1 && $this->infantry >= 1) {
-				$this->artillery--;
-				$this->cavalry--;
-				$this->infantry--;
-			} else if($this->artillery >= 1 && $this->cavalry >= 1) {
-				$this->artillery--;
-				$this->cavalry--;
-				$this->jokers--;
-			} else if($this->cavalry >= 1 && $this->infantry >= 1) {
-				$this->cavalry--;
-				$this->infantry--;
-				$this->jokers--;
-			} else if($this->artillery >= 1 && $this->infantry >= 1) {
-				$this->artillery--;
-				$this->infantry--;
-				$this->jokers--;
-			} else if($this->artillery >= 1) {
-				$this->artillery--;
-				$this->jokers -= 2;
-			} else if($this->cavalry >= 1) {
-				$this->cavalry--;
-				$this->jokers -= 2;
-			} else {
-				$this->infantry--;
-				$this->jokers -= 2;
-			}
+			return $this->removeBestCombination(static::CARD_CAVALRY);
 		}
+		if($this->artillery >= 1 && $this->cavalry >= 1 && $this->infantry >= 1) {
+			$this->artillery--;
+			$this->cavalry--;
+			$this->infantry--;
+			return array(static::CARD_ARTILLERY, static::CARD_INFANTRY, static::CARD_CAVALRY);
+		} else if($this->artillery >= 1 && $this->cavalry >= 1) {
+			$this->artillery--;
+			$this->cavalry--;
+			$this->jokers--;
+			return array(static::CARD_ARTILLERY, static::CARD_JOKER, static::CARD_CAVALRY);
+		} else if($this->cavalry >= 1 && $this->infantry >= 1) {
+			$this->cavalry--;
+			$this->infantry--;
+			$this->jokers--;
+			return array(static::CARD_JOKER, static::CARD_INFANTRY, static::CARD_CAVALRY);
+		} else if($this->artillery >= 1 && $this->infantry >= 1) {
+			$this->artillery--;
+			$this->infantry--;
+			$this->jokers--;
+			return array(static::CARD_ARTILLERY, static::CARD_INFANTRY, static::CARD_JOKER);
+		} else if($this->artillery >= 1) {
+			$this->artillery--;
+			$this->jokers -= 2;
+			return array(static::CARD_ARTILLERY, static::CARD_JOKER, static::CARD_JOKER);
+		} else if($this->cavalry >= 1) {
+			$this->cavalry--;
+			$this->jokers -= 2;
+			return array(static::CARD_JOKER, static::CARD_JOKER, static::CARD_CAVALRY);
+		}
+		$this->infantry--;
+		$this->jokers -= 2;
+		return array(static::CARD_JOKER, static::CARD_INFANTRY, static::CARD_JOKER);
 	}
 
 	public static function isCard($card) {

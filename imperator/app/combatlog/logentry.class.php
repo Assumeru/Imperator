@@ -1,13 +1,8 @@
 <?php
 namespace imperator\combatlog;
+use imperator\Imperator;
 
 abstract class LogEntry {
-	const CONQUERED_TERRITORY = 0;
-	const ATTACKED_TERRITORY = 1;
-	const ENDED_TURN = 2;
-	const FORFEITED = 3;
-	const PLAYED_CARDS = 4;
-
 	private $user;
 	private $time;
 
@@ -16,19 +11,19 @@ abstract class LogEntry {
 		$this->time = $time;
 	}
 
-	protected function getUser() {
+	public function getUser() {
 		return $this->user;
 	}
 
-	protected function getTime() {
+	public function getTime() {
 		return $this->time;
 	}
 
-	public function getMessageArray(\imperator\Language $language) {
+	public function getMessage(\imperator\Language $language) {
 		throw new \imperator\exceptions\ImperatorException('Cannot call getMessage on an abstract log entry.');
 	}
 
 	public function save() {
-		//TODO
+		Imperator::getDatabaseManager()->getTable('CombatLog')->saveLogEntry($this);
 	}
 }

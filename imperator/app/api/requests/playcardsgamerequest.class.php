@@ -24,7 +24,7 @@ class PlayCardsGameRequest extends GameRequest {
 			throw new \imperator\exceptions\InvalidRequestException('Cannot play cards after attacking.');
 		}
 		$player = $this->getGame()->getPlayerByUser($user);
-		$cards = $player->getCards($this->getGame());
+		$cards = $player->getCards();
 		if(!$cards->canPlayCombination($this->getUnits())) {
 			throw new \imperator\exceptions\InvalidRequestException('You do not have the required cards to place %1$d units.', $this->getUnits());
 		}
