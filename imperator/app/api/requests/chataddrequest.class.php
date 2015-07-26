@@ -23,6 +23,10 @@ class ChatAddRequest extends ChatRequest {
 			throw new \imperator\exceptions\InvalidRequestException('User %1$d cannot use chat %2$d', $user->getId(), $this->getGid());
 		}
 		$message = new \imperator\chat\ChatMessage($this->getGid(), time(), $user, $this->getMessage());
-		$message->insert();
+		try {
+			$message->insert();
+		} catch(\imperator\exceptions\DatabaseException $e) {
+			throw new \imperator\exceptions\InvalidRequestException('You cannot chat more than once per second.', $e);
+		}
 	}
 }

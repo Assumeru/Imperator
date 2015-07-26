@@ -1,5 +1,6 @@
 <?php
 namespace imperator\combatlog;
+use imperator\Imperator;
 
 class ConqueredEntry extends LogEntry {
 	const TYPE = 0;
@@ -10,7 +11,7 @@ class ConqueredEntry extends LogEntry {
 		$this->territory = $territory;
 	}
 
-	protected function getTerritory() {
+	public function getTerritory() {
 		return $this->territory;
 	}
 
@@ -20,5 +21,9 @@ class ConqueredEntry extends LogEntry {
 			\imperator\page\DefaultPage::getProfileLink($this->getUser()),
 			\imperator\page\Template::getInstance('game_territory_link', $language)->setVariables(array('territory' => $this->territory))->execute()
 		);
+	}
+
+	public function save() {
+		Imperator::getDatabaseManager()->getTable('CombatLog')->saveConqueredEntry($this);
 	}
 }

@@ -53,8 +53,9 @@ class InGame extends DefaultPage {
 			'dialogformattack' => Template::getInstance('dialog_form_attack', $language)->execute(),
 			'dialogformmove' => Template::getInstance('dialog_form_move', $language)->execute(),
 			'dialogformdefend' => Template::getInstance('dialog_form_defend', $language)->execute(),
-			'die' => Template::getInstance('die')->execute(),
-			'dialogattackresult' => Template::getInstance('dialog_attack_result', $language)->execute()
+			'die' => Template::getInstance('die')->setVariables(array('roll' => '{$roll}', 'type' => '{$type}'))->execute(),
+			'dialogattackresult' => Template::getInstance('dialog_attack_result', $language)->execute(),
+			'combatlogentry' => Template::getInstance('game_combatlog_entry')->execute()
 		));
 		$this->setJavascriptSetting('language', array(
 			'attack' => $language->translate('Attack'),

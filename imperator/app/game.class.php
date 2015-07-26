@@ -639,10 +639,11 @@ class Game {
 		$gjTable = $db->getTable('GamesJoined');
 		$attackingTerritory = $attack->getAttacker();
 		$defendingTerritory = $attack->getDefender();
+		$attacker = $attackingTerritory->getOwner();
 		$defender = $defendingTerritory->getOwner();
 		$entry = new \imperator\combatlog\AttackedEntry(
 			time(),
-			$attackingTerritory->getOwner(),
+			$attacker,
 			$defender,
 			$attack->getAttackRoll(),
 			$attack->getDefenceRoll(),
@@ -653,6 +654,8 @@ class Game {
 		$attackerUnits = $attackingTerritory->getUnits() - $attack->getAttackerLosses();
 		$defenderUnits = $defendingTerritory->getUnits() - $attack->getDefenderLosses();
 		if($defenderUnits === 0) {
+			$entry = new \imperator\combatlog\ConqueredEntry(time(), $attacker, $defendingTerritory);
+			$entry->save();
 			$this->time = time();
 			$this->conquered = true;
 			$move = $attack->getMove();

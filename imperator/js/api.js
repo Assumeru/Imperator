@@ -49,25 +49,30 @@ Imperator.API = (function($) {
 		}
 	}
 
-	function onError($json, $msg) {
+	function onError($response, $msg) {
 		if($msg !== undefined && $msg.mode !== undefined && $msg.type !== undefined) {
-			if($json === undefined || $json.error === undefined) {
-				$json = {
-					mode: $msg.mode,
-					type: $msg.type,
-					error: $json
+			if($response === undefined || $response.error === undefined) {
+				$response = {
+					request: {
+						mode: $msg.mode,
+						type: $msg.type
+					},
+					error: $response
 				};
-			} else {
-				if($json.mode === undefined) {
-					$json.mode = $msg.mode;
+			} else if($response.request === undefined || $response.request.mode === undefined || $response.request.type === undefined) {
+				if($response.request === undefined) {
+					$response.request = {};
 				}
-				if($json.type === undefined) {
-					$json.type === undefined
+				if($response.request.mode === undefined) {
+					$response.request.mode = $msg.mode;
+				}
+				if($response.request.type === undefined) {
+					$response.request.type = $msg.type;
 				}
 			}
 		}
 		for(var $n = 0; $n < $onError.length; $n++) {
-			$onError[$n]($json);
+			$onError[$n]($response);
 		}
 	}
 
@@ -96,8 +101,11 @@ Imperator.API = (function($) {
 			data: $json
 		}).done(function($msg) {
 			onMessage($msg);
-		}).error(function($msg) {
-			onError($msg);
+			if($msg !== undefined && $msg.error !== undefined) {
+				onError($msg, $json);
+			}
+		}).fail(function($msg) {
+			onError($msg.responseJSON, $json);
 		});
 	}
 

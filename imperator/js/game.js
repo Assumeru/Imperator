@@ -27,8 +27,8 @@
 
 	function parseErrorMessage($msg) {
 		console.error($msg);
-		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && (($msg.mode == 'update' && $msg.type == 'game') || $msg.mode == 'game')) {
-			if($msg.mode == 'update' && $updateErrors < Imperator.API.MAX_GAME_ERRORS) {
+		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && $msg.request !== undefined && (($msg.request.mode == 'update' && $msg.request.type == 'game') || $msg.request.mode == 'game')) {
+			if($msg.request.mode == 'update' && $updateErrors < Imperator.API.MAX_GAME_ERRORS) {
 				$updateErrors++;
 				sendUpdateRequest();
 			}
@@ -475,6 +475,9 @@
 		};
 		if($msg !== undefined && $msg !== '') {
 			if($msg.update !== undefined && $msg.update > $time) {
+				if($time === 0) {
+					$('#combatlog > div').empty();
+				}
 				$time = $msg.update;
 			}
 			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined && $msg.cards !== undefined && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined) {
@@ -556,11 +559,32 @@
 				$('#players [data-value="mission-name"]').text($msg.mission.name);
 				$('#players [data-value="mission-description"]').text($msg.mission.description);
 			}
+			if($msg.combatlog !== undefined) {
+				addCombatLogs($msg.combatlog);
+			}
 		}
 		for($key in $update) {
 			if($update[$key][0]) {
 				$update[$key][1]();
 			}
+		}
+	}
+
+	function addCombatLogs($logs) {
+		var $n, $entry, $time, $date,
+		$combatlog = $('#combatlog > div');
+		for($n = 0; $n < $logs.length; $n++) {
+			$entry = $(Imperator.settings.templates.combatlogentry);
+			$time = $entry.find('time');
+			$date = new Date($logs[$n].time);
+			$time.attr('datetime', $logs[$n].time);
+			$time.text($date.toLocaleTimeString());
+			$time.attr('title', $date.toLocaleString());
+			$entry.find('.message').html($logs[$n].message);
+			$combatlog.append($entry);
+		}
+		if($('#log [name="logscrolling"]').prop('checked')) {
+			$combatlog.scrollTop($combatlog[0].scrollHeight);
 		}
 	}
 

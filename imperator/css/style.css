@@ -27,10 +27,7 @@ h1 {
 	border-top: 1px solid #eee;
 }
 
-table.sortable .header:not(.headerSortDown) .glyphicon-chevron-down {
-	display: none;
-}
-
+table.sortable .header:not(.headerSortDown) .glyphicon-chevron-down,
 table.sortable .header:not(.headerSortUp) .glyphicon-chevron-up {
 	display: none;
 }
@@ -48,22 +45,22 @@ span .user {
 	padding: 0.25em;
 }
 
-#chat .chat .btn, #player-list .btn {
+#chat .chat .btn, #player-list .btn, #log .btn {
 	padding: 3px 6px;
 }
 
-#chat .chat-scrolling {
+#chat .chat-scrolling, #log .log-scrolling {
 	position: absolute;
 	top: 0;
 	right: 0;
 	opacity: 0.5;
 }
 
-#chat .chat-scrolling:hover {
+#chat .chat-scrolling:hover, #log .log-scrolling:hover {
 	opacity: 1;
 }
 
-#chat .chat-scrolling input {
+#chat .chat-scrolling input, #log .log-scrolling input {
 	padding: 0;
 	height: 0;
 	width: 0;
@@ -75,20 +72,18 @@ span .user {
 	z-index: -1;
 }
 
-#chat .chat-scrolling .glyphicon-play {
+#chat .chat-scrolling .glyphicon-play,
+#chat .chat-scrolling input:checked + span .glyphicon-pause,
+#log .log-scrolling .glyphicon-play,
+#log .log-scrolling input:checked + span .glyphicon-pause {
 	display: inline;
 }
 
-#chat .chat-scrolling .glyphicon-pause {
+#chat .chat-scrolling .glyphicon-pause,
+#chat .chat-scrolling input:checked + span .glyphicon-play,
+#log .log-scrolling .glyphicon-pause,
+#log .log-scrolling input:checked + span .glyphicon-play {
 	display: none;
-}
-
-#chat .chat-scrolling input:checked + span .glyphicon-play {
-	display: none;
-}
-
-#chat .chat-scrolling input:checked + span .glyphicon-pause {
-	display: inline;
 }
 
 #chat .chat:nth-child(even) {
@@ -124,13 +119,7 @@ span .user {
 	box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
 }
 
-@media (min-height: 750px) {
-	.dialog {
-		top: 20%;
-		height: 60%;
-	}
-}
-
+@media (min-height: 750px),
 @media (min-width: 750px) {
 	.dialog {
 		left: 20%;

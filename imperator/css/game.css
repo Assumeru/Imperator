@@ -287,6 +287,33 @@ body:not(.my-turn) #card-controls {
 	pointer-events: none;
 }
 
+#combatlog {
+	padding: 0;
+	border-radius: unset;
+	height: 100%;
+	position: relative;
+}
+
+#combatlog > div {
+	height: 100%;
+	overflow: auto;
+}
+
+#combatlog .log-entry:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+#combatlog .die {
+	width: 16px;
+	height: 16px;
+	background-size: 312.5%;
+}
+
+#combatlog .card {
+	min-width: 30px;
+	width: 30px;
+}
+
 .dialog .clearfix .col-md-6 {
 	margin-top: 1em;
 }

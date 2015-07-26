@@ -54,20 +54,32 @@ class Logger {
 		return date(\DateTime::ATOM);
 	}
 
-	private function parseException(\Exception $exception) {
+	private function parseException(\Exception $exception, $depth = 0) {
 		$out = array();
 		$out[] = 'Exception: '.get_class($exception);
 		$out[] = $exception->getMessage();
+		for($n = 0; $n < $depth; $n++) {
+			$out[0] = '	'.$out[0];
+			$out[1] = '	'.$out[1];
+		}
 		$trace = $exception->getTrace();
-		$out[] = $this->getExceptionSourceLine($trace[0], $exception->getLine());
-		for($n=1; $n < count($trace); $n++) {
-			$out[] = $this->getExceptionSourceLine($trace[$n], $trace[($n-1)]['line']);
+		$out[] = $this->getExceptionSourceLine($trace[0], $exception->getLine(), $depth);
+		for($n = 1; $n < count($trace); $n++) {
+			$out[] = $this->getExceptionSourceLine($trace[$n], $trace[($n-1)]['line'], $depth);
+		}
+		if($exception->getPrevious() !== null && $depth < 5) {
+			$out[] = 'Caused by:';
+			$out[] = $this->parseException($exception->getPrevious(), $depth + 1);
 		}
 		return implode(self::EOL, $out);
 	}
 
-	private function getExceptionSourceLine(array $trace, $line) {
-		$out = '	at ';
+	private function getExceptionSourceLine(array $trace, $line, $depth) {
+		$out = '	';
+		for($n = 0; $n < $depth; $n++) {
+			$out .= '	';
+		}
+		$out .= 'at ';
 		if(!empty($trace['class'])) {
 			$out .= $trace['class'].' ';
 			if(!empty($trace['type'])) {

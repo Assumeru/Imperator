@@ -23,7 +23,7 @@ class CardsPlayedEntry extends LogEntry {
 
 	public function getMessage(\imperator\Language $language) {
 		return $language->translate(
-			'%1$s played %2$s for %3$d.',
+			'%1$s played %2$s for %3$d units.',
 			\imperator\page\DefaultPage::getProfileLink($this->getUser()),
 			\imperator\page\Template::getInstance('game_cards')->setVariables(array(
 				'url' => Imperator::getSettings()->getBaseURL().'/img/cards/%1$s.png',

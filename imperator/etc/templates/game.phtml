@@ -155,7 +155,18 @@
 ?>
 		</section>
 		<section id="log" class="swipe-pane">
-			Combat Log
+			<div class="form-control" id="combatlog">
+				<div>
+					<p class="loading"><?php echo $this->__('Loading...'); ?></p>
+				</div>
+				<label title="<?php echo $this->__('Enable this to automatically scroll down to the latest message'); ?>" class="btn log-scrolling">
+					<input type="checkbox" name="logscrolling" checked />
+					<span>
+						<span class="glyphicon glyphicon-play"></span>
+						<span class="glyphicon glyphicon-pause"></span>
+					</span>
+				</label>
+			</div>
 		</section>
 		<section id="settings" class="swipe-pane">
 			<label>

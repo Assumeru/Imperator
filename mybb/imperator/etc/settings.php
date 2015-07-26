@@ -28,6 +28,7 @@ class MyBBSettings extends \imperator\Settings {
 			define('IN_MYBB', true);
 		}
 		require_once $path;
+		$db->error_reporting = false;
 		Imperator::getShutDownHandler()->resetErrorHandler();
 	}
 

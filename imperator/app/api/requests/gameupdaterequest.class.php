@@ -34,6 +34,7 @@ class GameUpdateRequest extends UpdateRequest {
 
 	protected function fillOutput(\imperator\Game $game, \imperator\User $user, array $output) {
 		$game->loadMap();
+		$language = $user->getLanguage();
 		if($this->getTime() === 0) {
 			$output['regions'] = array();
 			foreach($game->getMap()->getRegions() as $region) {
@@ -56,7 +57,7 @@ class GameUpdateRequest extends UpdateRequest {
 			);
 			if($this->getTime() === 0) {
 				$outTerritory['id'] = $territory->getId();
-				$outTerritory['name'] = $user->getLanguage()->translate($territory->getName());
+				$outTerritory['name'] = $language->translate($territory->getName());
 				$outTerritory['borders'] = array();
 				foreach($territory->getBorders() as $border) {
 					$outTerritory['borders'][] = $border->getId();
@@ -88,7 +89,15 @@ class GameUpdateRequest extends UpdateRequest {
 			);
 			$output['mission'] = array(
 				'name' => $player->getMission()->getName(),
-				'description' => $player->getMission()->getDescription($user->getLanguage())
+				'description' => $player->getMission()->getDescription($language)
+			);
+		}
+		$output['combatlog'] = array();
+		$logs = Imperator::getDatabaseManager()->getTable('CombatLog')->getLogsAfter($game, $this->getTime());
+		foreach($logs as $log) {
+			$output['combatlog'][] = array(
+				'time' => date(DATE_ATOM, $log->getTime()),
+				'message' => $log->getMessage($language)
 			);
 		}
 		return $output;
