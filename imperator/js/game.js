@@ -1,17 +1,37 @@
 (function($) {
 	var $game,
-	$currentTab = ['territories'],
-	$time = 0,
 	$resizeTimeout,
 	$emptyBorder,
+	$currentTab = ['territories'],
+	$time = 0,
 	$dialogs = {},
-	$updateErrors = 0;
+	$updateErrors = 0,
+	$missed = {
+		chat: null,
+		log: null
+	};
 	if(Number.parseInt === undefined) {
 		Number.parseInt = parseInt;
 	}
+	function UnseenElement($element) {
+		this.element = $element;
+		this.amount = 0;
+	}
+	UnseenElement.prototype.add = function($number) {
+		this.amount += $number;
+		if(this.amount > 0) {
+			this.element.text(this.amount);
+		}
+	};
+	UnseenElement.prototype.reset = function() {
+		this.amount = 0;
+		this.element.text('');
+	};
 
 	function init() {
 		var $unitGraphics = Imperator.Store.getItem('unit-graphics', 'default');
+		$missed.chat = new UnseenElement($('[href="#tab-chatbox"] .number'));
+		$missed.log = new UnseenElement($('[href="#tab-log"] .number'));
 		Imperator.API.onError(parseErrorMessage);
 		Imperator.API.onMessage(parseUpdateMessage);
 		Imperator.API.onOpen(sendUpdateRequest);
@@ -68,6 +88,9 @@
 
 	function initRadialMenu() {
 		var $radialMenu = $('#radial-menu');
+		function closeRadialMenu() {
+			$('#radial-menu').hide();
+		}
 		$radialMenu.mouseleave(closeRadialMenu);
 		$radialMenu.find('.inner').click(closeRadialMenu);
 		$radialMenu.find('[data-button="stack"]').click(function() {
@@ -383,10 +406,6 @@
 		$menu.show();
 	}
 
-	function closeRadialMenu() {
-		$('#radial-menu').hide();
-	}
-
 	function sendForfeit() {
 		if(window.confirm(Imperator.settings.language.forfeit)) {
 			Imperator.API.send({
@@ -548,6 +567,16 @@
 					delete $dialogs.attack;
 					showAttackResultDialog($msg.attack);
 				}
+				if($msg.players !== undefined) {
+					for($key in $msg.players) {
+						if($msg.players[$key].playing !== undefined) {
+							$game.players[$key].playing = $msg.players[$key].playing;
+						}
+					}
+					if(!$game.player.playing) {
+						$('#controls-box [data-button="forfeit"]').hide();
+					}
+				}
 			}
 			if($msg.autoroll !== undefined) {
 				$('#settings input[name="autoroll"]').prop('checked', $msg.autoroll);
@@ -561,6 +590,9 @@
 			}
 			if($msg.combatlog !== undefined) {
 				addCombatLogs($msg.combatlog);
+			}
+			if($msg.messages !== undefined && $currentTab[0] != 'chatbox') {
+				$missed.chat.add($msg.messages.length);
 			}
 		}
 		for($key in $update) {
@@ -585,6 +617,9 @@
 		}
 		if($('#log [name="logscrolling"]').prop('checked')) {
 			$combatlog.scrollTop($combatlog[0].scrollHeight);
+		}
+		if($currentTab[0] != 'log') {
+			$missed.log.add($logs.length);
 		}
 	}
 
@@ -871,6 +906,11 @@
 			$parent.animate({
 				scrollLeft: getDestination()
 			}, 750);
+		}
+		if($currentTab[0] == 'chatbox') {
+			$missed.chat.reset();
+		} else if($currentTab[0] == 'log') {
+			$missed.log.reset();
 		}
 	}
 

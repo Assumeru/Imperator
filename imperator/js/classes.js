@@ -5,7 +5,7 @@ Imperator.Game = function($id, $players, $regions, $territories, $cards, $units,
 		var $id,
 		$players = {};
 		for($id in $json) {
-			$players[$id] = new Imperator.Player($this, $json[$id].id, $json[$id].name, $json[$id].color, $json[$id].link);
+			$players[$id] = new Imperator.Player($this, $json[$id].id, $json[$id].name, $json[$id].color, $json[$id].link, $json[$id].playing);
 		}
 		return $players;
 	}
@@ -54,12 +54,13 @@ Imperator.Game.STATE_COMBAT = 2;
 Imperator.Game.STATE_POST_COMBAT = 3;
 Imperator.Game.STATE_FINISHED = 4;
 
-Imperator.Player = function($game, $id, $name, $color, $link) {
+Imperator.Player = function($game, $id, $name, $color, $link, $playing) {
 	this.game = $game;
 	this.id = $id;
 	this.name = $name;
 	this.color = $color;
 	this.link = $link;
+	this.playing = $playing;
 };
 Imperator.Player.prototype.getUnitsPerTurnFromTerritories = function($optionalNumberOfTerritories) {
 	var $id,

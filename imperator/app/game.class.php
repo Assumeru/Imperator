@@ -679,7 +679,7 @@ class Game {
 									$player->setState(game\Player::STATE_DESTROYED_RIVAL);
 									$gjTable->saveState($player);
 								} else {
-									$newMission = clone $missions[$mission->getFallback()];
+									$newMission = new \imperator\mission\PlayerMission($missions[$mission->getFallback()], $player);
 									$newMission->setUid($playerMission->getUid());
 									$player->setMission($newMission);
 									$playersWithNewMissions[] = $player;

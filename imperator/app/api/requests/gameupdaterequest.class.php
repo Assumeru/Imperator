@@ -71,7 +71,8 @@ class GameUpdateRequest extends UpdateRequest {
 				'color' => $player->getColor(),
 				'link' => \imperator\page\DefaultPage::getProfileLink($player),
 				'id' => $player->getId(),
-				'name' => $player->getName()
+				'name' => $player->getName(),
+				'playing' => $player->getState() !== \imperator\game\Player::STATE_GAME_OVER
 			);
 		}
 		$output['turn'] = $game->getTurn();

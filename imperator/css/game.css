@@ -30,6 +30,21 @@
 	border-bottom-color: #fff;
 }
 
+#content > nav li .number {
+	display: inline-block;
+	border: 1px solid #ddd;
+	border-radius: 50%;
+	height: 1em;
+	width: 1em;
+	line-height: 1;
+	box-sizing: unset;
+	color: #333;
+}
+
+#content > nav li .number:empty {
+	display: none;
+}
+
 @media (max-width: 768px) {
 	#content > nav {
 		overflow: hidden;
