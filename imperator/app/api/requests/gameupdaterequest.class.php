@@ -75,6 +75,7 @@ class GameUpdateRequest extends UpdateRequest {
 				'playing' => $player->getState() !== \imperator\game\Player::STATE_GAME_OVER
 			);
 		}
+		$output['conquered'] = $game->hasConquered();
 		$output['turn'] = $game->getTurn();
 		$output['units'] = $game->getUnits();
 		$output['attacks'] = $this->getAttacks($game);

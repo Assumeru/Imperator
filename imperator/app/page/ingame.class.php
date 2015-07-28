@@ -55,7 +55,11 @@ class InGame extends DefaultPage {
 			'dialogformdefend' => Template::getInstance('dialog_form_defend', $language)->execute(),
 			'die' => Template::getInstance('die')->setVariables(array('roll' => '{$roll}', 'type' => '{$type}'))->execute(),
 			'dialogattackresult' => Template::getInstance('dialog_attack_result', $language)->execute(),
-			'combatlogentry' => Template::getInstance('game_combatlog_entry')->execute()
+			'combatlogentry' => Template::getInstance('game_combatlog_entry')->execute(),
+			'discardcard' => Template::getInstance('dialog_card_discard', $language)->setVariables(array(
+				'url' => $this->getCardURL(),
+				'names' => \imperator\game\Cards::getCardNames($language)
+			))->execute()
 		));
 		$this->setJavascriptSetting('language', array(
 			'attack' => $language->translate('Attack'),
@@ -63,6 +67,7 @@ class InGame extends DefaultPage {
 			'card' => \imperator\game\Cards::getCardNames($language),
 			'confirmfortify' => $language->translate('Are you sure you want to place %1$d units in %2$s?'),
 			'confirmmove' => $language->translate('Are you sure you want to stop attacking?'),
+			'confirmend' => $language->translate('Are you sure you want to end your turn?'),
 			'conquered' => $language->translate('%1$s has been conquered'),
 			'contacting' => $language->translate('Contacting server.'),
 			'endedmessage' => $language->translate('This game has ended.'),
@@ -72,7 +77,8 @@ class InGame extends DefaultPage {
 			'move' => $language->translate('Move'),
 			'newcard' => $language->translate('You have received a new card!'),
 			'vs' => $language->translate('%1$s vs. %2$s'),
-			'wait' => $language->translate('Please wait...')
+			'wait' => $language->translate('Please wait...'),
+			'endturn' => $language->translate('End turn')
 		));
 		$this->addJavascript('classes.js');
 		$this->addJavascript('map.js');

@@ -407,7 +407,7 @@
 	}
 
 	function sendForfeit() {
-		if(window.confirm(Imperator.settings.language.forfeit)) {
+		if($game.player.playing && window.confirm(Imperator.settings.language.forfeit)) {
 			Imperator.API.send({
 				mode: 'game',
 				gid: $game.id,
@@ -434,16 +434,52 @@
 	}
 
 	function sendEndTurn() {
-		if($game.turn == $game.player) {
-			if($dialogs.endturn !== undefined) {
-				$dialogs.endturn.close();
-			}
+		var $ok, $cancel, $n, $cards, $num;
+		function send($card) {
 			$dialogs.endturn = Imperator.Dialog.showWaitDialog();
 			Imperator.API.send({
 				gid: $game.id,
 				mode: 'game',
-				type: 'end-turn'
+				type: 'end-turn',
+				card: $card
 			});
+		}
+		if($game.turn == $game.player) {
+			if($dialogs.endturn !== undefined) {
+				$dialogs.endturn.close();
+			}
+			if($game.cards.getNumberOfCards() >= Imperator.Cards.MAX_CARDS && $game.conquered) {
+				$ok = $(Imperator.settings.templates.okbutton);
+				$cancel = $(Imperator.settings.templates.cancelbutton);
+				$dialogs.endturn = Imperator.Dialog.showDialogForm(
+					Imperator.settings.language.endturn,
+					Imperator.settings.templates.discardcard,
+					$('<div>').append($ok).append(' ').append($cancel), true);
+				$cards = [Imperator.Cards.CARD_ARTILLERY, Imperator.Cards.CARD_INFANTRY, Imperator.Cards.CARD_CAVALRY, Imperator.Cards.CARD_JOKER];
+				for($n = 0; $n < $cards.length; $n++) {
+					$num = $game.cards.getCard($cards[$n]);
+					if($num < 1) {
+						$dialogs.endturn.message.find('[data-card="'+$cards[$n]+'"]').hide();
+					} else {
+						$dialogs.endturn.message.find('[data-card="'+$cards[$n]+'"] .number').text($num);
+					}
+				}
+				$cancel.click(function($e) {
+					$e.preventDefault();
+					$dialogs.endturn.close();
+					delete $dialogs.endturn;
+				});
+				$ok.click(function($e) {
+					var $card;
+					$e.preventDefault();
+					$card = $dialogs.endturn.message.find('[name="discard"]:checked').val();
+					$dialogs.endturn.close();
+					delete $dialogs.endturn;
+					send($card);
+				});
+			} else if(window.confirm(Imperator.settings.language.confirmend)) {
+				send(Imperator.Cards.CARD_NONE);
+			}
 		}
 	}
 
@@ -499,8 +535,8 @@
 				}
 				$time = $msg.update;
 			}
-			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined && $msg.cards !== undefined && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined) {
-				$game = new Imperator.Game(Imperator.settings.gid, $msg.players, $msg.regions, $msg.territories, $msg.cards, $msg.units, $msg.state, $msg.turn);
+			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined && $msg.cards !== undefined && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined && $msg.conquered !== undefined) {
+				$game = new Imperator.Game(Imperator.settings.gid, $msg.players, $msg.regions, $msg.territories, $msg.cards, $msg.units, $msg.state, $msg.turn, $msg.conquered);
 				$game.player = $game.players[Imperator.settings.uid];
 				$update.territories[0] = true;
 				$update.turn[0] = true;
@@ -576,6 +612,9 @@
 					if(!$game.player.playing) {
 						$('#controls-box [data-button="forfeit"]').hide();
 					}
+				}
+				if($msg.conquered !== undefined) {
+					$game.conquered = $msg.conquered;
 				}
 			}
 			if($msg.autoroll !== undefined) {

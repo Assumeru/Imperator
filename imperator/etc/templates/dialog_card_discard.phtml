@@ -1,0 +1,41 @@
+<p><?php echo $this->__('You have reached the maximum of 5 cards. Either discard one of your current cards or forgo receiving a new card.'); ?></p>
+<div class="row">
+	<div class="col-sm-3" data-card="none">
+		<label>
+			<strong><?php $this->__('Keep current cards.''); ?></strong>
+			<input type="radio" name="discard" value="<?php echo \imperator\game\Cards::CARD_NONE; ?>" checked />
+		</label>
+	</div>
+	<div class="col-sm-3" data-card="<?php echo \imperator\game\Cards::CARD_ARTILLERY; ?>">
+		<label>
+			<img src="<?php echo sprintf($url, \imperator\game\Cards::CARD_ARTILLERY); ?>"
+				alt="<?php echo $names[\imperator\game\Cards::CARD_ARTILLERY]; ?>" class="card" />
+			<input type="radio" name="discard" value="<?php echo \imperator\game\Cards::CARD_ARTILLERY; ?>" />
+			<span class="number"></span>
+		</label>
+	</div>
+	<div class="col-sm-3" data-card="<?php echo \imperator\game\Cards::CARD_INFANTRY; ?>">
+		<label>
+			<img src="<?php echo sprintf($url, \imperator\game\Cards::CARD_INFANTRY); ?>"
+				alt="<?php echo $names[\imperator\game\Cards::CARD_INFANTRY]; ?>" class="card" />
+			<input type="radio" name="discard" value="<?php echo \imperator\game\Cards::CARD_INFANTRY; ?>" />
+			<span class="number"></span>
+		</label>
+	</div>
+	<div class="col-sm-3" data-card="<?php echo \imperator\game\Cards::CARD_CAVALRY; ?>">
+		<label>
+			<img src="<?php echo sprintf($url, \imperator\game\Cards::CARD_CAVALRY); ?>"
+				alt="<?php echo $names[\imperator\game\Cards::CARD_CAVALRY]; ?>" class="card" />
+			<input type="radio" name="discard" value="<?php echo \imperator\game\Cards::CARD_CAVALRY; ?>" />
+			<span class="number"></span>
+		</label>
+	</div>
+	<div class="col-sm-3" data-card="<?php echo \imperator\game\Cards::CARD_JOKER; ?>">
+		<label>
+			<img src="<?php echo sprintf($url, \imperator\game\Cards::CARD_JOKER); ?>"
+				alt="<?php echo $names[\imperator\game\Cards::CARD_JOKER]; ?>" class="card" />
+			<input type="radio" name="discard" value="<?php echo \imperator\game\Cards::CARD_JOKER; ?>" />
+			<span class="number"></span>
+		</label>
+	</div>
+</div>

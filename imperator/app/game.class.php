@@ -545,9 +545,13 @@ class Game {
 		if(($card != game\Cards::CARD_NONE && $cards->getNumberOf($card) > 0) || $cards->getNumberOfCards() < game\Cards::MAX_CARDS) {
 			$gj = Imperator::getDatabaseManager()->getTable('GamesJoined');
 			$possibleCards = array(
-				game\Cards::CARD_ARTILLERY, game\Cards::CARD_ARTILLERY, game\Cards::CARD_ARTILLERY,
-				game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY, game\Cards::CARD_CAVALRY,
-				game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY, game\Cards::CARD_INFANTRY
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_INFANTRY, game\Cards::CARD_CAVALRY,
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_INFANTRY, game\Cards::CARD_CAVALRY,
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_INFANTRY, game\Cards::CARD_CAVALRY,
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_INFANTRY, game\Cards::CARD_CAVALRY,
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_INFANTRY, game\Cards::CARD_CAVALRY,
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_INFANTRY, game\Cards::CARD_CAVALRY,
+				game\Cards::CARD_ARTILLERY, game\Cards::CARD_INFANTRY, game\Cards::CARD_CAVALRY
 			);
 			if($gj->getNumberOfJokers($this) < game\Cards::MAX_JOKERS) {
 				$possibleCards[] = game\Cards::CARD_JOKER;

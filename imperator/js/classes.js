@@ -1,4 +1,4 @@
-Imperator.Game = function($id, $players, $regions, $territories, $cards, $units, $state, $turn) {
+Imperator.Game = function($id, $players, $regions, $territories, $cards, $units, $state, $turn, $conquered) {
 	var $this = this;
 
 	function getPlayersFromJSON($json) {
@@ -47,6 +47,7 @@ Imperator.Game = function($id, $players, $regions, $territories, $cards, $units,
 	this.units = $units;
 	this.state = $state;
 	this.turn = this.players[$turn];
+	this.conquered = $conquered;
 };
 Imperator.Game.STATE_TURN_START = 0;
 Imperator.Game.STATE_FORTIFY = 1;
@@ -161,6 +162,7 @@ Imperator.Cards.CARD_ARTILLERY = 0;
 Imperator.Cards.CARD_CAVALRY = 1;
 Imperator.Cards.CARD_INFANTRY = 2;
 Imperator.Cards.CARD_JOKER = 3;
+Imperator.Cards.MAX_CARDS = 5;
 Imperator.Cards.prototype.setCard = function($card, $amount) {
 	if($card == Imperator.Cards.CARD_ARTILLERY) {
 		this.artillery = $amount;
@@ -197,6 +199,9 @@ Imperator.Cards.prototype.canPlayCombination = function($units) {
 			&& ((this.artillery >= 1 && this.infantry >= 1)
 			|| (this.artillery >= 1 && this.cavalry >= 1)
 			|| (this.infantry >= 1 && this.cavalry >= 1)));
+};
+Imperator.Cards.prototype.getNumberOfCards = function() {
+	return this.artillery + this.cavalry + this.infantry + this.jokers;
 };
 
 Imperator.Attack = function($attacker, $defender, $roll) {
