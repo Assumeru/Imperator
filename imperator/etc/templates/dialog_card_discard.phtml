@@ -1,8 +1,8 @@
 <p><?php echo $this->__('You have reached the maximum of 5 cards. Either discard one of your current cards or forgo receiving a new card.'); ?></p>
-<div class="row">
-	<div class="col-sm-3" data-card="none">
+<div class="clearfix text-center">
+	<div class="col-sm-3" data-card="<?php echo \imperator\game\Cards::CARD_NONE; ?>">
 		<label>
-			<strong><?php $this->__('Keep current cards.''); ?></strong>
+			<strong><?php echo $this->__('Keep current cards'); ?></strong>
 			<input type="radio" name="discard" value="<?php echo \imperator\game\Cards::CARD_NONE; ?>" checked />
 		</label>
 	</div>

@@ -30,7 +30,7 @@
 	border-bottom-color: #fff;
 }
 
-#content > nav li .number {
+#content > nav li .number, .discard-dialog form [data-card] label .number {
 	display: inline-block;
 	border: 1px solid #ddd;
 	border-radius: 50%;
@@ -377,4 +377,9 @@ body:not(.my-turn) #card-controls {
 
 .die.d6 {
 	background-position: -50% 100%;
+}
+
+.discard-dialog form [data-card] label input {
+	display: block;
+	margin: 4px auto;
 }

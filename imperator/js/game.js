@@ -454,7 +454,7 @@
 				$dialogs.endturn = Imperator.Dialog.showDialogForm(
 					Imperator.settings.language.endturn,
 					Imperator.settings.templates.discardcard,
-					$('<div>').append($ok).append(' ').append($cancel), true);
+					$('<div>').append($ok).append(' ').append($cancel), true, 'discard-dialog');
 				$cards = [Imperator.Cards.CARD_ARTILLERY, Imperator.Cards.CARD_INFANTRY, Imperator.Cards.CARD_CAVALRY, Imperator.Cards.CARD_JOKER];
 				for($n = 0; $n < $cards.length; $n++) {
 					$num = $game.cards.getCard($cards[$n]);
@@ -553,6 +553,9 @@
 					} else if($msg.state == Imperator.Game.STATE_FINISHED) {
 						showGameOverDialog();
 						return;
+					}
+					if($msg.state == Imperator.Game.STATE_COMBAT) {
+						updateCards(Imperator.Cards.CARD_NONE);
 					}
 					$game.state = $msg.state;
 					$update.state[0] = true;
@@ -788,7 +791,7 @@
 			$cards.append($joker);
 		}
 		for($n in $buttons) {
-			if($game.cards.canPlayCombination($n)) {
+			if($game.cards.canPlayCombination($n) && ($game.state === Imperator.Game.STATE_TURN_START || $game.state === Imperator.Game.STATE_FORTIFY)) {
 				$buttons[$n].show();
 			} else {
 				$buttons[$n].hide();
