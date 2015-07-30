@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map id="5">
+	<name>Benelux + Germany</name>
+	<players>4</players>
+	<description lang="en-US">TODO</description>
+	<territories>
+		<territory id="eu_be_antwerp">
+			<name>Antwerp</name>
+			<borders>
+				<border>eu_be_eastflanders</border>
+				<border>eu_be_flemishbrabant</border>
+				<border>eu_be_limburg</border>
+				<border>eu_nl_northbrabant</border>
+				<border>eu_nl_zeeland</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_brussels">
+			<name>Brussels</name>
+			<borders>
+				<border>eu_be_flemishbrabant</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_eastflanders">
+			<name>East Flanders</name>
+			<borders>
+				<border>eu_be_antwerp</border>
+				<border>eu_be_flemishbrabant</border>
+				<border>eu_be_hainaut</border>
+				<border>eu_be_westflanders</border>
+				<border>eu_nl_zeeland</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_flemishbrabant">
+			<name>Flemish Brabant</name>
+			<borders>
+				<border>eu_be_antwerp</border>
+				<border>eu_be_brussels</border>
+				<border>eu_be_eastflanders</border>
+				<border>eu_be_hainaut</border>
+				<border>eu_be_liege</border>
+				<border>eu_be_limburg</border>
+				<border>eu_be_walloonbrabant</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_hainaut">
+			<name>Hainaut</name>
+			<borders>
+				<border>eu_be_eastflanders</border>
+				<border>eu_be_flemishbrabant</border>
+				<border>eu_be_namur</border>
+				<border>eu_be_walloonbrabant</border>
+				<border>eu_be_westflanders</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_liege">
+			<name>Liege</name>
+			<borders>
+				<border>eu_be_flemishbrabant</border>
+				<border>eu_be_limburg</border>
+				<border>eu_be_luxembourg</border>
+				<border>eu_be_namur</border>
+				<border>eu_be_walloonbrabant</border>
+				<border>eu_de_northrhinewestphalia</border>
+				<border>eu_de_rhinelandpalatinate</border>
+				<border>eu_luxembourg</border>
+				<border>eu_nl_limburg</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_limburg">
+			<name>Limburg</name>
+			<borders>
+				<border>eu_be_antwerp</border>
+				<border>eu_be_flemishbrabant</border>
+				<border>eu_be_liege</border>
+				<border>eu_nl_limburg</border>
+				<border>eu_nl_northbrabant</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_luxembourg">
+			<name>Luxembourg</name>
+			<borders>
+				<border>eu_be_liege</border>
+				<border>eu_be_namur</border>
+				<border>eu_luxembourg</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_namur">
+			<name>Namur</name>
+			<borders>
+				<border>eu_be_hainaut</border>
+				<border>eu_be_liege</border>
+				<border>eu_be_luxembourg</border>
+				<border>eu_be_walloonbrabant</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_westflanders">
+			<name>West Flanders</name>
+			<borders>
+				<border>eu_be_eastflanders</border>
+				<border>eu_be_hainaut</border>
+				<border>eu_nl_zeeland</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_be_walloonbrabant">
+			<name>Walloon Brabant</name>
+			<borders>
+				<border>eu_be_flemishbrabant</border>
+				<border>eu_be_hainaut</border>
+				<border>eu_be_liege</border>
+				<border>eu_be_namur</border>
+			</borders>
+			<regions>
+				<region>eu_belgium</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_badenwurttemberg">
+			<name>Baden-Wurttemberg</name>
+			<borders>
+				<border>eu_de_bavaria</border>
+				<border>eu_de_hesse</border>
+				<border>eu_de_rhinelandpalatinate</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_bavaria">
+			<name>Bavaria</name>
+			<borders>
+				<border>eu_de_badenwurttemberg</border>
+				<border>eu_de_hesse</border>
+				<border>eu_de_saxony</border>
+				<border>eu_de_thuringia</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_berlin">
+			<name>Berlin</name>
+			<borders>
+				<border>eu_de_brandenburg</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_brandenburg">
+			<name>Brandenburg</name>
+			<borders>
+				<border>eu_de_berlin</border>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_mecklenburgvorpommern</border>
+				<border>eu_de_saxony</border>
+				<border>eu_de_saxonyanhalt</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_bremen">
+			<name>Bremen</name>
+			<borders>
+				<border>eu_de_lowersaxony</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_hamburg">
+			<name>Hamburg</name>
+			<borders>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_schleswigholstein</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_hesse">
+			<name>Hesse</name>
+			<borders>
+				<border>eu_de_badenwurttemberg</border>
+				<border>eu_de_bavaria</border>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_northrhinewestphalia</border>
+				<border>eu_de_rhinelandpalatinate</border>
+				<border>eu_de_thuringia</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_lowersaxony">
+			<name>Lower Saxony</name>
+			<borders>
+				<border>eu_de_brandenburg</border>
+				<border>eu_de_bremen</border>
+				<border>eu_de_hamburg</border>
+				<border>eu_de_hesse</border>
+				<border>eu_de_mecklenburgvorpommern</border>
+				<border>eu_de_northrhinewestphalia</border>
+				<border>eu_de_saxonyanhalt</border>
+				<border>eu_de_schleswigholstein</border>
+				<border>eu_de_thuringia</border>
+				<border>eu_nl_drenthe</border>
+				<border>eu_nl_groningen</border>
+				<border>eu_nl_overijssel</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_mecklenburgvorpommern">
+			<name>Mecklenburg-Vorpommern</name>
+			<borders>
+				<border>eu_de_brandenburg</border>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_schleswigholstein</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_northrhinewestphalia">
+			<name>North Rhine-Westphalia</name>
+			<borders>
+				<border>eu_be_liege</border>
+				<border>eu_de_hesse</border>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_rhinelandpalatinate</border>
+				<border>eu_nl_gelderland</border>
+				<border>eu_nl_limburg</border>
+				<border>eu_nl_overijssel</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_rhinelandpalatinate">
+			<name>Rhineland-Palatinate</name>
+			<borders>
+				<border>eu_be_liege</border>
+				<border>eu_de_badenwurttemberg</border>
+				<border>eu_de_hesse</border>
+				<border>eu_de_northrhinewestphalia</border>
+				<border>eu_de_saarland</border>
+				<border>eu_luxembourg</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_saarland">
+			<name>Saarland</name>
+			<borders>
+				<border>eu_de_rhinelandpalatinate</border>
+				<border>eu_luxembourg</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_saxony">
+			<name>Saxony</name>
+			<borders>
+				<border>eu_de_bavaria</border>
+				<border>eu_de_brandenburg</border>
+				<border>eu_de_saxonyanhalt</border>
+				<border>eu_de_thuringia</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_saxonyanhalt">
+			<name>Saxony-Anhalt</name>
+			<borders>
+				<border>eu_de_brandenburg</border>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_saxony</border>
+				<border>eu_de_thuringia</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_schleswigholstein">
+			<name>Schleswig-Holstein</name>
+			<borders>
+				<border>eu_de_hamburg</border>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_mecklenburgvorpommern</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_de_thuringia">
+			<name>Thuringia</name>
+			<borders>
+				<border>eu_de_bavaria</border>
+				<border>eu_de_hesse</border>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_saxony</border>
+				<border>eu_de_saxonyanhalt</border>
+			</borders>
+			<regions>
+				<region>eu_germany</region>
+			</regions>
+		</territory>
+		<territory id="eu_luxembourg">
+			<name>Grand Duchy of Luxembourg</name>
+			<borders>
+				<border>eu_be_liege</border>
+				<border>eu_be_luxembourg</border>
+				<border>eu_de_rhinelandpalatinate</border>
+				<border>eu_de_saarland</border>
+			</borders>
+			<regions>
+			</regions>
+		</territory>
+		<territory id="eu_nl_drenthe">
+			<name>Drenthe</name>
+			<borders>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_nl_friesland</border>
+				<border>eu_nl_groningen</border>
+				<border>eu_nl_overijssel</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_flevoland">
+			<name>Flevoland</name>
+			<borders>
+				<border>eu_nl_friesland</border>
+				<border>eu_nl_gelderland</border>
+				<border>eu_nl_northholland</border>
+				<border>eu_nl_overijssel</border>
+				<border>eu_nl_utrecht</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_friesland">
+			<name>Friesland</name>
+			<borders>
+				<border>eu_nl_drenthe</border>
+				<border>eu_nl_flevoland</border>
+				<border>eu_nl_groningen</border>
+				<border>eu_nl_northholland</border>
+				<border>eu_nl_overijssel</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_gelderland">
+			<name>Gelderland</name>
+			<borders>
+				<border>eu_de_northrhinewestphalia</border>
+				<border>eu_nl_flevoland</border>
+				<border>eu_nl_limburg</border>
+				<border>eu_nl_northbrabant</border>
+				<border>eu_nl_overijssel</border>
+				<border>eu_nl_southholland</border>
+				<border>eu_nl_utrecht</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_groningen">
+			<name>Groningen</name>
+			<borders>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_nl_drenthe</border>
+				<border>eu_nl_friesland</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_limburg">
+			<name>Limburg</name>
+			<borders>
+				<border>eu_be_liege</border>
+				<border>eu_be_limburg</border>
+				<border>eu_de_northrhinewestphalia</border>
+				<border>eu_nl_gelderland</border>
+				<border>eu_nl_northbrabant</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_northbrabant">
+			<name>North Brabant</name>
+			<borders>
+				<border>eu_be_antwerp</border>
+				<border>eu_be_limburg</border>
+				<border>eu_nl_gelderland</border>
+				<border>eu_nl_limburg</border>
+				<border>eu_nl_southholland</border>
+				<border>eu_nl_zeeland</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_northholland">
+			<name>North Holland</name>
+			<borders>
+				<border>eu_nl_flevoland</border>
+				<border>eu_nl_friesland</border>
+				<border>eu_nl_southholland</border>
+				<border>eu_nl_utrecht</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_overijssel">
+			<name>Overijssel</name>
+			<borders>
+				<border>eu_de_lowersaxony</border>
+				<border>eu_de_northrhinewestphalia</border>
+				<border>eu_nl_drenthe</border>
+				<border>eu_nl_flevoland</border>
+				<border>eu_nl_friesland</border>
+				<border>eu_nl_gelderland</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_southholland">
+			<name>South Holland</name>
+			<borders>
+				<border>eu_nl_gelderland</border>
+				<border>eu_nl_northbrabant</border>
+				<border>eu_nl_northholland</border>
+				<border>eu_nl_utrecht</border>
+				<border>eu_nl_zeeland</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_utrecht">
+			<name>Utrecht</name>
+			<borders>
+				<border>eu_nl_flevoland</border>
+				<border>eu_nl_gelderland</border>
+				<border>eu_nl_northholland</border>
+				<border>eu_nl_southholland</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+		<territory id="eu_nl_zeeland">
+			<name>Zeeland</name>
+			<borders>
+				<border>eu_be_antwerp</border>
+				<border>eu_be_eastflanders</border>
+				<border>eu_be_westflanders</border>
+				<border>eu_nl_northbrabant</border>
+				<border>eu_nl_southholland</border>
+			</borders>
+			<regions>
+				<region>eu_netherlands</region>
+			</regions>
+		</territory>
+	</territories>
+	<regions>
+		<region id="eu_belgium">
+			<name>Kingdom of Belgium</name>
+			<units>6</units>
+		</region>
+		<region id="eu_germany">
+			<name>Federal Republic of Germany</name>
+			<units>8</units>
+		</region>
+		<region id="eu_netherlands">
+			<name>The Netherlands</name>
+			<units>7</units>
+		</region>
+	</regions>
+	<missions>
+		<mission missionId="0" availability="0" class="DominationMission">
+			<argument type="int">24</argument>
+		</mission>
+		<mission missionId="1" availability="4" fallback="0" class="RivalryMission" />
+		<mission missionId="2" availability="1">
+			<name>Benelux</name>
+			<description>To win this game you will have to conquer the Kingdom of Belgium, the Netherlands, and the Grand Duchy of Luxembourg.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>eu_belgium</argument>
+					<argument>eu_netherlands</argument>
+				</condition>
+				<condition class="TerritoryCondition">
+					<argument>eu_luxembourg</argument>
+				</condition>
+			</conditions>
+		</mission>
+		<mission missionId="3" availability="1">
+			<name>Greater Germany</name>
+			<description>To win this game you will have to conquer the Federal Republic of Germany and one additional region.</description>
+			<conditions>
+				<condition class="RegionCondition">
+					<argument>eu_germany</argument>
+				</condition>
+				<condition class="RegionsCondition">
+					<argument>2</argument>
+				</condition>
+			</conditions>
+		</mission>
+	</missions>
+</map>
