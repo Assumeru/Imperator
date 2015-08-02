@@ -5,6 +5,10 @@
 		<p class="text-info"><span class="glyphicon glyphicon-info-sign"></span> <?php echo $this->__('There are no games available at this time.'); ?></p>
 	</div>
 <?php	} else { ?>
+	<form>
+		<label><input type="checkbox" name="hidestarted" /> <?php echo $this->__('Hide games that have already started.'); ?></label>
+		<label><input type="checkbox" name="hidepassword" /> <?php echo $this->__('Hide password protected games.'); ?></label>
+	</form>
 	<table id="gamelist" class="table table-striped table-hover">
 		<thead>
 			<tr><th><?php echo $this->__('Name'); ?></th><th><?php echo $this->__('Map'); ?></th><th><?php echo $this->__('Players'); ?></th><th><?php echo $this->__('Host'); ?></th></tr>
@@ -14,7 +18,21 @@
 		foreach($games as $game) {
 			$map = $game->getMap();
 ?>
-			<tr>
+			<tr<?php
+	if($game->hasStarted() || $game->hasEnded() || $game->hasPassword()) {
+		echo ' class="';
+		if($game->hasStarted()) {
+			echo 'started ';
+		}
+		if($game->hasEnded()) {
+			echo 'ended ';
+		}
+		if($game->hasPassword()) {
+			echo 'password';
+		}
+		echo '"';
+	}
+?>>
 				<td>
 					<a href="<?php echo \imperator\page\Game::getURL($game); ?>"><?php echo $game->getName(); ?></a>
 <?php	if($game->hasStarted()) { ?>

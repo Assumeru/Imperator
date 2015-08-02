@@ -82,7 +82,10 @@ span .user {
 #chat .chat-scrolling .glyphicon-pause,
 #chat .chat-scrolling input:checked + span .glyphicon-play,
 #log .log-scrolling .glyphicon-pause,
-#log .log-scrolling input:checked + span .glyphicon-play {
+#log .log-scrolling input:checked + span .glyphicon-play,
+#gamelist.hide-started tr.started,
+#gamelist.hide-started tr.ended,
+#gamelist.hide-password tr.password {
 	display: none;
 }
 
