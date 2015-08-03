@@ -56,9 +56,11 @@ class MoveGameRequest extends GameRequest {
 		$from->setUnits($from->getUnits() - $move);
 		$game->setTime(time());
 		$to->setUnits($to->getUnits() + $move);
+		$db->startTransaction();
 		$db->getTable('Games')->updateUnits($game);
 		$territories->updateUnits($to);
 		$territories->updateUnits($from);
+		$db->commitTransaction();
 		return array(
 			'units' => $game->getUnits(),
 			'update' => $game->getTime(),
