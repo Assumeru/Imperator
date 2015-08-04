@@ -25,7 +25,7 @@ class GameList extends DefaultPage {
 	 * @return \imperator\Game[]
 	 */
 	protected function getGames(\imperator\User $user) {
-		return Imperator::getDatabaseManager()->getTable('Games')->getAllGames();
+		return Imperator::getDatabaseManager()->getGamesTable()->getAllGames();
 	}
 
 	private function getGameList(\imperator\User $user) {

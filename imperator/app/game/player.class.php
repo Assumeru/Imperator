@@ -1,5 +1,6 @@
 <?php
 namespace imperator\game;
+use imperator\Imperator;
 
 class Player implements \imperator\Member {
 	const STATE_PLAYING = 0;
@@ -85,7 +86,7 @@ class Player implements \imperator\Member {
 	 */
 	public function getCards() {
 		if(!$this->cards) {
-			$this->cards = Imperator::getDatabaseManager()->getTable('GamesJoined')->getCardsFor($this);
+			$this->cards = Imperator::getDatabaseManager()->getGamesJoinedTable()->getCardsFor($this);
 		}
 		return $this->cards;
 	}

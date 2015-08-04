@@ -50,8 +50,8 @@ class GamesTable extends Table {
 	 * @return \imperator\Game[]
 	 */
 	public function getGamesFor(\imperator\User $user) {
-		$gj = $this->getManager()->getTable('GamesJoined');
-		$u = $this->getManager()->getTable('OutsideUsers');
+		$gj = $this->getManager()->getGamesJoinedTable();
+		$u = $this->getManager()->getOutsideUsersTable();
 		$sql = 'SELECT
 				g.'.static::COLUMN_GID.',
 				g.'.static::COLUMN_NAME.',
@@ -80,8 +80,8 @@ class GamesTable extends Table {
 	 * @return \imperator\Game[]
 	 */
 	public function getAllGames() {
-		$gj = $this->getManager()->getTable('GamesJoined');
-		$u = $this->getManager()->getTable('OutsideUsers');
+		$gj = $this->getManager()->getGamesJoinedTable();
+		$u = $this->getManager()->getOutsideUsersTable();
 		$sql = 'SELECT
 				g.'.static::COLUMN_GID.',
 				g.'.static::COLUMN_NAME.',
@@ -124,7 +124,7 @@ class GamesTable extends Table {
 				$result->getBool(static::COLUMN_CONQUERED),
 				$result->getInt(static::COLUMN_UNITS)
 			);
-			$players = $this->getManager()->getTable('GamesJoined')->getPlayersForGame($game);
+			$players = $this->getManager()->getGamesJoinedTable()->getPlayersForGame($game);
 			$game->setPlayers($players);
 			foreach($players as $player) {
 				if($player->getUser()->equals($game->getOwner()->getUser())) {

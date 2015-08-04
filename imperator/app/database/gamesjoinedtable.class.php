@@ -42,7 +42,7 @@ class GamesJoinedTable extends Table {
 	 */
 	public function getPlayersForGame(\imperator\Game $game) {
 		$gid = $game->getId();
-		$u = $this->getManager()->getTable('OutsideUsers');
+		$u = $this->getManager()->getOutsideUsersTable();
 		$sql = 'SELECT
 			u.'.$u::COLUMN_USERNAME.', u.'.$u::COLUMN_UID.', g.'.static::COLUMN_COLOR.', g.'.static::COLUMN_STATE.',
 			g.'.static::COLUMN_MISSION.', g.'.static::COLUMN_MISSION_UID.', g.'.static::COLUMN_AUTOROLL.',

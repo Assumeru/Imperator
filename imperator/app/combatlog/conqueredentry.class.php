@@ -24,6 +24,6 @@ class ConqueredEntry extends LogEntry {
 	}
 
 	public function save() {
-		Imperator::getDatabaseManager()->getTable('CombatLog')->saveConqueredEntry($this);
+		Imperator::getDatabaseManager()->getCombatLogTable()->saveConqueredEntry($this);
 	}
 }

@@ -242,7 +242,7 @@ class Map {
 				$territories[$n]->setUnits(3);
 			}
 		}
-		Imperator::getDatabaseManager()->getTable('Territories')->saveTerritories($territories);
+		Imperator::getDatabaseManager()->getTerritoriesTable()->saveTerritories($territories);
 	}
 
 	public function distributeMissions(array $players) {
@@ -262,7 +262,7 @@ class Map {
 			}
 			$player->setMission($mission);
 		}
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveMissions($players);
+		Imperator::getDatabaseManager()->getGamesJoinedTable()->saveMissions($players);
 	}
 
 	/**

@@ -35,13 +35,13 @@ class ChatMessage {
 	 * Inserts this message into the database.
 	 */
 	public function insert() {
-		Imperator::getDatabaseManager()->getTable('Chat')->insertMessage($this);
+		Imperator::getDatabaseManager()->getChatTable()->insertMessage($this);
 	}
 
 	/**
 	 * Deletes this message from the database.
 	 */
 	public function delete() {
-		Imperator::getDatabaseManager()->getTable('Chat')->deleteMessage($this);
+		Imperator::getDatabaseManager()->getChatTable()->deleteMessage($this);
 	}
 }

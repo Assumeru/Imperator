@@ -79,23 +79,83 @@ abstract class DatabaseManager {
 	}
 
 	/**
-	 * @param string $name
-	 * @return Table
+	 * @return \imperator\database\AttacksTable
 	 */
-	public function getTable($name) {
-		if(!isset($this->tables[$name])) {
-			$class = '\\imperator\\database\\'.$name.'Table';
-			if(class_exists($class)) {
-				$this->tables[$name] = new $class($this);
-			} else {
-				Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, 'Class "'.$class.'" not found.');
-				$this->tables[$name] = null;
-			}
+	public function getAttacksTable() {
+		if(!isset($this->tables['attacks'])) {
+			$this->tables['attacks'] = new AttacksTable($this);
 		}
-		if($this->tables[$name] == null) {
-			throw new \imperator\exceptions\DatabaseException('Table \''.$name.'\' does not exist.');
+		return $this->tables['attacks'];
+	}
+
+	/**
+	 * @return \imperator\database\ChatTable
+	 */
+	public function getChatTable() {
+		if(!isset($this->tables['chat'])) {
+			$this->tables['chat'] = new ChatTable($this);
 		}
-		return $this->tables[$name];
+		return $this->tables['chat'];
+	}
+
+	/**
+	 * @return \imperator\database\CombatLogTable
+	 */
+	public function getCombatLogTable() {
+		if(!isset($this->tables['log'])) {
+			$this->tables['log'] = new CombatLogTable($this);
+		}
+		return $this->tables['log'];
+	}
+
+	/**
+	 * @return \imperator\database\GamesJoinedTable
+	 */
+	public function getGamesJoinedTable() {
+		if(!isset($this->tables['gamesjoined'])) {
+			$this->tables['gamesjoined'] = new GamesJoinedTable($this);
+		}
+		return $this->tables['gamesjoined'];
+	}
+
+	/**
+	 * @return \imperator\database\GamesTable
+	 */
+	public function getGamesTable() {
+		if(!isset($this->tables['games'])) {
+			$this->tables['games'] = new GamesTable($this);
+		}
+		return $this->tables['games'];
+	}
+
+	/**
+	 * @return \imperator\database\OutsideUsersTable
+	 */
+	public function getOutsideUsersTable() {
+		if(!isset($this->tables['outside'])) {
+			$this->tables['outside'] = new OutsideUsersTable($this);
+		}
+		return $this->tables['outside'];
+	}
+
+	/**
+	 * @return \imperator\database\TerritoriesTable
+	 */
+	public function getTerritoriesTable() {
+		if(!isset($this->tables['territories'])) {
+			$this->tables['territories'] = new TerritoriesTable($this);
+		}
+		return $this->tables['territories'];
+	}
+
+	/**
+	 * @return \imperator\database\UsersTable
+	 */
+	public function getUsersTable() {
+		if(!isset($this->tables['users'])) {
+			$this->tables['users'] = new UsersTable($this);
+		}
+		return $this->tables['users'];
 	}
 
 	/**

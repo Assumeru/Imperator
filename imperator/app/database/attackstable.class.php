@@ -13,7 +13,7 @@ class AttacksTable extends Table {
 	 * @return bool
 	 */
 	public function playerHasToDefend(\imperator\game\Player $user) {
-		$t = $this->getManager()->getTable('Territories');
+		$t = $this->getManager()->getTerritoriesTable();
 		return $this->getManager()->rowExists(static::NAME.' AS a
 				JOIN '.$t::NAME.' AS t
 				ON (a.'.static::COLUMN_GID.' = t.'.$t::COLUMN_GID.'

@@ -14,7 +14,7 @@ class UsersTable extends Table {
 	 */
 	public function getUsersByScore() {
 		$users = array();
-		$u = $this->getManager()->getTable('OutsideUsers');
+		$u = $this->getManager()->getOutsideUsersTable();
 		$sql = 'SELECT s.*, u.'.$u::COLUMN_USERNAME.'
 				FROM '.static::NAME.' AS s
 				JOIN '.$u::NAME.' AS u

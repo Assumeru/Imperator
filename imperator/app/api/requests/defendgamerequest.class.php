@@ -40,7 +40,7 @@ class DefendGameRequest extends GameRequest {
 		$this->getGame()->loadMap();
 		$this->getGame()->getMap()->setGame($this->getGame());
 		$db = Imperator::getDatabaseManager();
-		$attacks = $db->getTable('Attacks');
+		$attacks = $db->getAttacksTable();
 		$attack = $attacks->getAttack($from, $to);
 		if(!$to->getOwner()->getUser()->equals($user)) {
 			throw new \imperator\exceptions\InvalidRequestException('User %1$d does not own "%2$s" in %3$d', $user->getId(), $to->getId(), $this->getGame()->getId());
@@ -51,7 +51,7 @@ class DefendGameRequest extends GameRequest {
 		$this->getGame()->executeAttack($attack);
 		$attacks->deleteAttack($attack);
 		$this->getGame()->setTime(time());
-		$db->getTable('Games')->updateTime($this->getGame());
+		$db->getGamesTable()->updateTime($this->getGame());
 		return array(
 			'territories' => array(
 				$to->getId() => array(

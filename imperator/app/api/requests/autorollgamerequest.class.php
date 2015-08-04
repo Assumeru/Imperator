@@ -26,7 +26,7 @@ class AutoRollGameRequest extends GameRequest {
 		parent::handle($user);
 		$player = $this->getGame()->getPlayerByUser($user);
 		$player->setAutoRoll($this->getAutoRoll());
-		Imperator::getDatabaseManager()->getTable('GamesJoined')->saveAutoRoll($player);
+		Imperator::getDatabaseManager()->getGamesJoinedTable()->saveAutoRoll($player);
 		return array(
 			'autoroll' => $player->getAutoRoll()
 		);

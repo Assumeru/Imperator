@@ -27,9 +27,9 @@ class ChatTable extends Table {
 	 * @return \imperator\chat\ChatMessage[]
 	 */
 	public function getMessagesAfter($gid, $time) {
-		$u = $this->getManager()->getTable('OutsideUsers');
+		$u = $this->getManager()->getOutsideUsersTable();
 		if($gid !== 0) {
-			$gj = $this->getManager()->getTable('GamesJoined');
+			$gj = $this->getManager()->getGamesJoinedTable();
 		}
 		$sql = '
 			SELECT c.*, u.'.$u::COLUMN_USERNAME;

@@ -25,16 +25,12 @@ class MyBBDatabaseManager extends \imperator\database\DatabaseManager {
 		return $db->escape_string($value);
 	}
 
-	public function getTable($name) {
-		if($name == 'OutsideUsers') {
-			if(!$this->table) {
-				Imperator::getSettings()->includeMyBB();
-				$this->table = new MyBBUserTable($this);
-			}
-			return $this->table;
-		} else {
-			return parent::getTable($name);
+	public function getOutsideUsersTable() {
+		if(!isset($this->table)) {
+			Imperator::getSettings()->includeMyBB();
+			$this->table = new MyBBUserTable($this);
 		}
+		return $this->table;
 	}
 
 	public static function getInstance() {

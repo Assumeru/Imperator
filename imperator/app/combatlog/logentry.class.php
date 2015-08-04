@@ -24,6 +24,6 @@ abstract class LogEntry {
 	}
 
 	public function save() {
-		Imperator::getDatabaseManager()->getTable('CombatLog')->saveLogEntry($this);
+		Imperator::getDatabaseManager()->getCombatLogTable()->saveLogEntry($this);
 	}
 }

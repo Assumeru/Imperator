@@ -51,13 +51,13 @@ class MoveGameRequest extends GameRequest {
 			throw new \imperator\exceptions\InvalidRequestException('Invalid move');
 		}
 		$db = Imperator::getDatabaseManager();
-		$territories = $db->getTable('Territories');
+		$territories = $db->getTerritoriesTable();
 		$game->setUnits($game->getUnits() - $move);
 		$from->setUnits($from->getUnits() - $move);
 		$game->setTime(time());
 		$to->setUnits($to->getUnits() + $move);
 		$db->startTransaction();
-		$db->getTable('Games')->updateUnits($game);
+		$db->getGamesTable()->updateUnits($game);
 		$territories->updateUnits($to);
 		$territories->updateUnits($from);
 		$db->commitTransaction();

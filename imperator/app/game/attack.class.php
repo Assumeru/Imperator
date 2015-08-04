@@ -97,6 +97,6 @@ class Attack {
 	}
 
 	public function save() {
-		Imperator::getDatabaseManager()->getTable('Attacks')->insertAttack($this);
+		Imperator::getDatabaseManager()->getAttacksTable()->insertAttack($this);
 	}
 }

@@ -7,6 +7,6 @@ class YourGameList extends GameList {
 	const URL = 'my-games';
 
 	protected function getGames(\imperator\User $user) {
-		return Imperator::getDatabaseManager()->getTable('Games')->getGamesFor($user);
+		return Imperator::getDatabaseManager()->getGamesTable()->getGamesFor($user);
 	}
 }

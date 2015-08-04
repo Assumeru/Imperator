@@ -35,6 +35,6 @@ class CardsPlayedEntry extends LogEntry {
 	}
 
 	public function save() {
-		Imperator::getDatabaseManager()->getTable('CombatLog')->saveCardsEntry($this);
+		Imperator::getDatabaseManager()->getCombatLogTable()->saveCardsEntry($this);
 	}
 }

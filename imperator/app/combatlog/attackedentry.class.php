@@ -62,6 +62,6 @@ class AttackedEntry extends LogEntry {
 	}
 
 	public function save() {
-		Imperator::getDatabaseManager()->getTable('CombatLog')->saveAttackedEntry($this);
+		Imperator::getDatabaseManager()->getCombatLogTable()->saveAttackedEntry($this);
 	}
 }

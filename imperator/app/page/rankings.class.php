@@ -13,7 +13,7 @@ class Rankings extends DefaultPage {
 	public function render(\imperator\User $user) {
 		$this->setTitle($user->getLanguage()->translate(self::NAME));
 		$this->setBodyContents(Template::getInstance('rankings', $user->getLanguage())->setVariables(array(
-			'users' => Imperator::getDatabaseManager()->getTable('Users')->getUsersByScore()
+			'users' => Imperator::getDatabaseManager()->getUsersTable()->getUsersByScore()
 		)));
 		$this->addJavascript('jquery.tablesorter.min.js');
 		$this->addJavascript('tablesorter.js');

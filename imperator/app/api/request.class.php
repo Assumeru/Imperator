@@ -33,11 +33,11 @@ abstract class Request {
 	}
 
 	protected function isPlayerInGame(\imperator\User $user, $gid) {
-		return Imperator::getDatabaseManager()->getTable('GamesJoined')->gameContainsPlayer($gid, $user);
+		return Imperator::getDatabaseManager()->getGamesJoinedTable()->gameContainsPlayer($gid, $user);
 	}
 
 	protected function isGameOwner(\imperator\User $user, $gid) {
-		return Imperator::getDatabaseManager()->getTable('Games')->gameOwnerEquals($gid, $user);
+		return Imperator::getDatabaseManager()->getGamesTable()->gameOwnerEquals($gid, $user);
 	}
 
 	protected function getAttacks(\imperator\Game $game) {

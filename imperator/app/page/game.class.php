@@ -13,7 +13,7 @@ class Game extends DefaultPage {
 		$gameId = null;
 		if(isset($arguments[0]) && is_numeric($arguments[0])) {
 			$gameId = (int)$arguments[0];
-			$this->game = Imperator::getDatabaseManager()->getTable('Games')->getGameById($gameId);
+			$this->game = Imperator::getDatabaseManager()->getGamesTable()->getGameById($gameId);
 		}
 	}
 

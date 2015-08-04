@@ -58,7 +58,7 @@ class AttackGameRequest extends GameRequest {
 		$attack->rollAttack($this->getUnits());
 		$game->setState(\imperator\Game::STATE_COMBAT);
 		$game->setTime(time());
-		Imperator::getDatabaseManager()->getTable('Games')->updateState($game);
+		Imperator::getDatabaseManager()->getGamesTable()->updateState($game);
 		if($to->getUnits() === 1 || $to->getOwner()->getAutoRoll() || $attack->attackerCannotWin()) {
 			$attack->autoRollDefence();
 			$game->executeAttack($attack);

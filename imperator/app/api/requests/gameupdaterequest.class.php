@@ -12,7 +12,7 @@ class GameUpdateRequest extends UpdateRequest {
 		/**
 		 * @var $game \imperator\Game
 		*/
-		$game = $db->getTable('Games')->getGameById($this->getGid());
+		$game = $db->getGamesTable()->getGameById($this->getGid());
 		if(!$game) {
 			return array(
 				'gameState' => $user->getLanguage()->translate('This game has been disbanded.'),
@@ -20,7 +20,7 @@ class GameUpdateRequest extends UpdateRequest {
 				'redirect' => \imperator\page\GameList::getURL()
 			);
 		}
-		$messages = $db->getTable('Chat')->getMessagesAfter($this->getGid(), $this->getTime());
+		$messages = $db->getChatTable()->getMessagesAfter($this->getGid(), $this->getTime());
 		$output = array(
 			'messages' => $this->getJSONMessages($messages),
 			'update' => time(),
@@ -95,7 +95,7 @@ class GameUpdateRequest extends UpdateRequest {
 			);
 		}
 		$output['combatlog'] = array();
-		$logs = Imperator::getDatabaseManager()->getTable('CombatLog')->getLogsAfter($game, $this->getTime());
+		$logs = Imperator::getDatabaseManager()->getCombatLogTable()->getLogsAfter($game, $this->getTime());
 		foreach($logs as $log) {
 			$output['combatlog'][] = array(
 				'time' => date(DATE_ATOM, $log->getTime()),

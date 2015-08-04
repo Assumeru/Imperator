@@ -35,7 +35,7 @@ abstract class GameRequest extends \imperator\api\Request {
 	}
 
 	public function __construct($gid) {
-		$this->game = Imperator::getDatabaseManager()->getTable('Games')->getGameById((int)$gid);
+		$this->game = Imperator::getDatabaseManager()->getGamesTable()->getGameById((int)$gid);
 	}
 
 	public function getMode() {

@@ -21,7 +21,7 @@ class LongPolling extends Api {
 
 	protected function handleChatUpdateRequest() {
 		set_time_limit(0);
-		$table = Imperator::getDatabaseManager()->getTable('Chat');
+		$table = Imperator::getDatabaseManager()->getChatTable();
 		$settings = Imperator::getSettings();
 		$max = $settings->getMaxLongPollingTries();
 		$sleep = $settings->getLongPollingTimeout();
@@ -35,8 +35,8 @@ class LongPolling extends Api {
 
 	protected function handleGameUpdateRequest() {
 		set_time_limit(0);
-		$chat = Imperator::getDatabaseManager()->getTable('Chat');
-		$games = Imperator::getDatabaseManager()->getTable('Games');
+		$chat = Imperator::getDatabaseManager()->getChatTable();
+		$games = Imperator::getDatabaseManager()->getGamesTable();
 		$settings = Imperator::getSettings();
 		$max = $settings->getMaxLongPollingTries();
 		$sleep = $settings->getLongPollingTimeout();
