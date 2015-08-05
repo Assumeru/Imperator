@@ -71,6 +71,9 @@ Imperator.API = (function($) {
 				}
 			}
 		}
+		if($response.error === undefined) {
+			$response.error = 'Unkown error';
+		}
 		for(var $n = 0; $n < $onError.length; $n++) {
 			$onError[$n]($response);
 		}
