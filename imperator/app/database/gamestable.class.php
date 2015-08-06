@@ -3,17 +3,20 @@ namespace imperator\database;
 use imperator\Imperator;
 
 class GamesTable extends Table {
-	const NAME				= 'imperator_games';
-	const COLUMN_GID		= 'gid';
-	const COLUMN_MAP		= 'map';
-	const COLUMN_NAME		= 'name';
-	const COLUMN_UID		= 'uid';
-	const COLUMN_TURN		= 'turn';
-	const COLUMN_TIME		= 'time';
-	const COLUMN_STATE		= 'state';
-	const COLUMN_UNITS		= 'units';
-	const COLUMN_CONQUERED	= 'conquered';
-	const COLUMN_PASSWORD	= 'password';
+	protected function register(DatabaseManager $manager) {
+		$manager->registerTable('GAMES', 'imperator_games', array(
+			'GAME' => 'gid',
+			'MAP' => 'map',
+			'NAME' => 'name',
+			'USER' => 'uid',
+			'TURN' => 'turn',
+			'TIME' => 'time',
+			'STATE' => 'state',
+			'UNITS' => 'units',
+			'CONQUERED' => 'conquered',
+			'PASSWORD' => 'password'
+		));
+	}
 
 	/**
 	 * Deletes a game from the database.
@@ -21,7 +24,10 @@ class GamesTable extends Table {
 	 * @param \imperator\Game $game
 	 */
 	public function deleteGame(\imperator\Game $game) {
-		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'DELETE FROM @GAMES WHERE @GAMES.GAME = %d',
+			$game->getId()
+		)->free();
 	}
 
 	/**
@@ -31,15 +37,15 @@ class GamesTable extends Table {
 	 */
 	public function createNewGame(\imperator\Game $game) {
 		$array = array(
-			static::COLUMN_MAP => $game->getMap()->getId(),
-			static::COLUMN_NAME => $game->getName(false),
-			static::COLUMN_UID => $game->getOwner()->getId(),
-			static::COLUMN_TIME => time()
+			'@GAMES.MAP' => $game->getMap()->getId(),
+			'@GAMES.NAME' => $game->getName(false),
+			'@GAMES.USER' => $game->getOwner()->getId(),
+			'@GAMES.TIME' => time()
 		);
 		if($game->hasPassword()) {
-			$array[static::COLUMN_PASSWORD] = $game->getPassword();
+			$array['@GAMES.PASSWORD'] = $game->getPassword();
 		}
-		$query = $this->getManager()->insert(static::NAME, $array);
+		$query = $this->getManager()->insert('@GAMES', $array);
 		$game->setId($query->getInsertId());
 		$query->free();
 	}
@@ -50,29 +56,27 @@ class GamesTable extends Table {
 	 * @return \imperator\Game[]
 	 */
 	public function getGamesFor(\imperator\User $user) {
-		$gj = $this->getManager()->getGamesJoinedTable();
-		$u = $this->getManager()->getOutsideUsersTable();
-		$sql = 'SELECT
-				g.'.static::COLUMN_GID.',
-				g.'.static::COLUMN_NAME.',
-				g.'.static::COLUMN_MAP.',
-				COUNT(gj.'.$gj::COLUMN_UID.') AS players,
-				g.'.static::COLUMN_UID.',
-				g.'.static::COLUMN_STATE.',
-				g.'.static::COLUMN_TURN.',
-				g.'.static::COLUMN_PASSWORD.',
-				u.'.$u::COLUMN_USERNAME.'
-			FROM '.static::NAME.' AS g
-			JOIN '.$gj::NAME.' AS gj ON(g.'.static::COLUMN_GID.' = gj.'.$gj::COLUMN_GID.')
-			JOIN '.$u::NAME.' AS u ON(g.'.static::COLUMN_UID.' = u.'.$u::COLUMN_UID.')
-			WHERE gj.'.$gj::COLUMN_GID.' IN(
-				SELECT '.$gj::COLUMN_GID.'
-				FROM '.$gj::NAME.'
-				WHERE '.$gj::COLUMN_UID.' = '.$user->getId().'
+		return $this->getGames($this->getManager()->preparedStatement(
+			'SELECT
+				@GAMES.GAME,
+				@GAMES.NAME,
+				@GAMES.MAP,
+				COUNT(@GAMESJOINED.USER) AS players,
+				@GAMES.USER,
+				@GAMES.STATE,
+				@GAMES.TURN,
+				@GAMES.PASSWORD,
+				@OUTSIDEUSERS.USERNAME
+			FROM @GAMES
+			JOIN @GAMESJOINED ON(@GAMES.GAME = @GAMESJOINED.GAME)
+			JOIN @OUTSIDEUSERS ON(@GAMES.USER = @OUTSIDEUSERS.USER)
+			WHERE @GAMESJOINED.GAME IN(
+				SELECT @GAMESJOINED.GAME
+				FROM @GAMESJOINED
+				WHERE @GAMESJOINED.USER = %d
 			)
-			GROUP BY gj.'.$gj::COLUMN_GID.'
-			ORDER BY '.static::COLUMN_MAP.', players ASC';
-		return $this->getGames($this->getManager()->query($sql), $u);
+			GROUP BY @GAMESJOINED.GAME
+			ORDER BY @GAMES.MAP, players ASC', $user->getId()));
 	}
 
 	/**
@@ -80,24 +84,22 @@ class GamesTable extends Table {
 	 * @return \imperator\Game[]
 	 */
 	public function getAllGames() {
-		$gj = $this->getManager()->getGamesJoinedTable();
-		$u = $this->getManager()->getOutsideUsersTable();
-		$sql = 'SELECT
-				g.'.static::COLUMN_GID.',
-				g.'.static::COLUMN_NAME.',
-				g.'.static::COLUMN_MAP.',
-				COUNT(gj.'.$gj::COLUMN_UID.') AS players,
-				g.'.static::COLUMN_UID.',
-				g.'.static::COLUMN_STATE.',
-				g.'.static::COLUMN_TURN.',
-				g.'.static::COLUMN_PASSWORD.',
-				u.'.$u::COLUMN_USERNAME.'
-			FROM '.static::NAME.' AS g
-			JOIN '.$gj::NAME.' AS gj ON(g.'.static::COLUMN_GID.' = gj.'.$gj::COLUMN_GID.')
-			JOIN '.$u::NAME.' AS u ON(g.'.static::COLUMN_UID.' = u.'.$u::COLUMN_UID.')
-			GROUP BY gj.'.$gj::COLUMN_GID.'
-			ORDER BY '.static::COLUMN_MAP.', players ASC';
-		return $this->getGames($this->getManager()->query($sql), $u);
+		return $this->getGames($this->getManager()->preparedStatement(
+			'SELECT
+				@GAMES.GAME,
+				@GAMES.NAME,
+				@GAMES.MAP,
+				COUNT(@GAMESJOINED.USER) AS players,
+				@GAMES.USER,
+				@GAMES.STATE,
+				@GAMES.TURN,
+				@GAMES.PASSWORD,
+				@OUTSIDEUSERS.USERNAME
+			FROM @GAMES
+			JOIN @GAMESJOINED ON(@GAMES.GAME = @GAMESJOINED.GAME)
+			JOIN @OUTSIDEUSERS ON(@GAMES.USER = @OUTSIDEUSERS.USER)
+			GROUP BY @GAMESJOINED.GAME
+			ORDER BY @GAMES.MAP, players ASC'));
 	}
 
 	/**
@@ -107,31 +109,25 @@ class GamesTable extends Table {
 	 */
 	public function getGameById($gameId) {
 		$game = null;
-		$gameId = $gameId;
 		$userClass = Imperator::getSettings()->getUserClass();
-		$query = $this->getManager()->query('SELECT * FROM '.static::NAME.' WHERE '.static::COLUMN_GID.' = '.$gameId);
+		$query = $this->getManager()->preparedStatement('SELECT * FROM @GAMES WHERE @GAMES.GAME = %d', $gameId);
 		if($result = $query->fetchResult()) {
 			$game = new \imperator\Game(
-				$result->getInt(static::COLUMN_GID),
-				new \imperator\game\Player(new $userClass($result->getInt(static::COLUMN_UID))),
-				$result->get(static::COLUMN_NAME),
-				$result->getInt(static::COLUMN_MAP),
-				$result->getInt(static::COLUMN_STATE),
-				$result->getInt(static::COLUMN_TURN),
+				$result->getInt(0),
+				new \imperator\game\Player(new $userClass($result->getInt(3))),
+				$result->get(2),
+				$result->getInt(1),
+				$result->getInt(6),
+				$result->getInt(4),
 				1,
-				$result->get(static::COLUMN_PASSWORD),
-				$result->getInt(static::COLUMN_TIME),
-				$result->getBool(static::COLUMN_CONQUERED),
-				$result->getInt(static::COLUMN_UNITS)
+				$result->get(9),
+				$result->getInt(5),
+				$result->getBool(8),
+				$result->getInt(7)
 			);
 			$players = $this->getManager()->getGamesJoinedTable()->getPlayersForGame($game);
 			$game->setPlayers($players);
-			foreach($players as $player) {
-				if($player->getUser()->equals($game->getOwner()->getUser())) {
-					$game->setOwner($player);
-					break;
-				}
-			}
+			$game->setOwner($game->getPlayerByUser($game->getOwner()->getUser()));
 		}
 		$query->free();
 		return $game;
@@ -143,20 +139,20 @@ class GamesTable extends Table {
 	 * @param OutsideUsersTable $u
 	 * @return \imperator\Game[]
 	 */
-	private function getGames(Query $query, OutsideUsersTable $u) {
+	private function getGames(Query $query) {
 		$games = array();
 		$userClass = Imperator::getSettings()->getUserClass();
 		while($result = $query->fetchResult()) {
-			$player = new \imperator\game\Player(new $userClass($result->getInt(static::COLUMN_UID), $result->get($u::COLUMN_USERNAME)));
+			$player = new \imperator\game\Player(new $userClass($result->getInt(4), $result->get(8)));
 			$game = new \imperator\Game(
-				$result->getInt(static::COLUMN_GID),
+				$result->getInt(0),
 				$player,
-				$result->get(static::COLUMN_NAME),
-				$result->getInt(static::COLUMN_MAP),
-				$result->getInt(static::COLUMN_STATE),
-				$result->getInt(static::COLUMN_TURN),
-				$result->getInt('players'),
-				$result->get(static::COLUMN_PASSWORD)
+				$result->get(1),
+				$result->getInt(2),
+				$result->getInt(5),
+				$result->getInt(6),
+				$result->getInt(3),
+				$result->get(7)
 			);
 			$player->setGame($game);
 			$games[] = $game;
@@ -166,16 +162,17 @@ class GamesTable extends Table {
 	}
 
 	public function updateTime(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_TIME => time()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET @GAMES.TIME = %d WHERE @GAMES.GAME = %d',
+			time(), $game->getId()
+		)->free();
 	}
 
 	public function updateTurn(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_TURN => $game->getTurn(),
-			static::COLUMN_TIME => time()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET @GAMES.TIME = %d, @GAMES.TURN = %d WHERE @GAMES.GAME = %d',
+			time(), $game->getTurn(), $game->getId()
+		)->free();
 	}
 
 	/**
@@ -184,10 +181,11 @@ class GamesTable extends Table {
 	 * @return bool
 	 */
 	public function gameOwnerEquals($gid, \imperator\User $user) {
-		return $this->getManager()->rowExists(static::NAME,
-			static::COLUMN_GID.' = '.$gid.'
-			AND '.static::COLUMN_UID.' = '.$user->getId()
-		);
+		$db = $this->getManager();
+		return $db->exists($db->preparedStatement(
+			'SELECT 1 FROM @GAMES WHERE @GAMES.GAME = %d AND @GAMES.USER = %d',
+			$gid, $user->getId()
+		));
 	}
 
 	/**
@@ -196,61 +194,82 @@ class GamesTable extends Table {
 	 * @return bool
 	 */
 	public function timeIsAfter($gid, $time) {
-		return $this->getManager()->rowExists(static::NAME,
-			static::COLUMN_GID.' = '.$gid.'
-			AND '.static::COLUMN_TIME.' > '.$time
-		);
+		$db = $this->getManager();
+		return $db->exists($db->preparedStatement(
+			'SELECT 1 FROM @GAMES WHERE @GAMES.GAME = %d AND @GAMES.TIME > %d',
+			$gid, $time
+		));
 	}
 
 	public function nextTurn(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_CONQUERED => (int)$game->hasConquered(),
-			static::COLUMN_STATE => $game->getState(),
-			static::COLUMN_TIME => $game->getTime(),
-			static::COLUMN_TURN => $game->getTurn(),
-			static::COLUMN_UNITS => $game->getUnits()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET
+			@GAMES.CONQUERED = %b,
+			@GAMES.STATE = %d,
+			@GAMES.TIME = %d,
+			@GAMES.TURN = %d,
+			@GAMES.UNITS = %d
+			WHERE @GAMES.GAME = %d',
+			$game->hasConquered(), $game->getState(), $game->getTime(),
+			$game->getTurn(), $game->getUnits(), $game->getId()
+		)->free();
 	}
 
 	public function updateUnitsAndState(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_STATE => $game->getState(),
-			static::COLUMN_UNITS => $game->getUnits(),
-			static::COLUMN_TIME => $game->getTime()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET
+			@GAMES.STATE = %d,
+			@GAMES.TIME = %d,
+			@GAMES.UNITS = %d
+			WHERE @GAMES.GAME = %d',
+			$game->getState(), $game->getTime(), $game->getUnits(), $game->getId()
+		)->free();
 	}
 
 	public function updateUnits(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_UNITS => $game->getUnits(),
-			static::COLUMN_TIME => $game->getTime()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET
+			@GAMES.TIME = %d,
+			@GAMES.UNITS = %d
+			WHERE @GAMES.GAME = %d',
+			$game->getTime(), $game->getUnits(), $game->getId()
+		)->free();
 	}
 
 	public function updateState(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_STATE => $game->getState(),
-			static::COLUMN_TIME => $game->getTime()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET
+			@GAMES.STATE = %d,
+			@GAMES.TIME = %d
+			WHERE @GAMES.GAME = %d',
+			$game->getState(), $game->getTime(), $game->getId()
+		)->free();
 	}
 
 	public function updateStateAndTurn(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_TURN => $game->getTurn(),
-			static::COLUMN_STATE => $game->getState(),
-			static::COLUMN_TIME => $game->getTime()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET
+			@GAMES.STATE = %d,
+			@GAMES.TURN = %d,
+			@GAMES.TIME = %d
+			WHERE @GAMES.GAME = %d',
+			$game->getState(), $game->getTurn(), $game->getTime(), $game->getId()
+		)->free();
 	}
 
 	public function updateConquered(\imperator\Game $game) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_STATE => $game->getState(),
-			static::COLUMN_TIME => $game->getTime(),
-			static::COLUMN_CONQUERED => (int)$game->hasConquered()
-		), static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @GAMES SET
+			@GAMES.STATE = %d,
+			@GAMES.CONQUERED = %b,
+			@GAMES.TIME = %d
+			WHERE @GAMES.GAME = %d',
+			$game->getState(), $game->getTime(), $game->hasConquered(), $game->getId()
+		)->free();
 	}
 
 	public function gameExists($gid) {
-		return $this->getManager()->rowExists(static::NAME, static::COLUMN_GID.' = '.$gid);
+		$db = $this->getManager();
+		return $db->exists($db->preparedStatement('SELECT 1 FROM @GAMES WHERE @GAMES.GAME = %d', $gid));
 	}
 }

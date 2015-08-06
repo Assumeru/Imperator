@@ -10,7 +10,19 @@ class MyBBQuery implements \imperator\database\Query {
 
 	public function fetchResult() {
 		global $db;
-		$result = $db->fetch_array($this->query);
+		$const = MYSQLI_NUM;
+		switch($db->engine) {
+			case 'mysql':
+				$const = MYSQL_NUM;
+				break;
+			case 'pgsql':
+				$const = PGSQL_NUM;
+				break;
+			case 'pdo':
+				$const = \PDO::FETCH_NUM;
+				break;
+		}
+		$result = $db->fetch_array($this->query, $const);
 		if($result) {
 			return new \imperator\database\Result($result);
 		}

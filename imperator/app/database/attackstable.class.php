@@ -2,24 +2,30 @@
 namespace imperator\database;
 
 class AttacksTable extends Table {
-	const NAME						= 'imperator_attacks';
-	const COLUMN_GID				= 'gid';
-	const COLUMN_ATTACKING_TERRITORY= 'a_territory';
-	const COLUMN_DEFENDING_TERRITORY= 'd_territory';
-	const COLUMN_DICE_ROLL			= 'a_roll';
-	const COLUMN_TRANSFERING_UNITS	= 'transfer';
+	protected function register(DatabaseManager $manager) {
+		$manager->registerTable('ATTACKS', 'imperator_attacks', array(
+			'GAME' => 'gid',
+			'ATTACKING_TERRITORY' => 'a_territory',
+			'DEFENDING_TERRITORY' => 'd_territory',
+			'DICE_ROLL' => 'a_roll',
+			'TRANSFERING_UNITS' => 'transfer'
+		));
+	}
 
 	/**
 	 * @return bool
 	 */
 	public function playerHasToDefend(\imperator\game\Player $user) {
-		$t = $this->getManager()->getTerritoriesTable();
-		return $this->getManager()->rowExists(static::NAME.' AS a
-				JOIN '.$t::NAME.' AS t
-				ON (a.'.static::COLUMN_GID.' = t.'.$t::COLUMN_GID.'
-				AND a.'.static::COLUMN_DEFENDING_TERRITORY.' = t.'.$t::COLUMN_TERRITORY.')',
-			'a.'.static::COLUMN_GID.' = '.$user->getGame()->getId().'
-				AND '.$t::COLUMN_UID.' = '.$user->getId());
+		$db = $this->getManager();
+		return $db->exists($db->preparedStatement(
+			'SELECT 1
+			FROM @ATTACKS
+			JOIN @TERRITORIES
+			ON (@ATTACKS.GAME = @TERRITORIES.GAME AND @ATTACKS.DEFENDING_TERRITORY = @TERRITORIES.TERRITORY)
+			WHERE @ATTACKS.GAME = %d AND @TERRITORIES.USER = %d',
+			$user->getGame()->getId(),
+			$user->getId()
+		));
 	}
 
 	/**
@@ -27,7 +33,8 @@ class AttacksTable extends Table {
 	 * @return bool
 	 */
 	public function gameHasAttacks(\imperator\Game $game) {
-		return $this->getManager()->rowExists(static::NAME, static::COLUMN_GID.' = '.$game->getId());
+		$db = $this->getManager();
+		return $db->exists($db->preparedStatement('SELECT 1 FROM @ATTACKS WHERE @ATTACKS.GAME = %d', $game->getId()));
 	}
 
 	/**
@@ -36,19 +43,20 @@ class AttacksTable extends Table {
 	 * @return bool
 	 */
 	public function territoriesAreInCombat(\imperator\map\Territory $attacker, \imperator\map\Territory $defender) {
-		$manager = $this->getManager();
-		return $manager->rowExists(static::NAME, static::COLUMN_GID.' = '.$attacker->getGame()->getId().'
-			AND ('.static::COLUMN_ATTACKING_TERRITORY.' = \''.$manager->escape($attacker->getId()).'\'
-			OR '.static::COLUMN_DEFENDING_TERRITORY.' = \''.$manager->escape($defender->getId()).'\')');
+		$db = $this->getManager();
+		$db->exists($db->preparedStatement(
+			'SELECT 1 FROM @ATTACKS WHERE @ATTACKS.GAME = %d AND @ATTACKS.ATTACKING_TERRITORY = %s AND @ATTACKS.DEFENDING_TERRITORY = %s',
+			$attacker->getGame()->getId(), $attacker->getId(), $defender->getId()
+		));
 	}
 
 	public function insertAttack(\imperator\game\Attack $attack) {
-		$this->getManager()->insert(static::NAME, array(
-			static::COLUMN_GID => $attack->getAttacker()->getGame()->getId(),
-			static::COLUMN_ATTACKING_TERRITORY => $attack->getAttacker()->getId(),
-			static::COLUMN_DEFENDING_TERRITORY => $attack->getDefender()->getId(),
-			static::COLUMN_TRANSFERING_UNITS => $attack->getMove(),
-			static::COLUMN_DICE_ROLL => implode('', $attack->getAttackRoll())
+		$this->getManager()->insert('@ATTACKS', array(
+			'@ATTACKS.GAME' => $attack->getAttacker()->getGame()->getId(),
+			'@ATTACKS.ATTACKING_TERRITORY' => $attack->getAttacker()->getId(),
+			'@ATTACKS.DEFENDING_TERRITORY' => $attack->getDefender()->getId(),
+			'@ATTACKS.TRANSFERING_UNITS' => $attack->getMove(),
+			'@ATTACKS.DICE_ROLL' => implode('', $attack->getAttackRoll())
 		))->free();
 	}
 
@@ -58,13 +66,21 @@ class AttacksTable extends Table {
 	 */
 	public function getAttacksFor(\imperator\Game $game) {
 		$attacks = array();
-		$query = $this->getManager()->query('SELECT * FROM '.static::NAME.' WHERE '.static::COLUMN_GID.' = '.$game->getId());
+		$query = $this->getManager()->preparedStatement(
+			'SELECT @ATTACKS.ATTACKING_TERRITORY,
+				@ATTACKS.DEFENDING_TERRITORY,
+				@ATTACKS.TRANSFERING_UNITS,
+				@ATTACKS.DICE_ROLL
+			FROM @ATTACKS
+			WHERE @ATTACKS.GAME = %d',
+			$game->getId()
+		);
 		while($result = $query->fetchResult()) {
 			$attacks[] = new \imperator\game\Attack(
-				$game->getMap()->getTerritoryById($result->get(static::COLUMN_ATTACKING_TERRITORY)),
-				$game->getMap()->getTerritoryById($result->get(static::COLUMN_DEFENDING_TERRITORY)),
-				$result->getInt(static::COLUMN_TRANSFERING_UNITS),
-				str_split($result->get(static::COLUMN_DICE_ROLL))
+				$game->getMap()->getTerritoryById($result->get(0)),
+				$game->getMap()->getTerritoryById($result->get(1)),
+				$result->getInt(2),
+				str_split($result->get(3))
 			);
 		}
 		$query->free();
@@ -78,17 +94,19 @@ class AttacksTable extends Table {
 	 */
 	public function getAttack(\imperator\map\Territory $attacker, \imperator\map\Territory $defender) {
 		$attack = null;
-		$manager = $this->getManager();
-		$query = $manager->query('SELECT '.static::COLUMN_DICE_ROLL.', '.static::COLUMN_TRANSFERING_UNITS.'
-			FROM '.static::NAME.'
-			WHERE '.static::COLUMN_GID.' = '.$attacker->getGame()->getId().'
-			AND '.static::COLUMN_ATTACKING_TERRITORY.' = \''.$manager->escape($attacker->getId()).'\'
-			AND '.static::COLUMN_DEFENDING_TERRITORY.' = \''.$manager->escape($defender->getId()).'\'');
+		$query = $this->getManager()->preparedStatement(
+			'SELECT @ATTACKS.DICE_ROLL, @ATTACKS.TRANSFERING_UNITS
+			FROM @ATTACKS
+			WHERE @ATTACKS.GAME = %d
+			AND @ATTACKS.ATTACKING_TERRITORY = %s
+			AND @ATTACKS.DEFENDING_TERRITORY = %s',
+			$attacker->getGame()->getId(), $attacker->getId(), $defender->getId()
+		);
 		if($result = $query->fetchResult()) {
 			$attack = new \imperator\game\Attack(
 				$attacker, $defender, 
-				$result->getInt(static::COLUMN_TRANSFERING_UNITS),
-				str_split($result->get(static::COLUMN_DICE_ROLL))
+				$result->getInt(1),
+				str_split($result->get(0))
 			);
 		}
 		$query->free();
@@ -96,13 +114,16 @@ class AttacksTable extends Table {
 	}
 
 	public function deleteAttack(\imperator\game\Attack $attack) {
-		$manager = $this->getManager();
-		$manager->delete(static::NAME, static::COLUMN_GID.' = '.$attack->getAttacker()->getGame()->getId().'
-			AND '.static::COLUMN_ATTACKING_TERRITORY.' = \''.$manager->escape($attack->getAttacker()->getId()).'\'
-			AND '.static::COLUMN_DEFENDING_TERRITORY.' = \''.$manager->escape($attack->getDefender()->getId()).'\'')->free();
+		$this->getManager()->preparedStatement(
+			'DELETE FROM @ATTACKS WHERE @ATTACKS.GAME = %d AND @ATTACKS.ATTACKING_TERRITORY = %s AND @ATTACKS.DEFENDING_TERRITORY = %s',
+			$attack->getAttacker()->getGame()->getId(), $attack->getAttacker()->getId(), $attack->getDefender()->getId()
+		)->free();
 	}
 
 	public function removeAttacksFromGame(\imperator\Game $game) {
-		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'DELETE FROM @ATTACKS WHERE @ATTACKS.GAME = %d',
+			$game->getId()
+		)->free();
 	}
 }

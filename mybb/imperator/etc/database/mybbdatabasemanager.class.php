@@ -6,7 +6,8 @@ class MyBBDatabaseManager extends \imperator\database\DatabaseManager {
 	private static $instance = null;
 	private $table = null;
 
-	private function __construct() {
+	protected function __construct() {
+		parent::__construct();
 		Imperator::getSettings()->includeMyBB();
 	}
 

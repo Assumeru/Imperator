@@ -3,20 +3,28 @@ namespace imperator\database;
 use imperator\Imperator;
 
 class ChatTable extends Table {
-	const NAME				= 'imperator_chat';
-	const COLUMN_GID		= 'gid';
-	const COLUMN_UID		= 'uid';
-	const COLUMN_TIME		= 'time';
-	const COLUMN_MESSAGE	= 'message';
+	protected function register(DatabaseManager $manager) {
+		$manager->registerTable('CHAT', 'imperator_chat', array(
+			'GAME' => 'gid',
+			'USER' => 'uid',
+			'TIME' => 'time',
+			'MESSAGE' => 'message'
+		));
+	}
 
 	public function removeMessagesFromGame(\imperator\Game $game) {
-		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'DELETE FROM @CHAT WHERE @CHAT.GAME = %d',
+			$game->getId()
+		)->free();
 	}
 
 	public function hasMessagesAfter($gid, $time) {
-		return $this->getManager()->rowExists(static::NAME,
-			static::COLUMN_GID.' = '.$gid.' AND '.
-			static::COLUMN_TIME.' > '.$time);
+		$db = $this->getManager();
+		return $db->exists($db->preparedStatement(
+			'SELECT 1 FROM @CHAT WHERE @CHAT.GAME = %d AND @CHAT.TIME > %d',
+			$gid, $time
+		));
 	}
 
 	/**
@@ -27,45 +35,36 @@ class ChatTable extends Table {
 	 * @return \imperator\chat\ChatMessage[]
 	 */
 	public function getMessagesAfter($gid, $time) {
-		$u = $this->getManager()->getOutsideUsersTable();
+		$sql = 'SELECT @CHAT.GAME, @CHAT.TIME, @CHAT.USER, @CHAT.MESSAGE, @OUTSIDEUSERS.USERNAME';
 		if($gid !== 0) {
-			$gj = $this->getManager()->getGamesJoinedTable();
+			$sql .= ', @GAMESJOINED.COLOR';
 		}
-		$sql = '
-			SELECT c.*, u.'.$u::COLUMN_USERNAME;
+		$sql .= ' FROM @CHAT
+			JOIN @OUTSIDEUSERS
+			ON(@OUTSIDEUSERS.USER = @CHAT.USER)';
 		if($gid !== 0) {
-			$sql .= ', gj.'.$gj::COLUMN_COLOR;
+			$sql .= ' LEFT JOIN @GAMESJOINED
+			ON(@GAMESJOINED.USER = @CHAT.USER AND @GAMESJOINED.GAME = @CHAT.GAME)';
 		}
-		$sql .= '
-			FROM '.static::NAME.' AS c
-			JOIN '.$u::NAME.' AS u
-			ON(u.'.$u::COLUMN_UID.' = c.'.static::COLUMN_UID.')';
-		if($gid !== 0) {
-			$sql .= '
-			LEFT JOIN '.$gj::NAME.' AS gj
-			ON(gj.'.$gj::COLUMN_UID.' = c.'.static::COLUMN_UID.' AND gj.'.$gj::COLUMN_GID.' = c.'.static::COLUMN_GID.')';
-		}
-		$sql .= '
-			WHERE c.'.static::COLUMN_GID.' = '.$gid.'
-			AND c.'.static::COLUMN_TIME.' > '.$time;
-		$query = $this->getManager()->query($sql);
+		$sql .= ' WHERE @CHAT.GAME = %d AND @CHAT.TIME > %d';
+		$query = $this->getManager()->preparedStatement($sql, $gid, $time);
 		$messages = array();
 		$userClass = Imperator::getSettings()->getUserClass();
 		$users = array();
 		while($result = $query->fetchResult()) {
-			if(!isset($users[$result->getInt(static::COLUMN_UID)])) {
-				$users[$result->getInt(static::COLUMN_UID)] = new $userClass($result->getInt(static::COLUMN_UID), $result->get($u::COLUMN_USERNAME));
+			if(!isset($users[$result->getInt(2)])) {
+				$users[$result->getInt(2)] = new $userClass($result->getInt(2), $result->get(4));
 			}
-			$user = $users[$result->getInt(static::COLUMN_UID)];
-			if($gid !== 0 && $result->get($gj::COLUMN_COLOR) !== null) {
+			$user = $users[$result->getInt(2)];
+			if($gid !== 0 && $result->get(5) !== null) {
 				$user = new \imperator\game\Player($user);
-				$user->setColor($result->get($gj::COLUMN_COLOR));
+				$user->setColor($result->get(5));
 			}
 			$messages[] = new \imperator\chat\ChatMessage(
-				$result->getInt(static::COLUMN_GID),
-				$result->getInt(static::COLUMN_TIME),
+				$result->getInt(0),
+				$result->getInt(1),
 				$user,
-				$result->get(static::COLUMN_MESSAGE)
+				$result->get(3)
 			);
 		}
 		$query->free();
@@ -73,19 +72,18 @@ class ChatTable extends Table {
 	}
 
 	public function insertMessage(\imperator\chat\ChatMessage $message) {
-		$this->getManager()->insert(static::NAME, array(
-			static::COLUMN_GID => $message->getGid(),
-			static::COLUMN_MESSAGE => $message->getMessage(),
-			static::COLUMN_TIME => $message->getTime(),
-			static::COLUMN_UID => $message->getUser()->getId()
+		$this->getManager()->insert('@CHAT', array(
+			'@CHAT.GAME' => $message->getGid(),
+			'@CHAT.MESSAGE' => $message->getMessage(),
+			'@CHAT.TIME' => $message->getTime(),
+			'@CHAT.USER' => $message->getUser()->getId()
 		))->free();
 	}
 
 	public function deleteMessage(\imperator\chat\ChatMessage $message) {
-		$this->getManager()->delete(static::NAME,
-			static::COLUMN_GID.' = '.$message->getGid().'
-			AND '.static::COLUMN_TIME.' = '.$message->getTime().'
-			AND '.static::COLUMN_UID.' = '.$message->getUser()->getId()
+		$this->getManager()->preparedStatement(
+			'DELETE FROM @CHAT WHERE @CHAT.GAME = %d AND @CHAT.TIME = %d AND @CHAT.USER = %d',
+			$message->getGid(), $message->getTime(), $message->getUser()->getId()
 		)->free();
 	}
 }

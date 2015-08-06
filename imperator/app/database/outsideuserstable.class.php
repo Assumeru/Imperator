@@ -1,8 +1,11 @@
 <?php
 namespace imperator\database;
 
-class OutsideUsersTable extends Table {
-	const NAME				= 'users';
-	const COLUMN_UID		= 'uid';
-	const COLUMN_USERNAME	= 'username';
+abstract class OutsideUsersTable extends Table {
+	protected function register(DatabaseManager $manager) {
+		$manager->registerTable('OUTSIDEUSERS', 'imperator_outsideusers', array(
+			'USER' => 'uid',
+			'USERNAME' => 'username'
+		));
+	}
 }

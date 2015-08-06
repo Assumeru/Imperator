@@ -3,33 +3,35 @@ namespace imperator\database;
 use imperator\Imperator;
 
 class UsersTable extends Table {
-	const NAME				= 'imperator_users';
-	const COLUMN_UID		= 'uid';
-	const COLUMN_WINS		= 'wins';
-	const COLUMN_LOSSES		= 'losses';
-	const COLUMN_SCORE		= 'score';
+	protected function register(DatabaseManager $manager) {
+		$manager->registerTable('USERS', 'imperator_users', array(
+			'USER' => 'uid',
+			'WINS' => 'wins',
+			'LOSSES' => 'losses',
+			'SCORE' => 'score'
+		));
+	}
 
 	/**
 	 * @return \imperator\User[]:
 	 */
 	public function getUsersByScore() {
 		$users = array();
-		$u = $this->getManager()->getOutsideUsersTable();
-		$sql = 'SELECT s.*, u.'.$u::COLUMN_USERNAME.'
-				FROM '.static::NAME.' AS s
-				JOIN '.$u::NAME.' AS u
-				ON(s.'.static::COLUMN_UID.' = u.'.$u::COLUMN_UID.')
-				ORDER BY '.static::COLUMN_SCORE.' DESC';
-		$query = $this->getManager()->query($sql);
+		$query = $this->getManager()->preparedStatement(
+			'SELECT @USERS.USER, @USERS.WINS, @USERS.LOSSES, @USERS.SCORE, @OUTSIDEUSERS.USERNAME
+			FROM @USERS
+			JOIN @OUTSIDEUSERS
+			ON (@USERS.USER = @OUTSIDEUSERS.USER)
+			ORDER BY @USERS.SCORE DESC');
 		$userClass = Imperator::getSettings()->getUserClass();
 		while($result = $query->fetchResult()) {
 			$user = new $userClass(
-				$result->getInt(static::COLUMN_UID),
-				$result->get($u::COLUMN_USERNAME)
+				$result->getInt(0),
+				$result->get(4)
 			);
-			$user->setScore($result->getInt(static::COLUMN_SCORE));
-			$user->setWins($result->getInt(static::COLUMN_WINS));
-			$user->setLosses($result->getInt(static::COLUMN_LOSSES));
+			$user->setScore($result->getInt(3));
+			$user->setWins($result->getInt(1));
+			$user->setLosses($result->getInt(2));
 			$users[] = $user;
 		}
 		$query->free();
@@ -37,33 +39,36 @@ class UsersTable extends Table {
 	}
 
 	public function addLoss(\imperator\User $user) {
-		if($this->getManager()->rowExists(static::NAME, static::COLUMN_UID.' = '.$user->getId())) {
-			$this->getManager()->query(
-				'UPDATE '.static::NAME.'
-				SET '.static::COLUMN_LOSSES.' = '.static::COLUMN_LOSSES.' + 1,
-				'.static::COLUMN_SCORE.' = '.static::COLUMN_SCORE.' - 1
-				WHERE '.static::COLUMN_UID.' = '.$user->getId())->free();
+		$db = $this->getManager();
+		if($db->exists($db->preparedStatement('SELECT 1 FROM @USERS WHERE @USERS.USER = %d', $user->getId()))) {
+			$db->preparedStatement(
+				'UPDATE @USERS
+				SET @USERS.LOSSES = @USERS.LOSSES + 1, @USERS.SCORE = @USERS.SCORE - 1
+				WHERE @USERS.USER = %d',
+				$user->getId()
+			)->free();
 		} else {
-			$this->getManager()->insert(static::NAME, array(
-				static::COLUMN_UID => $user->getId(),
-				static::COLUMN_LOSSES => 1,
-				static::COLUMN_SCORE => -1
+			$this->getManager()->insert('@USERS', array(
+				'@USERS.USER' => $user->getId(),
+				'@USERS.LOSSES' => 1,
+				'@USERS.SCORE' => -1
 			))->free();
 		}
 	}
 
 	public function addWin(\imperator\User $user, $score) {
-		if($this->getManager()->rowExists(static::NAME, static::COLUMN_UID.' = '.$user->getId())) {
-			$this->getManager()->query(
-				'UPDATE '.static::NAME.'
-				SET '.static::COLUMN_WINS.' = '.static::COLUMN_WINS.' + 1,
-				'.static::COLUMN_SCORE.' = '.static::COLUMN_SCORE.' + '.$score.'
-				WHERE '.static::COLUMN_UID.' = '.$user->getId())->free();
+		if($db->exists($db->preparedStatement('SELECT 1 FROM @USERS WHERE @USERS.USER = %d', $user->getId()))) {
+			$db->preparedStatement(
+				'UPDATE @USERS
+				SET @USERS.WINS = @USERS.WINS + 1, @USERS.SCORE = @USERS.SCORE + %d
+				WHERE @USERS.USER = %d',
+				$score, $user->getId()
+			)->free();
 		} else {
-			$this->getManager()->insert(static::NAME, array(
-				static::COLUMN_UID => $user->getId(),
-				static::COLUMN_WINS => 1,
-				static::COLUMN_SCORE => 1
+			$this->getManager()->insert('@USERS', array(
+				'@USERS.USER' => $user->getId(),
+				'@USERS.WINS' => 1,
+				'@USERS.SCORE' => 1
 			))->free();
 		}
 	}

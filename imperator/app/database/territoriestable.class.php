@@ -2,27 +2,37 @@
 namespace imperator\database;
 
 class TerritoriesTable extends Table {
-	const NAME				= 'imperator_territories';
-	const COLUMN_GID		= 'gid';
-	const COLUMN_TERRITORY	= 'territory';
-	const COLUMN_UID		= 'uid';
-	const COLUMN_UNITS		= 'units';
+	protected function register(DatabaseManager $manager) {
+		$manager->registerTable('TERRITORIES', 'imperator_territories', array(
+			'GAME' => 'gid',
+			'TERRITORY' => 'territory',
+			'USER' => 'uid',
+			'UNITS' => 'units'
+		));
+	}
 
 	public function removeTerritoriesFromGame(\imperator\Game $game) {
-		$this->getManager()->delete(static::NAME, static::COLUMN_GID.' = '.$game->getId())->free();
+		$this->getManager()->preparedStatement(
+			'DELETE FROM @TERRITORIES WHERE @TERRITORIES.GAME = %d',
+			$game->getId()
+		)->free();
 	}
 
 	public function updateUnits(\imperator\map\Territory $territory) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_UNITS => $territory->getUnits()
-		), static::COLUMN_TERRITORY.' = \''.$this->getManager()->escape($territory->getId()).'\' AND '.static::COLUMN_GID.' = '.$territory->getGame()->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @TERRITORIES SET @TERRITORIES.UNITS = %d WHERE @TERRITORIES.GAME = %d AND @TERRITORIES.TERRITORY = %s',
+			$territory->getUnits(), $territory->getGame()->getId(), $territory->getId()
+		)->free();
 	}
 
 	public function updateUnitsAndOwner(\imperator\map\Territory $territory) {
-		$this->getManager()->update(static::NAME, array(
-			static::COLUMN_UNITS => $territory->getUnits(),
-			static::COLUMN_UID => $territory->getOwner()->getId()
-		), static::COLUMN_TERRITORY.' = \''.$this->getManager()->escape($territory->getId()).'\' AND '.static::COLUMN_GID.' = '.$territory->getGame()->getId())->free();
+		$this->getManager()->preparedStatement(
+			'UPDATE @TERRITORIES SET
+			@TERRITORIES.USER = %d,
+			@TERRITORIES.UNITS = %d
+			WHERE @TERRITORIES.GAME = %d AND @TERRITORIES.TERRITORY = %s',
+			$territory->getOwner()->getId(), $territory->getUnits(), $territory->getGame()->getId(), $territory->getId()
+		)->free();
 	}
 
 	/**
@@ -32,13 +42,13 @@ class TerritoriesTable extends Table {
 		$insert = array();
 		foreach($territories as $territory) {
 			$insert[] = array(
-				static::COLUMN_GID => $territory->getGame()->getId(),
-				static::COLUMN_TERRITORY => $territory->getId(),
-				static::COLUMN_UID => $territory->getOwner()->getId(),
-				static::COLUMN_UNITS => $territory->getUnits()
+				'@TERRITORIES.GAME' => $territory->getGame()->getId(),
+				'@TERRITORIES.TERRITORY' => $territory->getId(),
+				'@TERRITORIES.USER' => $territory->getOwner()->getId(),
+				'@TERRITORIES.UNITS' => $territory->getUnits()
 			);
 		}
-		$this->getManager()->insertMultiple(static::NAME, $insert)->free();
+		$this->getManager()->insertMultiple('@TERRITORIES', $insert)->free();
 	}
 
 	public function loadMap(\imperator\Game $game) {
@@ -47,17 +57,15 @@ class TerritoriesTable extends Table {
 			$players[$player->getId()] = $player;
 		}
 		$territories = $game->getMap()->getTerritories();
-		$query = $this->getManager()->query('SELECT
-			'.static::COLUMN_TERRITORY.',
-			'.static::COLUMN_UID.',
-			'.static::COLUMN_UNITS.'
-			FROM '.static::NAME.'
-			WHERE '.static::COLUMN_GID.' = '.$game->getId()
+		$query = $this->getManager()->preparedStatement(
+			'SELECT @TERRITORIES.TERRITORY, @TERRITORIES.USER, @TERRITORIES.UNITS
+			FROM @TERRITORIES WHERE @TERRITORIES.GAME = %d',
+			$game->getId()
 		);
 		while($result = $query->fetchResult()) {
-			$id = $result->get(static::COLUMN_TERRITORY);
-			$uid = $result->getInt(static::COLUMN_UID);
-			$units = $result->getInt(static::COLUMN_UNITS);
+			$id = $result->get(0);
+			$uid = $result->getInt(1);
+			$units = $result->getInt(2);
 			$territory = $territories[$id];
 			$territory->setUnits($units);
 			$territory->setOwner($players[$uid]);

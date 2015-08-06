@@ -4,6 +4,18 @@ use imperator\Imperator;
 
 abstract class DatabaseManager {
 	private $tables = array();
+	private $replacements = array();
+
+	protected function __construct() {
+		$this->getAttacksTable();
+		$this->getChatTable();
+		$this->getCombatLogTable();
+		$this->getGamesJoinedTable();
+		$this->getGamesTable();
+		$this->getOutsideUsersTable();
+		$this->getTerritoriesTable();
+		$this->getUsersTable();
+	}
 
 	/**
 	 * Performs a database query.
@@ -11,7 +23,7 @@ abstract class DatabaseManager {
 	 * @param string $query The query
 	 * @return Query A query object
 	 */
-	public function query($query) {
+	protected function query($query) {
 		return null;
 	}
 
@@ -21,30 +33,17 @@ abstract class DatabaseManager {
 
 	/**
 	 * @param string $table
-	 * @param string $where
-	 * @return \imperator\database\Query
-	 */
-	public function delete($table, $where = null) {
-		$sql = 'DELETE FROM '.$table;
-		if(!empty($where)) {
-			$sql .= ' WHERE '.$where;
-		}
-		return $this->query($sql);
-	}
-
-	/**
-	 * @param string $table
 	 * @param array $values
 	 * @return \imperator\database\Query
 	 */
 	public function insert($table, array $values) {
-		foreach($values as $key => $value) {
-			$values[$key] = $this->escape($value);
+		$format = array();
+		foreach($values as $value) {
+			$format[] = '%s';
 		}
-		$fields = '`'.implode('`, `', array_keys($values)).'`';
-		$values = '\''.implode('\', \'', $values).'\'';
-		$sql = 'INSERT INTO '.$table.' ('.$fields.') VALUES('.$values.')';
-		return $this->query($sql);
+		$fields = implode(', ', array_keys($values));
+		$args = array('INSERT INTO '.$table.' ('.$fields.') VALUES('.implode(', ', $format).')');
+		return call_user_func_array(array($this, 'preparedStatement'), array_merge($args, $values));
 	}
 
 	/**
@@ -53,15 +52,19 @@ abstract class DatabaseManager {
 	 * @return \imperator\database\Query
 	 */
 	public function insertMultiple($table, array $values) {
-		$fields = '`'.implode('`, `', array_keys($values[0])).'`';
-		foreach($values as $key => $row) {
-			foreach($row as $index => $column) {
-				$row[$index] = $this->escape($column);
+		$fields = implode(', ', array_keys($values[0]));
+		$insert = array();
+		$args = array();
+		foreach($values as $row) {
+			$format = array();
+			foreach($row as $column) {
+				$format[] = '%s';
 			}
-			$values[$key] = '(\''.implode('\', \'', $row).'\')';
+			$insert[] = '('.implode(', ', $format).')';
+			$args = array_merge($args, $row);
 		}
-		$sql = 'INSERT INTO '.$table.' ('.$fields.') VALUES '.implode(', ',$values);
-		return $this->query($sql);
+		array_unshift($args, 'INSERT INTO '.$table.' ('.$fields.') VALUES '.implode(', ', $insert));
+		return call_user_func_array(array($this, 'preparedStatement'), $args);
 	}
 
 	/**
@@ -159,14 +162,12 @@ abstract class DatabaseManager {
 	}
 
 	/**
-	 * Checks if a row exists in the given table matching the where clause.
+	 * Checks if the given query contains a row and closes it.
 	 * 
-	 * @param string $table
-	 * @param string $where
+	 * @param Query query
 	 * @return bool True if a row exists
 	 */
-	public function rowExists($table, $where) {
-		$query = $this->query('SELECT 1 FROM '.$table.' WHERE '.$where);
+	public function exists(Query $query) {
 		if($query->fetchResult()) {
 			$query->free();
 			return true;
@@ -181,5 +182,39 @@ abstract class DatabaseManager {
 
 	public function commitTransaction() {
 		$this->query('COMMIT');
+	}
+
+	public function registerTable($namespace, $name, array $columns) {
+		$this->replacements[$namespace] = $name;
+		foreach($columns as $column => $value) {
+			$this->replacements[$namespace.'.'.$column] = $name.'.'.$value;
+		}
+	}
+
+	protected function parseStatement($statement) {
+		preg_match_all('(\@[A-Za-z._]+)', $statement, $matches, PREG_OFFSET_CAPTURE);
+		if(!empty($matches[0])) {
+			$offset = 0;
+			foreach($matches[0] as $match) {
+				$key = substr($match[0], 1);
+				if(isset($this->replacements[$key])) {
+					$len = strlen($match[0]);
+					$statement = substr_replace($statement, $this->replacements[$key], $offset + $match[1], $len);
+					$offset += strlen($this->replacements[$key]) - $len;
+				}
+			}
+		}
+		if(func_num_args() > 1) {
+			$args = func_get_args();
+			array_shift($args);
+			$statement = str_replace('%s', '\'%s\'', $statement);
+			$args = array_map(array($this, 'escape'), $args);
+			$statement = vsprintf($statement, $args);
+		}
+		return $statement;
+	}
+
+	public function preparedStatement($statement) {
+		return $this->query(call_user_func_array(array($this, 'parseStatement'), func_get_args()));
 	}
 }

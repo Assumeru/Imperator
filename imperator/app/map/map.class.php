@@ -31,7 +31,7 @@ class Map {
 			$this->path = $map;
 		}
 		if(!file_exists($this->path)) {
-			throw new \InvalidArgumentException('Map "'.$this->id.'" not found.');
+			throw new \InvalidArgumentException('Map "'.$this->id.'" not found at "'.$this->path.'".');
 		}
 	}
 
