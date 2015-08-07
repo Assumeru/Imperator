@@ -20,6 +20,24 @@ class CombatLogTable extends Table {
 		));
 	}
 
+	public function create() {
+		$this->getManager()->preparedStatement(
+			'CREATE TABLE @LOG (
+				@-LOG.GAME INT REFERENCES @GAMES(@-GAMES.GAME),
+				@-LOG.TYPE SMALLINT,
+				@-LOG.TIME INT,
+				@-LOG.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
+				@-LOG.DEFENDER INT,
+				@-LOG.ATTACK_ROLL CHAR(3),
+				@-LOG.DEFEND_ROLL CHAR(2),
+				@-LOG.UNITS INT,
+				@-LOG.ATTACKING_TERRITORY VARCHAR(150),
+				@-LOG.DEFENDING_TERRITORY VARCHAR(150),
+				PRIMARY KEY(@-LOG.GAME, @-LOG.TYPE, @-LOG.TIME, @-LOG.USER)
+			)'
+		);
+	}
+
 	public function deleteGame(\imperator\Game $game) {
 		$this->getManager()->preparedStatement(
 			'DELETE FROM @LOG WHERE @LOG.GAME = %d',

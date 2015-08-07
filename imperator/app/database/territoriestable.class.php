@@ -11,6 +11,18 @@ class TerritoriesTable extends Table {
 		));
 	}
 
+	public function create() {
+		$this->getManager()->preparedStatement(
+			'CREATE TABLE @TERRITORIES (
+				@-TERRITORIES.GAME INT REFERENCES @GAMES(@-GAMES.GAME),
+				@-TERRITORIES.TERRITORY VARCHAR(150),
+				@-TERRITORIES.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
+				@-TERRITORIES.UNITS INT,
+				PRIMARY KEY(@-TERRITORIES.GAME, @-TERRITORIES.TERRITORY)
+			)'
+		);
+	}
+
 	public function removeTerritoriesFromGame(\imperator\Game $game) {
 		$this->getManager()->preparedStatement(
 			'DELETE FROM @TERRITORIES WHERE @TERRITORIES.GAME = %d',

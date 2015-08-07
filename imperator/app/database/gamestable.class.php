@@ -18,6 +18,23 @@ class GamesTable extends Table {
 		));
 	}
 
+	public function create() {
+		$this->getManager()->preparedStatement(
+			'CREATE TABLE @GAMES (
+				@-GAMES.GAME INT PRIMARY KEY,
+				@-GAMES.MAP INT,
+				@-GAMES.NAME VARCHAR(255),
+				@-GAMES.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
+				@-GAMES.TURN INT,
+				@-GAMES.TIME INT,
+				@-GAMES.STATE SMALLINT,
+				@-GAMES.UNITS INT,
+				@-GAMES.CONQUERED SMALLINT,
+				@-GAMES.PASSWORD VARCHAR(255)
+			)'
+		);
+	}
+
 	/**
 	 * Deletes a game from the database.
 	 * 

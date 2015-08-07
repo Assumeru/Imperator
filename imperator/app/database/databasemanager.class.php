@@ -188,11 +188,12 @@ abstract class DatabaseManager {
 		$this->replacements[$namespace] = $name;
 		foreach($columns as $column => $value) {
 			$this->replacements[$namespace.'.'.$column] = $name.'.'.$value;
+			$this->replacements['-'.$namespace.'.'.$column] = $value;
 		}
 	}
 
 	protected function parseStatement($statement) {
-		preg_match_all('(\@[A-Za-z._]+)', $statement, $matches, PREG_OFFSET_CAPTURE);
+		preg_match_all('(\@[-]?[A-Za-z._]+)', $statement, $matches, PREG_OFFSET_CAPTURE);
 		if(!empty($matches[0])) {
 			$offset = 0;
 			foreach($matches[0] as $match) {

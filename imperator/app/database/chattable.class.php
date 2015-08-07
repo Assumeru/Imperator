@@ -12,6 +12,18 @@ class ChatTable extends Table {
 		));
 	}
 
+	public function create() {
+		$this->getManager()->preparedStatement(
+			'CREATE TABLE @CHAT (
+				@-CHAT.GAME INT REFERENCES @GAMES(@-GAMES.GAME),
+				@-CHAT.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
+				@-CHAT.TIME INT,
+				@-CHAT.MESSAGE VARCHAR(512),
+				PRIMARY KEY(@-CHAT.GAME, @-CHAT.USER, @-CHAT.TIME)
+			)'
+		);
+	}
+
 	public function removeMessagesFromGame(\imperator\Game $game) {
 		$this->getManager()->preparedStatement(
 			'DELETE FROM @CHAT WHERE @CHAT.GAME = %d',

@@ -12,6 +12,18 @@ class UsersTable extends Table {
 		));
 	}
 
+	public function create() {
+		$this->getManager()->preparedStatement(
+			'CREATE TABLE @USERS (
+				@-USERS.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
+				@-USERS.WINS INT,
+				@-USERS.LOSSES INT,
+				@-USERS.SCORE INT,
+				PRIMARY KEY(@-USERS.USER)
+			)'
+		);
+	}
+
 	/**
 	 * @return \imperator\User[]:
 	 */

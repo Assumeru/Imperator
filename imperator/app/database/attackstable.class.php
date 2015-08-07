@@ -12,6 +12,19 @@ class AttacksTable extends Table {
 		));
 	}
 
+	public function create() {
+		$this->getManager()->preparedStatement(
+			'CREATE TABLE @ATTACKS (
+				@-ATTACKS.GAME INT REFERENCES @GAMES(@-GAMES.GAME),
+				@-ATTACKS.ATTACKING_TERRITORY VARCHAR(150),
+				@-ATTACKS.DEFENDING_TERRITORY VARCHAR(150),
+				@-ATTACKS.DICE_ROLL CHAR(3),
+				@-ATTACKS.TRANSFERING_UNITS INT,
+				PRIMARY KEY(@-ATTACKS.GAME, @-ATTACKS.ATTACKING_TERRITORY, @-ATTACKS.DEFENDING_TERRITORY)
+			)'
+		);
+	}
+
 	/**
 	 * @return bool
 	 */
