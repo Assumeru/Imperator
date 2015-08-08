@@ -20,4 +20,8 @@ abstract class Table {
 	public function create() {
 		throw new \imperator\exceptions\DatabaseException('Cannot call create on abstract table.');
 	}
+
+	public function drop() {
+		throw new \imperator\exceptions\DatabaseException('Cannot call drop on abstract table.');
+	}
 }

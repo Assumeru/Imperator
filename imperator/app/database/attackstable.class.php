@@ -25,6 +25,10 @@ class AttacksTable extends Table {
 		);
 	}
 
+	public function drop() {
+		$this->getManager()->preparedStatement('DROP TABLE IF EXISTS @ATTACKS');
+	}
+
 	/**
 	 * @return bool
 	 */

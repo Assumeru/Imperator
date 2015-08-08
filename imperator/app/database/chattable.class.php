@@ -24,6 +24,10 @@ class ChatTable extends Table {
 		);
 	}
 
+	public function drop() {
+		$this->getManager()->preparedStatement('DROP TABLE IF EXISTS @CHAT');
+	}
+
 	public function removeMessagesFromGame(\imperator\Game $game) {
 		$this->getManager()->preparedStatement(
 			'DELETE FROM @CHAT WHERE @CHAT.GAME = %d',

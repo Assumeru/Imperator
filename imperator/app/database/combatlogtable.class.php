@@ -20,6 +20,10 @@ class CombatLogTable extends Table {
 		));
 	}
 
+	public function drop() {
+		$this->getManager()->preparedStatement('DROP TABLE IF EXISTS @LOG');
+	}
+
 	public function create() {
 		$this->getManager()->preparedStatement(
 			'CREATE TABLE @LOG (

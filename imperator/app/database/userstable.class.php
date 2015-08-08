@@ -24,6 +24,10 @@ class UsersTable extends Table {
 		);
 	}
 
+	public function drop() {
+		$this->getManager()->preparedStatement('DROP TABLE IF EXISTS @USERS');
+	}
+
 	/**
 	 * @return \imperator\User[]:
 	 */

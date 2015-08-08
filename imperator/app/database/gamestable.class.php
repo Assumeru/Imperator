@@ -35,6 +35,10 @@ class GamesTable extends Table {
 		);
 	}
 
+	public function drop() {
+		$this->getManager()->preparedStatement('DROP TABLE IF EXISTS @GAMES');
+	}
+
 	/**
 	 * Deletes a game from the database.
 	 * 

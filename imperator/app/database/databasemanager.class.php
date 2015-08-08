@@ -192,7 +192,7 @@ abstract class DatabaseManager {
 		}
 	}
 
-	protected function parseStatement($statement) {
+	public function parseStatement($statement) {
 		preg_match_all('(\@[-]?[A-Za-z._]+)', $statement, $matches, PREG_OFFSET_CAPTURE);
 		if(!empty($matches[0])) {
 			$offset = 0;
@@ -217,5 +217,25 @@ abstract class DatabaseManager {
 
 	public function preparedStatement($statement) {
 		return $this->query(call_user_func_array(array($this, 'parseStatement'), func_get_args()));
+	}
+
+	public function createTables() {
+		$this->getGamesTable()->create();
+		$this->getAttacksTable()->create();
+		$this->getChatTable()->create();
+		$this->getCombatLogTable()->create();
+		$this->getGamesJoinedTable()->create();
+		$this->getTerritoriesTable()->create();
+		$this->getUsersTable()->create();
+	}
+
+	public function dropTables() {
+		$this->getUsersTable()->drop();
+		$this->getTerritoriesTable()->drop();
+		$this->getGamesJoinedTable()->drop();
+		$this->getCombatLogTable()->drop();
+		$this->getChatTable()->drop();
+		$this->getAttacksTable()->drop();
+		$this->getGamesTable()->drop();
 	}
 }

@@ -38,6 +38,10 @@ class GamesJoinedTable extends Table {
 		);
 	}
 
+	public function drop() {
+		$this->getManager()->preparedStatement('DROP TABLE IF EXISTS @GAMESJOINED');
+	}
+
 	public function removeUsersFromGame(\imperator\Game $game) {
 		$this->getManager()->preparedStatement(
 			'DELETE FROM @GAMESJOINED WHERE @GAMESJOINED.GAME = %d',

@@ -23,6 +23,10 @@ class TerritoriesTable extends Table {
 		);
 	}
 
+	public function drop() {
+		$this->getManager()->preparedStatement('DROP TABLE IF EXISTS @TERRITORIES');
+	}
+
 	public function removeTerritoriesFromGame(\imperator\Game $game) {
 		$this->getManager()->preparedStatement(
 			'DELETE FROM @TERRITORIES WHERE @TERRITORIES.GAME = %d',
