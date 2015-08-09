@@ -4,7 +4,7 @@ if(!defined('IN_MYBB')) {
 }
 
 //Edit this if you're using a different install path
-define('EE_MYBB_IMPERATOR_CLASS_PATH', MYBB_ROOT.'/imperator/app/imperator.class.php');
+require_once MYBB_ROOT.'/imperator/app/imperator.class.php';
 
 function EE_imperator_info() {
 	return array(
@@ -22,8 +22,8 @@ function EE_imperator_install() {
 }
 
 function EE_imperator_is_installed() {
-	global $db;
-	$db->table_exists(\imperator\Imperator::getDatabaseManager()->parseStatement('@GAMES'));
+	$db = \imperator\Imperator::getDatabaseManager();
+	return $db->exists($db->preparedStatement('SHOW TABLES LIKE %s', $db->parseStatement('@GAMES')));
 }
 
 function EE_imperator_uninstall() {
