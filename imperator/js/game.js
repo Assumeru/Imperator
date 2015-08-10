@@ -856,7 +856,8 @@
 	}
 
 	function updateTerritories() {
-		var $id, $territory, $player, $upt, $players = [];
+		var $id, $territory, $player, $upt, $players = [], $a,
+		$territories = $('#territories');
 		for($id in $game.players) {
 			$players[$id] = {
 				territories: 0,
@@ -868,6 +869,11 @@
 			$players[$territory.owner.id].territories++;
 			$players[$territory.owner.id].units += $territory.units;
 			$('#'+$id).css('fill', '#'+$game.players[$territory.owner.id].color);
+			$territories.find('[data-territory="'+$id+'"] [data-value="units"]').text($territory.units);
+			$a = $territories.find('[data-territory="'+$id+'"] .user');
+			$a.css('color', '#'+$territory.owner.color);
+			$a.text($territory.owner.name);
+			$a.attr('href', $territory.owner.link);
 		}
 		for($id in $players) {
 			$upt = {
