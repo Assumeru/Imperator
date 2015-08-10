@@ -16,9 +16,9 @@ class UsersTable extends Table {
 		$this->getManager()->preparedStatement(
 			'CREATE TABLE @USERS (
 				@-USERS.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
-				@-USERS.WINS INT,
-				@-USERS.LOSSES INT,
-				@-USERS.SCORE INT,
+				@-USERS.WINS INT NOT NULL DEFAULT "0",
+				@-USERS.LOSSES INT NOT NULL DEFAULT "0",
+				@-USERS.SCORE INT NOT NULL DEFAULT "0",
 				PRIMARY KEY(@-USERS.USER)
 			)'
 		);
@@ -64,7 +64,7 @@ class UsersTable extends Table {
 				$user->getId()
 			)->free();
 		} else {
-			$this->getManager()->insert('@USERS', array(
+			$db->insert('@USERS', array(
 				'@USERS.USER' => $user->getId(),
 				'@USERS.LOSSES' => 1,
 				'@USERS.SCORE' => -1
@@ -73,6 +73,7 @@ class UsersTable extends Table {
 	}
 
 	public function addWin(\imperator\User $user, $score) {
+		$db = $this->getManager();
 		if($db->exists($db->preparedStatement('SELECT 1 FROM @USERS WHERE @USERS.USER = %d', $user->getId()))) {
 			$db->preparedStatement(
 				'UPDATE @USERS
@@ -81,7 +82,7 @@ class UsersTable extends Table {
 				$score, $user->getId()
 			)->free();
 		} else {
-			$this->getManager()->insert('@USERS', array(
+			$db->insert('@USERS', array(
 				'@USERS.USER' => $user->getId(),
 				'@USERS.WINS' => 1,
 				'@USERS.SCORE' => 1

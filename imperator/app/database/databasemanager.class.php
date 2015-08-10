@@ -61,7 +61,7 @@ abstract class DatabaseManager {
 				$format[] = '%s';
 			}
 			$insert[] = '('.implode(', ', $format).')';
-			$args = array_merge($args, $row);
+			$args = array_merge($args, array_values($row));
 		}
 		array_unshift($args, 'INSERT INTO '.$table.' ('.$fields.') VALUES '.implode(', ', $insert));
 		return call_user_func_array(array($this, 'preparedStatement'), $args);

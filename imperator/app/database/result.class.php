@@ -51,4 +51,8 @@ class Result {
 		}
 		return null;
 	}
+
+	public function __toString() {
+		return 'Result: '.implode(', ', $this->data);
+	}
 }

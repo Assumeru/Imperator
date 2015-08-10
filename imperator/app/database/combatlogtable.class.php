@@ -59,7 +59,7 @@ class CombatLogTable extends Table {
 	}
 
 	public function saveAttackedEntry(\imperator\combatlog\AttackedEntry $entry) {
-		$this->getManager()->insert(static::NAME, array(
+		$this->getManager()->insert('@LOG', array(
 			'@LOG.GAME' => $entry->getUser()->getGame()->getId(),
 			'@LOG.TYPE' => $entry::TYPE,
 			'@LOG.TIME' => $entry->getTime(),
@@ -73,7 +73,7 @@ class CombatLogTable extends Table {
 	}
 
 	public function saveCardsEntry(\imperator\combatlog\CardsPlayedEntry $entry) {
-		$this->getManager()->insert(static::NAME, array(
+		$this->getManager()->insert('@LOG', array(
 			'@LOG.GAME' => $entry->getUser()->getGame()->getId(),
 			'@LOG.TYPE' => $entry::TYPE,
 			'@LOG.TIME' => $entry->getTime(),
@@ -84,7 +84,7 @@ class CombatLogTable extends Table {
 	}
 
 	public function saveConqueredEntry(\imperator\combatlog\ConqueredEntry $entry) {
-		$this->getManager()->insert(static::NAME, array(
+		$this->getManager()->insert('@LOG', array(
 			'@LOG.GAME' => $entry->getUser()->getGame()->getId(),
 			'@LOG.TYPE' => $entry::TYPE,
 			'@LOG.TIME' => $entry->getTime(),
