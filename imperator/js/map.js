@@ -6,7 +6,8 @@ Imperator.Map = (function($) {
 		y: 0
 	},
 	$loading = true,
-	$onLoad = [];
+	$onLoad = [],
+	$pinchPositions;
 
 	function hidePopUp() {
 		if($currentHover !== undefined) {
@@ -72,6 +73,53 @@ Imperator.Map = (function($) {
 		$container.on('wheel', zoomScroll);
 		if($width > $height) {
 			zoomMap(100 * ($height / $width - 1));
+		}
+		$container.on('touchstart', pinchStart);
+		$container.on('touchmove', pinchMove);
+	}
+
+	function pinchStart($e) {
+		var $n, $x, $y, $touches = [];
+		$e = $e.originalEvent;
+		for($n = 0; $n < $e.touches.length && $n < 2; $n++) {
+			$touches.push({
+				x: $e.touches[$n].pageX,
+				y: $e.touches[$n].pageY,
+				id: $e.touches[$n].identifier
+			});
+		}
+		if($touches.length == 2) {
+			$x = $touches[0].x - $touches[1].x;
+			$y = $touches[0].y - $touches[1].y;
+			$pinchPositions = {
+				a: $touches[0].id,
+				b: $touches[1].id,
+				distance: $x * $x + $y * $y
+			};
+		}
+	}
+
+	function pinchMove($e) {
+		var $n, $x, $y, $d, $touches = [];
+		$e = $e.originalEvent;
+		for($n = 0; $n < $e.touches.length; $n++) {
+			if($e.touches[$n].identifier == $pinchPositions.a) {
+				$touches[0] = {
+					x: $e.touches[$n].pageX,
+					y: $e.touches[$n].pageY
+				};
+			} else if($e.touches[$n].identifier == $pinchPositions.b) {
+				$touches[1] = {
+					x: $e.touches[$n].pageX,
+					y: $e.touches[$n].pageY
+				};
+			}
+		}
+		if($touches.length == 2) {
+			$x = $touches[0].x - $touches[1].x;
+			$y = $touches[0].y - $touches[1].y;
+			$d = ($x * $x + $y * $y - $pinchPositions.distance) / $pinchPositions.distance;
+			zoomMap($d * 10 - 10);
 		}
 	}
 
