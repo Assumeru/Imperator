@@ -78,7 +78,9 @@ class InGame extends DefaultPage {
 			'newcard' => $language->translate('You have received a new card!'),
 			'vs' => $language->translate('%1$s vs. %2$s'),
 			'wait' => $language->translate('Please wait...'),
-			'endturn' => $language->translate('End turn')
+			'endturn' => $language->translate('End turn'),
+			'error' => $language->translate('An error has occurred'),
+			'disconnected' => $language->translate('Connection to the server has been lost.')
 		));
 		$this->addJavascript('classes.js');
 		$this->addJavascript('map.js');

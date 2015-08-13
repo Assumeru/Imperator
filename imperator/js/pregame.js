@@ -1,11 +1,24 @@
 (function($) {
 	var $gid = Imperator.settings.gid,
-	$time = 0;
+	$time = 0,
+	$updateErrors = 0;
 
 	function init() {
+		Imperator.API.onError(parseErrorMessage);
 		Imperator.API.onMessage(parseGameUpdate);
 		Imperator.API.onOpen(sendUpdateRequest);
 		addKickListeners();
+	}
+
+	function parseErrorMessage($msg) {
+		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && $msg.request !== undefined && $msg.request.mode == 'update' && $msg.request.type == 'pregame') {
+			if($updateErrors < Imperator.API.MAX_GAME_ERRORS) {
+				$updateErrors++;
+				sendUpdateRequest();
+			} else {
+				Imperator.Dialog.showDialog(Imperator.settings.language.error, Imperator.settings.language.disconnected, true);
+			}
+		}
 	}
 
 	function addKickListeners() {
@@ -35,6 +48,7 @@
 	function parseGameUpdate($msg) {
 		var $n, $playerList = $('#player-list');
 		if($msg !== undefined && $msg !== '' && $msg.update !== undefined) {
+			$updateErrors = 0;
 			$time = $msg.update;
 			if($msg.gameState !== undefined) {
 				window.alert($msg.gameState);

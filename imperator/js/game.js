@@ -48,9 +48,15 @@
 	function parseErrorMessage($msg) {
 		console.error($msg);
 		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && $msg.request !== undefined && (($msg.request.mode == 'update' && $msg.request.type == 'game') || $msg.request.mode == 'game')) {
-			if($msg.request.mode == 'update' && $updateErrors < Imperator.API.MAX_GAME_ERRORS) {
-				$updateErrors++;
-				sendUpdateRequest();
+			if($msg.request.mode == 'update') {
+				if($updateErrors < Imperator.API.MAX_GAME_ERRORS) {
+					$updateErrors++;
+					sendUpdateRequest();
+				} else {
+					Imperator.Dialog.showDialog(Imperator.settings.language.error, Imperator.settings.language.disconnected, true);
+				}
+			} else if($msg.error !== '') {
+				Imperator.Dialog.showDialog(Imperator.settings.language.error, $msg.error, true);
 			}
 		}
 	}
@@ -534,6 +540,7 @@
 					$('#combatlog > div').empty();
 				}
 				$time = $msg.update;
+				$updateErrors = 0;
 			}
 			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined && $msg.cards !== undefined && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined && $msg.conquered !== undefined) {
 				$game = new Imperator.Game(Imperator.settings.gid, $msg.players, $msg.regions, $msg.territories, $msg.cards, $msg.units, $msg.state, $msg.turn, $msg.conquered);

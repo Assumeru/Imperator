@@ -39,6 +39,10 @@ class PreGame extends DefaultPage {
 			'canKick' => $user->equals($this->game->getOwner()->getUser()),
 			'user' => $user
 		)));
+		$this->setJavascriptSetting('language', array(
+			'error' => $language->translate('An error has occurred'),
+			'disconnected' => $language->translate('Connection to the server has been lost.')
+		));
 		parent::render($user);
 	}
 
