@@ -4,7 +4,9 @@ Imperator.API = (function($) {
 	$onMessage = [],
 	$onError = [],
 	$mode,
-	$longPollingURL = Imperator.settings.API.longpollingURL;
+	$longPollingURL = Imperator.settings.API.longpollingURL,
+	$webSocketURL = Imperator.settings.API.webSocketURL,
+	$ws;
 
 	function connect() {
 		if(supportsWebSocket()) {
@@ -17,8 +19,38 @@ Imperator.API = (function($) {
 	}
 
 	function makeWebSocketConnection() {
-		//TODO
-		new WebSocket();
+		$ws = new WebSocket($webSocketURL);
+		$ws.onopen = function() {
+			if(!$open) {
+				$open = true;
+				onOpen();
+			}
+		};
+		$ws.onmessage = receiveWebSocket(onMessage);
+		$ws.onerror = receiveWebSocket(onError);
+		$ws.onclose = attemptWebSocketReconnect;
+	}
+
+	function attemptWebSocketReconnect() {
+		onError({
+			error: '',
+			method: {
+				mode: 'update',
+				type: 'game'
+			}
+		});
+		$ws.close();
+		makeWebSocketConnection();
+	}
+
+	function receiveWebSocket($func) {
+		return function($msg) {
+			try {
+				$func(JSON.parse($msg));
+			} catch($e) {
+				console.log($msg);
+			}
+		};
 	}
 
 	function makeLongPollingConnection() {
@@ -94,7 +126,9 @@ Imperator.API = (function($) {
 	}
 
 	function sendWebSocket($json) {
-		
+		if($ws.readyState == WebSocket.OPEN) {
+			$ws.send(JSON.stringify($json));
+		}
 	}
 
 	function sendLongPolling($json) {
