@@ -17,8 +17,33 @@ Imperator.Map = (function($) {
 	}
 
 	function setUpDrag($container) {
-		$container.mousedown(startDrag);
-		$('body').mouseup(stopDrag);
+		if('ontouchstart' in window) {
+			$container.on('touchstart', startDragTouch);
+			$container.on('touchmove', dragTouch);
+		} else {
+			$container.mousedown(startDrag);
+			$('body').mouseup(stopDrag);
+		}
+	}
+
+	function dragTouch($e) {
+		var ΔX, ΔY;
+		$e = $e.originalEvent;
+		if($e.touches.length === 1) {
+			ΔX = $dragPosition.x - $e.touches[0].pageX;
+			ΔY = $dragPosition.y - $e.touches[0].pageY;
+			$dragPosition.x = $e.touches[0].pageX;
+			$dragPosition.y = $e.touches[0].pageY;
+			moveMap(ΔX, ΔY);
+		}
+	}
+
+	function startDragTouch($e) {
+		$e = $e.originalEvent;
+		if($e.touches.length === 1) {
+			$dragPosition.x = $e.touches[0].pageX;
+			$dragPosition.y = $e.touches[0].pageY;
+		}
 	}
 
 	function startDrag($e) {
@@ -96,30 +121,34 @@ Imperator.Map = (function($) {
 				b: $touches[1].id,
 				distance: $x * $x + $y * $y
 			};
+		} else {
+			$pinchPositions = undefined;
 		}
 	}
 
 	function pinchMove($e) {
 		var $n, $x, $y, $d, $touches = [];
 		$e = $e.originalEvent;
-		for($n = 0; $n < $e.touches.length; $n++) {
-			if($e.touches[$n].identifier == $pinchPositions.a) {
-				$touches[0] = {
-					x: $e.touches[$n].pageX,
-					y: $e.touches[$n].pageY
-				};
-			} else if($e.touches[$n].identifier == $pinchPositions.b) {
-				$touches[1] = {
-					x: $e.touches[$n].pageX,
-					y: $e.touches[$n].pageY
-				};
+		if($pinchPositions !== undefined) {
+			for($n = 0; $n < $e.touches.length; $n++) {
+				if($e.touches[$n].identifier == $pinchPositions.a) {
+					$touches[0] = {
+						x: $e.touches[$n].pageX,
+						y: $e.touches[$n].pageY
+					};
+				} else if($e.touches[$n].identifier == $pinchPositions.b) {
+					$touches[1] = {
+						x: $e.touches[$n].pageX,
+						y: $e.touches[$n].pageY
+					};
+				}
 			}
-		}
-		if($touches.length == 2) {
-			$x = $touches[0].x - $touches[1].x;
-			$y = $touches[0].y - $touches[1].y;
-			$d = ($x * $x + $y * $y - $pinchPositions.distance) / $pinchPositions.distance;
-			zoomMap($d * 10 - 10);
+			if($touches.length == 2) {
+				$x = $touches[0].x - $touches[1].x;
+				$y = $touches[0].y - $touches[1].y;
+				$d = ($x * $x + $y * $y - $pinchPositions.distance) / $pinchPositions.distance;
+				zoomMap($d * 10 - 10);
+			}
 		}
 	}
 
