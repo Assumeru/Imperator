@@ -15,7 +15,7 @@ class ChatTable extends Table {
 	public function create() {
 		$this->getManager()->preparedStatement(
 			'CREATE TABLE @CHAT (
-				@-CHAT.GAME INT REFERENCES @GAMES(@-GAMES.GAME),
+				@-CHAT.GAME INT,
 				@-CHAT.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
 				@-CHAT.TIME INT,
 				@-CHAT.MESSAGE VARCHAR(512),
@@ -101,5 +101,35 @@ class ChatTable extends Table {
 			'DELETE FROM @CHAT WHERE @CHAT.GAME = %d AND @CHAT.TIME = %d AND @CHAT.USER = %d',
 			$message->getGid(), $message->getTime(), $message->getUser()->getId()
 		)->free();
+	}
+
+	/**
+	 * Deletes messages older than $time preserving a minimum of $keep messages.
+	 * 
+	 * @param int $time
+	 * @param int $keep
+	 */
+	public function deleteOldMessages($time, $keep) {
+		$db = $this->getManager();
+		$query = $db->preparedStatement('SELECT COUNT(1) FROM @CHAT WHERE @CHAT.GAME = 0');
+		if($result = $query->fetchResult()) {
+			$limit = max(0, $result->getInt(0) - $keep);
+			if($limit > 0) {
+				Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, 'Deleting '.$limit.' chat messages.');
+				$db->preparedStatement('DELETE FROM @CHAT WHERE @CHAT.TIME < %d AND @CHAT.GAME = 0 LIMIT %d', $time, $limit)->free();
+			}
+		}
+		$query->free();
+	}
+
+	/**
+	 * Deletes messages from the given games.
+	 * 
+	 * @param int[] $games
+	 */
+	public function deleteGames(array $games) {
+		$db = $this->getManager();
+		array_unshift($games, 'DELETE FROM @CHAT WHERE @CHAT.GAME '.$db->createIn(count($games), '%d'));
+		call_user_func_array(array($db, 'preparedStatement'), $games)->free();
 	}
 }

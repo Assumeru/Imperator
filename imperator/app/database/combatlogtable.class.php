@@ -27,7 +27,7 @@ class CombatLogTable extends Table {
 	public function create() {
 		$this->getManager()->preparedStatement(
 			'CREATE TABLE @LOG (
-				@-LOG.GAME INT REFERENCES @GAMES(@-GAMES.GAME),
+				@-LOG.GAME INT REFERENCES @GAMES(@-GAMES.GAME) ON DELETE CASCADE,
 				@-LOG.TYPE SMALLINT,
 				@-LOG.TIME INT,
 				@-LOG.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),

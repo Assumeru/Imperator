@@ -293,4 +293,27 @@ class GamesTable extends Table {
 		$db = $this->getManager();
 		return $db->exists($db->preparedStatement('SELECT 1 FROM @GAMES WHERE @GAMES.GAME = %d', $gid));
 	}
+
+	public function deleteOldGames($finishedTime, $time) {
+		$db = $this->getManager();
+		$query = $db->preparedStatement('SELECT @GAMES.GAME FROM @GAMES WHERE (@GAMES.STATE = %d AND @GAMES.TIME < %d) OR @GAMES.TIME < %d', \imperator\Game::STATE_FINISHED, $finishedTime, $time);
+		$games = array();
+		while($result = $query->fetchResult()) {
+			$games[] = $result->getInt(0);
+		}
+		$query->free();
+		\imperator\Game::delete($games);
+	}
+
+	/**
+	 * Deletes multiple games.
+	 * 
+	 * @param int[] $games
+	 */
+	public function deleteGames(array $games) {
+		Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, 'Deleting games ['.implode(', ', $games).'].');
+		$db = $this->getManager();
+		array_unshift($games, 'DELETE FROM @GAMES WHERE @GAMES.GAME '.$db->createIn(count($games), '%d'));
+		call_user_func_array(array($db, 'preparedStatement'), $games)->free();
+	}
 }

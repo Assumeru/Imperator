@@ -116,4 +116,35 @@ class Settings {
 			chr(202)
 		);
 	}
+
+	/**
+	 * Returns the time until a chat message is deleted.
+	 * 
+	 * @return int Time in seconds
+	 */
+	public function getMaxChatMessageAge() {
+		return 86400; //24h
+	}
+
+	public function getMinNumChatMessagesToPreserve() {
+		return 10;
+	}
+
+	/**
+	 * Returns the time until a finished game is deleted.
+	 *
+	 * @return int Time in seconds
+	 */
+	public function getMaxFinishedGameAge() {
+		return 86400; //24h
+	}
+
+	/**
+	 * Returns the time a game can be inactive for until it is deleted.
+	 * 
+	 * @return int Time in seconds
+	 */
+	public function getInactiveGameTime() {
+		return 1209600; //2w
+	}
 }

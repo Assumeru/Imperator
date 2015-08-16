@@ -238,4 +238,8 @@ abstract class DatabaseManager {
 		$this->getAttacksTable()->drop();
 		$this->getGamesTable()->drop();
 	}
+
+	public function createIn($number, $type = '%s') {
+		return 'IN('.implode(', ', array_fill(0, $number, $type)).')';
+	}
 }

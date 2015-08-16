@@ -346,6 +346,21 @@ class Game {
 	}
 
 	/**
+	 * Deletes multiple games.
+	 * 
+	 * @param int[] $games
+	 */
+	public static function delete(array $games) {
+		if(!empty($games)) {
+			$db = Imperator::getDatabaseManager();
+			$db->startTransaction();
+			$db->getChatTable()->deleteGames($games);
+			$db->getGamesTable()->deleteGames($games);
+			$db->commitTransaction();
+		}
+	}
+
+	/**
 	 * Adds a user to a game in the database.
 	 * 
 	 * @param game\Player $user
@@ -379,11 +394,11 @@ class Game {
 	public function disband() {
 		$db = Imperator::getDatabaseManager();
 		$db->startTransaction();
-		$db->getGamesJoinedTable()->removeUsersFromGame($this);
+		//$db->getGamesJoinedTable()->removeUsersFromGame($this);
 		$db->getChatTable()->removeMessagesFromGame($this);
-		$db->getAttacksTable()->removeAttacksFromGame($this);
-		$db->getTerritoriesTable()->removeTerritoriesFromGame($this);
-		$db->getCombatLogTable()->deleteGame($this);
+		//$db->getAttacksTable()->removeAttacksFromGame($this);
+		//$db->getTerritoriesTable()->removeTerritoriesFromGame($this);
+		//$db->getCombatLogTable()->deleteGame($this);
 		$db->getGamesTable()->deleteGame($this);
 		$db->commitTransaction();
 	}
