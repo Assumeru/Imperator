@@ -18,6 +18,10 @@ abstract class User implements Member {
 		return new User($uid);
 	}
 
+	public static function getUserByHeaders(\imperator\HttpHeaders $headers) {
+		return null;
+	}
+
 	public function __construct($id = 0, $name = 'Guest', $loggedIn = false, $lang = 'en', $locale = 'us') {
 		$this->id = $id;
 		$this->loggedIn = $loggedIn;

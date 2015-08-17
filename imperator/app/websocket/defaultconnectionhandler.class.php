@@ -15,10 +15,10 @@ class DefaultConnectionHandler implements ConnectionHandler {
 	 */
 	public function onControlFrame(Message $message) {
 		if($message->getType() == Connection::OPCODE_CONNECTION_CLOSE) {
-			\imperator\Logger::info('Closing connection.');
+			$message->getConnection()->getLogger()->log(\imperator\Logger::LEVEL_INFO, 'Closing connection.');
 			$message->getConnection()->close();
 		} else if($message->getType() == Connection::OPCODE_PING) {
-			\imperator\Logger::info('Sending pong.');
+			$message->getConnection()->getLogger()->log(\imperator\Logger::LEVEL_INFO, 'Sending pong.');
 			$message->getConnection()->sendPong($message->__toString());
 		}
 	}

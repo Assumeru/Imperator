@@ -20,10 +20,10 @@ class WebSocket {
 	 * @param string $address The URL to receive connections on
 	 * @param int $port The port to receive connections on
 	 * @param string $path The path to receive connections on
-	 * @param ConnectionHandler $connectionHandler The optional connection handler
 	 * @param \imperator\Logger $logger The logger to use
+	 * @param ConnectionHandler $connectionHandler The optional connection handler
 	 */
-	public function __construct($address, $port, $path, ConnectionHandler $connectionHandler = null, \imperator\Logger $logger) {
+	public function __construct($address, $port, $path, \imperator\Logger $logger, ConnectionHandler $connectionHandler = null) {
 		$this->address = $address;
 		$this->port = (int)$port;
 		$this->path = $path;

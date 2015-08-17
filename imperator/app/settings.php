@@ -147,4 +147,20 @@ class Settings {
 	public function getInactiveGameTime() {
 		return 1209600; //2w
 	}
+
+	public function getWebSocketAddress() {
+		return '127.0.0.1';
+	}
+
+	public function getWebSocketPort() {
+		return '8080';
+	}
+
+	public function getWebSocketPath() {
+		return '/websocket';
+	}
+
+	public function getWebSocketHandler() {
+		return '\\imperator\\websocket\\ApiHandler';
+	}
 }
