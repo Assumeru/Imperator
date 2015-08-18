@@ -1,6 +1,7 @@
 <?php
 namespace imperator\websocket;
 
+use imperator\Imperator;
 class ApiHandler extends DefaultConnectionHandler {
 	private $connections;
 
@@ -25,8 +26,11 @@ class ApiHandler extends DefaultConnectionHandler {
 		$user = $this->connections[$message->getConnection()];
 		$json = json_decode($message->__toString(), true);
 		if($user && $json) {
-			$api = new \imperator\api\WebSocket(\imperator\api\Request::buildRequest($json), $user);
-			$message->getConnection()->sendMessage($api->handleRequest());
+			$message->getConnection()->sendMessage(Imperator::handleApiRequest(
+				\imperator\api\Api::WEBSOCKET,
+				\imperator\api\Request::buildRequest($json),
+				$user
+			));
 		}
 	}
 }

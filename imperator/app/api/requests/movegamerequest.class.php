@@ -47,7 +47,7 @@ class MoveGameRequest extends GameRequest {
 		$game->loadMap();
 		$game->getMap()->setGame($game);
 		$move = $this->getMove();
-		if($from->getUnits() <= $move || !$from->borders($to) || $from->getOwner() != $to->getOwner() || !$from->getOwner()->getUser()->equals($user)) {
+		if($from->getUnits() <= $move || !$from->borders($to) || $from->getOwner() != $to->getOwner() || !$from->getOwner()->equals($user)) {
 			throw new \imperator\exceptions\InvalidRequestException('Invalid move');
 		}
 		$db = Imperator::getDatabaseManager();

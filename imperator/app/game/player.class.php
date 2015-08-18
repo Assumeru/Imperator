@@ -120,4 +120,8 @@ class Player implements \imperator\Member {
 		$units = count($this->getTerritories()) / 3;
 		return max(floor($units), 3);
 	}
+
+	public function equals(\imperator\Member $that) {
+		return $this->user->equals($that);
+	}
 }

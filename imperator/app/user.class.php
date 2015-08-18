@@ -45,8 +45,8 @@ abstract class User implements Member {
 		return $this->loggedIn;
 	}
 
-	public function equals(User $that) {
-		return $this->id == $that->id;
+	public function equals(Member $that) {
+		return $this->id == $that->getId();
 	}
 
 	public function getProfileLink() {

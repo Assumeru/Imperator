@@ -16,4 +16,10 @@ interface Member {
 	 * @return string|false
 	 */
 	public function getProfileLink();
+
+	/**
+	 * @param Member $that
+	 * @return bool
+	 */
+	public function equals(Member $that);
 }

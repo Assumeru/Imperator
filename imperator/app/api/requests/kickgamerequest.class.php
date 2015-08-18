@@ -17,7 +17,7 @@ class KickGameRequest extends GameRequest {
 	public function handle(\imperator\User $user) {
 		$game = $this->getGame();
 		if($game->hasStarted() && !$game->hasEnded()) {
-		} else if(!$game->getOwner()->getUser()->equals($user)) {
+		} else if(!$game->getOwner()->equals($user)) {
 			throw new \imperator\exceptions\InvalidRequestException('Only the game owner can kick players.');
 		} else if($user->getId() == $this->uid) {
 			throw new \imperator\exceptions\InvalidRequestException('You cannot kick yourself.');

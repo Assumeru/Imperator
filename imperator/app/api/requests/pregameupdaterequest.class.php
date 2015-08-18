@@ -14,7 +14,7 @@ class PreGameUpdateRequest extends GameUpdateRequest {
 			$output['gameState'] = $user->getLanguage()->translate('This game has started.');
 			$output['redirect'] = \imperator\page\Game::getURL($game);
 		} else {
-			$isOwner = $user->equals($game->getOwner()->getUser());
+			$isOwner = $user->equals($game->getOwner());
 			$output['players'] = array();
 			foreach($game->getPlayers() as $player) {
 				$output['players'][] = \imperator\page\Template::getInstance('game_player', $user->getLanguage())->setVariables(array(

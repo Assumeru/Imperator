@@ -19,7 +19,7 @@ class PreGame extends DefaultPage {
 	public function render(\imperator\User $user) {
 		$joinForm = new form\JoinGameForm($this->game);
 		$controlForm = new form\PreGameControlForm();
-		if($this->game->getOwner()->getUser()->equals($user)) {
+		if($this->game->getOwner()->equals($user)) {
 			if($controlForm->startHasBeenSubmitted() && $this->game->getNumberOfPlayers() == $this->game->getMap()->getPlayers()) {
 				$this->startGame();
 			} else if($controlForm->disbandHasBeenSubmitted()) {
@@ -36,7 +36,7 @@ class PreGame extends DefaultPage {
 			'game' => $this->game,
 			'controls' => $this->getControls($user, $joinForm),
 			'invitelink' => $this->game->containsPlayer($user) && $this->game->hasPassword() ? Game::getURL($this->game, true) : '',
-			'canKick' => $user->equals($this->game->getOwner()->getUser()),
+			'canKick' => $user->equals($this->game->getOwner()),
 			'user' => $user
 		)));
 		$this->setJavascriptSetting('language', array(
@@ -70,7 +70,7 @@ class PreGame extends DefaultPage {
 
 	private function getChat(\imperator\User $user) {
 		if($this->game->containsPlayer($user)) {
-			$this->addChatJavascript($user, $this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->getUser()->equals($user));
+			$this->addChatJavascript($user, $this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->equals($user));
 			return $this->getChatBox($user);
 		}
 		return null;

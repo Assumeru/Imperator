@@ -220,7 +220,7 @@ class Game {
 	 */
 	public function getPlayerByUser(User $user) {
 		foreach($this->users as $player) {
-			if($player->getUser()->equals($user)) {
+			if($player->equals($user)) {
 				return $player;
 			}
 		}
