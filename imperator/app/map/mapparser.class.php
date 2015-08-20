@@ -12,9 +12,7 @@ class MapParser {
 		$xml = new \DOMDocument();
 		if($xml->load(realpath($path)) === false) {
 			throw new \imperator\exceptions\MapParserException('Failed to load "'.$path.'"');
-		}/* else if($xml->schemaValidate(Imperator::getSettings()->getBasePath().'/app/map/map.xsd') === false) {
-			throw new \imperator\exceptions\MapParserException('Invalid map "'.$path.'"');
-		}*/
+		}
 		$this->xpath = new \DOMXPath($xml);
 	}
 
@@ -29,7 +27,7 @@ class MapParser {
 	 * @return int The number of players
 	 */
 	public function getPlayers() {
-		return $this->xpath->query('child::players')->item(0)->nodeValue;
+		return (int)$this->xpath->query('child::players')->item(0)->nodeValue;
 	}
 
 	/**

@@ -2,7 +2,7 @@
 <map id="4">
 	<name>North America</name>
 	<players>10</players>
-	<description lang="en-US">TODO</description>
+	<description xml:lang="en-US">TODO</description>
 	<territories>
 		<territory id="na_belize">
 			<name>Belize</name>

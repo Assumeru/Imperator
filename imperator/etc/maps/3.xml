@@ -2,7 +2,7 @@
 <map id="3">
 	<name>North America</name>
 	<players>8</players>
-	<description lang="en-US">TODO</description>
+	<description xml:lang="en-US">TODO</description>
 	<territories>
 		<territory id="na_ca_alberta">
 			<name>Alberta</name>
