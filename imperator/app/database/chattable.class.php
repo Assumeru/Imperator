@@ -120,6 +120,7 @@ class ChatTable extends Table {
 			}
 		}
 		$query->free();
+		return $limit;
 	}
 
 	/**

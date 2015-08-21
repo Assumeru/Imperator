@@ -303,6 +303,7 @@ class GamesTable extends Table {
 		}
 		$query->free();
 		\imperator\Game::delete($games);
+		return count($games);
 	}
 
 	/**
