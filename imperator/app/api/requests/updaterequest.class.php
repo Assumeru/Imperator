@@ -5,7 +5,7 @@ abstract class UpdateRequest extends \imperator\api\Request {
 	private $gid;
 	private $time;
 
-	public static function buildRequest($params) {
+	public static function buildRequest(array $params) {
 		if(isset($params['type']) && isset($params['gid']) && is_numeric($params['gid']) && isset($params['time']) && is_numeric($params['time'])) {
 			if($params['type'] == 'chat') {
 				return new ChatUpdateRequest($params['gid'], $params['time']);

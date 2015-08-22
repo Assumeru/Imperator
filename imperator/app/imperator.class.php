@@ -131,8 +131,11 @@ class Imperator {
 		return '\\imperator\\Settings';
 	}
 
-	public static function handleApiRequest($type, \imperator\api\Request $request, User $user) {
+	public static function handleApiRequest($type, \imperator\api\Request $request, User $user, \imperator\websocket\ApiHandler $apiHandler = null) {
 		$api = new $type($request, $user);
+		if($apiHandler) {
+			$api->setApiHandler($apiHandler);
+		}
 		return $api->handleRequest();
 	}
 

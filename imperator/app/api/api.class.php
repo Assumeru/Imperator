@@ -7,6 +7,7 @@ abstract class Api {
 	const WEBSOCKET = '\\imperator\\api\\WebSocket';
 	private $user;
 	private $request;
+	private $apiHandler;
 
 	public function __construct(Request $request, \imperator\User $user) {
 		$this->request = $request;
@@ -19,6 +20,14 @@ abstract class Api {
 
 	protected function getRequest() {
 		return $this->request;
+	}
+
+	protected function getApiHandler() {
+		return $this->apiHandler;
+	}
+
+	public function setApiHandler(\imperator\websocket\ApiHandler $apiHandler) {
+		$this->apiHandler = $apiHandler;
 	}
 
 	protected function sendError(\imperator\exceptions\InvalidRequestException $e) {

@@ -1,7 +1,7 @@
 <?php
 namespace imperator\websocket;
-
 use imperator\Imperator;
+
 class ApiHandler extends DefaultConnectionHandler {
 	private $connections;
 
@@ -29,8 +29,12 @@ class ApiHandler extends DefaultConnectionHandler {
 			$message->getConnection()->sendMessage(Imperator::handleApiRequest(
 				\imperator\api\Api::WEBSOCKET,
 				\imperator\api\Request::buildRequest($json),
-				$user
+				$user, $this
 			));
 		}
+	}
+
+	public function sendChatToConnections($gid, $jsonString) {
+		//TODO
 	}
 }

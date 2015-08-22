@@ -4,7 +4,7 @@ namespace imperator\api\requests;
 abstract class ChatRequest extends \imperator\api\Request {
 	private $gid;
 
-	public static function buildRequest($params) {
+	public static function buildRequest(array $params) {
 		if(isset($params['type']) && isset($params['gid']) && is_numeric($params['gid'])) {
 			if($params['type'] == 'delete' && isset($params['time']) && is_numeric($params['time']) && isset($params['uid']) && is_numeric($params['uid'])) {
 				return new ChatDeleteRequest($params['gid'], $params['time'], $params['uid']);
@@ -23,7 +23,7 @@ abstract class ChatRequest extends \imperator\api\Request {
 		return 'chat';
 	}
 
-	protected function getGid() {
+	public function getGid() {
 		return $this->gid;
 	}
 }
