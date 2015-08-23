@@ -17,6 +17,7 @@ class PreGame extends DefaultPage {
 	}
 
 	public function render(\imperator\User $user) {
+		$language = $user->getLanguage();
 		$joinForm = new form\JoinGameForm($this->game);
 		$controlForm = new form\PreGameControlForm();
 		if($this->game->getOwner()->equals($user)) {
@@ -31,7 +32,7 @@ class PreGame extends DefaultPage {
 			$this->joinGame($user, $joinForm);
 		}
 		$this->setTitle($this->game->getName());
-		$this->setBodyContents(Template::getInstance('game_pregame', $user->getLanguage())->setVariables(array(
+		$this->setBodyContents(Template::getInstance('game_pregame', $language)->setVariables(array(
 			'chat' => $this->getChat($user),
 			'game' => $this->game,
 			'controls' => $this->getControls($user, $joinForm),

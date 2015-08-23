@@ -58,6 +58,16 @@
 			} else if($msg.error !== '') {
 				Imperator.Dialog.showDialog(Imperator.settings.language.error, $msg.error, true);
 			}
+			if($msg.request.type == 'fortify' && $dialogs.fortify !== undefined) {
+				$dialogs.fortify.close();
+				delete $dialogs.fortify;
+			} else if($msg.request.type == 'start-move' && $dialogs.startmove !== undefined) {
+				$dialogs.startmove.close();
+				delete $dialogs.startmove;
+			} else if($msg.request.type == 'attack' && $dialogs.attack !== undefined) {
+				$dialogs.attack.close();
+				delete $dialogs.attack;
+			}
 		}
 	}
 

@@ -285,7 +285,7 @@ class GamesTable extends Table {
 			@GAMES.CONQUERED = %b,
 			@GAMES.TIME = %d
 			WHERE @GAMES.GAME = %d',
-			$game->getState(), $game->getTime(), $game->hasConquered(), $game->getId()
+			$game->getState(), $game->hasConquered(), $game->getTime(), $game->getId()
 		)->free();
 	}
 
