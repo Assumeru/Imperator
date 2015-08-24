@@ -71,11 +71,11 @@ class Map {
 				return $matchingDescription;
 			}
 		}
-		return $this->description[0];
+		return reset($this->description);
 	}
 
 	private function getMatchingDescription($lang) {
-		$maxMatches = 0;
+		$maxMatches = -1;
 		$bestMatch = '';
 		$langBits = explode('-', $lang);
 		$langLength = count($langBits);
@@ -91,7 +91,7 @@ class Map {
 				}
 			}
 		}
-		if($maxMatches > 0) {
+		if($maxMatches > -1) {
 			return $bestMatch;
 		}
 		return null;
