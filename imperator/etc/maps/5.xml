@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map id="5">
+<map id="5" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../app/map/map.xsd">
 	<name>Benelux + Germany</name>
 	<players>4</players>
 	<description xml:lang="en-US">TODO</description>

@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map id="0">
+<map id="0" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../app/map/map.xsd">
 	<name>Benelux</name>
 	<players>2</players>
 	<description xml:lang="en-US"><![CDATA[
-		TODO: Description of <strong>Be</strong>lgium <strong>Ne</strong>therlands <strong>Lux</strong>embourg.
+		The Benelux is an economic union between the European nations of <strong>Be</strong>lgium, the <strong>Ne</strong>therlands, and <strong>Lux</strong>embourg.
+		This map is made up of the provinces of Belgium and the Netherlands in addition to the Brussels-Capital region and the Grand Duchy of Luxembourg.
+		In order to win, one needs to conquer all 24 of these territories, thereby eliminating the other player.
+	]]></description>
+	<description xml:lang="de-DE"><![CDATA[
+		Der Benelux ist eine Union die aus <strong>Be</strong>lgien, den Niederlanden (<strong>Ne</strong>derland) und <strong>Lu</strong>xemburg besteht.
+		Dieser Karte besteht auf den belgischen und niederländischen Provinzen zusammen mit der Region Brüssel-Hauptstadt und das Großherzogtum Luxemburg.
+		Um zu gewinnen muss man alle 24 gebieten erobern und damit die andere Spieler eliminiert.
+	]]></description>
+	<description xml:lang="fr-FR"><![CDATA[
+		Le Benelux est une union économique entre la <strong>Be</strong>lgique, les Pays-Bas (<strong>Ne</strong>derland) et le <strong>Lu</strong>xembourg.
+		Cette carte est composée des provinces de Belgique et de Pays-Bas en plus de la région de Bruxelles-Capitale et le Grand-Duché de Luxembourg.
+		Pour gagner, il faut conquérir les 24 territoires, éliminant ainsi l'autre joueur.
+	]]></description>
+	<description xml:lang="nl-NL"><![CDATA[
+		De Benelux is een economische unie tussen <strong>Be</strong>lgië, <strong>Ne</strong>derland en <strong>Lu</strong>xemburg.
+		Deze kaart bestaat uit de provincies van België en Nederland, plus het Brussels Hoofdstedelijk gewest en het Groothertogdom Luxemburg.
+		Om te winnen moet men alle 24 gebieden veroveren en daardoor de andere speler uitschakelen.
 	]]></description>
 	<territories>
 		<territory id="eu_be_antwerp">
