@@ -2,7 +2,11 @@
 <map id="1" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../app/map/map.xsd">
 	<name>Classic</name>
 	<players>4</players>
-	<description xml:lang="en-US">TODO</description>
+	<description xml:lang="en-US"><![CDATA[
+		<p>This map presents a simplified version of reality made up of 40 territories divided into 6 continents.</p>
+		<p>Most of the objectives focus on conquering two or three of these continents.
+		Alternatively, players might have to eliminate each other. Failing this, one needs to conquer 24 territories.</p>
+	]]></description>
 	<territories>
 		<territory id="af_central">
 			<name>Central Africa</name>

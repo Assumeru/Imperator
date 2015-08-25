@@ -2,7 +2,11 @@
 <map id="6" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../app/map/map.xsd">
 	<name>Classic - Old World</name>
 	<players>3</players>
-	<description xml:lang="en-US">TODO</description>
+	<description xml:lang="en-US"><![CDATA[
+		<p>This alternative version of the classic world map leaves out the New World thereby reducing the number of territories to 30.</p>
+		<p>As the number of players is also reduced to 3, the only way to win is to elimate a specific player.
+		Failing this, one needs to conquer 24 territories.</p>
+	]]></description>
 	<territories>
 		<territory id="af_central">
 			<name>Central Africa</name>
