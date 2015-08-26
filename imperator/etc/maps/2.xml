@@ -2,7 +2,13 @@
 <map id="2" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../app/map/map.xsd">
 	<name>North America</name>
 	<players>6</players>
-	<description xml:lang="en-US">TODO</description>
+	<description xml:lang="en-US"><![CDATA[
+		<p>This map is composed of the 10 provinces and 3 territories of Canada,
+		the Republic of Cuba,
+		the 50 United States of America,
+		and the 31 United Mexican States joined by the Mexico City Federal District.</p>
+		<p>Ways to win include conquering historical regions, and eliminating an opponent.</p>
+	]]></description>
 	<territories>
 		<territory id="na_ca_alberta">
 			<name>Alberta</name>
