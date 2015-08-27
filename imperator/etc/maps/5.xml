@@ -2,7 +2,11 @@
 <map id="5" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../app/map/map.xsd">
 	<name>Benelux + Germany</name>
 	<players>4</players>
-	<description xml:lang="en-US">TODO</description>
+	<description xml:lang="en-US"><![CDATA[
+		<p>The Benelux is an economic union between the European nations of <strong>Be</strong>lgium, the <strong>Ne</strong>therlands, and <strong>Lux</strong>embourg.</p>
+		<p>This map is made up of Germany's 16 states, the provinces of Belgium and the Netherlands in addition to the Brussels-Capital region and the Grand Duchy of Luxembourg.</p>
+		<p>Players are most likely to need to eliminate another player to win. Alternatively one might have to conquer two of the three larger countries.</p>
+	]]></description>
 	<territories>
 		<territory id="eu_be_antwerp">
 			<name>Antwerp</name>
