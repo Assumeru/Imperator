@@ -22,11 +22,11 @@ abstract class User implements Member {
 		return null;
 	}
 
-	public function __construct($id = 0, $name = 'Guest', $loggedIn = false, $lang = 'en', $locale = 'us') {
+	public function __construct($id = 0, $name = 'Guest', $loggedIn = false, $lang = 'en', $locale = 'us', $direction = 'ltr') {
 		$this->id = $id;
 		$this->loggedIn = $loggedIn;
 		$this->name = $name;
-		$this->language = Language::getInstance($lang, $locale);
+		$this->language = Language::getInstance($lang, $locale, $direction);
 	}
 
 	public function getName() {
