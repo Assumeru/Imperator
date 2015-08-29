@@ -7,6 +7,11 @@
 		<p>Most of the objectives focus on conquering two or three of these continents.
 		Alternatively, players might have to eliminate each other. Failing this, one needs to conquer 24 territories.</p>
 	]]></description>
+	<description xml:lang="es-ES"><![CDATA[
+		<p>Este mapa representa una versión simplificada de la realidad formada por 40 territorios divididos en 6 continentes.</p>
+		<p>La mayoría de los objetivos se centran en la conquista de dos o tres de estos continentes.
+		Alternativamente, los jugadores podrían tener que eliminar entre sí. En caso contrario, hay que conquistar 24 territorios.</p>
+	]]></description>
 	<territories>
 		<territory id="af_central">
 			<name>Central Africa</name>

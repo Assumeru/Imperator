@@ -4,8 +4,13 @@
 	<players>3</players>
 	<description xml:lang="en-US"><![CDATA[
 		<p>This alternative version of the classic world map leaves out the New World thereby reducing the number of territories to 30.</p>
-		<p>As the number of players is also reduced to 3, the only way to win is to elimate a specific player.
+		<p>As the number of players is also reduced to 3, the only way to win is to eliminate a specific player.
 		Failing this, one needs to conquer 24 territories.</p>
+	]]></description>
+	<description xml:lang="es-ES"><![CDATA[
+		<p>Esta versión alternativa del mapa del mundo clásico deja fuera del Nuevo Mundo lo que se reduce el número de territorios a los 30.</p>
+		<p>Como el número de los jugadores también se reduce a 3, la única manera de ganar es eliminar un jugador específico.
+		En caso contrario, hay que conquistar 24 territorios.</p>
 	]]></description>
 	<territories>
 		<territory id="af_central">
