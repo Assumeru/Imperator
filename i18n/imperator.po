@@ -1,0 +1,838 @@
+# Non-map translatable strings
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: app/api/request.class.php:20
+msgid "Abstract request cannot be handled."
+msgstr ""
+
+#: app/api/requests/attackgamerequest.class.php:44
+msgid "Cannot attack now."
+msgstr ""
+
+#: app/api/requests/attackgamerequest.class.php:49
+#: app/api/requests/defendgamerequest.class.php:38
+#: app/api/requests/movegamerequest.class.php:45
+#, php-format
+msgid "Territory \"%1$s\" or \"%2$s\" not found in %3$d"
+msgstr ""
+
+#: app/api/requests/attackgamerequest.class.php:53
+msgid "Invalid attack"
+msgstr ""
+
+#: app/api/requests/attackgamerequest.class.php:55
+msgid "One of these territories is already engaged in combat."
+msgstr ""
+
+#: app/api/requests/chataddrequest.class.php:23
+#: app/api/requests/chatupdaterequest.class.php:12
+#, php-format
+msgid "User %1$d cannot use chat %2$d"
+msgstr ""
+
+#: app/api/requests/chataddrequest.class.php:29
+msgid "You cannot chat more than once per second."
+msgstr ""
+
+#: app/api/requests/chatdeleterequest.class.php:29
+#, php-format
+msgid "User %1$d cannot delete from chat %2$d"
+msgstr ""
+
+#: app/api/requests/defendgamerequest.class.php:46
+#, php-format
+msgid "User %1$d does not own \"%2$s\" in %3$d"
+msgstr ""
+
+#: app/api/requests/defendgamerequest.class.php:48
+#, php-format
+msgid "Attack not found for \"%1$s\" and \"%2$s\" in %3$d"
+msgstr ""
+
+#: app/api/requests/endturngamerequest.class.php:28
+msgid "You cannot end your turn without finishing all battles."
+msgstr ""
+
+#: app/api/requests/forfeitgamerequest.class.php:13
+msgid "You cannot forfeit without finishing all battles."
+msgstr ""
+
+#: app/api/requests/fortifygamerequest.class.php:14
+msgid "Cannot fortify after attacking."
+msgstr ""
+
+#: app/api/requests/gamerequest.class.php:54
+msgid "Game does not exist."
+msgstr ""
+
+#: app/api/requests/gamerequest.class.php:56
+#, php-format
+msgid "User %1$d not in game %2$d"
+msgstr ""
+
+#: app/api/requests/gamerequest.class.php:62
+#, php-format
+msgid "Turn is not %1$d in %2$d"
+msgstr ""
+
+#: app/api/requests/gameupdaterequest.class.php:18
+msgid "This game has been disbanded."
+msgstr ""
+
+#: app/api/requests/invalidrequest.class.php:28
+msgid "Bad request."
+msgstr ""
+
+#: app/api/requests/kickgamerequest.class.php:21
+msgid "Only the game owner can kick players."
+msgstr ""
+
+#: app/api/requests/kickgamerequest.class.php:23
+msgid "You cannot kick yourself."
+msgstr ""
+
+#: app/api/requests/movegamerequest.class.php:38
+msgid "Cannot move now."
+msgstr ""
+
+#: app/api/requests/movegamerequest.class.php:40
+#, php-format
+msgid "Cannot move more than %1$d units."
+msgstr ""
+
+#: app/api/requests/movegamerequest.class.php:51
+msgid "Invalid move"
+msgstr ""
+
+#: app/api/requests/placeunitsgamerequest.class.php:31
+msgid "Cannot place units after attacking."
+msgstr ""
+
+#: app/api/requests/placeunitsgamerequest.class.php:33
+#, php-format
+msgid "Cannot place more than %1$d units."
+msgstr ""
+
+#: app/api/requests/placeunitsgamerequest.class.php:37
+#, php-format
+msgid "Could not find territory \"%1$s\" in %2$d"
+msgstr ""
+
+#: app/api/requests/placeunitsgamerequest.class.php:41
+#, php-format
+msgid "Territory \"%1$s\" not owned by %2$d in %3$d"
+msgstr ""
+
+#: app/api/requests/playcardsgamerequest.class.php:24
+msgid "Cannot play cards after attacking."
+msgstr ""
+
+#: app/api/requests/playcardsgamerequest.class.php:29
+#, php-format
+msgid "You do not have the required cards to place %1$d units."
+msgstr ""
+
+#: app/api/requests/pregameupdaterequest.class.php:11
+msgid "You have been kicked from this game."
+msgstr ""
+
+#: app/api/requests/pregameupdaterequest.class.php:14
+msgid "This game has started."
+msgstr ""
+
+#: app/api/requests/startmovegamerequest.class.php:13
+msgid "Cannot move before attacking."
+msgstr ""
+
+#: app/api/requests/startmovegamerequest.class.php:16
+msgid "All battles need to finish before units can be moved."
+msgstr ""
+
+#: app/combatlog/attackedentry.class.php:44
+#, php-format
+msgid "%1$s vs %2$s: %3$s %4$s"
+msgstr ""
+
+#: app/combatlog/cardsplayedentry.class.php:26
+#, php-format
+msgid "%1$s played %2$s for %3$d units."
+msgstr ""
+
+#: app/combatlog/conqueredentry.class.php:20
+#, php-format
+msgid "%1$s conquered %2$s."
+msgstr ""
+
+#: app/combatlog/endedturnentry.class.php:8
+#, php-format
+msgid "%1$s's turn has ended."
+msgstr ""
+
+#: app/combatlog/forfeitedentry.class.php:8
+#, php-format
+msgid "%1$s has forfeited the game."
+msgstr ""
+
+#: app/game/cards.class.php:220
+msgid "Artillery"
+msgstr ""
+
+#: app/game/cards.class.php:221
+msgid "Cavalry"
+msgstr ""
+
+#: app/game/cards.class.php:222
+msgid "Infantry"
+msgstr ""
+
+#: app/game/cards.class.php:223
+msgid "Joker"
+msgstr ""
+
+#: app/game/cards.class.php:224
+msgid "None"
+msgstr ""
+
+#: app/page/form/joingameform.class.php:35
+msgid "This color is already in use"
+msgstr ""
+
+#: app/page/form/joingameform.class.php:39
+msgid "The password you entered was incorrect"
+msgstr ""
+
+#: app/page/form/joingameform.class.php:41
+msgid "The code you entered was incorrect"
+msgstr ""
+
+#: app/page/form/newgameform.class.php:21
+msgid "Please enter a shorter name"
+msgstr ""
+
+#: app/page/form/newgameform.class.php:23
+msgid "Please enter a name"
+msgstr ""
+
+#: app/page/about.class.php:13
+msgid "About"
+msgstr ""
+
+#: app/page/defaultpage.class.php:112
+msgid "Chat Error"
+msgstr ""
+
+#: app/page/gamelist.class.php:11
+msgid "Games"
+msgstr ""
+
+#: app/page/gamelist.class.php:37 etc/templates/games.phtml:5
+msgid "There are no games available at this time."
+msgstr ""
+
+#: app/page/gamelist.class.php:55 etc/templates/games.phtml:47
+#, php-format
+msgid "%1$d / %2$d"
+msgstr ""
+
+#: app/page/gamelist.class.php:63 etc/templates/games.phtml:14
+#: etc/templates/maps.phtml:5 etc/templates/rankings.phtml:5
+msgid "Name"
+msgstr ""
+
+#: app/page/gamelist.class.php:64 etc/templates/game.phtml:11
+#: etc/templates/games.phtml:14 etc/templates/game_postgame.phtml:3
+#: etc/templates/game_pregame.phtml:3
+msgid "Map"
+msgstr ""
+
+#: app/page/gamelist.class.php:65 etc/templates/game.phtml:4
+#: etc/templates/games.phtml:14 etc/templates/game_pregame.phtml:5
+#: etc/templates/maps.phtml:5
+msgid "Players"
+msgstr ""
+
+#: app/page/gamelist.class.php:66 etc/templates/games.phtml:14
+msgid "Host"
+msgstr ""
+
+#: app/page/gamelist.class.php:70 etc/templates/games.phtml:2
+msgid "Games"
+msgstr ""
+
+#: app/page/http403.class.php:6
+msgid "403 Forbidden"
+msgstr ""
+
+#: app/page/http403.class.php:6
+msgid "You are not allowed to view this page."
+msgstr ""
+
+#: app/page/http404.class.php:6
+msgid "404 Not found"
+msgstr ""
+
+#: app/page/http404.class.php:6
+msgid "The specified page could not be found."
+msgstr ""
+
+#: app/page/http500.class.php:6
+msgid "500 Internal Server Error"
+msgstr ""
+
+#: app/page/http500.class.php:6
+msgid "An error occurred while loading this page."
+msgstr ""
+
+#: app/page/ingame.class.php:65
+msgid "Attack"
+msgstr ""
+
+#: app/page/ingame.class.php:66
+#, php-format
+msgid "%1$s has disabled Autoroll"
+msgstr ""
+
+#: app/page/ingame.class.php:68
+#, php-format
+msgid "Are you sure you want to place %1$d units in %2$s?"
+msgstr ""
+
+#: app/page/ingame.class.php:69
+msgid "Are you sure you want to stop attacking?"
+msgstr ""
+
+#: app/page/ingame.class.php:70
+msgid "Are you sure you want to end your turn?"
+msgstr ""
+
+#: app/page/ingame.class.php:71
+#, php-format
+msgid "%1$s has been conquered"
+msgstr ""
+
+#: app/page/ingame.class.php:72
+msgid "Contacting server."
+msgstr ""
+
+#: app/page/ingame.class.php:73 etc/templates/games.phtml:41
+msgid "This game has ended."
+msgstr ""
+
+#: app/page/ingame.class.php:74
+msgid "Are you sure you want to forfeit?"
+msgstr ""
+
+#: app/page/ingame.class.php:75
+#, php-format
+msgid "Fortify %1$s"
+msgstr ""
+
+#: app/page/ingame.class.php:76
+msgid "Game Over"
+msgstr ""
+
+#: app/page/ingame.class.php:77 etc/templates/game.phtml:219
+msgid "Move"
+msgstr ""
+
+#: app/page/ingame.class.php:78
+msgid "You have received a new card!"
+msgstr ""
+
+#: app/page/ingame.class.php:79
+#, php-format
+msgid "%1$s vs. %2$s"
+msgstr ""
+
+#: app/page/ingame.class.php:80
+msgid "Please wait..."
+msgstr ""
+
+#: app/page/ingame.class.php:81 etc/templates/game.phtml:220
+msgid "End turn"
+msgstr ""
+
+#: app/page/ingame.class.php:82 app/page/pregame.class.php:44
+msgid "An error has occurred"
+msgstr ""
+
+#: app/page/ingame.class.php:83 app/page/pregame.class.php:45
+msgid "Connection to the server has been lost."
+msgstr ""
+
+#: app/page/loginsplash.class.php:9
+msgid "Home"
+msgstr ""
+
+#: app/page/maplist.class.php:9
+msgid "Maps"
+msgstr ""
+
+#: app/page/newgame.class.php:19
+msgid "New Game"
+msgstr ""
+
+#: app/page/newgame.class.php:38
+#, php-format
+msgid "%1$s's game"
+msgstr ""
+
+#: app/page/pregame.class.php:84
+msgid "Are you sure you want to kick this player?"
+msgstr ""
+
+#: etc/mission/dominationmission.class.php:9,16
+#, php-format
+msgid "To win this game you will have to conquer %1$d territories."
+msgstr ""
+
+#: etc/mission/rivalrymission.class.php:7
+msgid "To win this game you will have to conquer the last of an opponent's territories."
+msgstr ""
+
+#: etc/mission/rivalrymission.class.php:16
+#, php-format
+msgid "To win this game you will have to conquer the last of %1$s's territories."
+msgstr ""
+
+#: etc/templates/about.phtml:2
+msgid "About"
+msgstr ""
+
+#: etc/templates/button_attack_again.phtml:1
+msgid "Attack again"
+msgstr ""
+
+#: etc/templates/button_cancel.phtml:1
+msgid "Cancel"
+msgstr ""
+
+#: etc/templates/button_max.phtml:1
+msgid "Maximum"
+msgstr ""
+
+#: etc/templates/button_ok.phtml:1
+msgid "Ok"
+msgstr ""
+
+#: etc/templates/chat.phtml:4
+msgid "Loading messages..."
+msgstr ""
+
+#: etc/templates/chat.phtml:6 etc/templates/game.phtml:162
+msgid "Enable this to automatically scroll down to the latest message"
+msgstr ""
+
+#: etc/templates/chat.phtml:15
+msgid "Say something"
+msgstr ""
+
+#: etc/templates/chat.phtml:18 etc/templates/game.phtml:8
+msgid "Chat"
+msgstr ""
+
+#: etc/templates/dialog.phtml:7
+msgid "Close window"
+msgstr ""
+
+#: etc/templates/dialog_attack_result.phtml:2
+#: etc/templates/dialog_form_defend.phtml:1
+msgid "Attacker rolled:"
+msgstr ""
+
+#: etc/templates/dialog_attack_result.phtml:5
+msgid "Defender rolled:"
+msgstr ""
+
+#: etc/templates/dialog_card_discard.phtml:1
+msgid ""
+"You have reached the maximum of 5 cards. Either discard one of your current "
+"cards or forgo receiving a new card."
+msgstr ""
+
+#: etc/templates/dialog_card_discard.phtml:5
+msgid "Keep current cards"
+msgstr ""
+
+#: etc/templates/dialog_form_attack.phtml:3
+msgid "Select a territory to attack from"
+msgstr ""
+
+#: etc/templates/dialog_form_attack.phtml:7
+msgid "Select a territory to attack"
+msgstr ""
+
+#: etc/templates/dialog_form_attack.phtml:13
+#: etc/templates/dialog_form_attack.phtml:18
+msgid "Enter the number of units to attack with"
+msgstr ""
+
+#: etc/templates/dialog_form_attack.phtml:23
+#: etc/templates/dialog_form_attack.phtml:28
+msgid "Enter the number of units to move with"
+msgstr ""
+
+#: etc/templates/dialog_form_defend.phtml:3
+msgid "Defend with:"
+msgstr ""
+
+#: etc/templates/dialog_form_move.phtml:3
+msgid "Select a territory to move from"
+msgstr ""
+
+#: etc/templates/dialog_form_move.phtml:7
+msgid "Select a territory to move to"
+msgstr ""
+
+#: etc/templates/dialog_form_move.phtml:11
+#: etc/templates/dialog_form_move.phtml:16
+msgid "Enter the number of units to move"
+msgstr ""
+
+#: etc/templates/dialog_form_stack.phtml:1
+msgid "How many units would you like to place?"
+msgstr ""
+
+#: etc/templates/dialog_form_stack.phtml:6
+msgid "Units to place"
+msgstr ""
+
+#: etc/templates/footer.phtml:3
+#, php-format
+msgid "&copy; %1$d %2$s."
+msgstr ""
+
+#: etc/templates/game.phtml:5 etc/templates/game.phtml:47
+msgid "Territories"
+msgstr ""
+
+#: etc/templates/game.phtml:6 etc/templates/game.phtml:23
+#: etc/templates/game.phtml:81 etc/templates/map.phtml:9
+msgid "Regions"
+msgstr ""
+
+#: etc/templates/game.phtml:7
+msgid "Cards"
+msgstr ""
+
+#: etc/templates/game.phtml:9
+msgid "Combat Log"
+msgstr ""
+
+#: etc/templates/game.phtml:10
+msgid "Settings"
+msgstr ""
+
+#: etc/templates/game.phtml:21 etc/templates/game.phtml:46
+#: etc/templates/game.phtml:79 etc/templates/game_postgame.phtml:7
+msgid "Player"
+msgstr ""
+
+#: etc/templates/game.phtml:22 etc/templates/game.phtml:48
+#: etc/templates/game.phtml:80
+msgid "Units"
+msgstr ""
+
+#: etc/templates/game.phtml:34
+msgid "Borders"
+msgstr ""
+
+#: etc/templates/game.phtml:49 etc/templates/map.phtml:13
+msgid "Units per turn"
+msgstr ""
+
+#: etc/templates/game.phtml:60
+msgid "Units gained from regions"
+msgstr ""
+
+#: etc/templates/game.phtml:62
+msgid "Units gained from territories"
+msgstr ""
+
+#: etc/templates/game.phtml:77
+msgid "Flag"
+msgstr ""
+
+#: etc/templates/game.phtml:78
+msgid "Territory"
+msgstr ""
+
+#: etc/templates/game.phtml:88
+#, php-format
+msgid "Flag of %1$s"
+msgstr ""
+
+#: etc/templates/game.phtml:117
+msgid "Highlight"
+msgstr ""
+
+#: etc/templates/game.phtml:119
+#, php-format
+msgid "%1$d territories, %2$d units per turn"
+msgstr ""
+
+#: etc/templates/game.phtml:144 etc/templates/game.phtml:145
+#: etc/templates/game.phtml:146 etc/templates/game.phtml:147
+#, php-format
+msgid "Place %1$d units"
+msgstr ""
+
+#: etc/templates/game.phtml:160
+msgid "Loading..."
+msgstr ""
+
+#: etc/templates/game.phtml:174
+msgid "Autoroll"
+msgstr ""
+
+#: etc/templates/game.phtml:176
+msgid ""
+"Disable autoroll to stop the game from automatically choosing the number of "
+"dice to defend with. Two dice will be used if the average of the highest two "
+"attacking dice is less than or equal to 3.5."
+msgstr ""
+
+#: etc/templates/game.phtml:180
+msgid "Default unit graphics"
+msgstr ""
+
+#: etc/templates/game.phtml:182
+msgid "Select this to use unit icons."
+msgstr ""
+
+#: etc/templates/game.phtml:185
+msgid "Numeric unit graphics"
+msgstr ""
+
+#: etc/templates/game.phtml:187
+msgid "Select this to use unit numbers."
+msgstr ""
+
+#: etc/templates/game.phtml:190
+msgid "No unit graphics"
+msgstr ""
+
+#: etc/templates/game.phtml:192
+msgid "Select this to disable units."
+msgstr ""
+
+#: etc/templates/game.phtml:199 etc/templates/map.phtml:42
+msgid "Zoom in"
+msgstr ""
+
+#: etc/templates/game.phtml:200 etc/templates/map.phtml:43
+msgid "Zoom out"
+msgstr ""
+
+#: etc/templates/game.phtml:203 etc/templates/map.phtml:46
+#, php-format
+msgid "Map of %1$s"
+msgstr ""
+
+#: etc/templates/game.phtml:215
+#, php-format
+msgid "%1$s's turn"
+msgstr ""
+
+#: etc/templates/game.phtml:216
+msgid "Number of units left to place"
+msgstr ""
+
+#: etc/templates/game.phtml:217
+msgid "Number of units left to move"
+msgstr ""
+
+#: etc/templates/game.phtml:218
+msgid "Place new units instead of attacking"
+msgstr ""
+
+#: etc/templates/game.phtml:218
+msgid "Stack"
+msgstr ""
+
+#: etc/templates/game.phtml:219
+msgid "Stop attacking and start moving units"
+msgstr ""
+
+#: etc/templates/game.phtml:220
+msgid "Cede control and end your turn"
+msgstr ""
+
+#: etc/templates/game.phtml:221
+msgid "Surrender the game"
+msgstr ""
+
+#: etc/templates/game.phtml:221
+msgid "Forfeit"
+msgstr ""
+
+#: etc/templates/game.phtml:238
+msgid "Move units from this territory"
+msgstr ""
+
+#: etc/templates/game.phtml:243
+msgid "Move units to this territory"
+msgstr ""
+
+#: etc/templates/game.phtml:248
+msgid "Fortify this territory"
+msgstr ""
+
+#: etc/templates/game.phtml:253
+msgid "Attack this territory"
+msgstr ""
+
+#: etc/templates/game.phtml:258
+msgid "Attack from this territory"
+msgstr ""
+
+#: etc/templates/games.phtml:9
+msgid "Hide games that have already started."
+msgstr ""
+
+#: etc/templates/games.phtml:10
+msgid "Hide password protected games."
+msgstr ""
+
+#: etc/templates/games.phtml:39
+msgid "This game is in progress."
+msgstr ""
+
+#: etc/templates/games.phtml:43
+msgid "This game requires a password to join."
+msgstr ""
+
+#: etc/templates/game_player.phtml:2 etc/templates/game_postgame.phtml:14
+msgid "(Owner)"
+msgstr ""
+
+#: etc/templates/game_player.phtml:4
+msgid "Kick"
+msgstr ""
+
+#: etc/templates/game_postgame.phtml:7
+msgid "Mission"
+msgstr ""
+
+#: etc/templates/game_postgame.phtml:14
+msgid "(Winner)"
+msgstr ""
+
+#: etc/templates/game_pregame.phtml:14
+msgid "Invite code"
+msgstr ""
+
+#: etc/templates/game_pregame_join.phtml:5 etc/templates/newgame.phtml:18
+msgid "Choose a color"
+msgstr ""
+
+#: etc/templates/game_pregame_join.phtml:17
+msgid "Enter password"
+msgstr ""
+
+#: etc/templates/game_pregame_join.phtml:21
+msgid "or"
+msgstr ""
+
+#: etc/templates/game_pregame_join.phtml:28
+msgid "Enter invite code"
+msgstr ""
+
+#: etc/templates/game_pregame_join.phtml:34
+msgid "Join game"
+msgstr ""
+
+#: etc/templates/game_pregame_leave.phtml:3
+msgid "Leave game"
+msgstr ""
+
+#: etc/templates/game_pregame_owner.phtml:4
+msgid "Start game"
+msgstr ""
+
+#: etc/templates/game_pregame_owner.phtml:6
+msgid "Disband game"
+msgstr ""
+
+#: etc/templates/map.phtml:13
+msgid "Region"
+msgstr ""
+
+#: etc/templates/map.phtml:13
+msgid "Number of territories"
+msgstr ""
+
+#: etc/templates/map.phtml:30
+msgid "Missions"
+msgstr ""
+
+#: etc/templates/map.phtml:38
+msgid "Javascript needs to be enabled to interact with this map."
+msgstr ""
+
+#: etc/templates/maps.phtml:2
+msgid "Maps"
+msgstr ""
+
+#: etc/templates/newgame.phtml:2
+msgid "New Game"
+msgstr ""
+
+#: etc/templates/newgame.phtml:9
+msgid "Enter game name"
+msgstr ""
+
+#: etc/templates/newgame.phtml:12
+msgid "Choose a map"
+msgstr ""
+
+#: etc/templates/newgame.phtml:14
+#, php-format
+msgid "%1$s (%2$d players)"
+msgstr ""
+
+#: etc/templates/newgame.phtml:25
+msgid "Enter password (optional)"
+msgstr ""
+
+#: etc/templates/newgame.phtml:28
+msgid "Create game"
+msgstr ""
+
+#: etc/templates/page.phtml:7
+#, php-format
+msgid "Imperator | %1$s"
+msgstr ""
+
+#: etc/templates/rankings.phtml:2
+msgid "Rankings"
+msgstr ""
+
+#: etc/templates/rankings.phtml:5
+msgid "#"
+msgstr ""
+
+#: etc/templates/rankings.phtml:5
+msgid "Wins"
+msgstr ""
+
+#: etc/templates/rankings.phtml:5
+msgid "Losses"
+msgstr ""
+
+#: etc/templates/rankings.phtml:5
+msgid "Score"
+msgstr ""
+
+#: etc/templates/splash.phtml:2
+msgid "Welcome to Imperator"
+msgstr ""
+
+#: etc/templates/splash.phtml:3
+msgid "Please login to continue."
+msgstr ""

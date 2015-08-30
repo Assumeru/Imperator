@@ -110,15 +110,15 @@
 <?php	foreach($game->getMap()->getRegions() as $region) { ?>
 			<h2>
 				<img src="<?php echo \imperator\page\Game::getRegionFlag($region); ?>" alt="" /> <?php echo $this->__($region->getName()); ?>
-				<button data-toggle="collapse" data-target="#region-<?php echo $this->__($region->getId()); ?>" class="btn collapsed">
+				<button data-toggle="collapse" data-target="#region-<?php echo $region->getId(); ?>" class="btn collapsed">
 					<span class="glyphicon glyphicon-chevron-up"></span>
 					<span class="glyphicon glyphicon-chevron-down"></span>
 				</button>
-				<button class="btn" data-button="highlight" data-region="<?php echo $this->__($region->getId()); ?>"><?php echo $this->__('Highlight'); ?></button>
+				<button class="btn" data-button="highlight" data-region="<?php echo $region->getId(); ?>"><?php echo $this->__('Highlight'); ?></button>
 			</h2>
 			<p><?php echo $this->__('%1$d territories, %2$d units per turn', count($region->getTerritories()), $region->getUnitsPerTurn()); ?></p>
-			<div class="region-division" data-region="<?php echo $this->__($region->getId()); ?>"></div>
-			<div id="region-<?php echo $this->__($region->getId()); ?>" class="collapse">
+			<div class="region-division" data-region="<?php echo $region->getId(); ?>"></div>
+			<div id="region-<?php echo $region->getId(); ?>" class="collapse">
 	<?php	foreach($region->getTerritories() as $territory) { ?>
 				<div class="row" data-territory="<?php echo $territory->getId(); ?>">
 					<div class="col-xs-1">
