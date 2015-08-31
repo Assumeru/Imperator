@@ -29,3 +29,13 @@ function EE_imperator_is_installed() {
 function EE_imperator_uninstall() {
 	\imperator\Imperator::getDatabaseManager()->dropTables();
 }
+
+function EE_imperator_activate() {
+	global $db;
+	$db->update_query('tasks', array('enabled' => 1), 'file = "EE_imperator"');
+}
+
+function EE_imperator_deactivate() {
+	global $db;
+	$db->update_query('tasks', array('enabled' => 0), 'file = "EE_imperator"');
+}

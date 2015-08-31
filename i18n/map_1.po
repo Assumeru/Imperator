@@ -1,0 +1,184 @@
+# Map Classic
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: etc/maps/1.xml
+
+# Name
+msgid "Classic"
+msgstr ""
+
+# Territories
+msgid "Central Africa"
+msgstr ""
+
+msgid "East Africa"
+msgstr ""
+
+msgid "Egypt"
+msgstr ""
+
+msgid "Madagascar"
+msgstr ""
+
+msgid "North Africa"
+msgstr ""
+
+msgid "South Africa"
+msgstr ""
+
+msgid "China"
+msgstr ""
+
+msgid "India"
+msgstr ""
+
+msgid "Japan"
+msgstr ""
+
+msgid "Kamchatka"
+msgstr ""
+
+msgid "Kazakhstan"
+msgstr ""
+
+msgid "Middle East"
+msgstr ""
+
+msgid "Mongolia"
+msgstr ""
+
+msgid "Sakha"
+msgstr ""
+
+msgid "Southeast Asia"
+msgstr ""
+
+msgid "Ural"
+msgstr ""
+
+msgid "Siberia"
+msgstr ""
+
+msgid "British Isles"
+msgstr ""
+
+msgid "Eastern Europe"
+msgstr ""
+
+msgid "Iceland"
+msgstr ""
+
+msgid "Northern Europe"
+msgstr ""
+
+msgid "Scandinavia"
+msgstr ""
+
+msgid "Southern Europe"
+msgstr ""
+
+msgid "Western Europe"
+msgstr ""
+
+msgid "Alaska"
+msgstr ""
+
+msgid "Alberta"
+msgstr ""
+
+msgid "Central America"
+msgstr ""
+
+msgid "Eastern United States"
+msgstr ""
+
+msgid "Greenland"
+msgstr ""
+
+msgid "Northwest Territories"
+msgstr ""
+
+msgid "Quebec"
+msgstr ""
+
+msgid "Western United States"
+msgstr ""
+
+msgid "Eastern Australia"
+msgstr ""
+
+msgid "Indonesia"
+msgstr ""
+
+msgid "New Guinea"
+msgstr ""
+
+msgid "Western Autralia"
+msgstr ""
+
+msgid "Argentina"
+msgstr ""
+
+msgid "Brazil"
+msgstr ""
+
+msgid "Peru"
+msgstr ""
+
+msgid "Venezuela"
+msgstr ""
+
+# Regions
+msgid "Africa"
+msgstr ""
+
+msgid "Asia"
+msgstr ""
+
+msgid "Europe"
+msgstr ""
+
+msgid "North America"
+msgstr ""
+
+msgid "Oceania"
+msgstr ""
+
+msgid "South America"
+msgstr ""
+
+# Missions
+msgid "Zeeland and New Zealand"
+msgstr ""
+msgid "To win this game you will have to conquer Europe, Oceania and a third continent."
+msgstr ""
+
+msgid "Age of Empires"
+msgstr ""
+msgid "To win this game you will have to conquer Europe, South America and a third continent."
+msgstr ""
+
+msgid "Colonization"
+msgstr ""
+msgid "To win this game you will have to conquer North America and Africa."
+msgstr ""
+
+msgid "Pacific Empire"
+msgstr ""
+msgid "To win this game you will have to conquer North America and Oceania."
+msgstr ""
+
+msgid "Fusang"
+msgstr ""
+msgid "To win this game you will have to conquer Asia and South America."
+msgstr ""
+
+msgid "Cradle"
+msgstr ""
+msgid "To win this game you will have to conquer Asia and Africa."
+msgstr ""

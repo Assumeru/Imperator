@@ -1,0 +1,345 @@
+# Map North America
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: etc/maps/2.xml
+
+# Name
+msgid "North America"
+msgstr ""
+
+# Territories
+msgid "Alberta"
+msgstr ""
+
+msgid "British Colombia"
+msgstr ""
+
+msgid "Manitoba"
+msgstr ""
+
+msgid "New Brunswick"
+msgstr ""
+
+msgid "Newfoundland"
+msgstr ""
+
+msgid "Northwest Territories"
+msgstr ""
+
+msgid "Nova Scotia"
+msgstr ""
+
+msgid "Nunavut"
+msgstr ""
+
+msgid "Ontario"
+msgstr ""
+
+msgid "Prince Edward Island"
+msgstr ""
+
+msgid "Quebec"
+msgstr ""
+
+msgid "Saskatchewan"
+msgstr ""
+
+msgid "Yukon"
+msgstr ""
+
+msgid "Republic of Cuba"
+msgstr ""
+
+msgid "Aguascalientes"
+msgstr ""
+
+msgid "Baja California"
+msgstr ""
+
+msgid "Baja California Sur"
+msgstr ""
+
+msgid "Campeche"
+msgstr ""
+
+msgid "Chiapas"
+msgstr ""
+
+msgid "Chihuahua"
+msgstr ""
+
+msgid "Coahuila"
+msgstr ""
+
+msgid "Colima"
+msgstr ""
+
+msgid "Durango"
+msgstr ""
+
+msgid "Guanajuato"
+msgstr ""
+
+msgid "Guerrero"
+msgstr ""
+
+msgid "Hidalgo"
+msgstr ""
+
+msgid "Jalisco"
+msgstr ""
+
+msgid "Mexico"
+msgstr ""
+
+msgid "Mexico City"
+msgstr ""
+
+msgid "Michoacan"
+msgstr ""
+
+msgid "Morelos"
+msgstr ""
+
+msgid "Nayarit"
+msgstr ""
+
+msgid "Nuevoleon"
+msgstr ""
+
+msgid "Oaxaca"
+msgstr ""
+
+msgid "Puebla"
+msgstr ""
+
+msgid "Queretaro"
+msgstr ""
+
+msgid "Quintana Roo"
+msgstr ""
+
+msgid "San Luis Potosi"
+msgstr ""
+
+msgid "Sinaloa"
+msgstr ""
+
+msgid "Sonora"
+msgstr ""
+
+msgid "Tabasco"
+msgstr ""
+
+msgid "Tamaulipas"
+msgstr ""
+
+msgid "Tlaxcala"
+msgstr ""
+
+msgid "Veracruz"
+msgstr ""
+
+msgid "Yucatan"
+msgstr ""
+
+msgid "Zacatecas"
+msgstr ""
+
+msgid "Alabama"
+msgstr ""
+
+msgid "Alaska"
+msgstr ""
+
+msgid "Arizona"
+msgstr ""
+
+msgid "Arkansas"
+msgstr ""
+
+msgid "California"
+msgstr ""
+
+msgid "Colorado"
+msgstr ""
+
+msgid "Connecticut"
+msgstr ""
+
+msgid "Delaware"
+msgstr ""
+
+msgid "Florida"
+msgstr ""
+
+msgid "Georgia"
+msgstr ""
+
+msgid "Hawaii"
+msgstr ""
+
+msgid "Idaho"
+msgstr ""
+
+msgid "Illinois"
+msgstr ""
+
+msgid "Indiana"
+msgstr ""
+
+msgid "Iowa"
+msgstr ""
+
+msgid "Kansas"
+msgstr ""
+
+msgid "Kentucky"
+msgstr ""
+
+msgid "Louisiana"
+msgstr ""
+
+msgid "Maine"
+msgstr ""
+
+msgid "Maryland"
+msgstr ""
+
+msgid "Massachusetts"
+msgstr ""
+
+msgid "Michigan"
+msgstr ""
+
+msgid "Minnesota"
+msgstr ""
+
+msgid "Mississippi"
+msgstr ""
+
+msgid "Missouri"
+msgstr ""
+
+msgid "Montana"
+msgstr ""
+
+msgid "Nebraska"
+msgstr ""
+
+msgid "Nevada"
+msgstr ""
+
+msgid "New Hampshire"
+msgstr ""
+
+msgid "New Jersey"
+msgstr ""
+
+msgid "New Mexico"
+msgstr ""
+
+msgid "New York"
+msgstr ""
+
+msgid "North Dakota"
+msgstr ""
+
+msgid "North Carolina"
+msgstr ""
+
+msgid "Ohio"
+msgstr ""
+
+msgid "Oklahoma"
+msgstr ""
+
+msgid "Oregon"
+msgstr ""
+
+msgid "Pennsylvania"
+msgstr ""
+
+msgid "Rhode Island"
+msgstr ""
+
+msgid "South Dakota"
+msgstr ""
+
+msgid "South Carolina"
+msgstr ""
+
+msgid "Tennessee"
+msgstr ""
+
+msgid "Texas"
+msgstr ""
+
+msgid "Utah"
+msgstr ""
+
+msgid "Vermont"
+msgstr ""
+
+msgid "Virginia"
+msgstr ""
+
+msgid "Washington"
+msgstr ""
+
+msgid "West Virginia"
+msgstr ""
+
+msgid "Wisconsin"
+msgstr ""
+
+msgid "Wyoming"
+msgstr ""
+
+# Regions
+msgid "Canada"
+msgstr ""
+
+msgid "Confederated States of America"
+msgstr ""
+
+msgid "Thirteen United States of America"
+msgstr ""
+
+msgid "Iroquois League"
+msgstr ""
+
+msgid "United Mexican States"
+msgstr ""
+
+msgid "United States of America"
+msgstr ""
+
+msgid "Viceroyalty of New Spain"
+msgstr ""
+
+# Missions
+msgid "Uncle Sam"
+msgstr ""
+msgid "To win this game you need to control the United States of America."
+msgstr ""
+
+msgid "Old Times"
+msgstr ""
+msgid "To win this game you need to control the Viceroyalty of New Spain and the Confederated States of America."
+msgstr ""
+
+msgid "Native Power"
+msgstr ""
+msgid "To win this game you need to control the United Mexican States and the Iroquois League."
+msgstr ""
+
+msgid "Canadian Expansion"
+msgstr ""
+msgid "To win this game you need to control Canada and 35 other territories (48 total)."
+msgstr ""
