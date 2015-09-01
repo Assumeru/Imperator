@@ -11,11 +11,11 @@ abstract class User implements Member {
 	private $losses;
 
 	public static function getCurrentUser() {
-		return new User();
+		return null;
 	}
 
 	public static function getUserById($uid) {
-		return new User($uid);
+		return null;
 	}
 
 	public static function getUserByHeaders(\imperator\HttpHeaders $headers) {

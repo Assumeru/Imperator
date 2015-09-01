@@ -23,9 +23,7 @@ abstract class DatabaseManager {
 	 * @param string $query The query
 	 * @return Query A query object
 	 */
-	protected function query($query) {
-		return null;
-	}
+	protected abstract function query($query);
 
 	public function escape($value) {
 		return $value;

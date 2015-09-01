@@ -27,6 +27,8 @@ class InGame extends DefaultPage {
 		if($inGame) {
 			$this->addChatJavascript($user, $this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->equals($user));
 			$mainClass = '';
+		} else {
+			$this->addApiJavascript($this->game->getId());
 		}
 		$this->renderJavascript($user);
 		$this->setTitle($this->game->getName());

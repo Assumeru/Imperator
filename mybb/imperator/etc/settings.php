@@ -31,9 +31,4 @@ class MyBBSettings extends \imperator\Settings {
 		$db->error_reporting = false;
 		Imperator::getShutDownHandler()->resetErrorHandler();
 	}
-
-	public function getAutoLoaderClass() {
-		require_once $this->getBasePath().'/etc/mybbautoloader.class.php';
-		return '\\imperator\\outside\\mybb\\MyBBAutoLoader';
-	}
 }

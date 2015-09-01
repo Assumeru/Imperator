@@ -27,6 +27,11 @@ class AutoLoader {
 			$this->basePath.'/etc/'.$path.'.class.php',
 			$this->basePath.'/etc/'.$path.'.interface.php'
 		);
+		if(strpos($path, 'outside/') === 0) {
+			$path = substr($path, 8);
+			$locations[] = $this->basePath.'/etc/'.$path.'.class.php';
+			$locations[] = $this->basePath.'/etc/'.$path.'.interface.php';
+		}
 
 		foreach($locations as $location) {
 			if(file_exists($location)) {

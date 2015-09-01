@@ -28,7 +28,6 @@ class MyBBDatabaseManager extends \imperator\database\DatabaseManager {
 
 	public function getOutsideUsersTable() {
 		if(!isset($this->table)) {
-			Imperator::getSettings()->includeMyBB();
 			$this->table = new MyBBUserTable($this);
 		}
 		return $this->table;

@@ -97,15 +97,19 @@ abstract class DefaultPage extends Page {
 		return Template::getInstance('profile_link')->setVariables(array('user' => $user))->execute();
 	}
 
-	protected function addChatJavascript(\imperator\User $user, $gid, $canDelete = false) {
+	protected function addApiJavascript($gid) {
 		$this->addJavascript('store.js');
 		$this->addJavascript('api.js');
-		$this->addJavascript('chat.js');
 		$this->addJavascript('dialog.js');
 		$this->setJavascriptSetting('API', array(
 			'longpollingURL' => Ajax::getURL()
 		));
 		$this->setJavascriptSetting('gid', $gid);
+	}
+
+	protected function addChatJavascript(\imperator\User $user, $gid, $canDelete = false) {
+		$this->addApiJavascript($gid);
+		$this->addJavascript('chat.js');
 		$this->setJavascriptSetting('chat', array(
 			'canDelete' => $canDelete,
 			'template' => Template::getInstance('chat_message')->execute(),

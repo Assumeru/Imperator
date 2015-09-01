@@ -27,6 +27,10 @@ class MyBBUser extends \imperator\User {
 		return new self($uid, $user['username'], false);
 	}
 
+	public static function getUserByHeaders(\imperator\HttpHeaders $headers) {
+		return null;
+	}
+
 	public function getProfileLink() {
 		global $mybb;
 		if(($id = $this->getId()) !== 0) {
