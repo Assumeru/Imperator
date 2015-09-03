@@ -423,7 +423,7 @@
 	}
 
 	function sendForfeit() {
-		if($game.player.playing && window.confirm(Imperator.settings.language.forfeit)) {
+		if($game.player !== undefined && $game.player.playing && window.confirm(Imperator.settings.language.forfeit)) {
 			Imperator.API.send({
 				mode: 'game',
 				gid: $game.id,
@@ -552,7 +552,7 @@
 				$time = $msg.update;
 				$updateErrors = 0;
 			}
-			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined && $msg.cards !== undefined && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined && $msg.conquered !== undefined) {
+			if($game === undefined && $msg.regions !== undefined && $msg.territories !== undefined && $msg.players !== undefined /*&& $msg.cards !== undefined*/ && $msg.units !== undefined && $msg.state !== undefined && $msg.turn !== undefined && $msg.conquered !== undefined) {
 				$game = new Imperator.Game(Imperator.settings.gid, $msg.players, $msg.regions, $msg.territories, $msg.cards, $msg.units, $msg.state, $msg.turn, $msg.conquered);
 				$game.player = $game.players[Imperator.settings.uid];
 				$update.territories[0] = true;
@@ -629,7 +629,7 @@
 							$game.players[$key].playing = $msg.players[$key].playing;
 						}
 					}
-					if(!$game.player.playing) {
+					if($game.player === undefined || !$game.player.playing) {
 						$('#controls-box [data-button="forfeit"]').hide();
 					}
 				}
@@ -903,7 +903,7 @@
 			$player.find('[data-value="unitsperturn"]').text($upt.territories + $upt.regions);
 			$player.find('[data-value="unitsperturn-regions"]').text($upt.regions);
 			$player.find('[data-value="unitsperturn-territories"]').text($upt.territories);
-			if($game.player.id == $id) {
+			if($game.player !== undefined && $game.player.id == $id) {
 				$('#controls-box [data-button="stack"] .number').text($upt.territories);
 			}
 		}
@@ -1037,7 +1037,7 @@
 		if($page !== '') {
 			$page = $page.split('-');
 			if($page.length === 2) {
-				if($page[1] == 'players' || $page[1] == 'regions' || $page[1] == 'territories' || $page[1] == 'map' || ($userIsPlayer && ($page[1] == 'cards' || $page[1] == 'chatbox' || $page[1] == 'settings' || $page[1] == 'log'))) {
+				if($page[1] == 'players' || $page[1] == 'regions' || $page[1] == 'territories' || $page[1] == 'map' || $page[1] == 'settings' || $page[1] == 'log' || ($userIsPlayer && ($page[1] == 'cards' || $page[1] == 'chatbox'))) {
 					$currentTab = [$page[1]];
 				}
 			} else if($page.length === 3 && $page[1] == 'territory') {

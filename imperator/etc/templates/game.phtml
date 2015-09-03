@@ -169,12 +169,14 @@
 			</div>
 		</section>
 		<section id="settings" class="swipe-pane">
-			<label>
-				<input type="checkbox" name="autoroll" />
-				<?php echo $this->__('Autoroll'); ?>
-			</label>
-			<p><?php echo $this->__('Disable autoroll to stop the game from automatically choosing the number of dice to defend with. Two dice will be used if the average of the highest two attacking dice is less than or equal to 3.5.'); ?></p>
-			<hr />
+			<div class="player-only">
+				<label>
+					<input type="checkbox" name="autoroll" />
+					<?php echo $this->__('Autoroll'); ?>
+				</label>
+				<p><?php echo $this->__('Disable autoroll to stop the game from automatically choosing the number of dice to defend with. Two dice will be used if the average of the highest two attacking dice is less than or equal to 3.5.'); ?></p>
+				<hr />
+			</div>
 			<label>
 				<input type="radio" name="unitgraphics" value="default" />
 				<?php echo $this->__('Default unit graphics'); ?>

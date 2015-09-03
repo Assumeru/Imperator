@@ -59,7 +59,6 @@ class NewGameForm extends Form {
 	}
 
 	public function getName() {
-		\imperator\Imperator::getLogger()->log(\imperator\Logger::LEVEL_INFO, 'name: '.$this->name);
 		return $this->name;
 	}
 

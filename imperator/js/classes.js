@@ -43,7 +43,9 @@ Imperator.Game = function($id, $players, $regions, $territories, $cards, $units,
 		territories: getTerritoriesFromJSON($territories)
 	};
 	this.map.regions = getRegionsFromJSON($regions);
-	this.cards = new Imperator.Cards($cards);
+	if($cards !== undefined) {
+		this.cards = new Imperator.Cards($cards);
+	}
 	this.units = $units;
 	this.state = $state;
 	this.turn = this.players[$turn];

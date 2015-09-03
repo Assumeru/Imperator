@@ -7,6 +7,15 @@ Imperator.API = (function($) {
 	$longPollingURL = Imperator.settings.API.longpollingURL,
 	$webSocketURL = Imperator.settings.API.webSocketURL,
 	$ws;
+	if(window.console === undefined) {
+		window.console = {};
+	}
+	if(typeof window.console.log != 'function') {
+		window.console.log = function() {};
+	}
+	if(typeof window.console.error != 'function') {
+		window.console.error = function() {};
+	}
 
 	function connect() {
 		if(supportsWebSocket()) {
