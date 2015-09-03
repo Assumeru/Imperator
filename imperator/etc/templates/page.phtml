@@ -10,8 +10,10 @@
 	<script src="<?php echo $settings->getBaseURL(); ?>/js/bootstrap.min.js"></script>
 	<link href="<?php echo $settings->getBaseURL(); ?>/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 	<link href="<?php echo $settings->getBaseURL(); ?>/css/style.css" type="text/css" rel="stylesheet" />
+	<script>//<![CDATA[
+<?php echo $javascriptSettings; ?>
+	//]]></script>
 <?php
-	echo $javascriptSettings, "\n";
 	foreach($css as $file) {
 		echo '<link href="', $settings->getBaseURL(), '/css/', $file, '" type="text/css" rel="stylesheet" />', "\n";
 	}

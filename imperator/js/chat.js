@@ -65,7 +65,7 @@
 					sendUpdateRequest();
 				}
 			}
-			Imperator.Dialog.showDialog(Imperator.settings.chat.chaterror, $msg.error, true);
+			Imperator.Dialog.showDialog(Imperator.settings.language.chaterror, $msg.error, true);
 		}
 	}
 
@@ -89,7 +89,7 @@
 
 	function addMessage($msg) {
 		var $time = new Date($msg.time),
-		$message = $(Imperator.settings.chat.template),
+		$message = $(Imperator.settings.templates.chatmessage),
 		$deleteButton = $message.find('[data-type="delete"]'),
 		$user = $message.find('a.user'),
 		$stamp = $message.find('time');

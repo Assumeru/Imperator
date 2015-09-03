@@ -28,7 +28,7 @@ class InGame extends DefaultPage {
 			$this->addChatJavascript($user, $this->game->getId(), $user->canDeleteChatMessages() || $this->game->getOwner()->equals($user));
 			$mainClass = '';
 		} else {
-			$this->addApiJavascript($this->game->getId());
+			$this->addApiJavascript($this->game->getId(), $user->getLanguage());
 		}
 		$this->renderJavascript($user);
 		$this->setTitle($this->game->getName());
@@ -41,7 +41,6 @@ class InGame extends DefaultPage {
 		$language = $user->getLanguage();
 		$this->setJavascriptSetting('uid', $user->getId());
 		$this->setJavascriptSetting('templates', array(
-			'dialog' => Template::getInstance('dialog', $language)->execute(),
 			'card' => Template::getInstance('game_card')->setVariables(array(
 				'url' => $this->getCardURL(),
 				'name' => '%2$s'
@@ -50,7 +49,6 @@ class InGame extends DefaultPage {
 			'cancelbutton' => Template::getInstance('button_cancel', $language)->execute(),
 			'maxbutton' => Template::getInstance('button_max', $language)->execute(),
 			'attackagainbutton' => Template::getInstance('button_attack_again', $language)->execute(),
-			'dialogform' => Template::getInstance('dialog_form')->execute(),
 			'dialogformfortify' => Template::getInstance('dialog_form_stack', $language)->execute(),
 			'dialogformattack' => Template::getInstance('dialog_form_attack', $language)->execute(),
 			'dialogformmove' => Template::getInstance('dialog_form_move', $language)->execute(),
@@ -71,7 +69,6 @@ class InGame extends DefaultPage {
 			'confirmmove' => $language->translate('Are you sure you want to stop attacking?'),
 			'confirmend' => $language->translate('Are you sure you want to end your turn?'),
 			'conquered' => $language->translate('%1$s has been conquered'),
-			'contacting' => $language->translate('Contacting server.'),
 			'endedmessage' => $language->translate('This game has ended.'),
 			'forfeit' => $language->translate('Are you sure you want to forfeit?'),
 			'fortify' => $language->translate('Fortify %1$s'),
@@ -79,7 +76,6 @@ class InGame extends DefaultPage {
 			'move' => $language->translate('Move'),
 			'newcard' => $language->translate('You have received a new card!'),
 			'vs' => $language->translate('%1$s vs. %2$s'),
-			'wait' => $language->translate('Please wait...'),
 			'endturn' => $language->translate('End turn'),
 			'error' => $language->translate('An error has occurred'),
 			'disconnected' => $language->translate('Connection to the server has been lost.')

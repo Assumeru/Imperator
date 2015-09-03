@@ -104,7 +104,7 @@ Imperator.API = (function($) {
 			}
 		}
 		if($response.error === undefined) {
-			$response.error = 'Unkown error';
+			$response.error = Imperator.settings.language.unknownerror;
 		}
 		for(var $n = 0; $n < $onError.length; $n++) {
 			$onError[$n]($response);

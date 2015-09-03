@@ -222,7 +222,19 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: app/page/defaultpage.class.php:112
+#: app/page/defaultpage.class.php:116
+msgid "Please wait..."
+msgstr ""
+
+#: app/page/defaultpage.class.php:117
+msgid "Contacting server."
+msgstr ""
+
+#: app/page/defaultpage.class.php:118
+msgid "Unknown error."
+msgstr ""
+
+#: app/page/defaultpage.class.php:133
 msgid "Chat Error"
 msgstr ""
 
@@ -315,53 +327,45 @@ msgstr ""
 msgid "%1$s has been conquered"
 msgstr ""
 
-#: app/page/ingame.class.php:72
-msgid "Contacting server."
-msgstr ""
-
-#: app/page/ingame.class.php:73 etc/templates/games.phtml:41
+#: app/page/ingame.class.php:72 etc/templates/games.phtml:41
 msgid "This game has ended."
 msgstr ""
 
-#: app/page/ingame.class.php:74
+#: app/page/ingame.class.php:73
 msgid "Are you sure you want to forfeit?"
 msgstr ""
 
-#: app/page/ingame.class.php:75
+#: app/page/ingame.class.php:74
 #, php-format
 msgid "Fortify %1$s"
 msgstr ""
 
-#: app/page/ingame.class.php:76
+#: app/page/ingame.class.php:75
 msgid "Game Over"
 msgstr ""
 
-#: app/page/ingame.class.php:77 etc/templates/game.phtml:219
+#: app/page/ingame.class.php:76 etc/templates/game.phtml:219
 msgid "Move"
 msgstr ""
 
-#: app/page/ingame.class.php:78
+#: app/page/ingame.class.php:77
 msgid "You have received a new card!"
 msgstr ""
 
-#: app/page/ingame.class.php:79
+#: app/page/ingame.class.php:78
 #, php-format
 msgid "%1$s vs. %2$s"
 msgstr ""
 
-#: app/page/ingame.class.php:80
-msgid "Please wait..."
-msgstr ""
-
-#: app/page/ingame.class.php:81 etc/templates/game.phtml:220
+#: app/page/ingame.class.php:79 etc/templates/game.phtml:220
 msgid "End turn"
 msgstr ""
 
-#: app/page/ingame.class.php:82 app/page/pregame.class.php:44
+#: app/page/ingame.class.php:80 app/page/pregame.class.php:44
 msgid "An error has occurred"
 msgstr ""
 
-#: app/page/ingame.class.php:83 app/page/pregame.class.php:45
+#: app/page/ingame.class.php:81 app/page/pregame.class.php:45
 msgid "Connection to the server has been lost."
 msgstr ""
 

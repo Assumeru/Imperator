@@ -12,7 +12,7 @@ class WebSocket extends Api {
 		return parent::handleRequest();
 	}
 
-	protected function reply($json) {
+	protected function reply(array $json) {
 		return json_encode(parent::reply($json));
 	}
 }

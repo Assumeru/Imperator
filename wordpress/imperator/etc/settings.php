@@ -17,5 +17,10 @@ class WordPressSettings extends \imperator\Settings {
 
 	public function includeWordPress() {
 		require_once dirname($this->getBasePath()).'/wp-load.php';
+		//WordPress is weird, even php removed magic quotes...
+		$_GET = stripslashes_deep($_GET);
+		$_POST = stripslashes_deep($_POST);
+		$_COOKIE = stripslashes_deep($_COOKIE);
+		$_SERVER = stripslashes_deep($_SERVER);
 	}
 }

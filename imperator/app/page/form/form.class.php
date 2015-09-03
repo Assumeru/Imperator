@@ -7,6 +7,7 @@ abstract class Form {
 
 	public function __construct() {
 		$this->post = $_POST;
+		\imperator\Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, $_POST);
 		$this->get = $_GET;
 	}
 

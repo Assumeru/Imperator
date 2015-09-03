@@ -26,11 +26,11 @@ final class EE_Imperator {
 	private function setUpHooks() {
 		register_activation_hook(__FILE__, array($this, 'install'));
 		register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-		add_action(EE_imperator_run_cron, array($this, 'runCron'));
-		wp_schedule_event(time(), 'daily', 'EE_imperator_run_cron');
+		add_action('EE_imperator_run_cron', array($this, 'runCron'));
 	}
 
 	public function install() {
+		wp_schedule_event(time(), 'daily', 'EE_imperator_run_cron');
 		$db = \imperator\Imperator::getDatabaseManager();
 		$db->dropTables();
 		$db->createTables();
@@ -40,7 +40,7 @@ final class EE_Imperator {
 		$cron = new \imperator\Cron();
 		$numChats = $cron->cleanChat();
 		$numGames = $cron->cleanGames();
-		\imperator\Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, 'EE_imperator cleanup task completed: '.$numChats.' chat messages and '.$games.' games deleted.');
+		\imperator\Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, 'EE_imperator cleanup task completed: '.$numChats.' chat messages and '.$numGames.' games deleted.');
 	}
 
 	public function deactivate() {

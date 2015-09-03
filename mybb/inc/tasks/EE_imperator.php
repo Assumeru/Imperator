@@ -11,5 +11,5 @@
 		$numChats = $cron->cleanChat();
 		$numGames = $cron->cleanGames();
 
-		add_task_log($task, 'EE_imperator cleanup task completed: '.$numChats.' chat messages and '.$games.' games deleted.');
+		add_task_log($task, 'EE_imperator cleanup task completed: '.$numChats.' chat messages and '.$numGames.' games deleted.');
 	}

@@ -69,13 +69,17 @@ abstract class DefaultPage extends Page {
 	 * @param multitype $value The variable
 	 */
 	protected function setJavascriptSetting($key, $value) {
-		$this->jsSettings[$key] = $value;
+		if(isset($this->jsSettings[$key]) && is_array($this->jsSettings[$key]) && is_array($value)) {
+			$this->jsSettings[$key] = array_merge($this->jsSettings[$key], $value);
+		} else {
+			$this->jsSettings[$key] = $value;
+		}
 	}
 
 	protected function getJavascriptSettings() {
-		return '<script>var Imperator = '.json_encode(
+		return 'var Imperator = '.json_encode(
 			array('settings' => $this->jsSettings)
-		).';</script>'."\n";
+		).';';
 	}
 
 	/**
@@ -97,22 +101,35 @@ abstract class DefaultPage extends Page {
 		return Template::getInstance('profile_link')->setVariables(array('user' => $user))->execute();
 	}
 
-	protected function addApiJavascript($gid) {
+	protected function addApiJavascript($gid, \imperator\Language $language) {
 		$this->addJavascript('store.js');
 		$this->addJavascript('api.js');
 		$this->addJavascript('dialog.js');
 		$this->setJavascriptSetting('API', array(
 			'longpollingURL' => Ajax::getURL()
 		));
+		$this->setJavascriptSetting('templates', array(
+			'dialog' => Template::getInstance('dialog', $language)->execute(),
+			'dialogform' => Template::getInstance('dialog_form')->execute()
+		));
+		$this->setJavascriptSetting('language', array(
+			'wait' => $language->translate('Please wait...'),
+			'contacting' => $language->translate('Contacting server.'),
+			'unknownerror' => $language->translate('Unknown error.')
+		));
 		$this->setJavascriptSetting('gid', $gid);
 	}
 
 	protected function addChatJavascript(\imperator\User $user, $gid, $canDelete = false) {
-		$this->addApiJavascript($gid);
+		$this->addApiJavascript($gid, $user->getLanguage());
 		$this->addJavascript('chat.js');
 		$this->setJavascriptSetting('chat', array(
-			'canDelete' => $canDelete,
-			'template' => Template::getInstance('chat_message')->execute(),
+			'canDelete' => $canDelete
+		));
+		$this->setJavascriptSetting('templates', array(
+			'chatmessage' => Template::getInstance('chat_message')->execute()
+		));
+		$this->setJavascriptSetting('language', array(
 			'chaterror' => $user->getLanguage()->translate('Chat Error')
 		));
 	}
