@@ -590,108 +590,108 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: etc/templates/game.phtml:174
+#: etc/templates/game.phtml:175
 msgid "Autoroll"
 msgstr ""
 
-#: etc/templates/game.phtml:176
+#: etc/templates/game.phtml:177
 msgid ""
 "Disable autoroll to stop the game from automatically choosing the number of "
 "dice to defend with. Two dice will be used if the average of the highest two "
 "attacking dice is less than or equal to 3.5."
 msgstr ""
 
-#: etc/templates/game.phtml:180
+#: etc/templates/game.phtml:182
 msgid "Default unit graphics"
 msgstr ""
 
-#: etc/templates/game.phtml:182
+#: etc/templates/game.phtml:184
 msgid "Select this to use unit icons."
 msgstr ""
 
-#: etc/templates/game.phtml:185
+#: etc/templates/game.phtml:187
 msgid "Numeric unit graphics"
 msgstr ""
 
-#: etc/templates/game.phtml:187
+#: etc/templates/game.phtml:189
 msgid "Select this to use unit numbers."
 msgstr ""
 
-#: etc/templates/game.phtml:190
+#: etc/templates/game.phtml:192
 msgid "No unit graphics"
 msgstr ""
 
-#: etc/templates/game.phtml:192
+#: etc/templates/game.phtml:194
 msgid "Select this to disable units."
 msgstr ""
 
-#: etc/templates/game.phtml:199 etc/templates/map.phtml:42
+#: etc/templates/game.phtml:201 etc/templates/map.phtml:42
 msgid "Zoom in"
 msgstr ""
 
-#: etc/templates/game.phtml:200 etc/templates/map.phtml:43
+#: etc/templates/game.phtml:202 etc/templates/map.phtml:43
 msgid "Zoom out"
 msgstr ""
 
-#: etc/templates/game.phtml:203 etc/templates/map.phtml:46
+#: etc/templates/game.phtml:205 etc/templates/map.phtml:46
 #, php-format
 msgid "Map of %1$s"
 msgstr ""
 
-#: etc/templates/game.phtml:215
+#: etc/templates/game.phtml:217
 #, php-format
 msgid "%1$s's turn"
 msgstr ""
 
-#: etc/templates/game.phtml:216
+#: etc/templates/game.phtml:218
 msgid "Number of units left to place"
 msgstr ""
 
-#: etc/templates/game.phtml:217
+#: etc/templates/game.phtml:219
 msgid "Number of units left to move"
 msgstr ""
 
-#: etc/templates/game.phtml:218
+#: etc/templates/game.phtml:220
 msgid "Place new units instead of attacking"
 msgstr ""
 
-#: etc/templates/game.phtml:218
+#: etc/templates/game.phtml:221
 msgid "Stack"
 msgstr ""
 
-#: etc/templates/game.phtml:219
+#: etc/templates/game.phtml:222
 msgid "Stop attacking and start moving units"
 msgstr ""
 
-#: etc/templates/game.phtml:220
+#: etc/templates/game.phtml:223
 msgid "Cede control and end your turn"
 msgstr ""
 
-#: etc/templates/game.phtml:221
+#: etc/templates/game.phtml:224
 msgid "Surrender the game"
 msgstr ""
 
-#: etc/templates/game.phtml:221
+#: etc/templates/game.phtml:225
 msgid "Forfeit"
 msgstr ""
 
-#: etc/templates/game.phtml:238
+#: etc/templates/game.phtml:240
 msgid "Move units from this territory"
 msgstr ""
 
-#: etc/templates/game.phtml:243
+#: etc/templates/game.phtml:245
 msgid "Move units to this territory"
 msgstr ""
 
-#: etc/templates/game.phtml:248
+#: etc/templates/game.phtml:250
 msgid "Fortify this territory"
 msgstr ""
 
-#: etc/templates/game.phtml:253
+#: etc/templates/game.phtml:255
 msgid "Attack this territory"
 msgstr ""
 
-#: etc/templates/game.phtml:258
+#: etc/templates/game.phtml:260
 msgid "Attack from this territory"
 msgstr ""
 
