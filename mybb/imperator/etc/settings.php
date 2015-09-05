@@ -31,4 +31,46 @@ class MyBBSettings extends \imperator\Settings {
 		$db->error_reporting = false;
 		Imperator::getShutDownHandler()->resetErrorHandler();
 	}
+
+	public function getLongPollingTimeout() {
+		return (int)$this->getMyBBSetting('EE_imperator_settings_longpolling_timeout');
+	}
+
+	public function getMaxLongPollingTries() {
+		return (int)$this->getMyBBSetting('EE_imperator_settings_longpolling_tries');
+	}
+
+	public function getMaxChatMessageAge() {
+		return (int)$this->getMyBBSetting('EE_imperator_settings_max_chat_message_age');
+	}
+
+	public function getMinNumChatMessagesToPreserve() {
+		return (int)$this->getMyBBSetting('EE_imperator_settings_min_chat_messages_preserved');
+	}
+
+	public function getMaxFinishedGameAge() {
+		return (int)$this->getMyBBSetting('EE_imperator_settings_max_finished_game_age');
+	}
+
+	public function getInactiveGameTime() {
+		return (int)$this->getMyBBSetting('EE_imperator_settings_inactive_game_time');
+	}
+
+	public function getWebSocketAddress() {
+		return $this->getMyBBSetting('EE_imperator_settings_websocket_address');
+	}
+
+	public function getWebSocketPort() {
+		return $this->getMyBBSetting('EE_imperator_settings_websocket_port');
+	}
+
+	public function getWebSocketPath() {
+		return $this->getMyBBSetting('EE_imperator_settings_websocket_path');
+	}
+
+	private function getMyBBSetting($key) {
+		global $mybb;
+		$this->includeMyBB();
+		return $mybb->settings[$key];
+	}
 }

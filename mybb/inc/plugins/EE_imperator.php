@@ -16,9 +16,91 @@ function EE_imperator_info() {
 }
 
 function EE_imperator_install() {
-	$db = \imperator\Imperator::getDatabaseManager();
-	$db->dropTables();
-	$db->createTables();
+	global $db;
+	$dbm = \imperator\Imperator::getDatabaseManager();
+	$dbm->dropTables();
+	$dbm->createTables();
+	$db->insert_query('settinggroups', array(
+		'name' => 'EE_imperator_settings',
+		'title' => 'Imperator Settings',
+		'description' => 'Settings for Imperator.'
+	));
+	$gid = $db->insert_id();
+	$db->insert_query_multiple('settings', array(
+		array(
+			'name' => 'EE_imperator_settings_max_chat_message_age',
+			'title' => 'Max. chat message age',
+			'description' => 'The time (in seconds) until a chat message is deleted',
+			'optionscode' => 'text',
+			'value' => 86400,
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_min_chat_messages_preserved',
+			'title' => 'Min. chat messages preserved',
+			'description' => 'The minimum number of chat messages to preserve.',
+			'optionscode' => 'text',
+			'value' => 10,
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_max_finished_game_age',
+			'title' => 'Max. finished game age',
+			'description' => 'The time (in seconds) until a finished game is deleted.',
+			'optionscode' => 'text',
+			'value' => 86400,
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_inactive_game_time',
+			'title' => 'Max. inactive game time',
+			'description' => 'The time (in seconds) until an inactive game is deleted.',
+			'optionscode' => 'text',
+			'value' => 1209600,
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_longpolling_timeout',
+			'title' => 'Long polling timeout',
+			'description' => 'The time (in seconds) between each update check.',
+			'optionscode' => 'text',
+			'value' => 1,
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_longpolling_tries',
+			'title' => 'Max. long polling tries',
+			'description' => 'The maximum number of long polling tries before timing out. Set to 0 for infinite tries.',
+			'optionscode' => 'text',
+			'value' => 30,
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_websocket_address',
+			'title' => 'WebSocket address',
+			'description' => 'The address websockets connect to.',
+			'optionscode' => 'text',
+			'value' => '127.0.0.1',
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_websocket_port',
+			'title' => 'WebSocket port',
+			'description' => 'The port websockets connect to.',
+			'optionscode' => 'text',
+			'value' => '8080',
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_websocket_path',
+			'title' => 'WebSocket path',
+			'description' => 'The path websockets connect to.',
+			'optionscode' => 'text',
+			'value' => '/websocket',
+			'gid' => $gid
+		)
+	));
+	rebuild_settings();
 }
 
 function EE_imperator_is_installed() {
@@ -27,7 +109,15 @@ function EE_imperator_is_installed() {
 }
 
 function EE_imperator_uninstall() {
+	global $db;
 	\imperator\Imperator::getDatabaseManager()->dropTables();
+	$query = $db->simple_select('settings','gid','name = "EE_imperator_settings"');
+	if($result = $db->fetch_array($query)) {
+		$gid = $result['gid'];
+		$db->delete_query('settings','gid = '.$gid);
+		$db->delete_query('settinggroups','name = "EE_imperator_settings"');
+		rebuild_settings();
+	}
 }
 
 function EE_imperator_activate() {

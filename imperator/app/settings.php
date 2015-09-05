@@ -94,7 +94,7 @@ class Settings {
 	/**
 	 * Returns the time between each update check in seconds.
 	 * 
-	 * @return number
+	 * @return int
 	 */
 	public function getLongPollingTimeout() {
 		return 1;
@@ -103,7 +103,7 @@ class Settings {
 	/**
 	 * Returns the maximum number of tries before timing out. Set to 0 for infinite tries.
 	 * 
-	 * @return number
+	 * @return int
 	 */
 	public function getMaxLongPollingTries() {
 		return 30;
