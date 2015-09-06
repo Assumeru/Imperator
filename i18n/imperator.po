@@ -390,6 +390,58 @@ msgstr ""
 msgid "Are you sure you want to kick this player?"
 msgstr ""
 
+#: app/settings.php:48
+msgid "Red"
+msgstr ""
+
+#: app/settings.php:49
+msgid "Orange"
+msgstr ""
+
+#: app/settings.php:50
+msgid "Yellow"
+msgstr ""
+
+#: app/settings.php:51
+msgid "Lime"
+msgstr ""
+
+#: app/settings.php:52
+msgid "Green"
+msgstr ""
+
+#: app/settings.php:53
+msgid "Spring"
+msgstr ""
+
+#: app/settings.php:54
+msgid "Cyan"
+msgstr ""
+
+#: app/settings.php:55
+msgid "Light blue"
+msgstr ""
+
+#: app/settings.php:56
+msgid "Blue"
+msgstr ""
+
+#: app/settings.php:57
+msgid "Purple"
+msgstr ""
+
+#: app/settings.php:58
+msgid "Pink"
+msgstr ""
+
+#: app/settings.php:59
+msgid "Indigo"
+msgstr ""
+
+#: app/settings.php:60
+msgid "Black"
+msgstr ""
+
 #: etc/mission/dominationmission.class.php:9,16
 #, php-format
 msgid "To win this game you will have to conquer %1$d territories."
