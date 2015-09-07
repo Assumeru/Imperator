@@ -7,7 +7,6 @@ class WordPressUser extends \imperator\User {
 
 	public static function getCurrentUser() {
 		if(!self::$current) {
-			Imperator::getSettings()->includeWordPress();
 			$user = wp_get_current_user();
 			$lang = explode('-', get_bloginfo('language'));
 			self::$current = new self(
@@ -33,14 +32,12 @@ class WordPressUser extends \imperator\User {
 
 	public function getProfileLink() {
 		if(($id = $this->getId()) !== 0) {
-			Imperator::getSettings()->includeWordPress();
 			return get_author_posts_url($id, $this->getName());
 		}
 		return false;
 	}
 
 	public function canDeleteChatMessages() {
-		Imperator::getSettings()->includeWordPress();
 		return is_super_admin($this->getId());
 	}
 }

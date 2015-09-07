@@ -6,3 +6,4 @@ if(!defined('WP_UNINSTALL_PLUGIN')) {
 require_once ABSPATH.'/imperator/app/imperator.class.php';
 
 \imperator\Imperator::getDatabaseManager()->dropTables();
+delete_option('EE_imperator_settings');

@@ -30,7 +30,7 @@ function EE_imperator_install() {
 		array(
 			'name' => 'EE_imperator_settings_max_chat_message_age',
 			'title' => 'Max. chat message age',
-			'description' => 'The time (in seconds) until a chat message is deleted',
+			'description' => 'The time (in seconds) until a chat message is deleted.',
 			'optionscode' => 'text',
 			'value' => 86400,
 			'gid' => $gid

@@ -6,11 +6,6 @@ class WordPressDatabaseManager extends \imperator\database\DatabaseManager {
 	private static $instance = null;
 	private $table = null;
 
-	protected function __construct() {
-		parent::__construct();
-		Imperator::getSettings()->includeWordPress();
-	}
-
 	public function query($query) {
 		return new WordPressQuery($query);
 	}
