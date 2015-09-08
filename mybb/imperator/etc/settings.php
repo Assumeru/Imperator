@@ -68,6 +68,22 @@ class MyBBSettings extends \imperator\Settings {
 		return $this->getMyBBSetting('EE_imperator_settings_websocket_path');
 	}
 
+	public function getLogPath() {
+		return $this->getMyBBSetting('EE_imperator_settings_log_path');
+	}
+
+	public function getImageURL() {
+		return $this->getMyBBSetting('EE_imperator_settings_img_url');
+	}
+
+	public function getStylesheetURL() {
+		return $this->getMyBBSetting('EE_imperator_settings_css_url');
+	}
+
+	public function getJavascriptURL() {
+		return $this->getMyBBSetting('EE_imperator_settings_js_url');
+	}
+
 	private function getMyBBSetting($key) {
 		global $mybb;
 		$this->includeMyBB();

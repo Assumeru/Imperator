@@ -98,6 +98,38 @@ function EE_imperator_install() {
 			'optionscode' => 'text',
 			'value' => '/websocket',
 			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_log_path',
+			'title' => 'Log path',
+			'description' => 'The path error.log and output.log are written to.',
+			'optionscode' => 'text',
+			'value' => \imperator\Imperator::getSettings()->getBasePath().'/var/log/',
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_img_url',
+			'title' => 'Image url',
+			'description' => 'The url to get images from. Needs to contain %1$s.',
+			'optionscode' => 'text',
+			'value' => \imperator\Imperator::getSettings()->getBaseURL().'/img/%1$s',
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_js_url',
+			'title' => 'Javascript url',
+			'description' => 'The url to get javascript from. Needs to contain %1$s.',
+			'optionscode' => 'text',
+			'value' => \imperator\Imperator::getSettings()->getBaseURL().'/js/%1$s',
+			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_css_url',
+			'title' => 'CSS url',
+			'description' => 'The url to get stylesheets from. Needs to contain %1$s.',
+			'optionscode' => 'text',
+			'value' => \imperator\Imperator::getSettings()->getBaseURL().'/css/%1$s',
+			'gid' => $gid
 		)
 	));
 	rebuild_settings();

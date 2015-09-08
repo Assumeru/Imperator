@@ -62,6 +62,26 @@ final class EE_Imperator {
 			'title' => 'WebSocket path',
 			'description' => 'The path websockets connect to.',
 			'type' => 'text'
+		),
+		'log_path' => array(
+			'title' => 'Log path',
+			'description' => 'The path error.log and output.log are written to.',
+			'type' => 'text'
+		),
+		'img_url' => array(
+			'title' => 'Image url',
+			'description' => 'The url to get images from. Needs to contain %1$s.',
+			'type' => 'text'
+		),
+		'js_url' => array(
+			'title' => 'Javascript url',
+			'description' => 'The url to get javascript from. Needs to contain %1$s.',
+			'type' => 'text'
+		),
+		'css_url' => array(
+			'title' => 'CSS url',
+			'description' => 'The url to get stylesheets from. Needs to contain %1$s.',
+			'type' => 'text'
 		)
 	);
 

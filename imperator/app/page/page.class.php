@@ -50,10 +50,6 @@ abstract class Page {
 	}
 
 	public static function getURL() {
-		if(static::URL) {
-			return Imperator::getSettings()->getBaseURL().'/?page='.static::URL;
-		} else {
-			return Imperator::getSettings()->getBaseURL();
-		}
+		return new \imperator\url\PageURL(static::URL);
 	}
 }

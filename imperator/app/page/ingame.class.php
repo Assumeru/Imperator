@@ -17,9 +17,9 @@ class InGame extends DefaultPage {
 		$inGame = $this->game->containsPlayer($user);
 		$language = $user->getLanguage();
 		$this->setBodyContents(Template::getInstance('game', $user->getLanguage())->setVariables(array(
-			'mapurl' => Imperator::getSettings()->getBaseURL().'/img/maps/map_'.$this->game->getMap()->getId().'.svg',
+			'mapurl' => new \imperator\url\ImageURL('maps/map_'.$this->game->getMap()->getId().'.svg'),
 			'chat' => $inGame ? $this->getChatBox($user) : null,
-			'unitgraphics' => Imperator::getSettings()->getBaseURL().'/img/game/units.svg',
+			'unitgraphics' => new \imperator\url\ImageURL('game/units.svg'),
 			'cards' => $inGame ? $this->getCardList($this->game->getPlayerByUser($user)) : '',
 			'game' => $this->game
 		)));
@@ -42,7 +42,7 @@ class InGame extends DefaultPage {
 		$this->setJavascriptSetting('uid', $user->getId());
 		$this->setJavascriptSetting('templates', array(
 			'card' => Template::getInstance('game_card')->setVariables(array(
-				'url' => $this->getCardURL(),
+				'url' => \imperator\url\ImageURL::getCardURL(),
 				'name' => '%2$s'
 			))->execute(),
 			'okbutton' => Template::getInstance('button_ok', $language)->execute(),
@@ -57,7 +57,7 @@ class InGame extends DefaultPage {
 			'dialogattackresult' => Template::getInstance('dialog_attack_result', $language)->execute(),
 			'combatlogentry' => Template::getInstance('game_combatlog_entry')->execute(),
 			'discardcard' => Template::getInstance('dialog_card_discard', $language)->setVariables(array(
-				'url' => $this->getCardURL(),
+				'url' => \imperator\url\ImageURL::getCardURL(),
 				'names' => \imperator\game\Cards::getCardNames($language)
 			))->execute()
 		));
@@ -83,10 +83,6 @@ class InGame extends DefaultPage {
 		$this->addJavascript('classes.js');
 		$this->addJavascript('map.js');
 		$this->addJavascript('game.js');
-	}
-
-	private function getCardURL() {
-		return Imperator::getSettings()->getBaseURL().'/img/cards/%1$s.png';
 	}
 
 	private function getCardList(\imperator\game\Player $user) {

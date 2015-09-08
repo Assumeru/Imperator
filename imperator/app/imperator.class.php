@@ -108,7 +108,7 @@ class Imperator {
 			$class = self::$settings->getAutoLoaderClass();
 			$autoLoader = new $class(self::$settings->getBasePath());
 			$autoLoader->register();
-			self::$logger = new Logger(self::$settings->getBasePath().'/var/log/', Logger::LEVEL_DEBUG);
+			self::$logger = new Logger(self::$settings->getLogPath(), Logger::LEVEL_DEBUG);
 			self::$shutDownHandler = new ShutDownHandler();
 			self::$shutDownHandler->register();
 			error_reporting(0);

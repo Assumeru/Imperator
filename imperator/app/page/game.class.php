@@ -38,24 +38,11 @@ class Game extends DefaultPage {
 		if($game === null) {
 			return parent::getURL();
 		}
-		$url = parent::getURL().'/'.$game->getId().'/'.urlencode($game->getName());
+		$url = new \imperator\url\PageURL(static::URL, $game->getId(), $game->getName());
 		if($invite && $game->hasPassword()) {
-			if(strpos($url, '?') === false) {
-				$url .= '?';
-			} else {
-				$url .= '&';
-			}
-			$url .= 'code='.urlencode($game->getInviteCode());
+			$url->addArgument('code', $game->getInviteCode());
 		}
 		return $url;
-	}
-
-	public static function getTerritoryFlag(\imperator\map\Territory $territory) {
-		return Imperator::getSettings()->getBaseURL().'/img/flags/'.str_replace('_', '/', $territory->getId()).'.png';
-	}
-
-	public static function getRegionFlag(\imperator\map\Region $region) {
-		return Imperator::getSettings()->getBaseURL().'/img/flags/'.str_replace('_', '/', $region->getId()).'.png';
 	}
 
 	public static function getColors(\imperator\User $user, array $colorList = null) {

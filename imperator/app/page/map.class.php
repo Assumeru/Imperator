@@ -32,7 +32,7 @@ class Map extends DefaultPage {
 		$this->setTitle($user->getLanguage()->translate($map->getName()));
 		$this->setBodyContents(Template::getInstance('map', $user->getLanguage())->setVariables(array(
 			'map' => $this->map,
-			'mapurl' => Imperator::getSettings()->getBaseURL().'/img/maps/image_'.$this->map->getId().'.svg',
+			'mapurl' => new \imperator\url\ImageURL('maps/image_'.$this->map->getId().'.svg'),
 			'language' => $user->getLanguage()
 		)));
 		$this->addCSS('map.css');
@@ -44,6 +44,6 @@ class Map extends DefaultPage {
 		if($map === null) {
 			return parent::getURL();
 		}
-		return parent::getURL().'/'.$map->getId().'/'.urlencode($map->getName());
+		return new \imperator\url\PageURL(static::URL, $map->getId(), $map->getName());
 	}
 }

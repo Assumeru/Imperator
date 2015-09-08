@@ -25,8 +25,24 @@ class Settings {
 		return $this->basePath;
 	}
 
+	public function getLogPath() {
+		return $this->getBasePath().'/var/log/';
+	}
+
 	public function getBaseURL() {
 		return $this->baseURL;
+	}
+
+	public function getImageURL() {
+		return $this->getBaseURL().'/img/%1$s';
+	}
+
+	public function getStylesheetURL() {
+		return $this->getBaseURL().'/css/%1$s';
+	}
+
+	public function getJavascriptURL() {
+		return $this->getBaseURL().'/js/%1$s';
 	}
 
 	public function getNavigationPages() {

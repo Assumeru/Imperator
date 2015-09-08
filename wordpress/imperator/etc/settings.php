@@ -19,6 +19,10 @@ class WordPressSettings extends \imperator\Settings {
 	public function __construct() {
 		parent::__construct();
 		$this->includeWordPress();
+		static::$defaultSettings['img_url'] = $this->getBaseURL().'/img/%1$s';
+		static::$defaultSettings['css_url'] = $this->getBaseURL().'/css/%1$s';
+		static::$defaultSettings['js_url'] = $this->getBaseURL().'/js/%1$s';
+		static::$defaultSettings['log_path'] = $this->getBasePath().'/var/log/';
 		$this->settings = get_option('EE_imperator_settings', static::$defaultSettings);
 	}
 
@@ -81,5 +85,21 @@ class WordPressSettings extends \imperator\Settings {
 
 	public function getWebSocketPath() {
 		return $this->getWordPressSetting('websocket_path');
+	}
+
+	public function getLogPath() {
+		return $this->getWordPressSetting('log_path');
+	}
+
+	public function getImageURL() {
+		return $this->getWordPressSetting('img_url');
+	}
+
+	public function getStylesheetURL() {
+		return $this->getWordPressSetting('css_url');
+	}
+
+	public function getJavascriptURL() {
+		return $this->getWordPressSetting('js_url');
 	}
 }

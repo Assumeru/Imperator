@@ -17,7 +17,7 @@
 <?php	foreach($map->getRegions() as $region) { ?>
 						<tr>
 							<td>
-								<img src="<?php echo \imperator\page\Game::getRegionFlag($region); ?>" alt="" /> <?php echo $this->__($region->getName()); ?>
+								<img src="<?php echo \imperator\url\ImageURL::getRegionFlag($region); ?>" alt="" /> <?php echo $this->__($region->getName()); ?>
 							</td>
 							<td><?php echo $region->getUnitsPerTurn(); ?></td>
 							<td><?php echo count($region->getTerritories()); ?></td>
@@ -48,13 +48,13 @@
 					<div>
 <?php	foreach($map->getTerritories() as $territory) { ?>
 						<div class="territory-hover" data-territory="<?php echo $territory->getId(); ?>">
-							<div class="flag" style="background-image: url('<?php echo \imperator\page\Game::getTerritoryFlag($territory); ?>')"></div>
+							<div class="flag" style="background-image: url('<?php echo \imperator\url\ImageURL::getTerritoryFlag($territory); ?>')"></div>
 							<div class="content">
 								<h4><?php echo $this->__($territory->getName()); ?></h4>
 								<ul class="regions">
 <?php	foreach($territory->getRegions() as $region) { ?>
 <li>
-	<span style="background-image: url('<?php echo \imperator\page\Game::getRegionFlag($region); ?>')"></span>
+	<span style="background-image: url('<?php echo \imperator\url\ImageURL::getRegionFlag($region); ?>')"></span>
 	<?php echo $this->__($region->getName()); ?>
 </li>
 <?php	} ?>

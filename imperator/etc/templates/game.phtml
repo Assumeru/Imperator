@@ -85,7 +85,7 @@
 <?php	foreach($game->getMap()->getTerritories() as $territory) { ?>
 					<tr data-territory="<?php echo $territory->getId(); ?>">
 						<td>
-							<img src="<?php echo \imperator\page\Game::getTerritoryFlag($territory); ?>" alt="<?php echo $this->__('Flag of %1$s', $territory->getName()); ?>" data-value="flag" />
+							<img src="<?php echo \imperator\url\ImageURL::getTerritoryFlag($territory); ?>" alt="<?php echo $this->__('Flag of %1$s', $territory->getName()); ?>" data-value="flag" />
 						</td>
 						<td>
 							<?php $this->includeTemplate('game_territory_link', array('territory' => $territory)); ?>
@@ -98,7 +98,7 @@
 						</td>
 						<td data-value="regions">
 	<?php	foreach($territory->getRegions() as $region) { ?>
-							<img src="<?php echo \imperator\page\Game::getRegionFlag($region); ?>" alt="<?php echo $this->__($region->getName()); ?>" />
+							<img src="<?php echo \imperator\url\ImageURL::getRegionFlag($region); ?>" alt="<?php echo $this->__($region->getName()); ?>" />
 	<?php	} ?>
 						</td>
 					</tr>
@@ -109,7 +109,7 @@
 		<section id="regions" class="swipe-pane">
 <?php	foreach($game->getMap()->getRegions() as $region) { ?>
 			<h2>
-				<img src="<?php echo \imperator\page\Game::getRegionFlag($region); ?>" alt="" /> <?php echo $this->__($region->getName()); ?>
+				<img src="<?php echo \imperator\url\ImageURL::getRegionFlag($region); ?>" alt="" /> <?php echo $this->__($region->getName()); ?>
 				<button data-toggle="collapse" data-target="#region-<?php echo $region->getId(); ?>" class="btn collapsed">
 					<span class="glyphicon glyphicon-chevron-up"></span>
 					<span class="glyphicon glyphicon-chevron-down"></span>
@@ -122,7 +122,7 @@
 	<?php	foreach($region->getTerritories() as $territory) { ?>
 				<div class="row" data-territory="<?php echo $territory->getId(); ?>">
 					<div class="col-xs-1">
-						<img src="<?php echo \imperator\page\Game::getTerritoryFlag($territory); ?>" alt="" />
+						<img src="<?php echo \imperator\url\ImageURL::getTerritoryFlag($territory); ?>" alt="" />
 					</div>
 					<div class="col-xs-11">
 						<a href="#tab-territory-<?php echo $territory->getId(); ?>" style="color: #<?php echo $territory->getOwner()->getColor(); ?>;"><?php echo $this->__($territory->getName()); ?></a>
