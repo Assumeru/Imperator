@@ -37,7 +37,7 @@ class MoveGameRequest extends GameRequest {
 		if($game->getState() != \imperator\Game::STATE_POST_COMBAT) {
 			throw new \imperator\exceptions\InvalidRequestException('Cannot move now.');
 		} else if($game->getUnits() < $this->getMove()) {
-			throw new \imperator\exceptions\InvalidRequestException('Cannot move more than %1$d units.', $game->getUnits());
+			throw new \imperator\exceptions\InvalidRequestException($user->getLanguage()->plural('Cannot move more than one unit.', 'Cannot move more than %1$d units.', $game->getUnits()), $game->getUnits());
 		}
 		$to = $game->getMap()->getTerritoryById($this->getTo());
 		$from = $game->getMap()->getTerritoryById($this->getFrom());

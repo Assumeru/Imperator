@@ -102,8 +102,10 @@ msgstr ""
 
 #: app/api/requests/movegamerequest.class.php:40
 #, php-format
-msgid "Cannot move more than %1$d units."
-msgstr ""
+msgid "Cannot move more than one unit."
+msgid_plural "Cannot move more than %1$d units."
+msgstr[0] ""
+msgstr[1] ""
 
 #: app/api/requests/movegamerequest.class.php:51
 msgid "Invalid move"
@@ -115,8 +117,10 @@ msgstr ""
 
 #: app/api/requests/placeunitsgamerequest.class.php:33
 #, php-format
-msgid "Cannot place more than %1$d units."
-msgstr ""
+msgid "Cannot place more than one unit."
+msgid_plural "Cannot place more than %1$d units."
+msgstr[0] ""
+msgstr[1] ""
 
 #: app/api/requests/placeunitsgamerequest.class.php:37
 #, php-format
@@ -218,7 +222,7 @@ msgstr ""
 msgid "Please enter a name"
 msgstr ""
 
-#: app/page/about.class.php:13
+#: app/page/about.class.php:13 etc/templates/about.phtml:2
 msgid "About"
 msgstr ""
 
@@ -238,7 +242,7 @@ msgstr ""
 msgid "Chat Error"
 msgstr ""
 
-#: app/page/gamelist.class.php:11
+#: app/page/gamelist.class.php:11 app/page/gamelist.class.php:70 etc/templates/games.phtml:2
 msgid "Games"
 msgstr ""
 
@@ -270,10 +274,6 @@ msgstr ""
 
 #: app/page/gamelist.class.php:66 etc/templates/games.phtml:14
 msgid "Host"
-msgstr ""
-
-#: app/page/gamelist.class.php:70 etc/templates/games.phtml:2
-msgid "Games"
 msgstr ""
 
 #: app/page/http403.class.php:6
@@ -373,11 +373,11 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: app/page/maplist.class.php:9
+#: app/page/maplist.class.php:9 etc/templates/maps.phtml:2
 msgid "Maps"
 msgstr ""
 
-#: app/page/newgame.class.php:19
+#: app/page/newgame.class.php:19 etc/templates/newgame.phtml:2
 msgid "New Game"
 msgstr ""
 
@@ -454,10 +454,6 @@ msgstr ""
 #: etc/mission/rivalrymission.class.php:16
 #, php-format
 msgid "To win this game you will have to conquer the last of %1$s's territories."
-msgstr ""
-
-#: etc/templates/about.phtml:2
-msgid "About"
 msgstr ""
 
 #: etc/templates/button_attack_again.phtml:1
@@ -629,8 +625,10 @@ msgstr ""
 
 #: etc/templates/game.phtml:119
 #, php-format
-msgid "%1$d territories, %2$d units per turn"
-msgstr ""
+msgid "%1$d territories, one unit per turn"
+msgid_plural "%1$d territories, %2$d units per turn"
+msgstr[0] ""
+msgstr[1] ""
 
 #: etc/templates/game.phtml:144 etc/templates/game.phtml:145
 #: etc/templates/game.phtml:146 etc/templates/game.phtml:147
@@ -829,14 +827,6 @@ msgstr ""
 
 #: etc/templates/map.phtml:38
 msgid "Javascript needs to be enabled to interact with this map."
-msgstr ""
-
-#: etc/templates/maps.phtml:2
-msgid "Maps"
-msgstr ""
-
-#: etc/templates/newgame.phtml:2
-msgid "New Game"
 msgstr ""
 
 #: etc/templates/newgame.phtml:9

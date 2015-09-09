@@ -30,7 +30,7 @@ class PlaceUnitsGameRequest extends GameRequest {
 		if($game->getState() != \imperator\Game::STATE_TURN_START && $game->getState() != \imperator\Game::STATE_FORTIFY) {
 			throw new \imperator\exceptions\InvalidRequestException('Cannot place units after attacking.');
 		} else if($game->getUnits() < $this->getUnits()) {
-			throw new \imperator\exceptions\InvalidRequestException('Cannot place more than %1$d units.', $game->getUnits());
+			throw new \imperator\exceptions\InvalidRequestException($user->getLanguage()->plural('Cannot place more than one unit.', 'Cannot place more than %1$d units.', $game->getUnits()), $game->getUnits());
 		}
 		$territory = $game->getMap()->getTerritoryById($this->getTerritory());
 		if(!$territory) {

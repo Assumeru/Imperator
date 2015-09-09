@@ -64,9 +64,6 @@ msgstr ""
 msgid "Groningen"
 msgstr ""
 
-msgid "Limburg"
-msgstr ""
-
 msgid "North Brabant"
 msgstr ""
 

@@ -1,0 +1,26 @@
+# Non-map translatable strings
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/api/requests/movegamerequest.class.php:40
+#, php-format
+msgid "Cannot move more than one unit."
+msgid_plural "Cannot move more than %1$d units."
+msgstr "Cannot move more than %1$d units."
+
+#: app/api/requests/placeunitsgamerequest.class.php:33
+#, php-format
+msgid "Cannot place more than one unit."
+msgid_plural "Cannot place more than %1$d units."
+msgstr "Cannot place more than %1$d units."
+
+#: etc/templates/game.phtml:119
+#, php-format
+msgid "%1$d territories, one unit per turn"
+msgid_plural "%1$d territories, %2$d units per turn"
+msgstr "%1$d territories, %2$d units per turn"

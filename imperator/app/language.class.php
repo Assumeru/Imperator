@@ -55,4 +55,15 @@ class Language {
 		}
 		return $string;
 	}
+
+	/**
+	 * Constructs a plural string to be translated.
+	 * 
+	 * @param string $singular
+	 * @param string $plural
+	 * @param int $amount
+	 */
+	public function plural($singular, $plural, $amount) {
+		return new PluralString($singular, $plural, $amount);
+	}
 }
