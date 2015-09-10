@@ -29,6 +29,10 @@ class Settings {
 		return $this->getBasePath().'/var/log/';
 	}
 
+	public function getLanguagePath() {
+		return $this->getBasePath().'/i18n/';
+	}
+
 	public function getBaseURL() {
 		return $this->baseURL;
 	}
