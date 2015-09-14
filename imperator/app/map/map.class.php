@@ -222,6 +222,23 @@ class Map {
 		return self::$maps;
 	}
 
+	/**
+	 * Returns all maps sorted by name and number of players.
+	 *
+	 * @return Map[] All maps
+	 */
+	public static function getSortedMaps() {
+		$maps = array_values(\imperator\map\Map::getMaps());
+		usort($maps, function($a, $b) {
+			$comp = strcmp($a->getName(), $b->getName());
+			if($comp === 0) {
+				return $a->getPlayers() - $b->getPlayers();
+			}
+			return $comp;
+		});
+		return $maps;
+	}
+
 	private static function loadMaps() {
 		$files = glob(Imperator::getSettings()->getBasePath().'/etc/maps/*.xml');
 		$maps = array();

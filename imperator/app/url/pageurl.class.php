@@ -7,7 +7,7 @@ class PageURL extends URL {
 		parent::__construct(Imperator::getSettings()->getBaseURL().'/');
 		if($page) {
 			if($id !== null) {
-				$page .= '/'.$id.'/'.urlencode($name);
+				$page .= '/'.$id.'/'.$name;
 			}
 			$this->addArgument('page', $page);
 		}

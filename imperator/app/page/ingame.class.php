@@ -87,7 +87,7 @@ class InGame extends DefaultPage {
 
 	private function getCardList(\imperator\game\Player $user) {
 		return Template::getInstance('game_cards')->setVariables(array(
-			'url' => $this->getCardURL(),
+			'url' => \imperator\url\ImageURL::getCardURL(),
 			'names' => \imperator\game\Cards::getCardNames($user->getUser()->getLanguage()),
 			'cards' => $user->getCards()
 		));

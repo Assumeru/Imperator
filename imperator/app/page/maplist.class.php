@@ -8,8 +8,10 @@ class MapList extends DefaultPage {
 	public function render(\imperator\User $user) {
 		$this->setTitle($user->getLanguage()->translate(static::NAME));
 		$this->setBodyContents(Template::getInstance('maps', $user->getLanguage())->setVariables(array(
-			'maps' => \imperator\map\Map::getMaps()
+			'maps' => \imperator\map\Map::getSortedMaps()
 		)));
+		$this->addJavascript('jquery.tablesorter.min.js');
+		$this->addJavascript('tablesorter.js');
 		parent::render($user);
 	}
 

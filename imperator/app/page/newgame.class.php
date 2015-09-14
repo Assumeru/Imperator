@@ -42,7 +42,7 @@ class NewGame extends DefaultPage {
 			'name' => $defaultName,
 			'colors' => Game::getColors($user),
 			'settings' => Imperator::getSettings(),
-			'maps' => \imperator\map\Map::getMaps()
+			'maps' => \imperator\map\Map::getSortedMaps()
 		));
 	}
 }

@@ -17,7 +17,7 @@ class GameUpdateRequest extends UpdateRequest {
 			return array(
 				'gameState' => $user->getLanguage()->translate('This game has been disbanded.'),
 				'update' => time(),
-				'redirect' => \imperator\page\GameList::getURL()
+				'redirect' => \imperator\page\GameList::getURL()->__toString()
 			);
 		}
 		$messages = $db->getChatTable()->getMessagesAfter($this->getGid(), $this->getTime());
@@ -69,7 +69,7 @@ class GameUpdateRequest extends UpdateRequest {
 		foreach($game->getPlayers() as $player) {
 			$output['players'][$player->getId()] = array(
 				'color' => $player->getColor(),
-				'link' => \imperator\page\DefaultPage::getProfileLink($player),
+				'link' => str_replace('&amp;', '&', $player->getProfileLink()),
 				'id' => $player->getId(),
 				'name' => $player->getName(),
 				'playing' => $player->getState() !== \imperator\game\Player::STATE_GAME_OVER

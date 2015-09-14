@@ -30,7 +30,7 @@ class Settings {
 	}
 
 	public function getLanguagePath() {
-		return $this->getBasePath().'/i18n/';
+		return $this->getBasePath().'/etc/i18n/';
 	}
 
 	public function getBaseURL() {
@@ -86,7 +86,7 @@ class Settings {
 	}
 
 	public function getLanguageClass() {
-		return '\\imperator\\Language';
+		return '\\imperator\\GetText';
 	}
 
 	public function getTemplateClass() {

@@ -15,6 +15,8 @@ class Language {
 	 * @return Language A translator object
 	 */
 	public static function getInstance($lang, $locale, $direction = 'ltr') {
+		$lang = strtolower($lang);
+		$locale = strtoupper($locale);
 		$index = $lang.'_'.$locale;
 		if(!isset(self::$languages[$index])) {
 			$class = Imperator::getSettings()->getLanguageClass();
@@ -36,6 +38,10 @@ class Language {
 		return $this->lang;
 	}
 
+	public function getLang() {
+		return $this->lang;
+	}
+
 	public function getTextDirection() {
 		return $this->direction;
 	}
@@ -43,7 +49,7 @@ class Language {
 	/**
 	 * Translates a string using this object's language and locale.
 	 * 
-	 * @param string $string The string to translate
+	 * @param string|PluralString $string The string to translate
 	 * @param mixed $args,... Optional values to insert into the string
 	 * @return string The translated string
 	 */

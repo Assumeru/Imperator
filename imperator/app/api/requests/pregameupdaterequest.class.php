@@ -9,10 +9,10 @@ class PreGameUpdateRequest extends GameUpdateRequest {
 	protected function fillOutput(\imperator\Game $game, \imperator\User $user, array $output) {
 		if(!$game->containsPlayer($user)) {
 			$output['gameState'] = $user->getLanguage()->translate('You have been kicked from this game.');
-			$output['redirect'] = \imperator\page\GameList::getURL();
+			$output['redirect'] = \imperator\page\GameList::getURL()->__toString();
 		} else if($game->hasStarted()) {
 			$output['gameState'] = $user->getLanguage()->translate('This game has started.');
-			$output['redirect'] = \imperator\page\Game::getURL($game);
+			$output['redirect'] = \imperator\page\Game::getURL($game)->__toString();
 		} else {
 			$isOwner = $user->equals($game->getOwner());
 			$output['players'] = array();

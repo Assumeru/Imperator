@@ -987,7 +987,7 @@
 		var $n, $border, $bordering,
 		$tab = $('#territory'),
 		$territory = $game.map.territories[$currentTab[1]],
-		$a = $($territory.owner.link).css('color', '#'+$territory.owner.color),
+		$a = $('<a></a>').attr('href', $territory.owner.link).css('color', '#'+$territory.owner.color).text($territory.owner.name),
 		$borders = $tab.find('[data-value="borders"]');
 		$tab.find('[data-value="name"]').text($territory.name);
 		$tab.find('[data-value="units"]').text($territory.units);

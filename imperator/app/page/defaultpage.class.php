@@ -106,7 +106,7 @@ abstract class DefaultPage extends Page {
 		$this->addJavascript('api.js');
 		$this->addJavascript('dialog.js');
 		$this->setJavascriptSetting('API', array(
-			'longpollingURL' => Ajax::getURL()
+			'longpollingURL' => Ajax::getURL()->__toString()
 		));
 		$this->setJavascriptSetting('templates', array(
 			'dialog' => Template::getInstance('dialog', $language)->execute(),

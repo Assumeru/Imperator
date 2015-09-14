@@ -9,7 +9,7 @@ class URL {
 	}
 
 	public function __toString() {
-		return $path;
+		return $this->path;
 	}
 
 	public function addArgument($key, $value) {
@@ -18,7 +18,7 @@ class URL {
 		} else {
 			$this->path .= '&';
 		}
-		$this->path .= urlencode($key) . ' = ' . urlencode($value);
+		$this->path .= str_replace('%2F', '/', urlencode($key) . '=' . urlencode($value));
 		return $this;
 	}
 }

@@ -17,6 +17,18 @@ class PluralString {
 		$this->amount = $amount;
 	}
 
+	public function getSingular() {
+		return $this->singular;
+	}
+
+	public function getPlural() {
+		return $this->plural;
+	}
+
+	public function getAmount() {
+		return $this->amount;
+	}
+
 	public function __toString() {
 		return $this->plural;
 	}
