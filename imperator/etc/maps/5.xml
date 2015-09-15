@@ -7,6 +7,21 @@
 		<p>This map is made up of Germany's 16 states, the provinces of Belgium and the Netherlands in addition to the Brussels-Capital region and the Grand Duchy of Luxembourg.</p>
 		<p>Players are most likely to need to eliminate another player to win. Alternatively one might have to conquer two of the three larger countries.</p>
 	]]></description>
+	<description xml:lang="de-DE"><![CDATA[
+		<p>Der Benelux ist eine Union die aus <strong>Be</strong>lgien, den Niederlanden (<strong>Ne</strong>derland) und <strong>Lu</strong>xemburg besteht.</p>
+		<p>Dieser Karte besteht auf die deutschen Länder, den belgischen und niederländischen Provinzen zusammen mit der Region Brüssel-Hauptstadt und das Großherzogtum Luxemburg.</p>
+		<p>Um zu gewinnen muss man ein andere Spieler eliminiert oder zwei der drei großen Länder erobern.</p>
+	]]></description>
+	<description xml:lang="fr-FR"><![CDATA[
+		<p>Le Benelux est une union économique entre la <strong>Be</strong>lgique, les Pays-Bas (<strong>Ne</strong>derland) et le <strong>Lu</strong>xembourg.</p>
+		<p>Cette carte est composée des États fédérés de l'Allemagne, des provinces de Belgique et de Pays-Bas en plus de la région de Bruxelles-Capitale et le Grand-Duché de Luxembourg.</p>
+		<p>Pour gagner, il faut éliminant un autre joueur, ou conquérir deux des pays major.</p>
+	]]></description>
+	<description xml:lang="nl-NL"><![CDATA[
+		<p>De Benelux is een economische unie tussen <strong>Be</strong>lgië, <strong>Ne</strong>derland en <strong>Lu</strong>xemburg.</p>
+		<p>Deze kaart bestaat uit de Duitse deelstaten, de provincies van België en Nederland, plus het Brussels Hoofdstedelijk gewest en het Groothertogdom Luxemburg.</p>
+		<p>Om te winnen moet men een andere speler uitschakelen of twee van de drie grotere landen veroveren.</p>
+	]]></description>
 	<territories>
 		<territory id="eu_be_antwerp">
 			<name>Antwerp</name>
