@@ -1,0 +1,16 @@
+# Non-map translatable strings
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/page/form/joingameform.class.php:35
+msgid "This color is already in use"
+msgstr "This colour is already in use"
+
+#: etc/templates/game_pregame_join.phtml:5 etc/templates/newgame.phtml:18
+msgid "Choose a color"
+msgstr "Choose a colour"
