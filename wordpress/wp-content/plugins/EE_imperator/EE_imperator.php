@@ -82,6 +82,11 @@ final class EE_Imperator {
 			'title' => 'CSS url',
 			'description' => 'The url to get stylesheets from. Needs to contain %1$s.',
 			'type' => 'text'
+		),
+		'i18n_path' => array(
+			'title' => 'Language path',
+			'description' => 'The path to get translations from.',
+			'type' => 'text'
 		)
 	);
 

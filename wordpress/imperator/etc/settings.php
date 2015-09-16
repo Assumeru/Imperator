@@ -23,6 +23,7 @@ class WordPressSettings extends \imperator\Settings {
 		static::$defaultSettings['css_url'] = $this->getBaseURL().'/css/%1$s';
 		static::$defaultSettings['js_url'] = $this->getBaseURL().'/js/%1$s';
 		static::$defaultSettings['log_path'] = $this->getBasePath().'/var/log/';
+		static::$defaultSettings['i18n_path'] = $this->getBasePath().'/etc/i18n/';
 		$this->settings = get_option('EE_imperator_settings', static::$defaultSettings);
 	}
 
@@ -101,5 +102,9 @@ class WordPressSettings extends \imperator\Settings {
 
 	public function getJavascriptURL() {
 		return $this->getWordPressSetting('js_url');
+	}
+
+	public function getLanguagePath() {
+		return $this->getWordPressSetting('i18n_path');
 	}
 }

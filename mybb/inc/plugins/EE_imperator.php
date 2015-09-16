@@ -130,6 +130,14 @@ function EE_imperator_install() {
 			'optionscode' => 'text',
 			'value' => \imperator\Imperator::getSettings()->getBaseURL().'/css/%1$s',
 			'gid' => $gid
+		),
+		array(
+			'name' => 'EE_imperator_settings_i18n_path',
+			'title' => 'Language path',
+			'description' => 'The path to get translations from.',
+			'optionscode' => 'text',
+			'value' => \imperator\Imperator::getSettings()->getBasePath().'/etc/i18n/',
+			'gid' => $gid
 		)
 	));
 	rebuild_settings();

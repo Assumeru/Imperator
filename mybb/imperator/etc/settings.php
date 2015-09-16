@@ -84,6 +84,10 @@ class MyBBSettings extends \imperator\Settings {
 		return $this->getMyBBSetting('EE_imperator_settings_js_url');
 	}
 
+	public function getLanguagePath() {
+		return $this->getMyBBSetting('EE_imperator_settings_i18n_path');
+	}
+
 	private function getMyBBSetting($key) {
 		global $mybb;
 		$this->includeMyBB();
