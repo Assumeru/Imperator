@@ -51,7 +51,7 @@
 			if($msg.request.mode == 'update') {
 				if($updateErrors < Imperator.API.MAX_GAME_ERRORS) {
 					$updateErrors++;
-					sendUpdateRequest();
+					setTimeout(sendUpdateRequest, 100 + $updateErrors * 400);
 				} else {
 					Imperator.Dialog.showDialog(Imperator.settings.language.error, Imperator.settings.language.disconnected, true);
 				}

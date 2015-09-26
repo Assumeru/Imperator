@@ -59,11 +59,9 @@
 
 	function parseErrorMessage($msg) {
 		if($msg !== undefined && $msg !== '' && $msg.error !== undefined && $msg.request !== undefined && (($msg.request.mode == 'update' && $msg.request.type == 'chat') || $msg.request.mode == 'chat')) {
-			if($msg.request.mode == 'update') {
+			if($msg.request.mode == 'update' && $updateErrors < Imperator.API.MAX_CHAT_ERRORS) {
 				$updateErrors++;
-				if($updateErrors < Imperator.API.MAX_CHAT_ERRORS) {
-					sendUpdateRequest();
-				}
+				setTimeout(sendUpdateRequest, 100 + $updateErrors * 400);
 			}
 			Imperator.Dialog.showDialog(Imperator.settings.language.chaterror, $msg.error, true);
 		}
