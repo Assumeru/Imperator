@@ -62,7 +62,7 @@ class ChatTable extends Table {
 			$sql .= ' LEFT JOIN @GAMESJOINED
 			ON(@GAMESJOINED.USER = @CHAT.USER AND @GAMESJOINED.GAME = @CHAT.GAME)';
 		}
-		$sql .= ' WHERE @CHAT.GAME = %d AND @CHAT.TIME > %d';
+		$sql .= ' WHERE @CHAT.GAME = %d AND @CHAT.TIME > %d ORDER BY @CHAT.TIME ASC';
 		$query = $this->getManager()->preparedStatement($sql, $gid, $time);
 		$messages = array();
 		$userClass = Imperator::getSettings()->getUserClass();
