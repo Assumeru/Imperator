@@ -95,7 +95,7 @@ class CombatLogTable extends Table {
 
 	public function getLogsAfter(\imperator\Game $game, $time) {
 		$logs = array();
-		$query = $this->getManager()->preparedStatement('SELECT * FROM @LOG WHERE @LOG.TIME > %d', $time);
+		$query = $this->getManager()->preparedStatement('SELECT * FROM @LOG WHERE @LOG.TIME > %d AND @LOG.GAME = %d', $time, $game->getId());
 		$map = $game->getMap();
 		while($result = $query->fetchResult()) {
 			$type = $result->getInt(1);
