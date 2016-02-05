@@ -1,5 +1,5 @@
 <?php
-require_once '../imperator/app/imperator.class.php';
+require_once '../imperator/app/Imperator.php';
 
 $maps = \imperator\map\Map::getMaps();
 

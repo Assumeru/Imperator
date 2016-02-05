@@ -98,7 +98,7 @@ class Settings {
 	}
 
 	public function getAutoLoaderClass() {
-		require_once $this->getBasePath().'/app/autoloader.class.php';
+		require_once $this->getBasePath().'/app/AutoLoader.php';
 		return '\\imperator\\AutoLoader';
 	}
 

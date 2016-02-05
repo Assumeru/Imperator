@@ -5,7 +5,7 @@
 
 	function task_EE_imperator($task) {
 		//Edit this if you're using a different install path
-		require_once MYBB_ROOT.'/imperator/app/imperator.class.php';
+		require_once MYBB_ROOT.'/imperator/app/Imperator.php';
 
 		$cron = new \imperator\Cron();
 		$numChats = $cron->cleanChat();

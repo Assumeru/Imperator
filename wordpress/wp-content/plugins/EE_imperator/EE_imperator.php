@@ -7,7 +7,7 @@
  * Domain Path: /i18n
  */
 //Edit this if you're using a different install path
-require_once ABSPATH.'/imperator/app/imperator.class.php';
+require_once ABSPATH.'/imperator/app/Imperator.php';
 
 final class EE_Imperator {
 	private static $initialised = false;

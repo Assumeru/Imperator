@@ -85,7 +85,7 @@ abstract class DefaultPage extends Page {
 	/**
 	 * Adds content to the body of the page.
 	 * 
-	 * @param string $content The HTML to add
+	 * @param Template $content The HTML to add
 	 */
 	protected function setBodyContents(Template $content) {
 		$this->content = $content;

@@ -7,7 +7,7 @@ abstract class Page {
 	private static $urls = null;
 
 	private static function loadAllPages() {
-		$files = glob(Imperator::getSettings()->getBasePath().'/app/page/*.class.php');
+		$files = glob(Imperator::getSettings()->getBasePath().'/app/page/*.php');
 		foreach($files as $file) {
 			require_once $file;
 		}

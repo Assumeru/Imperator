@@ -19,7 +19,6 @@ class GetText extends Language {
 				return;
 			}
 		}
-		require_once $settings->getBasePath().'/lib/gettext/mo.class.php';
 		foreach(glob($directory.'/*.mo') as $file) {
 			try {
 				$mo = new \gettext\MO(file_get_contents($file));

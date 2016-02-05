@@ -4,7 +4,7 @@ if(!defined('IN_MYBB')) {
 }
 
 //Edit this if you're using a different install path
-require_once MYBB_ROOT.'/imperator/app/imperator.class.php';
+require_once MYBB_ROOT.'/imperator/app/Imperator.php';
 
 function EE_imperator_info() {
 	return array(

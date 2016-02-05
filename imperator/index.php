@@ -1,4 +1,4 @@
 <?php
-require_once './app/imperator.class.php';
+require_once './app/Imperator.php';
 
 imperator\Imperator::showPage();

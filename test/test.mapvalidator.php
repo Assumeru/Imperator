@@ -2,8 +2,8 @@
 namespace imperator\test;
 use imperator\Imperator;
 
-require_once '../imperator/app/imperator.class.php';
-require_once './testlogger.class.php';
+require_once '../imperator/app/Imperator.php';
+require_once './TestLogger.php';
 
 $logger = new TestLogger();
 $maps = glob(Imperator::getSettings()->getBasePath().'/etc/maps/*.xml');

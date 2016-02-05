@@ -1,7 +1,7 @@
 <?php
 namespace imperator;
 require_once __DIR__.'/settings.php';
-require_once __DIR__.'/autoloader.class.php';
+require_once __DIR__.'/AutoLoader.php';
 
 class Imperator {
 	/**
@@ -108,9 +108,9 @@ class Imperator {
 			$class = self::$settings->getAutoLoaderClass();
 			$autoLoader = new $class(self::$settings->getBasePath());
 			$autoLoader->register();
-			self::$logger = new Logger(self::$settings->getLogPath(), Logger::LEVEL_DEBUG);
 			self::$shutDownHandler = new ShutDownHandler();
 			self::$shutDownHandler->register();
+			self::$logger = new Logger(self::$settings->getLogPath(), Logger::LEVEL_DEBUG);
 			error_reporting(0);
 			ini_set('display_errors', false);
 			self::$initialised = true;
