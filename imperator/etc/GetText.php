@@ -25,6 +25,9 @@ class GetText extends Language {
 			} catch(\InvalidArgumentException $e) {
 				Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
 				continue;
+			} catch(\gettext\pluralparser\ParseException $e) {
+				Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
+				continue;
 			}
 			if($this->mo === null) {
 				$this->mo = $mo;

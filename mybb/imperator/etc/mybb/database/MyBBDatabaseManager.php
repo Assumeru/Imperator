@@ -13,7 +13,6 @@ class MyBBDatabaseManager extends \imperator\database\DatabaseManager {
 
 	public function query($query) {
 		global $db;
-		Imperator::getLogger()->log(\imperator\Logger::LEVEL_INFO, $query);
 		$q = $db->query($query, true);
 		if($db->error_number()) {
 			throw new \imperator\exceptions\DatabaseException($db->error_string(), $db->error_number());
