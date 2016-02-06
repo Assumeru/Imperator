@@ -1,6 +1,5 @@
 <?php
 namespace imperator\database;
-use imperator\Imperator;
 
 abstract class DatabaseManager {
 	private $tables = array();

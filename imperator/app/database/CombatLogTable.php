@@ -1,6 +1,5 @@
 <?php
 namespace imperator\database;
-use imperator\Imperator;
 
 class CombatLogTable extends Table {
 	protected function register(DatabaseManager $manager) {

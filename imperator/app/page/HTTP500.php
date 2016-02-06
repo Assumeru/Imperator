@@ -1,6 +1,5 @@
 <?php
 namespace imperator\page;
-use imperator\Imperator;
 
 class HTTP500 extends HTTPError {
 	public function __construct() {

@@ -1,6 +1,5 @@
 <?php
 namespace imperator\outside\wordpress;
-use imperator\Imperator;
 
 class WordPressUser extends \imperator\User {
 	private static $current = null;

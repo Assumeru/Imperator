@@ -1,6 +1,5 @@
 <?php
 namespace imperator\outside\wordpress;
-use imperator\Imperator;
 
 class WordPressSettings extends \imperator\Settings {
 	public static $defaultSettings = array(

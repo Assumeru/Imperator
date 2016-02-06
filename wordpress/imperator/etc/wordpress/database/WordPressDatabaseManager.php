@@ -1,6 +1,5 @@
 <?php
 namespace imperator\outside\wordpress\database;
-use imperator\Imperator;
 
 class WordPressDatabaseManager extends \imperator\database\DatabaseManager {
 	private static $instance = null;

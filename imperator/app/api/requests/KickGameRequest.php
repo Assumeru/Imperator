@@ -1,6 +1,5 @@
 <?php
 namespace imperator\api\requests;
-use imperator\Imperator;
 
 class KickGameRequest extends GameRequest {
 	private $uid;

@@ -1,6 +1,5 @@
 <?php
 namespace imperator\map;
-use imperator\Imperator;
 
 class MapParser {
 	private $xpath;

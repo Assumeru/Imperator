@@ -1,6 +1,5 @@
 <?php
 namespace imperator\page;
-use imperator\Imperator;
 
 class Map extends DefaultPage {
 	const URL = 'map';

@@ -1,6 +1,5 @@
 <?php
 namespace imperator\page;
-use imperator\Imperator;
 
 class InGame extends DefaultPage {
 	/**

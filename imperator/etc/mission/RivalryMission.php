@@ -1,6 +1,5 @@
 <?php
 namespace imperator\mission;
-use imperator\Imperator;
 
 class RivalryMission extends MapMission {
 	public function __construct($id) {
