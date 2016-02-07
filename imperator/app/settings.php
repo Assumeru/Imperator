@@ -183,4 +183,8 @@ class Settings {
 	public function getWebSocketHandler() {
 		return '\\imperator\\websocket\\ApiHandler';
 	}
+
+	public function useSEOURLs() {
+		return isset($_SERVER['IMPERATOR_URLS']) && $_SERVER['IMPERATOR_URLS'] == 1;
+	}
 }

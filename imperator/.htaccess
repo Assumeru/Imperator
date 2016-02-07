@@ -1,0 +1,12 @@
+Options +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteRule ^(.+?)/([0-9]+)/(.*?)$ index.php?page=$1/$2/$3 [L,QSA]
+	RewriteRule ^index.php$ index.php [L,QSA]
+	RewriteRule ^([^/]+?)/?$ index.php?page=$1 [L,QSA]
+
+	<IfModule mod_env.c>
+		SetEnv IMPERATOR_URLS 1
+	</IfModule>
+</IfModule>

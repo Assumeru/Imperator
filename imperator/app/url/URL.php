@@ -21,4 +21,8 @@ class URL {
 		$this->path .= str_replace('%2F', '/', urlencode($key) . '=' . urlencode($value));
 		return $this;
 	}
+
+	protected function addDirect($string) {
+		$this->path .= $string;
+	}
 }

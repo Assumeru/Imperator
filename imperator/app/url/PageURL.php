@@ -9,7 +9,11 @@ class PageURL extends URL {
 			if($id !== null) {
 				$page .= '/'.$id.'/'.$name;
 			}
-			$this->addArgument('page', $page);
+			if(Imperator::getSettings()->useSEOURLs()) {
+				$this->addDirect($page);
+			} else {
+				$this->addArgument('page', $page);
+			}
 		}
 	}
 }
