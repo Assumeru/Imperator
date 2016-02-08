@@ -1,5 +1,6 @@
 Imperator.API = (function($) {
 	var $open = false,
+	$unloading = false,
 	$onOpen = [],
 	$onMessage = [],
 	$onError = [],
@@ -18,6 +19,9 @@ Imperator.API = (function($) {
 	}
 
 	function connect() {
+		$(window).on('beforeunload', function() {
+			$unloading = true;
+		});
 		if(supportsWebSocket()) {
 			$mode = 'WebSocket';
 			makeWebSocketConnection();
@@ -151,7 +155,9 @@ Imperator.API = (function($) {
 				onError($msg, $json);
 			}
 		}).fail(function($msg) {
-			onError($msg.responseJSON, $json);
+			if(!$unloading) {
+				onError($msg.responseJSON, $json);
+			}
 		});
 	}
 
