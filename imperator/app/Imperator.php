@@ -73,10 +73,10 @@ class Imperator {
 		try {
 			$page->render($user);
 		} catch(exceptions\ImperatorException $e) {
-			self::$logger->log(Logger::LEVEL_WARNING, $e);
+			self::$logger->w($e);
 			self::renderErrorPage($user);
 		} catch(\Exception $e) {
-			self::$logger->log(Logger::LEVEL_FATAL, $e);
+			self::$logger->e($e);
 			self::renderErrorPage($user);
 		}
 		self::$shutDownHandler->setMode(ShutDownHandler::MODE_OUTPUT_NOTHING);

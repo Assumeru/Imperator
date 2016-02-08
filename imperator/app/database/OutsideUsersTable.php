@@ -11,10 +11,10 @@ abstract class OutsideUsersTable extends Table {
 	}
 
 	public function create() {
-		Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, 'Outside table should already exist.');
+		Imperator::getLogger()->w('Outside table should already exist.');
 	}
 
 	public function drop() {
-		Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, 'Outside table should not be dropped.');
+		Imperator::getLogger()->w('Outside table should not be dropped.');
 	}
 }

@@ -13,7 +13,7 @@ class InvalidRequest extends \imperator\api\Request {
 		if(isset($params['type'])) {
 			$this->type = $params['type'];
 		}
-		Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, $params);
+		Imperator::getLogger()->d($params);
 	}
 
 	public function getMode() {

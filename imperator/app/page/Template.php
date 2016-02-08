@@ -67,7 +67,7 @@ class Template {
 			while(ob_get_level() > $level && ob_get_level() > 0) {
 				ob_end_clean();
 			}
-			Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
+			Imperator::getLogger()->w($e);
 			throw new \imperator\exceptions\ImperatorException('Template execution failed for "'.$this->template.'"', $e->getCode(), $e);
 		}
 	}

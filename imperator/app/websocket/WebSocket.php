@@ -112,7 +112,7 @@ class WebSocket {
 		try {
 			$this->connectionHandler->onMessage($message);
 		} catch(\Exception $e) {
-			$this->logger->log(\imperator\Logger::WARNING, $e);
+			$this->logger->w($e);
 		}
 	}
 
@@ -126,7 +126,7 @@ class WebSocket {
 		try {
 			$this->connectionHandler->onControlFrame($message);
 		} catch(\Exception $e) {
-			$this->logger->log(\imperator\Logger::WARNING, $e);
+			$this->logger->w($e);
 		}
 	}
 
@@ -140,7 +140,7 @@ class WebSocket {
 		try {
 			$this->connectionHandler->onOpen($connection);
 		} catch(\Exception $e) {
-			$this->logger->log(\imperator\Logger::WARNING, $e);
+			$this->logger->w($e);
 		}
 	}
 
@@ -154,14 +154,14 @@ class WebSocket {
 		try {
 			$this->connectionHandler->onClose($connection);
 		} catch(\Exception $e) {
-			$this->logger->log(\imperator\Logger::WARNING, $e);
+			$this->logger->w($e);
 		}
 	}
 
 	private function connect() {
 		$this->socket = stream_socket_server('tcp://'.$this->address.':'.$this->port, $err, $errStr/*, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN*/);
 		if(!$this->socket) {
-			$this->logger->log(\imperator\Logger::FATAL, $errStr.' ('.$err.')');
+			$this->logger->e($errStr.' ('.$err.')');
 			$this->stop();
 		}
 		$this->sockets = array($this->socket);
@@ -204,7 +204,7 @@ class WebSocket {
 		try {
 			$connection->run();
 		} catch(Exception $e) {
-			$this->logger->log(\imperator\Logger::WARNING, $e);
+			$this->logger->w($e);
 			$connection->close();
 		}
 	}

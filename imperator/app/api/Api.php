@@ -49,13 +49,13 @@ abstract class Api {
 				return $this->reply($output);
 			}
 		} catch(\imperator\exceptions\InvalidRequestException $e) {
-			Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
+			Imperator::getLogger()->w($e);
 			return $this->sendError($e);
 		} catch(\imperator\exceptions\ImperatorException $e) {
-			Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
+			Imperator::getLogger()->w($e);
 			return $this->sendFatalError();
 		} catch(\Exception $e) {
-			Imperator::getLogger()->log(\imperator\Logger::LEVEL_FATAL, $e);
+			Imperator::getLogger()->e($e);
 			return $this->sendFatalError();
 		}
 	}

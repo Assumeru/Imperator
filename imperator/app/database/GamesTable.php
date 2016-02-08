@@ -312,7 +312,7 @@ class GamesTable extends Table {
 	 * @param int[] $games
 	 */
 	public function deleteGames(array $games) {
-		Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, 'Deleting games ['.implode(', ', $games).'].');
+		Imperator::getLogger()->d('Deleting games ['.implode(', ', $games).'].');
 		$db = $this->getManager();
 		array_unshift($games, 'DELETE FROM @GAMES WHERE @GAMES.GAME '.$db->createIn(count($games), '%d'));
 		call_user_func_array(array($db, 'preparedStatement'), $games)->free();

@@ -121,7 +121,7 @@ final class EE_Imperator {
 		$cron = new \imperator\Cron();
 		$numChats = $cron->cleanChat();
 		$numGames = $cron->cleanGames();
-		\imperator\Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, 'EE_imperator cleanup task completed: '.$numChats.' chat messages and '.$numGames.' games deleted.');
+		\imperator\Imperator::getLogger()->d('EE_imperator cleanup task completed: '.$numChats.' chat messages and '.$numGames.' games deleted.');
 	}
 
 	public function deactivate() {

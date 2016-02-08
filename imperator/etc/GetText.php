@@ -23,10 +23,10 @@ class GetText extends Language {
 			try {
 				$mo = new \gettext\MO(file_get_contents($file));
 			} catch(\InvalidArgumentException $e) {
-				Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
+				Imperator::getLogger()->w($e);
 				continue;
 			} catch(\gettext\pluralparser\ParseException $e) {
-				Imperator::getLogger()->log(\imperator\Logger::LEVEL_WARNING, $e);
+				Imperator::getLogger()->w($e);
 				continue;
 			}
 			if($this->mo === null) {

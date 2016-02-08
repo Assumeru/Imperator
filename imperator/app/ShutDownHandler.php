@@ -14,7 +14,7 @@ class ShutDownHandler {
 	public function shutdown() {
 		$error = error_get_last();
 		if($error !== null && ($error['type'] == E_ERROR || $error['type'] == E_CORE_ERROR || $error['type'] == E_COMPILE_ERROR)) {
-			Imperator::getLogger()->log(Logger::LEVEL_FATAL, $error);
+			Imperator::getLogger()->e($error);
 			while(ob_get_level() > 0) {
 				ob_end_clean();
 			}
@@ -30,9 +30,6 @@ class ShutDownHandler {
 
 	public function error($errno, $errstr, $errfile, $errline) {
 		$exception = new \ErrorException($errstr, $errno, 0, $errfile, $errline);
-		if($errno == E_RECOVERABLE_ERROR) {
-			throw $exception;
-		}
 		switch($errno) {
 			case E_RECOVERABLE_ERROR:
 				throw $exception;

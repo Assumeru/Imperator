@@ -25,15 +25,13 @@ class Logger {
 	private function output($message, $level) {
 		if(!$this->path) {
 			echo $message;
-		} else {
-			if($level <= $this->level) {
-				if($level <= self::LEVEL_WARNING) {
-					$file = $this->path.'/error.log';
-				} else {
-					$file = $this->path.'/output.log';
-				}
-				file_put_contents($file, $message, FILE_APPEND | LOCK_EX);
+		} else if($level <= $this->level) {
+			if($level <= self::LEVEL_WARNING) {
+				$file = $this->path.'/error.log';
+			} else {
+				$file = $this->path.'/output.log';
 			}
+			file_put_contents($file, $message, FILE_APPEND | LOCK_EX);
 		}
 	}
 
@@ -44,6 +42,22 @@ class Logger {
 			$message = var_export($message, true);
 		}
 		$this->output($this->getHead($level).$message.self::EOL.self::EOL, $level);
+	}
+
+	public function e($message) {
+		$this->log(static::LEVEL_FATAL, $message);
+	}
+
+	public function w($message) {
+		$this->log(static::LEVEL_WARNING, $message);
+	}
+
+	public function d($message) {
+		$this->log(static::LEVEL_DEBUG, $message);
+	}
+
+	public function i($message) {
+		$this->log(static::LEVEL_INFO, $message);
 	}
 
 	private function getHead($level) {

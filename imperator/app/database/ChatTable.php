@@ -115,7 +115,7 @@ class ChatTable extends Table {
 		if($result = $query->fetchResult()) {
 			$limit = max(0, $result->getInt(0) - $keep);
 			if($limit > 0) {
-				Imperator::getLogger()->log(\imperator\Logger::LEVEL_DEBUG, 'Deleting '.$limit.' chat messages.');
+				Imperator::getLogger()->d('Deleting '.$limit.' chat messages.');
 				$db->preparedStatement('DELETE FROM @CHAT WHERE @CHAT.TIME < %d AND @CHAT.GAME = 0 LIMIT %d', $time, $limit)->free();
 			}
 		}
