@@ -12,14 +12,16 @@ class TerritoriesTable extends Table {
 	}
 
 	public function create() {
-		$this->getManager()->preparedStatement(
+		$db = $this->getManager();
+		$db->preparedStatement(
 			'CREATE TABLE @TERRITORIES (
 				@-TERRITORIES.GAME INT REFERENCES @GAMES(@-GAMES.GAME) ON DELETE CASCADE,
 				@-TERRITORIES.TERRITORY VARCHAR(150),
 				@-TERRITORIES.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
 				@-TERRITORIES.UNITS INT NOT NULL,
 				PRIMARY KEY(@-TERRITORIES.GAME, @-TERRITORIES.TERRITORY)
-			)'
+			) CHARACTER SET %s COLLATE %s',
+			$db->getCharset(), $db->getCollation()
 		);
 	}
 

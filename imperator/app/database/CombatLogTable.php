@@ -24,7 +24,8 @@ class CombatLogTable extends Table {
 	}
 
 	public function create() {
-		$this->getManager()->preparedStatement(
+		$db = $this->getManager();
+		$db->preparedStatement(
 			'CREATE TABLE @LOG (
 				@-LOG.GAME INT REFERENCES @GAMES(@-GAMES.GAME) ON DELETE CASCADE,
 				@-LOG.TYPE SMALLINT,
@@ -37,7 +38,8 @@ class CombatLogTable extends Table {
 				@-LOG.ATTACKING_TERRITORY VARCHAR(150),
 				@-LOG.DEFENDING_TERRITORY VARCHAR(150),
 				PRIMARY KEY(@-LOG.GAME, @-LOG.TYPE, @-LOG.TIME, @-LOG.USER)
-			)'
+			) CHARACTER SET %s COLLATE %s',
+			$db->getCharset(), $db->getCollation()
 		);
 	}
 

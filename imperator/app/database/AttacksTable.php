@@ -13,7 +13,8 @@ class AttacksTable extends Table {
 	}
 
 	public function create() {
-		$this->getManager()->preparedStatement(
+		$db = $this->getManager();
+		$db->preparedStatement(
 			'CREATE TABLE @ATTACKS (
 				@-ATTACKS.GAME INT REFERENCES @GAMES(@-GAMES.GAME) ON DELETE CASCADE,
 				@-ATTACKS.ATTACKING_TERRITORY VARCHAR(150),
@@ -21,7 +22,8 @@ class AttacksTable extends Table {
 				@-ATTACKS.DICE_ROLL CHAR(3) NOT NULL,
 				@-ATTACKS.TRANSFERING_UNITS INT NOT NULL DEFAULT "1",
 				PRIMARY KEY(@-ATTACKS.GAME, @-ATTACKS.ATTACKING_TERRITORY, @-ATTACKS.DEFENDING_TERRITORY)
-			)'
+			) CHARACTER SET %s COLLATE %s',
+			$db->getCharset(), $db->getCollation()
 		);
 	}
 

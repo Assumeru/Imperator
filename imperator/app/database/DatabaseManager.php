@@ -239,4 +239,12 @@ abstract class DatabaseManager {
 	public function createIn($number, $type = '%s') {
 		return 'IN('.implode(', ', array_fill(0, $number, $type)).')';
 	}
+
+	public function getCollation() {
+		return 'utf8_bin';
+	}
+
+	public function getCharset() {
+		return 'utf8';
+	}
 }

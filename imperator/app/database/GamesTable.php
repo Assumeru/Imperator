@@ -19,7 +19,8 @@ class GamesTable extends Table {
 	}
 
 	public function create() {
-		$this->getManager()->preparedStatement(
+		$db = $this->getManager();
+		$db->preparedStatement(
 			'CREATE TABLE @GAMES (
 				@-GAMES.GAME INT AUTO_INCREMENT PRIMARY KEY,
 				@-GAMES.MAP INT NOT NULL,
@@ -31,7 +32,8 @@ class GamesTable extends Table {
 				@-GAMES.UNITS INT NOT NULL DEFAULT "0",
 				@-GAMES.CONQUERED SMALLINT NOT NULL DEFAULT "0",
 				@-GAMES.PASSWORD VARCHAR(255)
-			)'
+			) CHARACTER SET %s COLLATE %s',
+			$db->getCharset(), $db->getCollation()
 		);
 	}
 

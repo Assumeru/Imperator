@@ -13,14 +13,16 @@ class ChatTable extends Table {
 	}
 
 	public function create() {
-		$this->getManager()->preparedStatement(
+		$db = $this->getManager();
+		$db->preparedStatement(
 			'CREATE TABLE @CHAT (
 				@-CHAT.GAME INT,
 				@-CHAT.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
 				@-CHAT.TIME INT,
 				@-CHAT.MESSAGE VARCHAR(512),
 				PRIMARY KEY(@-CHAT.GAME, @-CHAT.USER, @-CHAT.TIME)
-			)'
+			) CHARACTER SET %s COLLATE %s',
+			$db->getCharset(), $db->getCollation()
 		);
 	}
 

@@ -13,14 +13,16 @@ class UsersTable extends Table {
 	}
 
 	public function create() {
-		$this->getManager()->preparedStatement(
+		$db = $this->getManager();
+		$db->preparedStatement(
 			'CREATE TABLE @USERS (
 				@-USERS.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER) ON DELETE CASCADE,
 				@-USERS.WINS INT NOT NULL DEFAULT "0",
 				@-USERS.LOSSES INT NOT NULL DEFAULT "0",
 				@-USERS.SCORE INT NOT NULL DEFAULT "0",
 				PRIMARY KEY(@-USERS.USER)
-			)'
+			) CHARACTER SET %s COLLATE %s',
+			$db->getCharset(), $db->getCollation()
 		);
 	}
 

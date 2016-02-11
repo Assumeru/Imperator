@@ -20,7 +20,8 @@ class GamesJoinedTable extends Table {
 	}
 
 	public function create() {
-		$this->getManager()->preparedStatement(
+		$db = $this->getManager();
+		$db->preparedStatement(
 			'CREATE TABLE @GAMESJOINED (
 				@-GAMESJOINED.GAME INT REFERENCES @GAMES(@-GAMES.GAME) ON DELETE CASCADE,
 				@-GAMESJOINED.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
@@ -34,7 +35,8 @@ class GamesJoinedTable extends Table {
 				@-GAMESJOINED.CARD_INFANTRY SMALLINT NOT NULL DEFAULT "0",
 				@-GAMESJOINED.CARD_JOKER SMALLINT NOT NULL DEFAULT "0",
 				PRIMARY KEY(@-GAMESJOINED.GAME, @-GAMESJOINED.USER)
-			)'
+			) CHARACTER SET %s COLLATE %s',
+			$db->getCharset(), $db->getCollation()
 		);
 	}
 
