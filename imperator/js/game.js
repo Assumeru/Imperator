@@ -450,7 +450,7 @@
 	}
 
 	function sendEndTurn() {
-		var $ok, $cancel, $n, $cards, $num;
+		var $dialog, $n, $cards, $num;
 		function send($card) {
 			$dialogs.endturn = Imperator.Dialog.showWaitDialog();
 			Imperator.API.send({
@@ -465,34 +465,30 @@
 				$dialogs.endturn.close();
 			}
 			if($game.cards.getNumberOfCards() >= Imperator.Cards.MAX_CARDS && $game.conquered) {
-				$ok = $(Imperator.settings.templates.okbutton);
-				$cancel = $(Imperator.settings.templates.cancelbutton);
-				$dialogs.endturn = Imperator.Dialog.showDialogForm(
+				$dialog = Imperator.Dialog.showConfirmDialog(
 					Imperator.settings.language.endturn,
 					Imperator.settings.templates.discardcard,
-					$('<div>').append($ok).append(' ').append($cancel), true, 'discard-dialog');
+					'discard-dialog',
+					function($dialog) {
+						send($dialog.message.find('[name="discard"]:checked').val());
+					});
 				$cards = [Imperator.Cards.CARD_ARTILLERY, Imperator.Cards.CARD_INFANTRY, Imperator.Cards.CARD_CAVALRY, Imperator.Cards.CARD_JOKER];
 				for($n = 0; $n < $cards.length; $n++) {
 					$num = $game.cards.getCard($cards[$n]);
 					if($num < 1) {
-						$dialogs.endturn.message.find('[data-card="'+$cards[$n]+'"]').hide();
+						$dialog.message.find('[data-card="'+$cards[$n]+'"]').hide();
 					} else {
-						$dialogs.endturn.message.find('[data-card="'+$cards[$n]+'"] .number').text($num);
+						$dialog.message.find('[data-card="'+$cards[$n]+'"] .number').text($num);
 					}
 				}
-				$cancel.click(function($e) {
-					$e.preventDefault();
-					$dialogs.endturn.close();
-					delete $dialogs.endturn;
-				});
-				$ok.click(function($e) {
-					var $card;
-					$e.preventDefault();
-					$card = $dialogs.endturn.message.find('[name="discard"]:checked').val();
-					$dialogs.endturn.close();
-					delete $dialogs.endturn;
-					send($card);
-				});
+			} else if($game.state == Imperator.Game.STATE_FORTIFY && $game.units > 0) {
+				Imperator.Dialog.showConfirmDialog(
+					Imperator.settings.language.endturn,
+					Imperator.settings.language.unitsleft,
+					undefined,
+					function() {
+						send(Imperator.Cards.CARD_NONE);
+					});
 			} else if(window.confirm(Imperator.settings.language.confirmend)) {
 				send(Imperator.Cards.CARD_NONE);
 			}

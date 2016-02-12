@@ -63,10 +63,31 @@ Imperator.Dialog = (function($) {
 		return showDialog(Imperator.settings.language.wait, $('<p class="loading"></p>').text(Imperator.settings.language.contacting), false, 'loading');
 	}
 
+	function showConfirmDialog($header, $message, $class, $okListener, $cancelListener) {
+		var $ok = $(Imperator.settings.templates.okbutton),
+		$cancel = $(Imperator.settings.templates.cancelbutton),
+		$dialog = showDialogForm($header, $message, $('<div>').append($ok).append(' ').append($cancel), false, $class);
+		$ok.click(function($e) {
+			$e.preventDefault();
+			if($okListener === undefined || $okListener($dialog) !== true) {
+				$dialog.close();
+			}
+		});
+		$cancel.click(function($e) {
+			$e.preventDefault();
+			if($cancelListener === undefined || $cancelListener($dialog) !== true) {
+				$dialog.close();
+			}
+		});
+		$ok.focus();
+		return $dialog;
+	}
+
 	return {
 		showDialog: showDialog,
 		showDialogForm: showDialogForm,
 		closeDialog: closeDialog,
-		showWaitDialog: showWaitDialog
+		showWaitDialog: showWaitDialog,
+		showConfirmDialog: showConfirmDialog
 	};
 })(jQuery);

@@ -77,7 +77,8 @@ class InGame extends DefaultPage {
 			'vs' => $language->translate('%1$s vs. %2$s'),
 			'endturn' => $language->translate('End turn'),
 			'error' => $language->translate('An error has occurred'),
-			'disconnected' => $language->translate('Connection to the server has been lost.')
+			'disconnected' => $language->translate('Connection to the server has been lost.'),
+			'unitsleft' => $language->translate('You still have units left to place.')
 		));
 		$this->addJavascript('classes.js');
 		$this->addJavascript('map.js');
