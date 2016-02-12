@@ -6,387 +6,391 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app/api/request.class.php:20
+#: app/api/Request.php:20
 msgid "Abstract request cannot be handled."
 msgstr ""
 
-#: app/api/requests/attackgamerequest.class.php:44
+#: app/api/requests/AttackGameRequest.php:44
 msgid "Cannot attack now."
 msgstr ""
 
-#: app/api/requests/attackgamerequest.class.php:49
-#: app/api/requests/defendgamerequest.class.php:38
-#: app/api/requests/movegamerequest.class.php:45
+#: app/api/requests/AttackGameRequest.php:49
+#: app/api/requests/DefendGameRequest.php:38
+#: app/api/requests/MoveGameRequest.php:45
 #, php-format
 msgid "Territory \"%1$s\" or \"%2$s\" not found in %3$d"
 msgstr ""
 
-#: app/api/requests/attackgamerequest.class.php:53
+#: app/api/requests/AttackGameRequest.php:53
 msgid "Invalid attack"
 msgstr ""
 
-#: app/api/requests/attackgamerequest.class.php:55
+#: app/api/requests/AttackGameRequest.php:55
 msgid "One of these territories is already engaged in combat."
 msgstr ""
 
-#: app/api/requests/chataddrequest.class.php:23
-#: app/api/requests/chatupdaterequest.class.php:12
+#: app/api/requests/ChatAddRequest.php:23
+#: app/api/requests/ChatUpdateRequest.php:12
 #, php-format
 msgid "User %1$d cannot use chat %2$d"
 msgstr ""
 
-#: app/api/requests/chataddrequest.class.php:29
+#: app/api/requests/ChatAddRequest.php:29
 msgid "You cannot chat more than once per second."
 msgstr ""
 
-#: app/api/requests/chatdeleterequest.class.php:29
+#: app/api/requests/ChatDeleteRequest.php:29
 #, php-format
 msgid "User %1$d cannot delete from chat %2$d"
 msgstr ""
 
-#: app/api/requests/defendgamerequest.class.php:46
+#: app/api/requests/DefendGameRequest.php:46
 #, php-format
 msgid "User %1$d does not own \"%2$s\" in %3$d"
 msgstr ""
 
-#: app/api/requests/defendgamerequest.class.php:48
+#: app/api/requests/DefendGameRequest.php:48
 #, php-format
 msgid "Attack not found for \"%1$s\" and \"%2$s\" in %3$d"
 msgstr ""
 
-#: app/api/requests/endturngamerequest.class.php:28
+#: app/api/requests/EndTurnGameRequest.php:28
 msgid "You cannot end your turn without finishing all battles."
 msgstr ""
 
-#: app/api/requests/forfeitgamerequest.class.php:13
+#: app/api/requests/ForfeitGameRequest.php:13
 msgid "You cannot forfeit without finishing all battles."
 msgstr ""
 
-#: app/api/requests/fortifygamerequest.class.php:14
+#: app/api/requests/FortifyGameRequest.php:14
 msgid "Cannot fortify after attacking."
 msgstr ""
 
-#: app/api/requests/gamerequest.class.php:54
+#: app/api/requests/GameRequest.php:54
 msgid "Game does not exist."
 msgstr ""
 
-#: app/api/requests/gamerequest.class.php:56
+#: app/api/requests/GameRequest.php:56
 #, php-format
 msgid "User %1$d not in game %2$d"
 msgstr ""
 
-#: app/api/requests/gamerequest.class.php:62
+#: app/api/requests/GameRequest.php:62
 #, php-format
 msgid "Turn is not %1$d in %2$d"
 msgstr ""
 
-#: app/api/requests/gameupdaterequest.class.php:18
+#: app/api/requests/GameUpdateRequest.php:18
 msgid "This game has been disbanded."
 msgstr ""
 
-#: app/api/requests/invalidrequest.class.php:28
+#: app/api/requests/InvalidRequest.php:28
 msgid "Bad request."
 msgstr ""
 
-#: app/api/requests/kickgamerequest.class.php:21
+#: app/api/requests/KickGameRequest.php:21
 msgid "Only the game owner can kick players."
 msgstr ""
 
-#: app/api/requests/kickgamerequest.class.php:23
+#: app/api/requests/KickGameRequest.php:23
 msgid "You cannot kick yourself."
 msgstr ""
 
-#: app/api/requests/movegamerequest.class.php:38
+#: app/api/requests/MoveGameRequest.php:38
 msgid "Cannot move now."
 msgstr ""
 
-#: app/api/requests/movegamerequest.class.php:40
+#: app/api/requests/MoveGameRequest.php:40
 #, php-format
 msgid "Cannot move more than one unit."
 msgid_plural "Cannot move more than %1$d units."
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/api/requests/movegamerequest.class.php:51
+#: app/api/requests/MoveGameRequest.php:51
 msgid "Invalid move"
 msgstr ""
 
-#: app/api/requests/placeunitsgamerequest.class.php:31
+#: app/api/requests/PlaceUnitsGameRequest.php:31
 msgid "Cannot place units after attacking."
 msgstr ""
 
-#: app/api/requests/placeunitsgamerequest.class.php:33
+#: app/api/requests/PlaceUnitsGameRequest.php:33
 #, php-format
 msgid "Cannot place more than one unit."
 msgid_plural "Cannot place more than %1$d units."
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/api/requests/placeunitsgamerequest.class.php:37
+#: app/api/requests/PlaceUnitsGameRequest.php:37
 #, php-format
 msgid "Could not find territory \"%1$s\" in %2$d"
 msgstr ""
 
-#: app/api/requests/placeunitsgamerequest.class.php:41
+#: app/api/requests/PlaceUnitsGameRequest.php:41
 #, php-format
 msgid "Territory \"%1$s\" not owned by %2$d in %3$d"
 msgstr ""
 
-#: app/api/requests/playcardsgamerequest.class.php:24
+#: app/api/requests/PlayCardsGameRequest.php:24
 msgid "Cannot play cards after attacking."
 msgstr ""
 
-#: app/api/requests/playcardsgamerequest.class.php:29
+#: app/api/requests/PlayCardsGameRequest.php:29
 #, php-format
 msgid "You do not have the required cards to place %1$d units."
 msgstr ""
 
-#: app/api/requests/pregameupdaterequest.class.php:11
+#: app/api/requests/PreGameUpdateRequest.php:11
 msgid "You have been kicked from this game."
 msgstr ""
 
-#: app/api/requests/pregameupdaterequest.class.php:14
+#: app/api/requests/PreGameUpdateRequest.php:14
 msgid "This game has started."
 msgstr ""
 
-#: app/api/requests/startmovegamerequest.class.php:13
+#: app/api/requests/StartMoveGameRequest.php:13
 msgid "Cannot move before attacking."
 msgstr ""
 
-#: app/api/requests/startmovegamerequest.class.php:16
+#: app/api/requests/StartMoveGameRequest.php:16
 msgid "All battles need to finish before units can be moved."
 msgstr ""
 
-#: app/combatlog/attackedentry.class.php:44
+#: app/combatlog/AttackedEntry.php:44
 #, php-format
 msgid "%1$s vs %2$s: %3$s %4$s"
 msgstr ""
 
-#: app/combatlog/cardsplayedentry.class.php:26
+#: app/combatlog/CardsPlayedEntry.php:26
 #, php-format
 msgid "%1$s played %2$s for %3$d units."
 msgstr ""
 
-#: app/combatlog/conqueredentry.class.php:20
+#: app/combatlog/ConqueredEntry.php:20
 #, php-format
 msgid "%1$s conquered %2$s."
 msgstr ""
 
-#: app/combatlog/endedturnentry.class.php:8
+#: app/combatlog/EndedTurnEntry.php:8
 #, php-format
 msgid "%1$s's turn has ended."
 msgstr ""
 
-#: app/combatlog/forfeitedentry.class.php:8
+#: app/combatlog/ForfeitedEntry.php:8
 #, php-format
 msgid "%1$s has forfeited the game."
 msgstr ""
 
-#: app/game/cards.class.php:220
+#: app/game/Cards.php:220
 msgid "Artillery"
 msgstr ""
 
-#: app/game/cards.class.php:221
+#: app/game/Cards.php:221
 msgid "Cavalry"
 msgstr ""
 
-#: app/game/cards.class.php:222
+#: app/game/Cards.php:222
 msgid "Infantry"
 msgstr ""
 
-#: app/game/cards.class.php:223
+#: app/game/Cards.php:223
 msgid "Joker"
 msgstr ""
 
-#: app/game/cards.class.php:224
+#: app/game/Cards.php:224
 msgid "None"
 msgstr ""
 
-#: app/page/form/joingameform.class.php:35
+#: app/page/form/JoinGameForm.php:35
 msgid "This color is already in use"
 msgstr ""
 
-#: app/page/form/joingameform.class.php:39
+#: app/page/form/JoinGameForm.php:39
 msgid "The password you entered was incorrect"
 msgstr ""
 
-#: app/page/form/joingameform.class.php:41
+#: app/page/form/JoinGameForm.php:41
 msgid "The code you entered was incorrect"
 msgstr ""
 
-#: app/page/form/newgameform.class.php:21
+#: app/page/form/NewGameForm.php:21
 msgid "Please enter a shorter name"
 msgstr ""
 
-#: app/page/form/newgameform.class.php:23
+#: app/page/form/NewGameForm.php:23
 msgid "Please enter a name"
 msgstr ""
 
-#: app/page/about.class.php:13 etc/templates/about.phtml:2
+#: app/page/About.php:13 etc/templates/about.phtml:2
 msgid "About"
 msgstr ""
 
-#: app/page/defaultpage.class.php:116
+#: app/page/DefaultPage.php:116
 msgid "Please wait..."
 msgstr ""
 
-#: app/page/defaultpage.class.php:117
+#: app/page/DefaultPage.php:117
 msgid "Contacting server."
 msgstr ""
 
-#: app/page/defaultpage.class.php:118
+#: app/page/DefaultPage.php:118
 msgid "Unknown error."
 msgstr ""
 
-#: app/page/defaultpage.class.php:133
+#: app/page/DefaultPage.php:133
 msgid "Chat Error"
 msgstr ""
 
-#: app/page/gamelist.class.php:11 app/page/gamelist.class.php:70 etc/templates/games.phtml:2
+#: app/page/GameList.php:11 app/page/GameList.php:70 etc/templates/games.phtml:2
 msgid "Games"
 msgstr ""
 
-#: app/page/gamelist.class.php:37 etc/templates/games.phtml:5
+#: app/page/GameList.php:37 etc/templates/games.phtml:5
 msgid "There are no games available at this time."
 msgstr ""
 
-#: app/page/gamelist.class.php:55 etc/templates/games.phtml:47
+#: app/page/GameList.php:55 etc/templates/games.phtml:47
 #, php-format
 msgid "%1$d / %2$d"
 msgstr ""
 
-#: app/page/gamelist.class.php:63 etc/templates/games.phtml:14
+#: app/page/GameList.php:63 etc/templates/games.phtml:14
 #: etc/templates/maps.phtml:5 etc/templates/rankings.phtml:5
 msgid "Name"
 msgstr ""
 
-#: app/page/gamelist.class.php:64 etc/templates/game.phtml:11
+#: app/page/GameList.php:64 etc/templates/game.phtml:11
 #: etc/templates/games.phtml:14 etc/templates/game_postgame.phtml:3
 #: etc/templates/game_pregame.phtml:3
 msgid "Map"
 msgstr ""
 
-#: app/page/gamelist.class.php:65 etc/templates/game.phtml:4
+#: app/page/GameList.php:65 etc/templates/game.phtml:4
 #: etc/templates/games.phtml:14 etc/templates/game_pregame.phtml:5
 #: etc/templates/maps.phtml:5
 msgid "Players"
 msgstr ""
 
-#: app/page/gamelist.class.php:66 etc/templates/games.phtml:14
+#: app/page/GameList.php:66 etc/templates/games.phtml:14
 msgid "Host"
 msgstr ""
 
-#: app/page/http403.class.php:6
+#: app/page/HTTP403.php:6
 msgid "403 Forbidden"
 msgstr ""
 
-#: app/page/http403.class.php:6
+#: app/page/HTTP403.php:6
 msgid "You are not allowed to view this page."
 msgstr ""
 
-#: app/page/http404.class.php:6
+#: app/page/HTTP404.php:6
 msgid "404 Not found"
 msgstr ""
 
-#: app/page/http404.class.php:6
+#: app/page/HTTP404.php:6
 msgid "The specified page could not be found."
 msgstr ""
 
-#: app/page/http500.class.php:6
+#: app/page/HTTP500.php:6
 msgid "500 Internal Server Error"
 msgstr ""
 
-#: app/page/http500.class.php:6
+#: app/page/HTTP500.php:6
 msgid "An error occurred while loading this page."
 msgstr ""
 
-#: app/page/ingame.class.php:65
+#: app/page/InGame.php:64
 msgid "Attack"
 msgstr ""
 
-#: app/page/ingame.class.php:66
+#: app/page/InGame.php:65
 #, php-format
 msgid "%1$s has disabled Autoroll"
 msgstr ""
 
-#: app/page/ingame.class.php:68
+#: app/page/InGame.php:67
 #, php-format
 msgid "Are you sure you want to place %1$d units in %2$s?"
 msgstr ""
 
-#: app/page/ingame.class.php:69
+#: app/page/InGame.php:68
 msgid "Are you sure you want to stop attacking?"
 msgstr ""
 
-#: app/page/ingame.class.php:70
+#: app/page/InGame.php:69
 msgid "Are you sure you want to end your turn?"
 msgstr ""
 
-#: app/page/ingame.class.php:71
+#: app/page/InGame.php:70
 #, php-format
 msgid "%1$s has been conquered"
 msgstr ""
 
-#: app/page/ingame.class.php:72 etc/templates/games.phtml:41
+#: app/page/InGame.php:71 etc/templates/games.phtml:41
 msgid "This game has ended."
 msgstr ""
 
-#: app/page/ingame.class.php:73
+#: app/page/InGame.php:72
 msgid "Are you sure you want to forfeit?"
 msgstr ""
 
-#: app/page/ingame.class.php:74
+#: app/page/InGame.php:73
 #, php-format
 msgid "Fortify %1$s"
 msgstr ""
 
-#: app/page/ingame.class.php:75
+#: app/page/InGame.php:74
 msgid "Game Over"
 msgstr ""
 
-#: app/page/ingame.class.php:76 etc/templates/game.phtml:219
+#: app/page/InGame.php:75 etc/templates/game.phtml:219
 msgid "Move"
 msgstr ""
 
-#: app/page/ingame.class.php:77
+#: app/page/InGame.php:76
 msgid "You have received a new card!"
 msgstr ""
 
-#: app/page/ingame.class.php:78
+#: app/page/InGame.php:77
 #, php-format
 msgid "%1$s vs. %2$s"
 msgstr ""
 
-#: app/page/ingame.class.php:79 etc/templates/game.phtml:220
+#: app/page/InGame.php:78 etc/templates/game.phtml:220
 msgid "End turn"
 msgstr ""
 
-#: app/page/ingame.class.php:80 app/page/pregame.class.php:44
+#: app/page/InGame.php:79 app/page/PreGame.php:44
 msgid "An error has occurred"
 msgstr ""
 
-#: app/page/ingame.class.php:81 app/page/pregame.class.php:45
+#: app/page/InGame.php:80 app/page/PreGame.php:45
 msgid "Connection to the server has been lost."
 msgstr ""
 
-#: app/page/loginsplash.class.php:9
+#: app/page/InGame.php:81
+msgid "You still have units left to place."
+msgstr ""
+
+#: app/page/LoginSplash.php:9
 msgid "Home"
 msgstr ""
 
-#: app/page/maplist.class.php:9 etc/templates/maps.phtml:2
+#: app/page/MapList.php:9 etc/templates/maps.phtml:2
 msgid "Maps"
 msgstr ""
 
-#: app/page/newgame.class.php:19 etc/templates/newgame.phtml:2
+#: app/page/NewGame.php:19 etc/templates/newgame.phtml:2
 msgid "New Game"
 msgstr ""
 
-#: app/page/newgame.class.php:38
+#: app/page/NewGame.php:38
 #, php-format
 msgid "%1$s's game"
 msgstr ""
 
-#: app/page/pregame.class.php:84
+#: app/page/PreGame.php:84
 msgid "Are you sure you want to kick this player?"
 msgstr ""
 
@@ -442,16 +446,16 @@ msgstr ""
 msgid "Black"
 msgstr ""
 
-#: etc/mission/dominationmission.class.php:9,16
+#: etc/mission/DominationMission.php:9,16
 #, php-format
 msgid "To win this game you will have to conquer %1$d territories."
 msgstr ""
 
-#: etc/mission/rivalrymission.class.php:7
+#: etc/mission/RivalryMission.php:7
 msgid "To win this game you will have to conquer the last of an opponent's territories."
 msgstr ""
 
-#: etc/mission/rivalrymission.class.php:16
+#: etc/mission/RivalryMission.php:16
 #, php-format
 msgid "To win this game you will have to conquer the last of %1$s's territories."
 msgstr ""

@@ -7,7 +7,7 @@ msgstr ""
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app/page/form/joingameform.class.php:35
+#: app/page/form/JoinGameForm.php:35
 msgid "This color is already in use"
 msgstr "This colour is already in use"
 
