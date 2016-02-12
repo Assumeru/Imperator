@@ -483,7 +483,7 @@
 				}
 			} else if($game.state == Imperator.Game.STATE_FORTIFY && $game.units > 0) {
 				Imperator.Dialog.showConfirmDialog(
-					Imperator.settings.language.endturn,
+					Imperator.settings.language.confirmend,
 					Imperator.settings.language.unitsleft,
 					undefined,
 					function() {
