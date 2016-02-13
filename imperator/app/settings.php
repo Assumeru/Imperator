@@ -129,14 +129,6 @@ class Settings {
 		return 30;
 	}
 
-	public function getIllegalCharacters() {
-		return array(
-			chr(160),
-			chr(173),
-			chr(202)
-		);
-	}
-
 	/**
 	 * Returns the time until a chat message is deleted.
 	 * 
