@@ -247,4 +247,8 @@ abstract class DatabaseManager {
 	public function getCharset() {
 		return 'utf8';
 	}
+
+	public function getEngine() {
+		return 'InnoDB';
+	}
 }

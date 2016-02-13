@@ -27,19 +27,20 @@ class CombatLogTable extends Table {
 		$db = $this->getManager();
 		$db->preparedStatement(
 			'CREATE TABLE @LOG (
-				@-LOG.GAME INT REFERENCES @GAMES(@-GAMES.GAME) ON DELETE CASCADE,
+				@-LOG.GAME INT,
 				@-LOG.TYPE SMALLINT,
 				@-LOG.TIME INT,
-				@-LOG.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
+				@-LOG.USER INT,
 				@-LOG.DEFENDER INT,
 				@-LOG.ATTACK_ROLL CHAR(3),
 				@-LOG.DEFEND_ROLL CHAR(2),
 				@-LOG.UNITS INT,
 				@-LOG.ATTACKING_TERRITORY VARCHAR(150),
 				@-LOG.DEFENDING_TERRITORY VARCHAR(150),
-				PRIMARY KEY(@-LOG.GAME, @-LOG.TYPE, @-LOG.TIME, @-LOG.USER)
-			) CHARACTER SET %s COLLATE %s',
-			$db->getCharset(), $db->getCollation()
+				PRIMARY KEY(@-LOG.GAME, @-LOG.TYPE, @-LOG.TIME, @-LOG.USER),
+				FOREIGN KEY (@-LOG.GAME) REFERENCES @GAMES(@-GAMES.GAME) ON DELETE CASCADE
+			) CHARACTER SET %s COLLATE %s ENGINE = %s',
+			$db->getCharset(), $db->getCollation(), $db->getEngine()
 		);
 	}
 

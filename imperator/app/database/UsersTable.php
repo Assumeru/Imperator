@@ -16,13 +16,13 @@ class UsersTable extends Table {
 		$db = $this->getManager();
 		$db->preparedStatement(
 			'CREATE TABLE @USERS (
-				@-USERS.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER) ON DELETE CASCADE,
+				@-USERS.USER INT,
 				@-USERS.WINS INT NOT NULL DEFAULT "0",
 				@-USERS.LOSSES INT NOT NULL DEFAULT "0",
 				@-USERS.SCORE INT NOT NULL DEFAULT "0",
 				PRIMARY KEY(@-USERS.USER)
-			) CHARACTER SET %s COLLATE %s',
-			$db->getCharset(), $db->getCollation()
+			) CHARACTER SET %s COLLATE %s ENGINE = %s',
+			$db->getCharset(), $db->getCollation(), $db->getEngine()
 		);
 	}
 

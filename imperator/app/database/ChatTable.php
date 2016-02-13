@@ -17,12 +17,12 @@ class ChatTable extends Table {
 		$db->preparedStatement(
 			'CREATE TABLE @CHAT (
 				@-CHAT.GAME INT,
-				@-CHAT.USER INT REFERENCES @OUTSIDEUSERS(@-OUTSIDEUSERS.USER),
+				@-CHAT.USER INT,
 				@-CHAT.TIME INT,
 				@-CHAT.MESSAGE VARCHAR(512),
 				PRIMARY KEY(@-CHAT.GAME, @-CHAT.USER, @-CHAT.TIME)
-			) CHARACTER SET %s COLLATE %s',
-			$db->getCharset(), $db->getCollation()
+			) CHARACTER SET %s COLLATE %s ENGINE = %s',
+			$db->getCharset(), $db->getCollation(), $db->getEngine()
 		);
 	}
 
